@@ -1,0 +1,976 @@
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../core/models/event.dart';
+import '../../core/models/event_registration.dart';
+import '../../core/services/event_service.dart';
+import '../../core/services/favorites_service.dart';
+import '../../core/models/api_response.dart';
+
+class EventDetailPage extends StatefulWidget {
+  final Event event;
+
+  const EventDetailPage({
+    super.key,
+    required this.event,
+  });
+
+  @override
+  State<EventDetailPage> createState() => _EventDetailPageState();
+}
+
+class _EventDetailPageState extends State<EventDetailPage> {
+  final EventService _eventService = EventService();
+  final FavoritesService _favoritesService = FavoritesService();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  
+  Event? _eventDetails;
+  bool _isLoading = true;
+  bool _isFavorite = false;
+  String? _errorMessage;
+  
+  @override
+  void initState() {
+    super.initState();
+    _loadEventDetails();
+    _checkIfFavorite();
+  }
+
+  Future<void> _loadEventDetails() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final ApiResponse<Event> response = await _eventService.getEventById(widget.event.id);
+      
+      if (response.isSuccess && response.hasData) {
+        setState(() {
+          _eventDetails = response.data!;
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _eventDetails = widget.event; // Fallback vers les données initiales
+          _isLoading = false;
+          _errorMessage = response.message;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _eventDetails = widget.event; // Fallback vers les données initiales
+        _isLoading = false;
+        _errorMessage = 'Erreur lors du chargement des détails';
+      });
+    }
+  }
+
+  Future<void> _checkIfFavorite() async {
+    final isFav = await _favoritesService.isFavorite(widget.event.id);
+    setState(() {
+      _isFavorite = isFav;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    try {
+      final success = await _favoritesService.toggleFavorite(widget.event.id);
+      if (success && mounted) {
+        setState(() {
+          _isFavorite = !_isFavorite;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              _isFavorite 
+                ? '${widget.event.title} ajouté aux favoris' 
+                : '${widget.event.title} retiré des favoris',
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Erreur lors de la modification des favoris'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showRegistrationBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => _RegistrationBottomSheet(
+        event: _eventDetails ?? widget.event,
+        onRegistrationSuccess: (registration) {
+          Navigator.of(context).pop();
+          _showRegistrationSuccess(registration);
+        },
+      ),
+    );
+  }
+
+  void _showRegistrationSuccess(EventRegistrationResponse registration) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: const Icon(
+          Icons.check_circle,
+          color: Color(0xFF009639),
+          size: 48,
+        ),
+        title: const Text('Inscription confirmée !'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Numéro de réservation: ${registration.registration.registrationNumber}'),
+            const SizedBox(height: 8),
+            Text('Participants: ${registration.registration.participantsCount}'),
+            if (registration.registration.specialRequirements != null) ...[
+              const SizedBox(height: 8),
+              Text('Exigences spéciales: ${registration.registration.specialRequirements}'),
+            ],
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final event = _eventDetails ?? widget.event;
+    
+    return Scaffold(
+      key: _scaffoldKey,
+      body: _isLoading && _eventDetails == null
+          ? const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(color: Color(0xFF3860F8)),
+                  SizedBox(height: 16),
+                  Text('Chargement des détails...'),
+                ],
+              ),
+            )
+          : CustomScrollView(
+              slivers: [
+                _buildAppBar(event),
+                SliverToBoxAdapter(
+                  child: _buildContent(event),
+                ),
+              ],
+            ),
+      bottomNavigationBar: _buildBottomBar(event),
+    );
+  }
+
+  Widget _buildAppBar(Event event) {
+    return SliverAppBar(
+      expandedHeight: 250,
+      pinned: true,
+      backgroundColor: const Color(0xFF3860F8),
+      actions: [
+        IconButton(
+          onPressed: _toggleFavorite,
+          icon: Icon(
+            _isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: _isFavorite ? Colors.red : Colors.white,
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            // TODO: Implémenter le partage
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Fonctionnalité de partage à venir'),
+              ),
+            );
+          },
+          icon: const Icon(Icons.share, color: Colors.white),
+        ),
+      ],
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text(
+          event.title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        background: event.featuredImage != null && event.imageUrl.isNotEmpty
+            ? Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.network(
+                    event.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: const Color(0xFFE8D5A3),
+                        child: const Center(
+                          child: Icon(
+                            Icons.event,
+                            size: 80,
+                            color: Color(0xFF3860F8),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withValues(alpha: 0.7),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Container(
+                color: const Color(0xFFE8D5A3),
+                child: const Center(
+                  child: Icon(
+                    Icons.event,
+                    size: 80,
+                    color: Color(0xFF3860F8),
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildContent(Event event) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_errorMessage != null)
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.orange.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.warning, color: Colors.orange, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Certains détails peuvent être indisponibles',
+                    style: TextStyle(color: Colors.orange[700]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        
+        // Badges de statut
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _buildStatusChip(event),
+              if (event.isFeatured) _buildFeaturedChip(),
+              if (event.isFree) _buildFreeChip(),
+            ],
+          ),
+        ),
+        
+        // Description
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Description',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                (event.description?.isNotEmpty ?? false) ? event.description! : event.shortDescription,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        const SizedBox(height: 24),
+        
+        // Informations détaillées
+        _buildInfoSection(event),
+        
+        const SizedBox(height: 24),
+        
+        // Localisation
+        if (event.latitude != null && event.longitude != null) _buildLocationSection(event),
+        
+        const SizedBox(height: 100), // Espace pour la bottom bar
+      ],
+    );
+  }
+
+  Widget _buildStatusChip(Event event) {
+    Color color;
+    if (event.hasEnded) {
+      color = Colors.grey;
+    } else if (event.isOngoing) {
+      color = const Color(0xFF009639);
+    } else if (event.isSoldOut) {
+      color = Colors.red;
+    } else {
+      color = const Color(0xFF3860F8);
+    }
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Text(
+        event.statusText,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturedChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0xFF3860F8),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Text(
+        'Populaire',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFreeChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0xFF009639),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Text(
+        'Gratuit',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoSection(Event event) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Informations',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          _buildInfoRow(Icons.calendar_today, 'Date', event.formattedDateRange ?? event.startDate),
+          
+          if (event.endDate?.isNotEmpty == true && event.endDate != event.startDate)
+            _buildInfoRow(Icons.schedule, 'Date de fin', event.endDate!),
+          
+          _buildInfoRow(Icons.location_on, 'Lieu', event.displayLocation),
+          
+          if (!event.isFree)
+            _buildInfoRow(Icons.attach_money, 'Prix', event.priceText),
+          
+          if ((event.maxParticipants ?? 0) > 0)
+            _buildInfoRow(Icons.people, 'Participants', event.participantsText),
+          
+          if (event.categories.isNotEmpty)
+            _buildInfoRow(Icons.category, 'Catégorie', event.primaryCategory),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: const Color(0xFF3860F8)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationSection(Event event) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'Localisation',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          height: 200,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(event.latitude!, event.longitude!),
+                zoom: 15,
+              ),
+              markers: {
+                Marker(
+                  markerId: MarkerId('event_${event.id}'),
+                  position: LatLng(event.latitude!, event.longitude!),
+                  infoWindow: InfoWindow(
+                    title: event.title,
+                    snippet: event.displayLocation,
+                  ),
+                ),
+              },
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+              mapToolbarEnabled: false,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomBar(Event event) {
+    if (event.hasEnded) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: const Text(
+          'Cet événement est terminé',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    }
+    
+    if (event.isSoldOut) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: const Text(
+          'Événement complet',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+    
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 4,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          if (!event.isFree)
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Prix',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text(
+                    event.priceText,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF3860F8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(width: 16),
+          Expanded(
+            flex: 2,
+            child: ElevatedButton(
+              onPressed: event.canRegister ? _showRegistrationBottomSheet : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3860F8),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'S\'inscrire',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RegistrationBottomSheet extends StatefulWidget {
+  final Event event;
+  final Function(EventRegistrationResponse) onRegistrationSuccess;
+
+  const _RegistrationBottomSheet({
+    required this.event,
+    required this.onRegistrationSuccess,
+  });
+
+  @override
+  State<_RegistrationBottomSheet> createState() => _RegistrationBottomSheetState();
+}
+
+class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final EventService _eventService = EventService();
+  
+  final TextEditingController _participantsController = TextEditingController(text: '1');
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _requirementsController = TextEditingController();
+  
+  bool _isLoading = false;
+  final bool _requiresGuestInfo = true; // Pour l'instant, toujours en mode invité
+  
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.8,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      expand: false,
+      builder: (context, scrollController) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              // Handle
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              
+              // Title
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Inscription - ${widget.event.title}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Form
+              Expanded(
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.all(20),
+                    children: [
+                      // Nombre de participants
+                      TextFormField(
+                        controller: _participantsController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Nombre de participants',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.people),
+                        ),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                          final count = int.tryParse(value!);
+                          if (count == null || count < 1) return 'Nombre invalide';
+                          if ((widget.event.maxParticipants ?? 0) > 0 && count > (widget.event.maxParticipants ?? 0)) {
+                            return 'Maximum ${widget.event.maxParticipants} participants';
+                          }
+                          return null;
+                        },
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      // Informations invité (toujours affichées pour l'instant)
+                      if (_requiresGuestInfo) ...[
+                        const Text(
+                          'Informations de contact',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        
+                        TextFormField(
+                          controller: _nameController,
+                          decoration: const InputDecoration(
+                            labelText: 'Nom complet',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.person),
+                          ),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                            return null;
+                          },
+                        ),
+                        
+                        const SizedBox(height: 16),
+                        
+                        TextFormField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.email),
+                          ),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                              return 'Email invalide';
+                            }
+                            return null;
+                          },
+                        ),
+                        
+                        const SizedBox(height: 16),
+                        
+                        TextFormField(
+                          controller: _phoneController,
+                          keyboardType: TextInputType.phone,
+                          decoration: const InputDecoration(
+                            labelText: 'Téléphone',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                            return null;
+                          },
+                        ),
+                        
+                        const SizedBox(height: 16),
+                      ],
+                      
+                      // Exigences spéciales
+                      TextFormField(
+                        controller: _requirementsController,
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          labelText: 'Exigences spéciales (optionnel)',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.note),
+                          hintText: 'Allergies, besoins d\'accessibilité, etc.',
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // Prix récapitulatif
+                      if (!widget.event.isFree)
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFF3860F8).withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Total à payer',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                widget.event.priceText,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF3860F8),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // Bouton d'inscription
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _submitRegistration,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3860F8),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                )
+                              : const Text(
+                                  'Confirmer l\'inscription',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _submitRegistration() async {
+    if (!_formKey.currentState!.validate()) return;
+    
+    setState(() => _isLoading = true);
+    
+    try {
+      final participantsCount = int.parse(_participantsController.text);
+      
+      final EventRegistrationRequest request = _requiresGuestInfo
+          ? EventRegistrationRequest.forGuest(
+              participantsCount: participantsCount,
+              userName: _nameController.text.trim(),
+              userEmail: _emailController.text.trim(),
+              userPhone: _phoneController.text.trim(),
+              specialRequirements: _requirementsController.text.trim().isEmpty 
+                  ? null 
+                  : _requirementsController.text.trim(),
+            )
+          : EventRegistrationRequest.forAuthenticatedUser(
+              participantsCount: participantsCount,
+              specialRequirements: _requirementsController.text.trim().isEmpty 
+                  ? null 
+                  : _requirementsController.text.trim(),
+            );
+      
+      final ApiResponse<EventRegistrationResponse> response = 
+          await _eventService.registerForEvent(widget.event.id, request);
+      
+      if (response.isSuccess && response.hasData) {
+        widget.onRegistrationSuccess(response.data!);
+      } else {
+        _showErrorDialog(response.message ?? 'Erreur lors de l\'inscription');
+      }
+    } catch (e) {
+      _showErrorDialog('Une erreur inattendue s\'est produite');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+  
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Erreur'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  @override
+  void dispose() {
+    _participantsController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _requirementsController.dispose();
+    super.dispose();
+  }
+}

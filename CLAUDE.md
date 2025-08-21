@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Flutter mobile application for tourism in Djibouti called "Visit Djibouti". The project is inspired by the VisitMalta+ app and is designed to showcase tourist attractions, events, and points of interest in Djibouti.
 
+**🚀 MAJOR UPDATE**: The app now features a revolutionary **progressive onboarding system** with anonymous users, providing **0% friction** entry and intelligent conversion triggers.
+
 ## Key Development Commands
 
 ### Flutter Commands

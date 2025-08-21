@@ -2,7 +2,17 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(flutter analyze:*)"
+      "Bash(flutter analyze:*)",
+      "Bash(flutter pub:*)",
+      "Bash(flutter packages pub run build_runner build:*)",
+      "Bash(flutter run:*)",
+      "Bash(curl:*)",
+      "Bash(sed:*)",
+      "Bash(rm:*)",
+      "Bash(flutter clean:*)",
+      "Bash(r)",
+      "Bash(pkill:*)",
+      "Bash(q)"
     ],
     "defaultMode": "acceptEdits"
   }

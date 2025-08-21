@@ -1,7 +1,57 @@
 import 'package:flutter/material.dart';
+import '../../core/services/poi_service.dart';
+import '../../core/models/poi.dart';
+import '../../core/models/poi_list_response.dart';
+import '../../core/models/api_response.dart';
+import 'poi_detail_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final PoiService _poiService = PoiService();
+  List<Poi> _featuredPois = [];
+  bool _isLoadingPois = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFeaturedPois();
+  }
+
+  Future<void> _loadFeaturedPois() async {
+    try {
+      // Chargez tous les POIs disponibles pour les mélanger
+      final ApiResponse<PoiListData> response = await _poiService.getPois(
+        perPage: 20, // Chargez plus de POIs pour avoir plus de choix
+      );
+      
+      if (response.isSuccess && response.hasData) {
+        final allPois = response.data!.pois;
+        
+        // Mélangez la liste et prenez les 5 premiers
+        allPois.shuffle();
+        final randomPois = allPois.take(5).toList();
+        
+        setState(() {
+          _featuredPois = randomPois;
+          _isLoadingPois = false;
+        });
+      } else {
+        setState(() {
+          _isLoadingPois = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoadingPois = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,82 +63,134 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Section Featured POIs
-            const Text(
-              'Points d\'intérêt populaires',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            // Section Random POIs
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Découvrez au hasard',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  onPressed: _isLoadingPois ? null : _loadFeaturedPois,
+                  icon: const Icon(Icons.refresh),
+                  tooltip: 'Mélanger les POIs',
+                  color: const Color(0xFF3860F8),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             SizedBox(
               height: isSmallScreen ? 180 : 200,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  final pois = [
-                    {'name': 'Lac Assal', 'image': '🏔️', 'region': 'Tadjourah'},
-                    {'name': 'Plage de Moucha', 'image': '🏖️', 'region': 'Moucha'},
-                    {'name': 'Forêt du Day', 'image': '🌲', 'region': 'Tadjourah'},
-                  ];
-                  
-                  return Container(
-                    width: isSmallScreen ? 140 : 160,
-                    margin: EdgeInsets.only(right: isSmallScreen ? 8 : 12),
-                    child: Card(
-                      elevation: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: isSmallScreen ? 80 : 100,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE8D5A3),
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(12),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                pois[index]['image']!,
-                                style: TextStyle(fontSize: isSmallScreen ? 32 : 40),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  pois[index]['name']!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  pois[index]['region']!,
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+              child: _isLoadingPois
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF3860F8),
                     ),
-                  );
-                },
-              ),
+                  )
+                : _featuredPois.isEmpty
+                    ? Center(
+                        child: Text(
+                          'Aucun POI en vedette disponible',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _featuredPois.length,
+                        itemBuilder: (context, index) {
+                          final poi = _featuredPois[index];
+                          
+                          return Container(
+                            width: isSmallScreen ? 140 : 160,
+                            margin: EdgeInsets.only(right: isSmallScreen ? 8 : 12),
+                            child: Card(
+                              elevation: 4,
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PoiDetailPage(poi: poi),
+                                  ),
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: isSmallScreen ? 80 : 100,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFE8D5A3),
+                                        borderRadius: const BorderRadius.vertical(
+                                          top: Radius.circular(12),
+                                        ),
+                                      ),
+                                      child: poi.featuredImage != null && poi.imageUrl.isNotEmpty
+                                          ? ClipRRect(
+                                              borderRadius: const BorderRadius.vertical(
+                                                top: Radius.circular(12),
+                                              ),
+                                              child: Image.network(
+                                                poi.imageUrl,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return const Center(
+                                                    child: Icon(
+                                                      Icons.place,
+                                                      size: 40,
+                                                      color: Color(0xFF3860F8),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : const Center(
+                                              child: Icon(
+                                                Icons.place,
+                                                size: 40,
+                                                color: Color(0xFF3860F8),
+                                              ),
+                                            ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            poi.name,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            poi.region,
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
             ),
             
             const SizedBox(height: 24),
@@ -194,8 +296,8 @@ class HomePage extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              color.withOpacity(0.8),
-              color.withOpacity(0.6),
+              color.withValues(alpha: 0.8),
+              color.withValues(alpha: 0.6),
             ],
           ),
         ),
@@ -221,4 +323,5 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 }

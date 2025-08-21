@@ -34,6 +34,18 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  
+  # HTTP client and API integration
+  dio: ^5.3.0
+  json_annotation: ^4.8.1
+  
+  # Storage and state management
+  shared_preferences: ^2.2.0
+  flutter_secure_storage: ^9.0.0
+  
+  # Google Maps and URL launcher
+  google_maps_flutter: ^2.5.0
+  url_launcher: ^6.2.0
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +57,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  
+  # Code generation for JSON serialization
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

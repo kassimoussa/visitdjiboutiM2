@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:visitdjibouti/presentation/pages/main_navigation_page.dart';
+import 'package:visitdjibouti/presentation/pages/splash_page.dart';
+import 'package:visitdjibouti/core/api/api_client.dart';
 
 void main() {
+  // Initialize API client
+  ApiClient().init();
+  
   runApp(const VisitDjiboutiApp());
 }
 
@@ -26,7 +31,7 @@ class VisitDjiboutiApp extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
         cardTheme: CardThemeData(
-          elevation: 4,
+          elevation: 4, 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -44,7 +49,7 @@ class VisitDjiboutiApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainNavigationPage(),
+      home: const SplashPage(),
     );
   }
 }

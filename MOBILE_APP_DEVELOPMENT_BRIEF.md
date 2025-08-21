@@ -6,20 +6,29 @@ Développer une application mobile Flutter (iOS/Android) pour le tourisme à Dji
 ## 📋 **Context & Backend Existant**
 
 ### API Backend Laravel Complète ✅
-- **18 endpoints API** déjà développés et entièrement fonctionnels
+- **33 endpoints API** déjà développés et entièrement fonctionnels
+- **🚀 NEW: Authentification Anonyme** : Système révolutionnaire pour onboarding sans friction
 - **Authentification OAuth** : Google + Facebook + Email/Password avec Laravel Sanctum
+- **Système de Favoris** : Gestion complète des favoris POIs et Events avec synchronisation cloud
+- **Tour Operators** : Système complet de gestion des opérateurs de tour avec géolocalisation
+- **App Settings** : Configuration dynamique de l'application mobile (splash screens, onboarding, etc.)
 - **Documentation complète** : Fichier `API_DOCUMENTATION.md` avec exemples cURL détaillés
 - **Collection Postman** : `Visit-Djibouti-API.postman_collection.json` pour tests
 - **Base URL API** : `https://your-domain.com/api` (à configurer)
 
 ### Endpoints API Disponibles
 ```
-🔐 AUTHENTIFICATION (5 endpoints)
+🔐 AUTHENTIFICATION (10 endpoints) - ENHANCED 🚀
 ├── POST /api/auth/register          # Inscription utilisateur
 ├── POST /api/auth/login             # Connexion email/password
 ├── GET  /api/auth/profile           # Profil utilisateur (protégé)
 ├── GET  /api/auth/{provider}/redirect # OAuth redirect (Google/Facebook)
-└── POST /api/auth/{provider}/token   # OAuth mobile token
+├── POST /api/auth/{provider}/token   # OAuth mobile token
+├── 🆔 POST /api/auth/anonymous      # Créer utilisateur anonyme (NEW)
+├── 🔍 POST /api/auth/anonymous/retrieve # Récupérer utilisateur anonyme (NEW)
+├── 🔄 POST /api/auth/convert-anonymous # Convertir anonyme → complet (NEW)
+├── ⚙️ PUT /api/auth/anonymous/preferences # MAJ préférences anonyme (NEW)
+└── 🗑️ DELETE /api/auth/anonymous   # Supprimer utilisateur anonyme (NEW)
 
 🏛️ POINTS D'INTÉRÊT (4 endpoints)
 ├── GET /api/pois                    # Liste POIs avec filtres avancés
@@ -39,11 +48,30 @@ Développer une application mobile Flutter (iOS/Android) pour le tourisme à Dji
 ├── GET /api/categories/flat         # Liste plate
 └── GET /api/categories/{id}         # Détails catégorie
 
+❤️ FAVORIS MANAGEMENT (7 endpoints) - NEW ✨
+├── GET /api/favorites               # Tous les favoris utilisateur
+├── GET /api/favorites/pois          # POIs favoris uniquement
+├── GET /api/favorites/stats         # Statistiques favoris
+├── POST /api/favorites/pois/{poi}   # Ajouter/Retirer POI (toggle)
+├── DELETE /api/favorites/pois/{poi} # Retirer POI explicitement
+├── POST /api/favorites/events/{event} # Ajouter/Retirer Event (toggle)
+└── DELETE /api/favorites/events/{event} # Retirer Event explicitement
+
 🏢 ORGANISATION & INFOS (4 endpoints)
 ├── GET /api/organization            # Infos Office du Tourisme
 ├── GET /api/external-links          # Liens utiles
 ├── GET /api/embassies               # Liste ambassades
 └── GET /api/embassies/nearby        # Ambassades proches
+
+🎛️ APP SETTINGS (3 endpoints) - NEW ✨
+├── GET /api/app-settings            # Tous les paramètres app mobile
+├── GET /api/app-settings/flat       # Paramètres en liste plate
+└── GET /api/app-settings/type/{type} # Paramètres par type
+
+🚐 TOUR OPERATORS (3 endpoints) ✅
+├── GET /api/tour-operators          # Liste avec filtres avancés
+├── GET /api/tour-operators/nearby   # Proximité géographique
+└── GET /api/tour-operators/{identifier} # Détails (ID ou slug)
 ```
 
 ### Fonctionnalités Backend Avancées
@@ -52,6 +80,57 @@ Développer une application mobile Flutter (iOS/Android) pour le tourisme à Dji
 - **Système de réservation** : Événements pour utilisateurs connectés ET invités
 - **Catégories hiérarchiques** : Structure parent-enfant avec sous-catégories
 - **Authentification flexible** : Comptes optionnels (navigation possible sans inscription)
+- **🆕 Système de Favoris Avancé** : 
+  - Relations polymorphiques POIs et Events
+  - Synchronisation cloud automatique
+  - Compteurs de favoris en temps réel
+  - Statistiques et historique des favoris
+
+## 🚀 **Innovation : Système d'Utilisateurs Anonymes**
+
+### Concept Révolutionnaire
+Le backend implémente un système d'**onboarding progressif** permettant aux utilisateurs d'utiliser l'application immédiatement sans inscription :
+
+### 🎯 Workflow Utilisateur Anonyme
+```
+📱 LANCEMENT APP
+│
+├─ API: POST /auth/anonymous (device_id)
+├─ Token anonyme généré automatiquement
+├─ ID anonyme unique : "anon_xyz_timestamp"
+│
+📍 UTILISATION IMMÉDIATE
+│
+├─ Navigation libre dans tous les contenus
+├─ Ajout de favoris (synchronisation cloud)
+├─ Réservations d'événements possibles
+├─ Préférences langue/notifications
+│
+🔄 CONVERSION PROGRESSIVE
+│
+├─ Incitation contextuelle (après 5 favoris, avant réservation, etc.)
+├─ API: POST /auth/convert-anonymous
+├─ Conservation de TOUTES les données existantes
+└─ Transition fluide vers compte complet
+```
+
+### 💾 Stockage Local Requis
+- **anonymous_id** : Identifiant unique persistant
+- **anonymous_token** : Token d'authentification
+- **device_id** : Identifiant de l'appareil
+
+### 🔄 Moments de Conversion Suggérés
+- **Après 3-5 favoris** : "Sauvegardez vos découvertes !"
+- **Avant réservation événement** : "Finalisez votre inscription"
+- **Lors de l'export d'itinéraire** : "Recevez votre itinéraire par email"
+- **Après 7 jours d'utilisation** : "Créez votre profil voyageur"
+
+### 🛡️ Avantages Techniques
+- **0% de friction** à l'entrée
+- **Taux de rétention maximisé**
+- **Données utilisateur préservées**
+- **Analytics complets** (utilisateurs anonymes vs. complets)
+- **Progressive onboarding** basé sur l'engagement
 
 ## 🎨 **Inspiration Design : VisitMalta+**
 
@@ -241,7 +320,8 @@ SI NON CONNECTÉ:
 SI CONNECTÉ:
 - Header profil (photo, nom, email)
 - Mes réservations événements
-- Mes POIs favoris  
+- 🆕 **Mes Favoris** (POIs + Events avec compteurs)
+- 🆕 **Statistiques favoris** (nombre total, récents)
 - Paramètres (langue, notifications)
 - Aide et support
 - Déconnexion
@@ -251,9 +331,10 @@ SI CONNECTÉ:
 
 #### **POI Details** (`/poi/:id`)
 ```dart
-- AppBar avec titre POI + boutons (favoris, partage)
+- AppBar avec titre POI + boutons (🆕 favoris avec compteur, partage)
 - Galerie photos (carousel + zoom)
 - Informations principales (description, note, prix)
+- 🆕 **Badge favoris** avec nombre total d'utilisateurs
 - Section "Informations pratiques" (horaires, contact)
 - Localisation avec bouton "Y aller" (Google Maps)
 - Section "POIs similaires" (recommandations)
@@ -261,7 +342,7 @@ SI CONNECTÉ:
 
 #### **Event Details** (`/event/:id`)
 ```dart
-- Header avec image événement
+- Header avec image événement + 🆕 **bouton favoris**
 - Informations (date, lieu, prix, places disponibles)
 - Description complète avec rich text
 - Bouton réservation (modal ou nouvelle page)
@@ -334,6 +415,22 @@ abstract class ApiService {
 
   @GET("/auth/profile")
   Future<UserResponse> getProfile();
+
+  // 🆕 Favoris
+  @GET("/favorites")
+  Future<FavoritesResponse> getAllFavorites();
+
+  @GET("/favorites/pois")
+  Future<FavoritesPoisResponse> getFavoritePois();
+
+  @POST("/favorites/pois/{poiId}")
+  Future<FavoriteActionResponse> togglePoiFavorite(@Path("poiId") int poiId);
+
+  @POST("/favorites/events/{eventId}")
+  Future<FavoriteActionResponse> toggleEventFavorite(@Path("eventId") int eventId);
+
+  @GET("/favorites/stats")
+  Future<FavoritesStatsResponse> getFavoritesStats();
 }
 ```
 
@@ -355,6 +452,8 @@ class Poi {
   final Category? category;
   final double? rating;
   final int? reviewsCount;
+  final int favoritesCount;     // 🆕 Nombre total de favoris
+  final bool isFavorited;       // 🆕 Statut favori pour l'utilisateur actuel
 
   Poi({
     required this.id,
@@ -392,6 +491,7 @@ class Event {
   final bool isFeatured;
   final List<Media> media;
   final bool userIsRegistered;
+  final bool isFavorited;       // 🆕 Statut favori pour l'utilisateur actuel
 
   // Constructor et méthodes...
 }
@@ -584,7 +684,7 @@ class PoiCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const FavoriteButton(), // Widget custom
+                      🆕 FavoriteButton(poi: poi), // 🆕 Widget favori avec état
                     ],
                   ),
                   
@@ -839,8 +939,12 @@ class LocalStorage {
 2. **Géolocalisation** et POIs nearby
 3. **Système d'événements** complet avec réservations
 4. **Recherche avancée** avec filtres
-5. **Favoris** et système de bookmarks
-6. **Cache offline** pour POIs essentiels
+5. **🆕 Système de favoris complet** : 
+   - Boutons cœur sur tous les POIs/Events
+   - Page "Mes Favoris" avec onglets séparés
+   - Synchronisation cloud temps réel
+   - Statistiques et compteurs
+6. **Cache offline** pour POIs essentiels + favoris
 
 ### Phase 3 : Polish & Avancé (2-3 semaines)
 1. **Animations fluides** et micro-interactions
@@ -966,13 +1070,14 @@ android {
 
 1. **Application Flutter** complète iOS + Android
 2. **Code source** avec architecture Clean + BLoC  
-3. **Intégration API** complète (18 endpoints)
-4. **Documentation technique** et guide de déploiement
-5. **Tests** unitaires et d'intégration
-6. **Builds** prêts pour soumission stores
+3. **Intégration API** complète (25 endpoints avec favoris)
+4. **🆕 Système de favoris mobile** avec synchronisation cloud
+5. **Documentation technique** et guide de déploiement
+6. **Tests** unitaires et d'intégration
+7. **Builds** prêts pour soumission stores
 
 **Objectif** : Créer une expérience mobile moderne et fluide pour découvrir les merveilles de Djibouti, en s'inspirant des meilleures pratiques UX de VisitMalta+ ! 🇩🇯📱
 
 ---
 
-*Note : Toute l'API backend est prête et fonctionnelle. L'accent doit être mis sur l'expérience utilisateur mobile optimale et l'intégration fluide avec les services existants.*
+*Note : Toute l'API backend est prête et fonctionnelle avec le nouveau système de favoris. L'accent doit être mis sur l'expérience utilisateur mobile optimale et l'intégration fluide avec les services existants, incluant la synchronisation des favoris en temps réel.*

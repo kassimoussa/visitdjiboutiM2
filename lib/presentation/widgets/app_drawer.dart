@@ -3,6 +3,7 @@ import 'package:visitdjibouti/presentation/pages/settings_page.dart';
 import 'package:visitdjibouti/presentation/pages/about_page.dart';
 import 'package:visitdjibouti/presentation/pages/help_page.dart';
 import 'package:visitdjibouti/presentation/pages/profile_page.dart';
+import 'package:visitdjibouti/presentation/pages/api_test_page.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -191,6 +192,21 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         // Section Paramètres
                         _buildSectionTitle('Paramètres'),
+                        
+                        _buildDrawerItem(
+                          icon: Icons.api,
+                          title: 'Test API',
+                          subtitle: 'Test des endpoints',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ApiTestPage(),
+                              ),
+                            );
+                          },
+                        ),
                         
                         _buildDrawerItem(
                           icon: Icons.settings,
