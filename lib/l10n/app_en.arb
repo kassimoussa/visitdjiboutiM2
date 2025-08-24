@@ -1,0 +1,189 @@
+{
+  "@@locale": "en",
+  
+  "appTitle": "Visit Djibouti",
+  "@appTitle": {
+    "description": "Application title"
+  },
+  
+  "appDescription": "Discover the wonders of Djibouti",
+  "@appDescription": {
+    "description": "Application description"
+  },
+
+  "navigationHome": "Home",
+  "navigationDiscover": "Discover",
+  "navigationEvents": "Events",
+  "navigationMap": "Map",
+  "navigationFavorites": "Favorites",
+  
+  "homeWelcomeMessage": "Welcome to Djibouti",
+  "homeFeaturedPois": "Places to discover",
+  "homeUpcomingEvents": "Upcoming events",
+  "homeExploreMore": "Explore more",
+  
+  "discoverTitle": "Discover Djibouti",
+  "discoverCategories": "Categories",
+  "discoverAllPois": "All places",
+  "discoverSearchHint": "Search for a place...",
+  "discoverNearbyPois": "Nearby places",
+  "discoverNoResults": "No results found",
+  
+  "eventsTitle": "Events",
+  "eventsUpcoming": "Upcoming",
+  "eventsOngoing": "Ongoing", 
+  "eventsPast": "Past",
+  "eventsRegister": "Register",
+  "eventsRegistered": "Registered",
+  "eventsSoldOut": "Sold out",
+  "eventsFree": "Free",
+  "eventsPrice": "{price} DJF",
+  "@eventsPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "eventsParticipants": "{count} participants",
+  "@eventsParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "favoritesTitle": "My Favorites",
+  "favoritesEmpty": "No favorites",
+  "favoritesEmptyDescription": "Explore Djibouti and add your favorite\\nplaces to your collection",
+  "favoritesAddedToFavorites": "Added to favorites",
+  "favoritesRemovedFromFavorites": "Removed from favorites",
+  "favoritesPoisTab": "Places",
+  "favoritesEventsTab": "Events",
+  "favoritesAllTab": "All",
+  "favoritesSortRecent": "Recent",
+  "favoritesSortAlphabetical": "Alphabetical",
+  "favoritesSortRating": "Rating",
+  
+  "mapTitle": "Map",
+  "mapMyLocation": "My location",
+  "mapSearchLocation": "Search for a location...",
+  "mapRouteTo": "Route to",
+  "mapDistance": "{distance} km",
+  "@mapDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "authLogin": "Login",
+  "authRegister": "Sign up",
+  "authLogout": "Logout",
+  "authEmail": "Email",
+  "authPassword": "Password",
+  "authConfirmPassword": "Confirm password",
+  "authName": "Full name",
+  "authForgotPassword": "Forgot password?",
+  "authDontHaveAccount": "Don't have an account?",
+  "authAlreadyHaveAccount": "Already have an account?",
+  "authSignInWithGoogle": "Continue with Google",
+  "authSignInWithFacebook": "Continue with Facebook",
+  "authOrContinueWith": "Or continue with",
+  "authTermsAndConditions": "Terms and Conditions",
+  "authPrivacyPolicy": "Privacy Policy",
+  
+  "profileTitle": "Profile",
+  "profileEditProfile": "Edit profile",
+  "profileSettings": "Settings",
+  "profileLanguage": "Language",
+  "profileNotifications": "Notifications",
+  "profileAboutApp": "About",
+  "profileContactSupport": "Support",
+  
+  "conversionAfterFavoritesTitle": "Save your discoveries!",
+  "conversionAfterFavoritesDescription": "Create your account to sync your favorites across all your devices",
+  "conversionAfterFavoritesButton": "Save my favorites",
+  "conversionBeforeReservationTitle": "Complete your registration", 
+  "conversionBeforeReservationDescription": "An account is required to finalize your event reservation",
+  "conversionBeforeReservationButton": "Create an account",
+  "conversionBeforeExportTitle": "Receive your itinerary by email",
+  "conversionBeforeExportDescription": "Create your account to receive your personalized itinerary by email", 
+  "conversionBeforeExportButton": "Receive by email",
+  "conversionAfterWeekUsageTitle": "Create your traveler profile",
+  "conversionAfterWeekUsageDescription": "After a week of exploration, create your profile for a personalized experience",
+  "conversionAfterWeekUsageButton": "Create my profile",
+  "conversionBenefits": "With an account, you can:",
+  "conversionBenefitSync": "Sync your favorites across all your devices",
+  "conversionBenefitNotifications": "Receive notifications for your favorite places", 
+  "conversionBenefitItineraries": "Create personalized itineraries",
+  "conversionBenefitReservations": "Manage all your reservations in one place",
+  "conversionBenefitHistory": "Access your reservation history",
+  "conversionBenefitEmail": "Receive your itineraries by email",
+  "conversionBenefitShare": "Share your discoveries with friends",
+  "conversionBenefitRecommendations": "Get personalized recommendations",
+  "conversionBenefitOffers": "Access exclusive offers",
+  "conversionBenefitCommunity": "Join the traveler community",
+  "conversionLaterButton": "Later",
+  "conversionContinueWithoutAccount": "Continue without account",
+  "conversionNotNowButton": "Not now",
+  "conversionMaybeLaterButton": "Maybe later",
+  "conversionCancelButton": "Cancel",
+
+  "drawerGuest": "Guest",
+  "drawerViewProfile": "View my profile →",
+  "drawerSettingsSection": "Settings",
+  "drawerTestApi": "API Test",
+  "drawerTestApiSubtitle": "Test endpoints",
+  "drawerSettings": "Settings",
+  "drawerLanguage": "Language",
+  "drawerNotifications": "Notifications",
+  "drawerHelpSection": "Help & Support",
+  "drawerHelp": "Help",
+  "drawerFeedback": "Feedback",
+  "drawerAbout": "About",
+  "drawerUsefulLinks": "Useful links",
+  "drawerTourismOffice": "Tourism Office",
+  "drawerEmbassies": "Embassies",
+  "drawerEmergencyNumbers": "Emergency numbers",
+  "drawerVersion": "Version 1.0.0",
+  "drawerChooseLanguage": "Choose language",
+  "drawerLanguageChanged": "Language changed to {language}",
+  "@drawerLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSendFeedback": "Send feedback",
+  "drawerFeedbackHint": "Share your experience with Visit Djibouti...",
+  "drawerFeedbackThanks": "Thank you for your feedback!",
+  "drawerPolice": "🚨 Police: 17",
+  "drawerFire": "🚒 Fire department: 18",
+  "drawerSamu": "🏥 SAMU: 351351",
+  "drawerMedical": "🚑 Medical emergency: 35 35 35",
+  "drawerInfo": "📞 Information: 12",
+  "drawerTourismOfficeSnackbar": "Opening Tourism Office website",
+  
+  "commonLoading": "Loading...",
+  "commonError": "Error",
+  "commonRetry": "Retry",
+  "commonCancel": "Cancel",
+  "commonConfirm": "Confirm",
+  "commonSave": "Save",
+  "commonDelete": "Delete",
+  "commonEdit": "Edit",
+  "commonShare": "Share",
+  "commonClose": "Close",
+  "commonNext": "Next",
+  "commonPrevious": "Previous",
+  "commonDone": "Done",
+  "commonSkip": "Skip",
+  "commonSeeAll": "See all",
+  "commonShowMore": "Show more",
+  "commonShowLess": "Show less",
+  "commonSend": "Send"
+}

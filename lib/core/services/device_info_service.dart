@@ -2,6 +2,10 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeviceInfoService {
   static final DeviceInfoService _instance = DeviceInfoService._internal();
@@ -26,17 +30,82 @@ class DeviceInfoService {
     }
   }
 
-  /// Obtient les informations de l'appareil
+  /// Obtient les informations complètes de l'appareil
   Future<Map<String, dynamic>> getDeviceInfo() async {
     try {
+      final deviceInfoPlugin = DeviceInfoPlugin();
+      final packageInfo = await PackageInfo.fromPlatform();
+      final connectivity = await Connectivity().checkConnectivity();
+      
+      Map<String, dynamic> baseInfo = {
+        'app_name': packageInfo.appName,
+        'app_version': packageInfo.version,
+        'build_number': packageInfo.buildNumber,
+        'package_name': packageInfo.packageName,
+        'connectivity': connectivity.isNotEmpty ? connectivity.first.name : 'none',
+        'timestamp': DateTime.now().toIso8601String(),
+        'locale': PlatformDispatcher.instance.locale.toString(),
+        'timezone': DateTime.now().timeZoneName,
+        'timezone_offset': DateTime.now().timeZoneOffset.inHours,
+      };
+
       if (kIsWeb) {
-        return _getWebDeviceInfo();
+        final webInfo = await deviceInfoPlugin.webBrowserInfo;
+        return {
+          ...baseInfo,
+          'platform': 'web',
+          'browser_name': webInfo.browserName.name,
+          'user_agent': webInfo.userAgent ?? 'Unknown',
+          'vendor': webInfo.vendor ?? 'Unknown',
+          'language': webInfo.language ?? 'fr',
+          'platform_type': webInfo.platform ?? 'Unknown',
+          'screen_width': PlatformDispatcher.instance.views.first.physicalSize.width,
+          'screen_height': PlatformDispatcher.instance.views.first.physicalSize.height,
+        };
       } else if (Platform.isAndroid) {
-        return await _getAndroidDeviceInfo();
+        final androidInfo = await deviceInfoPlugin.androidInfo;
+        return {
+          ...baseInfo,
+          'platform': 'android',
+          'model': androidInfo.model,
+          'manufacturer': androidInfo.manufacturer,
+          'brand': androidInfo.brand,
+          'device': androidInfo.device,
+          'hardware': androidInfo.hardware,
+          'android_id': androidInfo.id,
+          'os_version': androidInfo.version.release,
+          'api_level': androidInfo.version.sdkInt,
+          'security_patch': androidInfo.version.securityPatch,
+          'is_physical_device': androidInfo.isPhysicalDevice,
+          'board': androidInfo.board,
+          'bootloader': androidInfo.bootloader,
+          'fingerprint': androidInfo.fingerprint,
+          'supported_abis': androidInfo.supportedAbis,
+          'supported_32bit_abis': androidInfo.supported32BitAbis,
+          'supported_64bit_abis': androidInfo.supported64BitAbis,
+          'system_features': androidInfo.systemFeatures,
+        };
       } else if (Platform.isIOS) {
-        return await _getIOSDeviceInfo();
+        final iosInfo = await deviceInfoPlugin.iosInfo;
+        return {
+          ...baseInfo,
+          'platform': 'ios',
+          'model': iosInfo.model,
+          'name': iosInfo.name,
+          'system_name': iosInfo.systemName,
+          'os_version': iosInfo.systemVersion,
+          'identifier_for_vendor': iosInfo.identifierForVendor,
+          'is_physical_device': iosInfo.isPhysicalDevice,
+          'machine': iosInfo.utsname.machine,
+          'system_kernel': iosInfo.utsname.sysname,
+          'kernel_version': iosInfo.utsname.version,
+        };
       } else {
-        return _getDefaultDeviceInfo();
+        return {
+          ...baseInfo,
+          'platform': Platform.operatingSystem,
+          'os_version': Platform.operatingSystemVersion,
+        };
       }
     } catch (e) {
       print('Erreur lors de l\'obtention des informations de l\'appareil: $e');
@@ -115,13 +184,37 @@ class DeviceInfoService {
 
   /// Vérifie si l'appareil prend en charge certaines fonctionnalités
   Future<Map<String, bool>> getDeviceCapabilities() async {
-    return {
-      'has_camera': !kIsWeb,
-      'has_gps': !kIsWeb,
-      'has_internet': true, // Assumé vrai pour maintenant
-      'supports_notifications': !kIsWeb,
-      'supports_biometrics': !kIsWeb,
-    };
+    try {
+      final connectivity = await Connectivity().checkConnectivity();
+      final hasInternet = connectivity.isNotEmpty && 
+                         connectivity.first != ConnectivityResult.none;
+      
+      return {
+        'has_camera': !kIsWeb,
+        'has_gps': !kIsWeb,
+        'has_internet': hasInternet,
+        'supports_notifications': !kIsWeb,
+        'supports_biometrics': !kIsWeb,
+        'supports_wifi': !kIsWeb,
+        'supports_bluetooth': !kIsWeb && (Platform.isAndroid || Platform.isIOS),
+        'supports_nfc': !kIsWeb && Platform.isAndroid,
+        'is_tablet': await _isTablet(),
+        'is_emulator': await _isEmulator(),
+      };
+    } catch (e) {
+      return {
+        'has_camera': !kIsWeb,
+        'has_gps': !kIsWeb,
+        'has_internet': false,
+        'supports_notifications': !kIsWeb,
+        'supports_biometrics': !kIsWeb,
+        'supports_wifi': !kIsWeb,
+        'supports_bluetooth': false,
+        'supports_nfc': false,
+        'is_tablet': false,
+        'is_emulator': false,
+      };
+    }
   }
 
   /// Obtient la langue préférée de l'appareil
@@ -146,11 +239,159 @@ class DeviceInfoService {
   /// Vérifie si c'est le premier lancement de l'application
   static Future<bool> isFirstLaunch() async {
     try {
-      // Cette méthode sera utilisée par AnonymousAuthService
-      // pour déterminer si c'est le premier lancement
-      return true; // Placeholder pour maintenant
+      final prefs = await SharedPreferences.getInstance();
+      const firstLaunchKey = 'first_launch_completed';
+      
+      final isFirst = !prefs.containsKey(firstLaunchKey);
+      if (isFirst) {
+        await prefs.setBool(firstLaunchKey, true);
+        await prefs.setString('first_launch_date', DateTime.now().toIso8601String());
+      }
+      
+      return isFirst;
     } catch (e) {
       return true;
+    }
+  }
+
+  /// Détecte si l'appareil est une tablette
+  Future<bool> _isTablet() async {
+    try {
+      if (kIsWeb) return false;
+      
+      if (Platform.isAndroid) {
+        final deviceInfo = DeviceInfoPlugin();
+        final androidInfo = await deviceInfo.androidInfo;
+        // Une tablette Android a généralement une diagonale > 7 pouces
+        // On peut utiliser la densité d'écran comme indicateur
+        return false; // Nécessite plus de logique spécifique
+      } else if (Platform.isIOS) {
+        final deviceInfo = DeviceInfoPlugin();
+        final iosInfo = await deviceInfo.iosInfo;
+        return iosInfo.model.toLowerCase().contains('ipad');
+      }
+      
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Détecte si l'appareil est un émulateur
+  Future<bool> _isEmulator() async {
+    try {
+      if (kIsWeb) return false;
+      
+      final deviceInfo = DeviceInfoPlugin();
+      
+      if (Platform.isAndroid) {
+        final androidInfo = await deviceInfo.androidInfo;
+        return !androidInfo.isPhysicalDevice;
+      } else if (Platform.isIOS) {
+        final iosInfo = await deviceInfo.iosInfo;
+        return !iosInfo.isPhysicalDevice;
+      }
+      
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Obtient des informations de performance/mémoire
+  Future<Map<String, dynamic>> getPerformanceInfo() async {
+    try {
+      return {
+        'timestamp': DateTime.now().toIso8601String(),
+        'available_memory_mb': await _getAvailableMemoryMB(),
+        'battery_level': await _getBatteryLevel(),
+        'storage_info': await _getStorageInfo(),
+        'network_info': await _getNetworkInfo(),
+      };
+    } catch (e) {
+      return {
+        'timestamp': DateTime.now().toIso8601String(),
+        'error': e.toString(),
+      };
+    }
+  }
+
+  Future<double?> _getAvailableMemoryMB() async {
+    try {
+      // Nécessiterait un plugin spécialisé ou du code natif
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<int?> _getBatteryLevel() async {
+    try {
+      // Nécessiterait battery_plus package
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>> _getStorageInfo() async {
+    try {
+      // Informations de stockage disponible/utilisé
+      return {
+        'available': 'unknown',
+        'total': 'unknown',
+      };
+    } catch (e) {
+      return {
+        'available': 'error',
+        'total': 'error',
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> _getNetworkInfo() async {
+    try {
+      final connectivity = await Connectivity().checkConnectivity();
+      final connectionType = connectivity.isNotEmpty ? connectivity.first : ConnectivityResult.none;
+      return {
+        'type': connectionType.name,
+        'is_connected': connectionType != ConnectivityResult.none,
+        'is_mobile': connectionType == ConnectivityResult.mobile,
+        'is_wifi': connectionType == ConnectivityResult.wifi,
+      };
+    } catch (e) {
+      return {
+        'type': 'unknown',
+        'is_connected': false,
+        'is_mobile': false,
+        'is_wifi': false,
+      };
+    }
+  }
+
+  /// Sauvegarde les informations device pour analytics
+  Future<void> logDeviceInfo() async {
+    try {
+      final deviceInfo = await getDeviceInfo();
+      final capabilities = await getDeviceCapabilities();
+      final performanceInfo = await getPerformanceInfo();
+      
+      final completeInfo = {
+        'device_info': deviceInfo,
+        'capabilities': capabilities,
+        'performance': performanceInfo,
+        'logged_at': DateTime.now().toIso8601String(),
+      };
+      
+      // Log pour debug (en production, envoyer au backend analytics)
+      print('Device Info Collected: ${completeInfo.keys}');
+      
+      // Optionnel : sauvegarder localement pour sync ultérieure
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_device_info', completeInfo.toString());
+      
+    } catch (e) {
+      print('Erreur lors du logging des informations device: $e');
     }
   }
 }

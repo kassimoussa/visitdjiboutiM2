@@ -12,7 +12,9 @@
       "Bash(flutter clean:*)",
       "Bash(r)",
       "Bash(pkill:*)",
-      "Bash(q)"
+      "Bash(q)",
+      "Bash(flutter gen-l10n:*)",
+      "Bash(python3:*)"
     ],
     "defaultMode": "acceptEdits"
   }

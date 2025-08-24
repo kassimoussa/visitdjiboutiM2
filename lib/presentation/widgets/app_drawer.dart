@@ -4,6 +4,8 @@ import 'package:visitdjibouti/presentation/pages/about_page.dart';
 import 'package:visitdjibouti/presentation/pages/help_page.dart';
 import 'package:visitdjibouti/presentation/pages/profile_page.dart';
 import 'package:visitdjibouti/presentation/pages/api_test_page.dart';
+import '../../generated/l10n/app_localizations.dart';
+import '../../core/services/localization_service.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -124,9 +126,9 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   // Titre de l'app
-                                  const Text(
-                                    'Visit Djibouti',
-                                    style: TextStyle(
+                                  Text(
+                                    AppLocalizations.of(context)!.appTitle,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -143,7 +145,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
-                                      'Invité',
+                                      AppLocalizations.of(context)!.drawerGuest,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.9),
                                         fontSize: 12,
@@ -166,7 +168,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                                       );
                                     },
                                     child: Text(
-                                      'Voir mon profil →',
+                                      AppLocalizations.of(context)!.drawerViewProfile,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.8),
                                         fontSize: 11,
@@ -191,12 +193,12 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         const SizedBox(height: 16),
                         
                         // Section Paramètres
-                        _buildSectionTitle('Paramètres'),
+                        _buildSectionTitle(AppLocalizations.of(context)!.drawerSettingsSection),
                         
                         _buildDrawerItem(
                           icon: Icons.api,
-                          title: 'Test API',
-                          subtitle: 'Test des endpoints',
+                          title: AppLocalizations.of(context)!.drawerTestApi,
+                          subtitle: AppLocalizations.of(context)!.drawerTestApiSubtitle,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -210,7 +212,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.settings,
-                          title: 'Paramètres',
+                          title: AppLocalizations.of(context)!.drawerSettings,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -224,8 +226,8 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.language,
-                          title: 'Langue',
-                          subtitle: 'Français',
+                          title: AppLocalizations.of(context)!.drawerLanguage,
+                          subtitle: LocalizationService().currentLanguageName,
                           onTap: () {
                             Navigator.pop(context);
                             _showLanguageDialog(context);
@@ -234,7 +236,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.notifications,
-                          title: 'Notifications',
+                          title: AppLocalizations.of(context)!.drawerNotifications,
                           trailing: Switch(
                             value: true,
                             onChanged: (value) {
@@ -248,11 +250,11 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         const Divider(height: 32),
                         
                         // Section Aide et Support
-                        _buildSectionTitle('Aide & Support'),
+                        _buildSectionTitle(AppLocalizations.of(context)!.drawerHelpSection),
                         
                         _buildDrawerItem(
                           icon: Icons.help,
-                          title: 'Aide',
+                          title: AppLocalizations.of(context)!.drawerHelp,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -266,7 +268,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.feedback,
-                          title: 'Commentaires',
+                          title: AppLocalizations.of(context)!.drawerFeedback,
                           onTap: () {
                             Navigator.pop(context);
                             _showFeedbackDialog(context);
@@ -275,7 +277,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.info,
-                          title: 'À propos',
+                          title: AppLocalizations.of(context)!.drawerAbout,
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(
@@ -290,16 +292,16 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         const Divider(height: 32),
                         
                         // Section Liens utiles
-                        _buildSectionTitle('Liens utiles'),
+                        _buildSectionTitle(AppLocalizations.of(context)!.drawerUsefulLinks),
                         
                         _buildDrawerItem(
                           icon: Icons.public,
-                          title: 'Office du Tourisme',
+                          title: AppLocalizations.of(context)!.drawerTourismOffice,
                           onTap: () {
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Ouverture du site web de l\'Office du Tourisme'),
+                              SnackBar(
+                                content: Text(AppLocalizations.of(context)!.drawerTourismOfficeSnackbar),
                               ),
                             );
                           },
@@ -307,7 +309,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.location_city,
-                          title: 'Ambassades',
+                          title: AppLocalizations.of(context)!.drawerEmbassies,
                           onTap: () {
                             Navigator.pop(context);
                           },
@@ -315,7 +317,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                         
                         _buildDrawerItem(
                           icon: Icons.emergency,
-                          title: 'Numéros d\'urgence',
+                          title: AppLocalizations.of(context)!.drawerEmergencyNumbers,
                           onTap: () {
                             Navigator.pop(context);
                             _showEmergencyNumbers(context);
@@ -329,7 +331,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
                           child: Padding(
                             padding: const EdgeInsets.all(16),
                             child: Text(
-                              'Version 1.0.0',
+                              AppLocalizations.of(context)!.drawerVersion,
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 12,
@@ -411,7 +413,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Choisir la langue'),
+          title: Text(AppLocalizations.of(context)!.drawerChooseLanguage),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -423,7 +425,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Annuler'),
+              child: Text(AppLocalizations.of(context)!.commonCancel),
             ),
           ],
         );
@@ -446,7 +448,7 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
       onTap: () {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Langue changée vers $language')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.drawerLanguageChanged(language))),
         );
       },
     );
@@ -457,30 +459,30 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Envoyer un commentaire'),
-          content: const TextField(
+          title: Text(AppLocalizations.of(context)!.drawerSendFeedback),
+          content: TextField(
             maxLines: 4,
             decoration: InputDecoration(
-              hintText: 'Partagez votre expérience avec Visit Djibouti...',
-              border: OutlineInputBorder(),
+              hintText: AppLocalizations.of(context)!.drawerFeedbackHint,
+              border: const OutlineInputBorder(),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Annuler'),
+              child: Text(AppLocalizations.of(context)!.commonCancel),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Merci pour vos commentaires !'),
-                    backgroundColor: Color(0xFF10B981),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.drawerFeedbackThanks),
+                    backgroundColor: const Color(0xFF10B981),
                   ),
                 );
               },
-              child: const Text('Envoyer'),
+              child: Text(AppLocalizations.of(context)!.commonSend),
             ),
           ],
         );
@@ -493,26 +495,26 @@ class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMix
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Numéros d\'urgence'),
+          title: Text(AppLocalizations.of(context)!.drawerEmergencyNumbers),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('🚨 Police: 17'),
-              SizedBox(height: 8),
-              Text('🚒 Pompiers: 18'),
-              SizedBox(height: 8),
-              Text('🏥 SAMU: 351351'),
-              SizedBox(height: 8),
-              Text('🚑 Urgences médicales: 35 35 35'),
-              SizedBox(height: 8),
-              Text('📞 Renseignements: 12'),
+            children: [
+              Text(AppLocalizations.of(context)!.drawerPolice),
+              const SizedBox(height: 8),
+              Text(AppLocalizations.of(context)!.drawerFire),
+              const SizedBox(height: 8),
+              Text(AppLocalizations.of(context)!.drawerSamu),
+              const SizedBox(height: 8),
+              Text(AppLocalizations.of(context)!.drawerMedical),
+              const SizedBox(height: 8),
+              Text(AppLocalizations.of(context)!.drawerInfo),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Fermer'),
+              child: Text(AppLocalizations.of(context)!.commonClose),
             ),
           ],
         );

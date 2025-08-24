@@ -22,17 +22,42 @@ class _EventDetailPageState extends State<EventDetailPage> {
   final EventService _eventService = EventService();
   final FavoritesService _favoritesService = FavoritesService();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final PageController _imagePageController = PageController();
+  final ScrollController _scrollController = ScrollController();
   
   Event? _eventDetails;
   bool _isLoading = true;
   bool _isFavorite = false;
+  bool _showTitle = false;
   String? _errorMessage;
+  int _currentImageIndex = 0;
   
   @override
   void initState() {
     super.initState();
     _loadEventDetails();
     _checkIfFavorite();
+    _scrollController.addListener(_onScroll);
+  }
+  
+  void _onScroll() {
+    // La galerie d'images fait 250px de hauteur
+    // On affiche le titre quand on a scrollé au-delà de cette hauteur
+    const imageGalleryHeight = 250.0;
+    final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
+    
+    if (shouldShowTitle != _showTitle) {
+      setState(() {
+        _showTitle = shouldShowTitle;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _imagePageController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadEventDetails() async {
@@ -151,113 +176,573 @@ class _EventDetailPageState extends State<EventDetailPage> {
     );
   }
 
+  List<String> _getImageUrls(Event event) {
+    final List<String> urls = [];
+    
+    // Ajouter l'image featured en premier
+    if (event.featuredImage != null) {
+      urls.add(event.featuredImage!.imageUrl);
+    }
+    
+    // Ajouter les autres images
+    if (event.media != null) {
+      for (final media in event.media!) {
+        if (media.imageUrl != event.featuredImage?.imageUrl) {
+          urls.add(media.imageUrl);
+        }
+      }
+    }
+    
+    // Si aucune image, retourner une liste vide
+    return urls;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_isLoading && _eventDetails == null) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF3860F8),
+              ),
+            ),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              left: 16,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     final event = _eventDetails ?? widget.event;
-    
+
     return Scaffold(
       key: _scaffoldKey,
-      body: _isLoading && _eventDetails == null
-          ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(color: Color(0xFF3860F8)),
-                  SizedBox(height: 16),
-                  Text('Chargement des détails...'),
-                ],
-              ),
-            )
-          : CustomScrollView(
-              slivers: [
-                _buildAppBar(event),
-                SliverToBoxAdapter(
-                  child: _buildContent(event),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              // Contenu principal
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Galerie d'images (maintenant dans le contenu)
+                    _buildImageGallery(event),
+                    
+                    // Header avec nom et actions
+                    _buildHeader(event),
+                    
+                    // Contenu de l'événement
+                    _buildContent(event),
+                    
+                    // Bouton d'inscription intégré dans le contenu
+                    _buildRegistrationSection(event),
+                    
+                    const SizedBox(height: 32),
+                  ],
                 ),
-              ],
+              ),
+            ],
+          ),
+          
+          // Barre translucide en haut avec boutons et titre
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 200),
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AnimatedOpacity(
+              opacity: _showTitle ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 200),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      children: [
+                        // Bouton retour
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        
+                        // Titre au centre
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              event.title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        
+                        // Bouton favoris
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: _toggleFavorite,
+                            icon: Icon(
+                              _isFavorite ? Icons.favorite : Icons.favorite_border,
+                              color: _isFavorite ? Colors.red : Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-      bottomNavigationBar: _buildBottomBar(event),
+          ),
+          
+          // Boutons flottants normaux (quand la barre n'est pas visible)
+          if (!_showTitle) ...[
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              left: 16,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              right: 16,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: _toggleFavorite,
+                  icon: Icon(
+                    _isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: _isFavorite ? Colors.red : Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 
-  Widget _buildAppBar(Event event) {
-    return SliverAppBar(
-      expandedHeight: 250,
-      pinned: true,
-      backgroundColor: const Color(0xFF3860F8),
-      actions: [
-        IconButton(
-          onPressed: _toggleFavorite,
-          icon: Icon(
-            _isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: _isFavorite ? Colors.red : Colors.white,
+  Widget _buildImageGallery(Event event) {
+    final imageUrls = _getImageUrls(event);
+    final hasImages = imageUrls.isNotEmpty;
+
+    if (!hasImages) {
+      return Container(
+        height: 250,
+        color: const Color(0xFFE8D5A3),
+        child: const Center(
+          child: Icon(
+            Icons.event,
+            size: 80,
+            color: Color(0xFF3860F8),
           ),
         ),
-        IconButton(
-          onPressed: () {
-            // TODO: Implémenter le partage
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Fonctionnalité de partage à venir'),
-              ),
-            );
-          },
-          icon: const Icon(Icons.share, color: Colors.white),
-        ),
-      ],
-      flexibleSpace: FlexibleSpaceBar(
-        title: Text(
-          event.title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        background: event.featuredImage != null && event.imageUrl.isNotEmpty
-            ? Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.network(
-                    event.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: const Color(0xFFE8D5A3),
-                        child: const Center(
-                          child: Icon(
-                            Icons.event,
-                            size: 80,
-                            color: Color(0xFF3860F8),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withValues(alpha: 0.7),
-                        ],
+      );
+    }
+
+    return SizedBox(
+      height: 250,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          // PageView pour le swipe
+          PageView.builder(
+            controller: _imagePageController,
+            physics: const BouncingScrollPhysics(),
+            onPageChanged: (index) {
+              setState(() {
+                _currentImageIndex = index;
+              });
+            },
+            itemCount: imageUrls.length,
+            itemBuilder: (context, index) {
+              return Image.network(
+                imageUrls[index],
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: const Color(0xFFE8D5A3),
+                    child: const Center(
+                      child: Icon(
+                        Icons.event,
+                        size: 80,
+                        color: Color(0xFF3860F8),
                       ),
                     ),
-                  ),
-                ],
-              )
-            : Container(
-                color: const Color(0xFFE8D5A3),
-                child: const Center(
-                  child: Icon(
-                    Icons.event,
-                    size: 80,
-                    color: Color(0xFF3860F8),
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: const Color(0xFFE8D5A3),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF3860F8),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+          
+          // Indicateurs de pagination
+          if (imageUrls.length > 1)
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(imageUrls.length, (index) {
+                  return Container(
+                    width: 8,
+                    height: 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentImageIndex == index
+                          ? Colors.white
+                          : Colors.white.withValues(alpha: 0.5),
+                    ),
+                  );
+                }),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(Event event) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Titre principal
+          Text(
+            event.title,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1A1A1A),
+            ),
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Date et statut
+          Row(
+            children: [
+              Icon(
+                Icons.event,
+                size: 16,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _formatEventDate(event),
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
+              // Statut badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: _getStatusColor(event.statusText),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  event.statusText,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Lieu
+          Row(
+            children: [
+              Icon(
+                Icons.location_on,
+                size: 16,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  event.displayLocation,
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Prix
+          Row(
+            children: [
+              Icon(
+                Icons.local_offer,
+                size: 16,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 8),
+              Text(
+                event.priceText,
+                style: TextStyle(
+                  color: event.isFree ? Colors.green : const Color(0xFF3860F8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
+    );
+  }
+
+  String _formatEventDate(Event event) {
+    try {
+      final DateTime startDate = DateTime.parse(event.startDate);
+      final DateTime? endDate = event.endDate != null ? DateTime.parse(event.endDate!) : null;
+      
+      if (endDate != null && !_isSameDay(startDate, endDate)) {
+        return '${_formatDate(startDate)} - ${_formatDate(endDate)}';
+      } else {
+        return _formatDate(startDate);
+      }
+    } catch (e) {
+      return event.startDate;
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+  }
+
+  bool _isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+           date1.month == date2.month &&
+           date1.day == date2.day;
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'à venir':
+      case 'upcoming':
+        return Colors.blue;
+      case 'en cours':
+      case 'ongoing':
+        return Colors.green;
+      case 'terminé':
+      case 'ended':
+        return Colors.grey;
+      default:
+        return Colors.blue;
+    }
+  }
+
+  Widget _buildRegistrationSection(Event event) {
+    return Container(
+      margin: const EdgeInsets.all(20),
+      child: _buildRegistrationButton(event),
+    );
+  }
+
+  Widget _buildRegistrationButton(Event event) {
+    if (event.hasEnded) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[300]!),
+        ),
+        child: const Text(
+          'Cet événement est terminé',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    }
+    
+    if (event.isSoldOut) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.red[50],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.red[200]!),
+        ),
+        child: const Text(
+          'Événement complet',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.red,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    }
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Informations sur les places disponibles
+        if (event.maxParticipants != null) ...[
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: const Color(0xFF3860F8).withValues(alpha: 0.3),
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.people,
+                  size: 20,
+                  color: Color(0xFF3860F8),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${event.currentParticipants}/${event.maxParticipants} participants',
+                  style: const TextStyle(
+                    color: Color(0xFF3860F8),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const Spacer(),
+                if (event.availableSpots != null && event.availableSpots! > 0)
+                  Text(
+                    '${event.availableSpots} places restantes',
+                    style: TextStyle(
+                      color: event.availableSpots! < 10 ? Colors.orange : Colors.green,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+        
+        // Bouton d'inscription
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: event.canRegister ? _showRegistrationBottomSheet : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF3860F8),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 0,
+            ),
+            child: Text(
+              event.canRegister ? 'S\'inscrire à l\'événement' : 'Inscription fermée',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -532,121 +1017,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
     );
   }
 
-  Widget _buildBottomBar(Event event) {
-    if (event.hasEnded) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 4,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: const Text(
-          'Cet événement est terminé',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      );
-    }
-    
-    if (event.isSoldOut) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 4,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: const Text(
-          'Événement complet',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    }
-    
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 4,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          if (!event.isFree)
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Prix',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Text(
-                    event.priceText,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF3860F8),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(width: 16),
-          Expanded(
-            flex: 2,
-            child: ElevatedButton(
-              onPressed: event.canRegister ? _showRegistrationBottomSheet : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3860F8),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'S\'inscrire',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _RegistrationBottomSheet extends StatefulWidget {

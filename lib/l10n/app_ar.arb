@@ -1,0 +1,189 @@
+{
+  "@@locale": "ar",
+  
+  "appTitle": "زيارة جيبوتي",
+  "@appTitle": {
+    "description": "عنوان التطبيق"
+  },
+  
+  "appDescription": "اكتشف عجائب جيبوتي",
+  "@appDescription": {
+    "description": "وصف التطبيق"
+  },
+
+  "navigationHome": "الرئيسية",
+  "navigationDiscover": "اكتشف",
+  "navigationEvents": "الفعاليات",
+  "navigationMap": "الخريطة",
+  "navigationFavorites": "المفضلة",
+  
+  "homeWelcomeMessage": "مرحباً بكم في جيبوتي",
+  "homeFeaturedPois": "أماكن للاكتشاف",
+  "homeUpcomingEvents": "الفعاليات القادمة",
+  "homeExploreMore": "استكشف المزيد",
+  
+  "discoverTitle": "اكتشف جيبوتي",
+  "discoverCategories": "الفئات",
+  "discoverAllPois": "جميع الأماكن",
+  "discoverSearchHint": "ابحث عن مكان...",
+  "discoverNearbyPois": "الأماكن القريبة",
+  "discoverNoResults": "لم يتم العثور على نتائج",
+  
+  "eventsTitle": "الفعاليات",
+  "eventsUpcoming": "قادمة",
+  "eventsOngoing": "جارية", 
+  "eventsPast": "منتهية",
+  "eventsRegister": "سجل",
+  "eventsRegistered": "مسجل",
+  "eventsSoldOut": "مكتمل",
+  "eventsFree": "مجاني",
+  "eventsPrice": "{price} فرنك جيبوتي",
+  "@eventsPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "eventsParticipants": "{count} مشارك",
+  "@eventsParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "favoritesTitle": "مفضلاتي",
+  "favoritesEmpty": "لا توجد مفضلات",
+  "favoritesEmptyDescription": "استكشف جيبوتي وأضف أماكنك\\nالمفضلة إلى مجموعتك",
+  "favoritesAddedToFavorites": "تمت الإضافة إلى المفضلة",
+  "favoritesRemovedFromFavorites": "تم الحذف من المفضلة",
+  "favoritesPoisTab": "الأماكن",
+  "favoritesEventsTab": "الفعاليات",
+  "favoritesAllTab": "الكل",
+  "favoritesSortRecent": "الأحدث",
+  "favoritesSortAlphabetical": "أبجدياً",
+  "favoritesSortRating": "التقييم",
+  
+  "mapTitle": "الخريطة",
+  "mapMyLocation": "موقعي",
+  "mapSearchLocation": "ابحث عن موقع...",
+  "mapRouteTo": "الطريق إلى",
+  "mapDistance": "{distance} كم",
+  "@mapDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "authLogin": "تسجيل الدخول",
+  "authRegister": "إنشاء حساب",
+  "authLogout": "تسجيل الخروج",
+  "authEmail": "البريد الإلكتروني",
+  "authPassword": "كلمة المرور",
+  "authConfirmPassword": "تأكيد كلمة المرور",
+  "authName": "الاسم الكامل",
+  "authForgotPassword": "نسيت كلمة المرور؟",
+  "authDontHaveAccount": "ليس لديك حساب؟",
+  "authAlreadyHaveAccount": "لديك حساب بالفعل؟",
+  "authSignInWithGoogle": "متابعة مع جوجل",
+  "authSignInWithFacebook": "متابعة مع فيسبوك",
+  "authOrContinueWith": "أو متابعة مع",
+  "authTermsAndConditions": "الشروط والأحكام",
+  "authPrivacyPolicy": "سياسة الخصوصية",
+  
+  "profileTitle": "الملف الشخصي",
+  "profileEditProfile": "تعديل الملف الشخصي",
+  "profileSettings": "الإعدادات",
+  "profileLanguage": "اللغة",
+  "profileNotifications": "الإشعارات",
+  "profileAboutApp": "حول التطبيق",
+  "profileContactSupport": "الدعم",
+  
+  "conversionAfterFavoritesTitle": "احفظ اكتشافاتك!",
+  "conversionAfterFavoritesDescription": "أنشئ حسابك لمزامنة مفضلاتك عبر جميع أجهزتك",
+  "conversionAfterFavoritesButton": "احفظ مفضلاتي",
+  "conversionBeforeReservationTitle": "أكمل تسجيلك", 
+  "conversionBeforeReservationDescription": "مطلوب حساب لإنهاء حجز الفعالية",
+  "conversionBeforeReservationButton": "إنشاء حساب",
+  "conversionBeforeExportTitle": "استلم برنامجك بالبريد الإلكتروني",
+  "conversionBeforeExportDescription": "أنشئ حسابك لتلقي برنامجك المخصص بالبريد الإلكتروني", 
+  "conversionBeforeExportButton": "استلم بالبريد الإلكتروني",
+  "conversionAfterWeekUsageTitle": "أنشئ ملفك الشخصي للمسافر",
+  "conversionAfterWeekUsageDescription": "بعد أسبوع من الاستكشاف، أنشئ ملفك الشخصي لتجربة مخصصة",
+  "conversionAfterWeekUsageButton": "أنشئ ملفي الشخصي",
+  "conversionBenefits": "مع الحساب، يمكنك:",
+  "conversionBenefitSync": "مزامنة مفضلاتك عبر جميع أجهزتك",
+  "conversionBenefitNotifications": "تلقي إشعارات لأماكنك المفضلة", 
+  "conversionBenefitItineraries": "إنشاء برامج مخصصة",
+  "conversionBenefitReservations": "إدارة جميع حجوزاتك في مكان واحد",
+  "conversionBenefitHistory": "الوصول إلى تاريخ حجوزاتك",
+  "conversionBenefitEmail": "تلقي برامجك بالبريد الإلكتروني",
+  "conversionBenefitShare": "شارك اكتشافاتك مع الأصدقاء",
+  "conversionBenefitRecommendations": "احصل على توصيات مخصصة",
+  "conversionBenefitOffers": "الوصول إلى عروض حصرية",
+  "conversionBenefitCommunity": "انضم إلى مجتمع المسافرين",
+  "conversionLaterButton": "لاحقاً",
+  "conversionContinueWithoutAccount": "متابعة بدون حساب",
+  "conversionNotNowButton": "ليس الآن",
+  "conversionMaybeLaterButton": "ربما لاحقاً",
+  "conversionCancelButton": "إلغاء",
+
+  "drawerGuest": "ضيف",
+  "drawerViewProfile": "عرض ملفي الشخصي ←",
+  "drawerSettingsSection": "الإعدادات",
+  "drawerTestApi": "اختبار API",
+  "drawerTestApiSubtitle": "اختبار النقاط النهائية",
+  "drawerSettings": "الإعدادات",
+  "drawerLanguage": "اللغة",
+  "drawerNotifications": "الإشعارات",
+  "drawerHelpSection": "المساعدة والدعم",
+  "drawerHelp": "المساعدة",
+  "drawerFeedback": "التعليقات",
+  "drawerAbout": "حول",
+  "drawerUsefulLinks": "روابط مفيدة",
+  "drawerTourismOffice": "مكتب السياحة",
+  "drawerEmbassies": "السفارات",
+  "drawerEmergencyNumbers": "أرقام الطوارئ",
+  "drawerVersion": "الإصدار 1.0.0",
+  "drawerChooseLanguage": "اختر اللغة",
+  "drawerLanguageChanged": "تم تغيير اللغة إلى {language}",
+  "@drawerLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSendFeedback": "إرسال تعليق",
+  "drawerFeedbackHint": "شارك تجربتك مع زيارة جيبوتي...",
+  "drawerFeedbackThanks": "شكراً لك على تعليقك!",
+  "drawerPolice": "🚨 الشرطة: 17",
+  "drawerFire": "🚒 الإطفاء: 18",
+  "drawerSamu": "🏥 الإسعاف: 351351",
+  "drawerMedical": "🚑 الطوارئ الطبية: 35 35 35",
+  "drawerInfo": "📞 الاستعلامات: 12",
+  "drawerTourismOfficeSnackbar": "فتح موقع مكتب السياحة",
+  
+  "commonLoading": "جارٍ التحميل...",
+  "commonError": "خطأ",
+  "commonRetry": "إعادة المحاولة",
+  "commonCancel": "إلغاء",
+  "commonConfirm": "تأكيد",
+  "commonSave": "حفظ",
+  "commonDelete": "حذف",
+  "commonEdit": "تعديل",
+  "commonShare": "مشاركة",
+  "commonClose": "إغلاق",
+  "commonNext": "التالي",
+  "commonPrevious": "السابق",
+  "commonDone": "تم",
+  "commonSkip": "تخطي",
+  "commonSeeAll": "عرض الكل",
+  "commonShowMore": "عرض المزيد",
+  "commonShowLess": "عرض أقل",
+  "commonSend": "إرسال"
+}
