@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../core/models/anonymous_user.dart';
-import '../../core/services/anonymous_auth_service.dart';
 import '../pages/auth/signup_page.dart';
 
 class ConversionPrompt extends StatelessWidget {

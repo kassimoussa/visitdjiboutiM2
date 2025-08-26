@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'api_constants.dart';
+import '../services/anonymous_auth_service.dart';
 
 class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
@@ -21,6 +22,37 @@ class ApiClient {
       ),
     );
 
+    // Intercepteur pour l'authentification
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          print('[DEBUG] Interceptor onRequest: Récupération du token...');
+          final String? token = AnonymousAuthService().authToken;
+          
+          if (token != null) {
+            print('[DEBUG] Token trouvé. Ajout du header Authorization.');
+            options.headers['Authorization'] = 'Bearer $token';
+          } else {
+            print('[DEBUG] Token NON TROUVÉ. La requête partira sans authentification.');
+          }
+          
+          print('[API REQUEST] ${options.method} ${options.path}');
+          print('[API REQUEST HEADERS] ${options.headers}');
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          print('[API RESPONSE] ${response.statusCode} ${response.requestOptions.path}');
+          return handler.next(response);
+        },
+        onError: (error, handler) {
+          print('[API ERROR] ${error.message}');
+          print('[API ERROR RESPONSE] ${error.response?.data}');
+          return handler.next(error);
+        },
+      ),
+    );
+
+    // Intercepteur pour les logs
     _dio.interceptors.add(
       LogInterceptor(
         requestBody: true,
@@ -28,33 +60,6 @@ class ApiClient {
         logPrint: (object) => print('[API] $object'),
       ),
     );
-
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          print('[API REQUEST] ${options.method} ${options.path}');
-          print('[API REQUEST HEADERS] ${options.headers}');
-          handler.next(options);
-        },
-        onResponse: (response, handler) {
-          print('[API RESPONSE] ${response.statusCode} ${response.requestOptions.path}');
-          handler.next(response);
-        },
-        onError: (error, handler) {
-          print('[API ERROR] ${error.message}');
-          print('[API ERROR RESPONSE] ${error.response?.data}');
-          handler.next(error);
-        },
-      ),
-    );
-  }
-
-  void setAuthToken(String token) {
-    _dio.options.headers['Authorization'] = 'Bearer $token';
-  }
-
-  void removeAuthToken() {
-    _dio.options.headers.remove('Authorization');
   }
 
   void setLanguage(String language) {

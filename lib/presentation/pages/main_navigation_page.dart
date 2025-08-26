@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/enums/bottom_nav_tab.dart';
-import 'package:visitdjibouti/presentation/pages/home_page.dart';
-import 'package:visitdjibouti/presentation/pages/discover_page.dart';
-import 'package:visitdjibouti/presentation/pages/events_page.dart';
-import 'package:visitdjibouti/presentation/pages/map_page.dart';
-import 'package:visitdjibouti/presentation/pages/favorites_page.dart';
-import 'package:visitdjibouti/presentation/widgets/app_drawer.dart';
+import 'package:vd_gem/core/enums/bottom_nav_tab.dart';
+import 'package:vd_gem/presentation/pages/home_page.dart';
+import 'package:vd_gem/presentation/pages/discover_page.dart';
+import 'package:vd_gem/presentation/pages/events_page.dart';
+import 'package:vd_gem/presentation/pages/map_page.dart';
+import 'package:vd_gem/presentation/pages/favorites_page.dart';
+import 'package:vd_gem/presentation/widgets/app_drawer.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});

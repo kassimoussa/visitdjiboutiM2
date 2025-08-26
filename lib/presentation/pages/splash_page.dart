@@ -78,10 +78,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         print('Utilisateur anonyme initialisé avec succès');
         print('ID: ${_authService.currentAnonymousUser?.anonymousId}');
       } else {
-        print('Échec de l\'initialisation utilisateur anonyme - continuant en mode dégradé');
+        print('Échec de linitialisation utilisateur anonyme - continuant en mode dégradé');
       }
 
-      // Naviguer vers la page principale après l'initialisation
+      // Naviguer vers la page principale après linitialisation
       await Future.delayed(const Duration(milliseconds: 500));
       
       if (mounted) {
@@ -100,7 +100,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       }
       
     } catch (e) {
-      print('Erreur lors de l\'initialisation: $e');
+      print('Erreur lors de linitialisation: $e');
       
       setState(() {
         _isInitialized = true;
@@ -158,7 +158,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.2),
+                                  color: Colors.black.withOpacity(0.2),
                                   blurRadius: 20,
                                   offset: const Offset(0, 10),
                                 ),
@@ -174,7 +174,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       },
                     ),
                     
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 24), 
                     
                     // Titre animé
                     FadeTransition(
@@ -190,7 +190,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                               letterSpacing: 1.2,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 8), 
                           Text(
                             'Découvrez les merveilles de Djibouti',
                             style: TextStyle(
@@ -218,11 +218,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         strokeWidth: 2,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 16), 
                       FadeTransition(
                         opacity: _fadeAnimation,
                         child: const Text(
-                          'Initialisation...',
+                          'Initialisation...', 
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
@@ -235,7 +235,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         color: Color(0xFF009639),
                         size: 24,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 8), 
                       const Text(
                         'Prêt !',
                         style: TextStyle(
@@ -275,7 +275,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 12), 
                           const Text(
                             'République de Djibouti',
                             style: TextStyle(
@@ -286,7 +286,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 8), 
                       const Text(
                         'Version 1.0.0',
                         style: TextStyle(

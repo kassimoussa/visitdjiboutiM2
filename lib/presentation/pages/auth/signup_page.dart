@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/models/anonymous_user.dart';
 import '../../../core/services/anonymous_auth_service.dart';
@@ -35,7 +36,8 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.fromConversion ? 'Créer votre compte' : 'Inscription'),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF3860F8),
+        foregroundColor: Colors.white,
         elevation: 0,
       ),
       body: SafeArea(
@@ -46,20 +48,11 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (widget.fromConversion && widget.conversionTrigger != null)
-                  _buildConversionHeader(),
-                
-                const SizedBox(height: 24),
-                
-                // Avantages si c'est une conversion
-                if (widget.fromConversion) ...[
-                  _buildConversionBenefits(),
-                  const SizedBox(height: 32),
-                ],
+                const SizedBox(height: 32),
                 
                 Text(
-                  widget.fromConversion 
-                      ? 'Créez votre compte Visit Djibouti'
+                  _authService.isAnonymousUser
+                      ? 'Gardez vos découvertes !'
                       : 'Bienvenue sur Visit Djibouti',
                   style: const TextStyle(
                     fontSize: 28,
@@ -71,8 +64,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 8),
                 
                 Text(
-                  widget.fromConversion
-                      ? 'Toutes vos données seront conservées !'
+                  _authService.isAnonymousUser
+                      ? 'Créez votre compte pour sauvegarder vos favoris et préférences'
                       : 'Découvrez les merveilles de Djibouti',
                   style: TextStyle(
                     fontSize: 16,
@@ -212,8 +205,8 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           const SizedBox(height: 12),
           
-          if (widget.conversionTrigger == ConversionTrigger.afterFavorites)
-            _buildBenefitItem(Icons.favorite, 'Tous vos favoris actuels'),
+          // Afficher les bénéfices basés sur l'état réel de l'utilisateur anonyme
+          _buildBenefitItem(Icons.favorite, 'Tous vos favoris actuels'),
           
           _buildBenefitItem(Icons.settings, 'Vos préférences'),
           _buildBenefitItem(Icons.history, 'Votre historique de navigation'),
@@ -239,6 +232,36 @@ class _SignUpPageState extends State<SignUpPage> {
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[700],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAPIStatusInfo() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.blue[200]!),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline,
+            size: 20,
+            color: Colors.blue[700],
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'La conversion peut échouer temporairement. Une inscription normale sera proposée en cas d\'erreur.',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.blue[700],
+              ),
             ),
           ),
         ],
@@ -287,7 +310,7 @@ class _SignUpPageState extends State<SignUpPage> {
             if (value?.isEmpty ?? true) {
               return 'L\'email est requis';
             }
-            if (!RegExp(r'^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').hasMatch(value!)) {
+            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
               return 'Email invalide';
             }
             return null;
@@ -418,7 +441,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               )
             : Text(
-                widget.fromConversion ? 'Créer mon compte' : 'S\'inscrire',
+                _authService.isAnonymousUser ? 'Sauvegarder mes découvertes' : 'Créer mon compte',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -507,8 +530,10 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() => _isLoading = true);
     
     try {
-      if (widget.fromConversion && _authService.isAnonymousUser) {
-        // Convertir l'utilisateur anonyme
+      // Dans un onboarding frictionless, nous avons TOUJOURS un utilisateur anonyme
+      // Donc nous faisons toujours une conversion, jamais une nouvelle inscription
+      if (_authService.isAnonymousUser) {
+        // Convertir l'utilisateur anonyme en compte complet
         final request = ConvertAnonymousRequest(
           name: _nameController.text.trim(),
           email: _emailController.text.trim(),
@@ -520,16 +545,34 @@ class _SignUpPageState extends State<SignUpPage> {
         final response = await _authService.convertToFullUser(request);
         
         if (response.isSuccess) {
-          _showSuccessDialog(isConversion: true);
+          _showSimpleSuccessDialog();
         } else {
-          _showErrorDialog(response.message ?? 'Erreur lors de la conversion');
+          // Si la conversion échoue à cause d'une erreur serveur,
+          // proposer une inscription normale comme fallback
+          if (response.message?.contains('500') == true) {
+            _showConversionErrorDialog(response.message ?? 'Erreur lors de la conversion');
+          } else {
+            _showErrorDialog(response.message ?? 'Erreur lors de la conversion');
+          }
         }
       } else {
-        // Inscription normale (à implémenter)
-        _showErrorDialog('Inscription normale pas encore implémentée');
+        // Cas exceptionnel : pas d'utilisateur anonyme, créer un nouvel utilisateur
+        // (Normalement ne devrait pas arriver dans un frictionless onboarding)
+        final response = await _authService.registerUser(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+          passwordConfirmation: _confirmPasswordController.text,
+        );
+        
+        if (response.isSuccess) {
+          _showSimpleSuccessDialog();
+        } else {
+          _showErrorDialog(response.message ?? 'Erreur lors de l\'inscription');
+        }
       }
     } catch (e) {
-      _showErrorDialog('Une erreur inattendue s\'est produite');
+      _showErrorDialog('Une erreur inattendue s\'est produite: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -545,6 +588,32 @@ class _SignUpPageState extends State<SignUpPage> {
     _showErrorDialog('Connexion Facebook pas encore implémentée');
   }
 
+  void _showSimpleSuccessDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        icon: const Icon(
+          Icons.check_circle,
+          color: Color(0xFF009639),
+          size: 48,
+        ),
+        title: const Text('Inscription réussie'),
+        content: const Text(
+          'Votre compte a été créé avec succès !',
+        ),
+      ),
+    );
+    
+    // Fermer automatiquement après 5 secondes et retourner à l'écran principal
+    Timer(const Duration(seconds: 5), () {
+      if (mounted) {
+        Navigator.of(context).pop(); // Fermer le dialogue
+        Navigator.of(context).pushReplacementNamed('/main'); // Retourner à l'écran principal
+      }
+    });
+  }
+  
   void _showSuccessDialog({bool isConversion = false}) {
     showDialog(
       context: context,
@@ -575,6 +644,71 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
     );
+  }
+
+  void _showConversionErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: const Icon(
+          Icons.warning_amber,
+          color: Colors.orange,
+          size: 48,
+        ),
+        title: const Text('Problème de conversion'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(message),
+            const SizedBox(height: 16),
+            const Text(
+              'Voulez-vous essayer une inscription normale ? Vous devrez rajouter vos favoris manuellement.',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _handleNormalSignUp();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF3860F8),
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Inscription normale'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleNormalSignUp() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final response = await _authService.registerUser(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+        passwordConfirmation: _confirmPasswordController.text,
+      );
+      
+      if (response.isSuccess) {
+        _showSuccessDialog(isConversion: false);
+      } else {
+        _showErrorDialog(response.message ?? 'Erreur lors de l\'inscription');
+      }
+    } catch (e) {
+      _showErrorDialog('Une erreur inattendue s\'est produite: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   void _showErrorDialog(String message) {

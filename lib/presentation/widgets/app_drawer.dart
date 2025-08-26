@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/presentation/pages/settings_page.dart';
-import 'package:visitdjibouti/presentation/pages/about_page.dart';
-import 'package:visitdjibouti/presentation/pages/help_page.dart';
-import 'package:visitdjibouti/presentation/pages/profile_page.dart';
-import 'package:visitdjibouti/presentation/pages/api_test_page.dart';
+import 'package:vd_gem/presentation/pages/settings_page.dart';
+import 'package:vd_gem/presentation/pages/about_page.dart';
+import 'package:vd_gem/presentation/pages/help_page.dart';
+import 'package:vd_gem/presentation/pages/profile_page.dart';
+import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
+import 'package:vd_gem/presentation/pages/auth/login_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/services/localization_service.dart';
+import '../../core/services/anonymous_auth_service.dart';
+import '../../core/utils/responsive.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -14,511 +17,461 @@ class AppDrawer extends StatefulWidget {
   State<AppDrawer> createState() => _AppDrawerState();
 }
 
-class _AppDrawerState extends State<AppDrawer> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _slideAnimation;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    
-    _slideAnimation = Tween<double>(
-      begin: -1.0,
-      end: 0.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
-    
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOut,
-    ));
-    
-    // Démarrer l'animation
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+class _AppDrawerState extends State<AppDrawer> {
+  final AnonymousAuthService _authService = AnonymousAuthService();
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(_slideAnimation.value * MediaQuery.of(context).size.width * 0.85, 0),
-          child: Opacity(
-            opacity: _fadeAnimation.value,
-            child: Drawer(
-              child: Column(
-                children: [
-                  // Header du drawer
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          const Color(0xFF3860F8),
-                          const Color(0xFF006B96),
-                        ],
+    // Debug pour voir l'état d'authentification
+    print('[DEBUG DRAWER] isLoggedIn: ${_authService.isLoggedIn}');
+    print('[DEBUG DRAWER] currentUser: ${_authService.currentUser?.name}');
+    
+    return Drawer(
+      backgroundColor: Colors.white,
+      child: SafeArea(
+        child: Column(
+          children: [
+            // Header avec authentification
+            _buildHeader(context),
+            
+            const SizedBox(height: 24),
+            
+            // Menu principal
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    _buildMenuItem(
+                      icon: Icons.person,
+                      title: 'Profil',
+                      onTap: () => _navigateTo(context, const ProfilePage()),
+                    ),
+                    
+                    _buildMenuItem(
+                      icon: Icons.language,
+                      title: 'Langue',
+                      subtitle: LocalizationService().currentLanguageName,
+                      onTap: () => _showLanguageDialog(context),
+                    ),
+                    
+                    _buildMenuItem(
+                      icon: Icons.settings,
+                      title: 'Paramètres',
+                      onTap: () => _navigateTo(context, const SettingsPage()),
+                    ),
+                    
+                    _buildMenuItem(
+                      icon: Icons.help_outline,
+                      title: 'Aide',
+                      onTap: () => _navigateTo(context, const HelpPage()),
+                    ),
+                    
+                    _buildMenuItem(
+                      icon: Icons.info_outline,
+                      title: 'À propos',
+                      onTap: () => _navigateTo(context, const AboutPage()),
+                    ),
+                    
+                    const Spacer(),
+                    
+                    // Version info
+                    _buildVersionInfo(),
+                    
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(ResponsiveConstants.largeSpace),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF3860F8),
+            Color(0xFF1D2233),
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Logo/Title
+          Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.travel_explore,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Visit Djibouti',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
-                        child: Row(
-                          children: [
-                            // Avatar utilisateur
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const ProfilePage(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: 56,
-                                height: 56,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(28),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '👤',
-                                    style: TextStyle(fontSize: 28),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            
-                            const SizedBox(width: 16),
-                            
-                            // Informations app et utilisateur
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  // Titre de l'app
-                                  Text(
-                                    AppLocalizations.of(context)!.appTitle,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  
-                                  const SizedBox(height: 4),
-                                  
-                                  // Status utilisateur
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Text(
-                                      AppLocalizations.of(context)!.drawerGuest,
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.9),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  
-                                  const SizedBox(height: 4),
-                                  
-                                  // Action rapide profil
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const ProfilePage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(context)!.drawerViewProfile,
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.8),
-                                        fontSize: 11,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                    Text(
+                      'Découvrez les merveilles',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white70,
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 24),
+          
+          // Boutons d'authentification
+          _authService.isLoggedIn ? _buildLoggedInSection() : _buildAuthButtons(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAuthButtons() {
+    return Column(
+      children: [
+        // Status anonyme
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.white.withOpacity(0.2)),
+          ),
+          child: const Row(
+            children: [
+              Icon(Icons.person_outline, color: Colors.white70, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Explorateur anonyme',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Boutons d'authentification
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => _navigateToAuth(context, const SignUpPage()),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF3860F8),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  
-                  // Menu items
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        const SizedBox(height: 16),
-                        
-                        // Section Paramètres
-                        _buildSectionTitle(AppLocalizations.of(context)!.drawerSettingsSection),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.api,
-                          title: AppLocalizations.of(context)!.drawerTestApi,
-                          subtitle: AppLocalizations.of(context)!.drawerTestApiSubtitle,
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ApiTestPage(),
-                              ),
-                            );
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.settings,
-                          title: AppLocalizations.of(context)!.drawerSettings,
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SettingsPage(),
-                              ),
-                            );
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.language,
-                          title: AppLocalizations.of(context)!.drawerLanguage,
-                          subtitle: LocalizationService().currentLanguageName,
-                          onTap: () {
-                            Navigator.pop(context);
-                            _showLanguageDialog(context);
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.notifications,
-                          title: AppLocalizations.of(context)!.drawerNotifications,
-                          trailing: Switch(
-                            value: true,
-                            onChanged: (value) {
-                              // Logic pour toggle notifications
-                            },
-                            activeColor: const Color(0xFF3860F8),
-                          ),
-                          onTap: null,
-                        ),
-                        
-                        const Divider(height: 32),
-                        
-                        // Section Aide et Support
-                        _buildSectionTitle(AppLocalizations.of(context)!.drawerHelpSection),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.help,
-                          title: AppLocalizations.of(context)!.drawerHelp,
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HelpPage(),
-                              ),
-                            );
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.feedback,
-                          title: AppLocalizations.of(context)!.drawerFeedback,
-                          onTap: () {
-                            Navigator.pop(context);
-                            _showFeedbackDialog(context);
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.info,
-                          title: AppLocalizations.of(context)!.drawerAbout,
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AboutPage(),
-                              ),
-                            );
-                          },
-                        ),
-                        
-                        const Divider(height: 32),
-                        
-                        // Section Liens utiles
-                        _buildSectionTitle(AppLocalizations.of(context)!.drawerUsefulLinks),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.public,
-                          title: AppLocalizations.of(context)!.drawerTourismOffice,
-                          onTap: () {
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(AppLocalizations.of(context)!.drawerTourismOfficeSnackbar),
-                              ),
-                            );
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.location_city,
-                          title: AppLocalizations.of(context)!.drawerEmbassies,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        
-                        _buildDrawerItem(
-                          icon: Icons.emergency,
-                          title: AppLocalizations.of(context)!.drawerEmergencyNumbers,
-                          onTap: () {
-                            Navigator.pop(context);
-                            _showEmergencyNumbers(context);
-                          },
-                        ),
-                        
-                        const SizedBox(height: 20),
-                        
-                        // Version de l'app
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Text(
-                              AppLocalizations.of(context)!.drawerVersion,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  'Créer compte',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => _navigateToAuth(context, const LoginPage()),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ],
+                  side: const BorderSide(color: Colors.white),
+                ),
+                child: const Text(
+                  'Connexion',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoggedInSection() {
+    final user = _authService.currentUser;
+    
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white.withOpacity(0.2)),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 16,
+            backgroundColor: Colors.white.withOpacity(0.2),
+            child: Text(
+              user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : '👤',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
               ),
             ),
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: Colors.grey[600],
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1.2,
-        ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user?.name ?? 'Utilisateur',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  'Connecté',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: _handleLogout,
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white70,
+              size: 20,
+            ),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildDrawerItem({
+  Widget _buildMenuItem({
     required IconData icon,
     required String title,
     String? subtitle,
-    Widget? trailing,
-    VoidCallback? onTap,
+    required VoidCallback onTap,
   }) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: const Color(0xFF3860F8),
-        size: 22,
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: const Color(0xFF3860F8).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: const Color(0xFF3860F8),
+            size: 20,
+          ),
         ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+        subtitle: subtitle != null
+            ? Text(
+                subtitle,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14,
+                ),
+              )
+            : null,
+        trailing: const Icon(
+          Icons.chevron_right,
+          color: Colors.grey,
+          size: 20,
+        ),
+        onTap: onTap,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       ),
-      subtitle: subtitle != null
-          ? Text(
-              subtitle,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 14,
-              ),
-            )
-          : null,
-      trailing: trailing ??
-          (onTap != null
-              ? Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: Colors.grey[400],
-                )
-              : null),
-      onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    );
+  }
+
+  Widget _buildVersionInfo() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline,
+            size: 16,
+            color: Colors.grey[600],
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'Version 1.0.0',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget page) {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
+  }
+
+  void _navigateToAuth(BuildContext context, Widget page) {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
     );
   }
 
   void _showLanguageDialog(BuildContext context) {
+    Navigator.pop(context);
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.drawerChooseLanguage),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildLanguageOption(context, '🇫🇷', 'Français', true),
-              _buildLanguageOption(context, '🇬🇧', 'English', false),
-              _buildLanguageOption(context, '🇸🇦', 'العربية', false),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context)!.commonCancel),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildLanguageOption(
-    BuildContext context,
-    String flag,
-    String language,
-    bool isSelected,
-  ) {
-    return ListTile(
-      leading: Text(flag, style: const TextStyle(fontSize: 24)),
-      title: Text(language),
-      trailing: isSelected
-          ? const Icon(Icons.check, color: Color(0xFF3860F8))
-          : null,
-      onTap: () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.drawerLanguageChanged(language))),
-        );
-      },
-    );
-  }
-
-  void _showFeedbackDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.drawerSendFeedback),
-          content: TextField(
-            maxLines: 4,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.drawerFeedbackHint,
-              border: const OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context)!.commonCancel),
-            ),
-            ElevatedButton(
-              onPressed: () {
+      builder: (context) => AlertDialog(
+        title: const Text('Choisir la langue'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Text('🇫🇷'),
+              title: const Text('Français'),
+              trailing: LocalizationService().currentLocale.languageCode == 'fr'
+                  ? const Icon(Icons.check, color: Color(0xFF3860F8))
+                  : null,
+              onTap: () {
+                LocalizationService().setLanguage('fr');
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.drawerFeedbackThanks),
-                    backgroundColor: const Color(0xFF10B981),
-                  ),
-                );
               },
-              child: Text(AppLocalizations.of(context)!.commonSend),
+            ),
+            ListTile(
+              leading: const Text('🇺🇸'),
+              title: const Text('English'),
+              trailing: LocalizationService().currentLocale.languageCode == 'en'
+                  ? const Icon(Icons.check, color: Color(0xFF3860F8))
+                  : null,
+              onTap: () {
+                LocalizationService().setLanguage('en');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Text('🇸🇦'),
+              title: const Text('العربية'),
+              trailing: LocalizationService().currentLocale.languageCode == 'ar'
+                  ? const Icon(Icons.check, color: Color(0xFF3860F8))
+                  : null,
+              onTap: () {
+                LocalizationService().setLanguage('ar');
+                Navigator.pop(context);
+              },
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
-  void _showEmergencyNumbers(BuildContext context) {
-    showDialog(
+  Future<void> _handleLogout() async {
+    Navigator.pop(context); // Fermer le drawer d'abord
+    
+    final confirmed = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.drawerEmergencyNumbers),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context)!.drawerPolice),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.drawerFire),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.drawerSamu),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.drawerMedical),
-              const SizedBox(height: 8),
-              Text(AppLocalizations.of(context)!.drawerInfo),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Déconnexion'),
+        content: const Text(
+          'Êtes-vous sûr de vouloir vous déconnecter ? '
+          'Vous redeviendrez un utilisateur anonyme.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuler'),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context)!.commonClose),
-            ),
-          ],
-        );
-      },
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Déconnexion'),
+          ),
+        ],
+      ),
     );
+
+    if (confirmed == true) {
+      final success = await _authService.logout();
+      
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Déconnexion réussie'),
+            backgroundColor: Color(0xFF009639),
+          ),
+        );
+        setState(() {}); // Refresh pour mettre à jour l'UI
+      }
+    }
   }
 }

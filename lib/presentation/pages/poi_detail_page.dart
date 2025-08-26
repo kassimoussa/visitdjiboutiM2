@@ -512,107 +512,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             },
           ),
           
-          // Boutons de navigation (seulement si plus d'une image)
-          if (imageUrls.length > 1) ...[
-            // Bouton précédent
-            Positioned(
-              left: 16,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    print('Previous button tapped!');
-                    if (_currentImageIndex > 0) {
-                      _imagePageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    } else {
-                      _imagePageController.animateToPage(
-                        imageUrls.length - 1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.5),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.chevron_left,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            
-            // Bouton suivant
-            Positioned(
-              right: 16,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    print('Next button tapped!');
-                    if (_currentImageIndex < imageUrls.length - 1) {
-                      _imagePageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    } else {
-                      _imagePageController.animateToPage(
-                        0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.5),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.chevron_right,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            
-            // Instructions de navigation
-            Positioned(
-              top: 16,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(
-                    'Swipez ou utilisez les boutons (${_currentImageIndex + 1}/${imageUrls.length})',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          
             
             // Image indicators modifiés
             Positioned(
@@ -645,9 +545,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
             ),
           ],
-        ],
       ),
-    );
+      );
   }
 
   Widget _buildOldImageSliverAppBar(Poi poi) {

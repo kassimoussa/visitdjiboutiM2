@@ -8,6 +8,7 @@ import '../../core/models/event_list_response.dart';
 import '../../core/models/api_response.dart';
 import 'poi_detail_page.dart';
 import 'event_detail_page.dart';
+import 'region_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
@@ -262,12 +263,25 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 24),
             
             // Section Découvrir par région
-            const Text(
-              'Découvrir par région',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Découvrir par région',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Appuyez pour explorer',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             GridView.count(
@@ -450,36 +464,102 @@ class _HomePageState extends State<HomePage> {
   Widget _buildRegionCard(String title, String emoji, Color color) {
     return Card(
       elevation: 4,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              color.withValues(alpha: 0.8),
-              color.withValues(alpha: 0.6),
+      child: InkWell(
+        onTap: () {
+          // Feedback haptique (si disponible)
+          try {
+            // Vibration légère sur Android
+          } catch (e) {
+            // Ignorer si la vibration n'est pas supportée
+          }
+          
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegionPage(
+                regionName: title,
+                regionEmoji: emoji,
+                regionColor: color,
+              ),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          height: 120,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                color.withValues(alpha: 0.9),
+                color.withValues(alpha: 0.7),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
             ],
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              emoji,
-              style: const TextStyle(fontSize: 32),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+          child: Stack(
+            children: [
+              // Effet de brillance
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    shape: BoxShape.circle,
+                  ),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              // Contenu principal
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      emoji,
+                      style: const TextStyle(fontSize: 36),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(0, 1),
+                            blurRadius: 2,
+                            color: Colors.black26,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Découvrir',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

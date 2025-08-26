@@ -476,13 +476,13 @@ class _EventsPageState extends State<EventsPage> {
                         ),
                       ),
                       FutureBuilder<bool>(
-                        future: _favoritesService.isFavorite(event.id),
+                        future: _favoritesService.isEventFavorite(event.id),
                         builder: (context, snapshot) {
                           final isFavorite = snapshot.data ?? false;
                           return IconButton(
                             onPressed: () async {
                               try {
-                                final success = await _favoritesService.toggleFavorite(event.id);
+                                final success = await _favoritesService.toggleEventFavorite(event.id);
                                 if (success && mounted) {
                                   setState(() {}); // Refresh pour mettre à jour l'UI
                                   ScaffoldMessenger.of(context).showSnackBar(

@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/poi.dart';
 import '../models/event.dart';
-import '../models/api_response.dart';
 import '../api/api_client.dart';
 import 'poi_service.dart';
 import 'event_service.dart';
@@ -13,6 +13,10 @@ class FavoritesService {
   static final FavoritesService _instance = FavoritesService._internal();
   factory FavoritesService() => _instance;
   FavoritesService._internal();
+
+  // StreamController to broadcast changes to favorites
+  final _favoritesController = StreamController<void>.broadcast();
+  Stream<void> get favoritesStream => _favoritesController.stream;
 
   // Clés de stockage unifiées
   static const String _favoritePoisKey = 'favorite_poi_ids';
@@ -81,6 +85,9 @@ class FavoritesService {
       
       // Synchroniser avec l'API
       await _syncFavoritesWithAPI();
+      
+      // Notify listeners that the favorites have changed
+      _favoritesController.add(null);
       
     } catch (e) {
       print('Erreur lors de la sauvegarde des favoris: $e');
@@ -324,6 +331,9 @@ class FavoritesService {
       // Synchroniser avec l'API
       await _syncFavoritesWithAPI();
       
+      // Notify listeners
+      _favoritesController.add(null);
+
       return true;
     } catch (e) {
       return false;
@@ -396,6 +406,9 @@ class FavoritesService {
       await _saveFavoriteIds(FavoriteType.poi, validPoiIds);
       await _saveFavoriteIds(FavoriteType.event, validEventIds);
       
+      // Notify listeners
+      _favoritesController.add(null);
+
       return true;
     } catch (e) {
       return false;
@@ -465,12 +478,19 @@ class FavoritesService {
       
       if (response.statusCode == 200 && response.data != null) {
         final data = response.data as Map<String, dynamic>;
-        final poiFavorites = (data['pois'] as List? ?? [])
-            .map((item) => item['id'] as int)
-            .toList();
-        final eventFavorites = (data['events'] as List? ?? [])
-            .map((item) => item['id'] as int)
-            .toList();
+        final List<int> poiFavorites = [];
+        final List<int> eventFavorites = [];
+
+        if (data.containsKey('data') && data['data'].containsKey('favorites')) {
+          final favoritesList = data['data']['favorites'] as List;
+          for (var item in favoritesList) {
+            if (item['type'] == 'Poi') {
+              poiFavorites.add(item['id'] as int);
+            } else if (item['type'] == 'Event') {
+              eventFavorites.add(item['id'] as int);
+            }
+          }
+        }
         
         // Sauvegarder localement (sans rappeler l'API)
         final prefs = await SharedPreferences.getInstance();

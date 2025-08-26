@@ -91,7 +91,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
 
   Future<void> _checkIfFavorite() async {
-    final isFav = await _favoritesService.isFavorite(widget.event.id);
+    final isFav = await _favoritesService.isEventFavorite(widget.event.id);
     setState(() {
       _isFavorite = isFav;
     });
@@ -99,7 +99,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Future<void> _toggleFavorite() async {
     try {
-      final success = await _favoritesService.toggleFavorite(widget.event.id);
+      final success = await _favoritesService.toggleEventFavorite(widget.event.id);
       if (success && mounted) {
         setState(() {
           _isFavorite = !_isFavorite;

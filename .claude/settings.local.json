@@ -1,21 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)",
       "Bash(flutter analyze:*)",
-      "Bash(flutter pub:*)",
-      "Bash(flutter packages pub run build_runner build:*)",
+      "Bash(dart run:*)",
+      "Bash(grep:*)",
       "Bash(flutter run:*)",
-      "Bash(curl:*)",
-      "Bash(sed:*)",
-      "Bash(rm:*)",
-      "Bash(flutter clean:*)",
-      "Bash(r)",
-      "Bash(pkill:*)",
-      "Bash(q)",
-      "Bash(flutter gen-l10n:*)",
-      "Bash(python3:*)"
+      "Bash(/usr/bin/flutter analyze)",
+      "Bash(/mnt/c/flutter/bin/flutter:*)"
     ],
-    "defaultMode": "acceptEdits"
+    "deny": [],
+    "ask": []
   }
 }

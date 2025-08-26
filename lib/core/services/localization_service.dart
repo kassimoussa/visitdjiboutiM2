@@ -76,7 +76,7 @@ class LocalizationService extends ChangeNotifier {
       }
     } catch (e) {
       print('Erreur lors du changement de langue: $e');
-      throw e;
+      rethrow;
     }
   }
 
