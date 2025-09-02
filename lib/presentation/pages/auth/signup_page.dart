@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/models/anonymous_user.dart';
 import '../../../core/services/anonymous_auth_service.dart';
+import '../../../generated/l10n/app_localizations.dart';
 
 class SignUpPage extends StatefulWidget {
   final bool fromConversion;
@@ -35,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.fromConversion ? 'Créer votre compte' : 'Inscription'),
+        title: Text(widget.fromConversion ? AppLocalizations.of(context)!.authRegister : AppLocalizations.of(context)!.authRegister),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         elevation: 0,
@@ -52,9 +53,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 
                 Text(
                   _authService.isAnonymousUser
-                      ? 'Gardez vos découvertes !'
-                      : 'Bienvenue sur Visit Djibouti',
-                  style: const TextStyle(
+                      ? AppLocalizations.of(context)!.authKeepDiscoveries
+                      : AppLocalizations.of(context)!.authWelcomeToApp,
+                  style:  TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1D2233),
@@ -65,8 +66,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 
                 Text(
                   _authService.isAnonymousUser
-                      ? 'Créez votre compte pour sauvegarder vos favoris et préférences'
-                      : 'Découvrez les merveilles de Djibouti',
+                      ? AppLocalizations.of(context)!.authCreateAccountDescription
+                      : AppLocalizations.of(context)!.appDescription,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -97,7 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'ou',
+                        AppLocalizations.of(context)!.authOr,
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ),
@@ -170,7 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Vos données actuelles seront préservées',
+                  AppLocalizations.of(context)!.authDataPreserved,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
@@ -195,9 +196,9 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '✨ En créant votre compte, vous conservez :',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.authKeepingDataInfo,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Color(0xFF1D2233),
@@ -206,11 +207,11 @@ class _SignUpPageState extends State<SignUpPage> {
           const SizedBox(height: 12),
           
           // Afficher les bénéfices basés sur l'état réel de l'utilisateur anonyme
-          _buildBenefitItem(Icons.favorite, 'Tous vos favoris actuels'),
+          _buildBenefitItem(Icons.favorite, AppLocalizations.of(context)!.authCurrentFavorites),
           
-          _buildBenefitItem(Icons.settings, 'Vos préférences'),
-          _buildBenefitItem(Icons.history, 'Votre historique de navigation'),
-          _buildBenefitItem(Icons.location_on, 'Vos lieux découverts'),
+          _buildBenefitItem(Icons.settings, AppLocalizations.of(context)!.authPreferences),
+          _buildBenefitItem(Icons.history, AppLocalizations.of(context)!.authBrowsingHistory),
+          _buildBenefitItem(Icons.location_on, AppLocalizations.of(context)!.authDiscoveredPlaces),
         ],
       ),
     );
@@ -598,7 +599,7 @@ class _SignUpPageState extends State<SignUpPage> {
           color: Color(0xFF009639),
           size: 48,
         ),
-        title: const Text('Inscription réussie'),
+        title: Text(AppLocalizations.of(context)!.authSignUpSuccessTitle),
         content: const Text(
           'Votre compte a été créé avec succès !',
         ),
@@ -655,7 +656,7 @@ class _SignUpPageState extends State<SignUpPage> {
           color: Colors.orange,
           size: 48,
         ),
-        title: const Text('Problème de conversion'),
+        title: Text(AppLocalizations.of(context)!.authConversionProblemTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -715,12 +716,12 @@ class _SignUpPageState extends State<SignUpPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Erreur'),
+        title: Text(AppLocalizations.of(context)!.authErrorTitle),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.commonOk),
           ),
         ],
       ),

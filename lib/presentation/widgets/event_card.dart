@@ -45,24 +45,22 @@ class _EventCardState extends State<EventCard> {
         ),
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image avec overlay
             _buildImageSection(event),
-            
-            // Contenu
             Padding(
               padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Titre et bouton favoris
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Text(
-                          event.title,
+                          event.title ?? 'Événement inconnu',
                           style: TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
@@ -76,18 +74,12 @@ class _EventCardState extends State<EventCard> {
                       _buildFavoriteButton(event),
                     ],
                   ),
-                  
                   SizedBox(height: ResponsiveConstants.smallSpace),
-                  
-                  // Date et lieu
                   _buildEventInfo(event),
-                  
-                  SizedBox(height: ResponsiveConstants.smallSpace * 1.5),
-                  
-                  // Description
-                  if (event.description != null && event.description!.isNotEmpty)
+                  SizedBox(height: ResponsiveConstants.smallSpace),
+                  if (event.shortDescription.isNotEmpty)
                     Text(
-                      event.description!,
+                      event.shortDescription,
                       style: TextStyle(
                         fontSize: ResponsiveConstants.body2,
                         color: Colors.grey[600],
@@ -96,10 +88,7 @@ class _EventCardState extends State<EventCard> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  
-                  SizedBox(height: ResponsiveConstants.smallSpace * 1.5),
-                  
-                  // Prix et statut
+                  SizedBox(height: ResponsiveConstants.smallSpace),
                   _buildEventFooter(event),
                 ],
               ),
@@ -111,12 +100,11 @@ class _EventCardState extends State<EventCard> {
   }
 
   Widget _buildImageSection(Event event) {
-    return Container(
+    return SizedBox(
       height: ResponsiveConstants.cardImageHeight,
       width: double.infinity,
       child: Stack(
         children: [
-          // Image de fond
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(ResponsiveConstants.mediumRadius)),
             child: CachedNetworkImage(
@@ -137,23 +125,16 @@ class _EventCardState extends State<EventCard> {
               ),
             ),
           ),
-          
-          // Gradient overlay
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(ResponsiveConstants.mediumRadius)),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.3),
-                ],
+                colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
               ),
             ),
           ),
-          
-          // Badge "À la une" si featured
           if (event.isFeatured)
             Positioned(
               top: ResponsiveConstants.smallSpace * 1.5,
@@ -174,8 +155,6 @@ class _EventCardState extends State<EventCard> {
                 ),
               ),
             ),
-          
-          // Badge de statut
           Positioned(
             top: ResponsiveConstants.smallSpace * 1.5,
             right: ResponsiveConstants.smallSpace * 1.5,
@@ -202,46 +181,28 @@ class _EventCardState extends State<EventCard> {
 
   Widget _buildEventInfo(Event event) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Date
         Row(
           children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              size: ResponsiveConstants.smallIcon,
-              color: Colors.grey[600],
-            ),
+            Icon(Icons.calendar_today_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
             SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
             Text(
-              _formatEventDate(event),
-              style: TextStyle(
-                fontSize: ResponsiveConstants.caption + 1.sp,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-              ),
+              event.formattedDateRange ?? event.startDate,
+              style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
             ),
           ],
         ),
-        
         SizedBox(height: ResponsiveConstants.tinySpace),
-        
-        // Lieu
         if (event.location.isNotEmpty)
           Row(
             children: [
-              Icon(
-                Icons.location_on_outlined,
-                size: ResponsiveConstants.smallIcon,
-                color: Colors.grey[600],
-              ),
+              Icon(Icons.location_on_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Expanded(
                 child: Text(
                   event.location,
-                  style: TextStyle(
-                    fontSize: ResponsiveConstants.caption + 1.sp,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -253,61 +214,59 @@ class _EventCardState extends State<EventCard> {
   }
 
   Widget _buildEventFooter(Event event) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      spacing: ResponsiveConstants.smallSpace,
+      runSpacing: ResponsiveConstants.smallSpace,
       children: [
-        // Prix
-        if (event.price > 0)
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
+          decoration: BoxDecoration(
+            color: (event.isFree ? const Color(0xFF009639) : const Color(0xFF3860F8)).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+          ),
+          child: Text(
+            event.priceText,
+            style: TextStyle(
+              fontSize: ResponsiveConstants.caption,
+              fontWeight: FontWeight.w600,
+              color: event.isFree ? const Color(0xFF009639) : const Color(0xFF3860F8),
+            ),
+          ),
+        ),
+        if (event.categories.isNotEmpty)
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF0072CE).withOpacity(0.1),
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Text(
-              '${event.price.toInt()} DJF',
+              event.primaryCategory,
               style: TextStyle(
+                color: const Color(0xFF0072CE),
                 fontSize: ResponsiveConstants.caption,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF3860F8),
-              ),
-            ),
-          )
-        else
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
-            decoration: BoxDecoration(
-              color: const Color(0xFF009639).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
-            ),
-            child: Text(
-              'Gratuit',
-              style: TextStyle(
-                fontSize: ResponsiveConstants.caption,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF009639),
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
-        
-        // Capacité si limitée
         if (event.maxParticipants != null && event.maxParticipants! > 0)
-          Row(
-            children: [
-              Icon(
-                Icons.people_outline,
-                size: ResponsiveConstants.smallIcon * 0.875,
-                color: Colors.grey[600],
-              ),
-              SizedBox(width: ResponsiveConstants.tinySpace),
-              Text(
-                '${event.maxParticipants} places',
-                style: TextStyle(
-                  fontSize: ResponsiveConstants.caption,
-                  color: Colors.grey[600],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.people_outline, size: ResponsiveConstants.smallIcon * 0.875, color: Colors.orange),
+                SizedBox(width: ResponsiveConstants.tinySpace),
+                Text(
+                  '${event.maxParticipants} places',
+                  style: TextStyle(fontSize: ResponsiveConstants.caption, color: Colors.orange, fontWeight: FontWeight.w500),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
       ],
     );
@@ -323,11 +282,7 @@ class _EventCardState extends State<EventCard> {
       ),
       child: IconButton(
         onPressed: () => _toggleFavorite(event),
-        icon: Icon(
-          Icons.favorite,
-          color: Colors.red,
-          size: ResponsiveConstants.smallIcon,
-        ),
+        icon: Icon(Icons.favorite, color: Colors.red, size: ResponsiveConstants.smallIcon),
         padding: EdgeInsets.zero,
       ),
     );
@@ -337,7 +292,7 @@ class _EventCardState extends State<EventCard> {
     try {
       final success = await _favoritesService.toggleEventFavorite(event.id);
       if (success && mounted) {
-        setState(() {}); // Refresh pour mettre à jour l'UI
+        setState(() {});
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -358,19 +313,6 @@ class _EventCardState extends State<EventCard> {
           ),
         );
       }
-    }
-  }
-
-  String _formatEventDate(Event event) {
-    try {
-      final date = DateTime.parse(event.startDate);
-      final months = [
-        'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun',
-        'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'
-      ];
-      return '${date.day} ${months[date.month - 1]} ${date.year}';
-    } catch (e) {
-      return event.startDate;
     }
   }
 

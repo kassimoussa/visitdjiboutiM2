@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
+import '../../core/services/connectivity_service.dart';
 import 'poi_detail_page.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -14,6 +16,7 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   GoogleMapController? _mapController;
   final PoiService _poiService = PoiService();
+  final ConnectivityService _connectivityService = ConnectivityService();
   
   List<Poi> _pois = [];
   List<Poi> _filteredPois = [];
@@ -46,7 +49,7 @@ class _MapPageState extends State<MapPage> {
         _isLoading = true;
       });
       
-      final response = await _poiService.getPois();
+      final response = await _poiService.getPois(useCache: false);
       
       if (response.success && response.data != null) {
         final pois = response.data!.pois;
@@ -65,7 +68,7 @@ class _MapPageState extends State<MapPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur lors du chargement des POIs: ${response.message}'),
+              content: Text(AppLocalizations.of(context)!.mapErrorLoadingPois(response.message ?? '')),
               backgroundColor: Colors.red,
             ),
           );
@@ -79,7 +82,7 @@ class _MapPageState extends State<MapPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: $e'),
+            content: Text(AppLocalizations.of(context)!.mapError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -93,7 +96,7 @@ class _MapPageState extends State<MapPage> {
         markerId: MarkerId(poi.id.toString()),
         position: LatLng(poi.latitude, poi.longitude),
         infoWindow: InfoWindow(
-          title: poi.name,
+          title: poi.name ?? AppLocalizations.of(context)!.mapUnknownPlace,
           snippet: poi.primaryCategory,
           onTap: () {
             _navigateToPoiDetail(poi);
@@ -121,7 +124,7 @@ class _MapPageState extends State<MapPage> {
         _filteredPois = _pois;
       } else {
         _filteredPois = _pois.where((poi) {
-          return poi.name.toLowerCase().contains(query.toLowerCase()) ||
+          return (poi.name ?? '').toLowerCase().contains(query.toLowerCase()) ||
                  poi.primaryCategory.toLowerCase().contains(query.toLowerCase()) ||
                  poi.shortDescription.toLowerCase().contains(query.toLowerCase());
         }).toList();
@@ -134,6 +137,11 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
+    
+    // Si hors ligne, afficher une vue alternative
+    if (_connectivityService.isOffline) {
+      return _buildOfflineMapView();
+    }
     
     return Stack(
         children: [
@@ -484,5 +492,89 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
     );
+  }
+  
+  Widget _buildOfflineMapView() {
+    return Column(
+      children: [
+        // Message d'information hors ligne
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          color: Colors.orange.withOpacity(0.1),
+          child: const Row(
+            children: [
+              Icon(Icons.wifi_off, color: Colors.orange),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Carte hors ligne - Affichage de la liste des POIs disponibles',
+                  style: TextStyle(color: Colors.orange),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Liste des POIs disponibles en cache
+        Expanded(
+          child: FutureBuilder(
+            future: _loadCachedPois(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              
+              final pois = snapshot.data ?? <Poi>[];
+              
+              if (pois.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.map_outlined, size: 64, color: Colors.grey),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Aucune donnée de carte disponible hors ligne',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Connectez-vous à internet pour télécharger les POIs',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              
+              return ListView.builder(
+                itemCount: pois.length,
+                itemBuilder: (context, index) {
+                  final poi = pois[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    child: ListTile(
+                      leading: const Icon(Icons.place, color: Color(0xFF3860F8)),
+                      title: Text(poi.name),
+                      subtitle: Text(poi.primaryCategory),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () => _navigateToPoiDetail(poi),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Future<List<Poi>> _loadCachedPois() async {
+    final response = await _poiService.getPois(useCache: true);
+    if (response.isSuccess && response.data != null) {
+      return response.data!.pois;
+    }
+    return [];
   }
 }

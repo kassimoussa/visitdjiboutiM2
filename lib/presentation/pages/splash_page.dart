@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/services/anonymous_auth_service.dart';
+import '../../core/services/image_preloader_service.dart';
 import 'main_navigation_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -16,7 +17,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   
   final AnonymousAuthService _authService = AnonymousAuthService();
+  final ImagePreloaderService _imagePreloader = ImagePreloaderService();
   bool _isInitialized = false;
+  String _currentStatus = 'Initialisation...';
 
   @override
   void initState() {
@@ -63,25 +66,43 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   Future<void> _initializeApp() async {
     try {
-      // Simuler un délai minimum pour l'affichage du splash
-      final initFuture = _authService.initializeAnonymousUser();
-      final delayFuture = Future.delayed(const Duration(milliseconds: 2500));
-      
-      final results = await Future.wait([initFuture, delayFuture]);
-      final initSuccess = results[0] as bool;
-      
+      // Phase 1: Initialisation de l'utilisateur anonyme
       setState(() {
-        _isInitialized = true;
+        _currentStatus = 'Initialisation de l\'utilisateur...';
       });
-
+      
+      final initSuccess = await _authService.initializeAnonymousUser();
+      
       if (initSuccess) {
         print('Utilisateur anonyme initialisé avec succès');
         print('ID: ${_authService.currentAnonymousUser?.anonymousId}');
       } else {
-        print('Échec de linitialisation utilisateur anonyme - continuant en mode dégradé');
+        print('Échec de l\'initialisation utilisateur anonyme - continuant en mode dégradé');
       }
 
-      // Naviguer vers la page principale après linitialisation
+      // Phase 2: Préchargement des images
+      setState(() {
+        _currentStatus = 'Préchargement des images...';
+      });
+      
+      // Démarrer le préchargement des images en arrière-plan
+      // Ne pas attendre que cela termine pour ne pas ralentir l'ouverture
+      _imagePreloader.startPreloading(context).then((value) {
+        final stats = _imagePreloader.getPreloadingStats();
+        print('[SPLASH] Images préchargées: ${stats['preloaded']}/${stats['total']}');
+      }).catchError((e) {
+        print('[SPLASH] Erreur lors du préchargement: $e');
+      });
+      
+      // Délai minimum pour l'affichage des phases
+      await Future.delayed(const Duration(milliseconds: 2000));
+      
+      setState(() {
+        _isInitialized = true;
+        _currentStatus = 'Prêt !';
+      });
+
+      // Naviguer vers la page principale
       await Future.delayed(const Duration(milliseconds: 500));
       
       if (mounted) {
@@ -221,9 +242,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       const SizedBox(height: 16), 
                       FadeTransition(
                         opacity: _fadeAnimation,
-                        child: const Text(
-                          'Initialisation...', 
-                          style: TextStyle(
+                        child: Text(
+                          _currentStatus, 
+                          style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
                           ),

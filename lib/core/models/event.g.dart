@@ -8,7 +8,7 @@ part of 'event.dart';
 
 Event _$EventFromJson(Map<String, dynamic> json) => Event(
   id: Event._parseInt(json['id']),
-  slug: json['slug'] as String,
+  slug: json['slug'] as String?,
   title: json['title'] as String,
   shortDescription: json['short_description'] as String,
   description: json['description'] as String?,
@@ -23,16 +23,28 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
   startTime: json['start_time'] as String?,
   endTime: json['end_time'] as String?,
   formattedDateRange: json['formatted_date_range'] as String?,
-  price: Event._parseDouble(json['price']),
-  isFree: Event._parseBool(json['is_free']),
-  isFeatured: Event._parseBool(json['is_featured']),
+  price: json['price'] == null ? 0.0 : Event._parseDouble(json['price']),
+  isFree: json['is_free'] == null ? false : Event._parseBool(json['is_free']),
+  isFeatured: json['is_featured'] == null
+      ? false
+      : Event._parseBool(json['is_featured']),
   maxParticipants: Event._parseInt(json['max_participants']),
-  currentParticipants: Event._parseInt(json['current_participants']),
+  currentParticipants: json['current_participants'] == null
+      ? 0
+      : Event._parseInt(json['current_participants']),
   availableSpots: Event._parseInt(json['available_spots']),
-  isSoldOut: Event._parseBool(json['is_sold_out']),
-  isActive: Event._parseBool(json['is_active']),
-  isOngoing: Event._parseBool(json['is_ongoing']),
-  hasEnded: Event._parseBool(json['has_ended']),
+  isSoldOut: json['is_sold_out'] == null
+      ? false
+      : Event._parseBool(json['is_sold_out']),
+  isActive: json['is_active'] == null
+      ? true
+      : Event._parseBool(json['is_active']),
+  isOngoing: json['is_ongoing'] == null
+      ? false
+      : Event._parseBool(json['is_ongoing']),
+  hasEnded: json['has_ended'] == null
+      ? false
+      : Event._parseBool(json['has_ended']),
   organizer: json['organizer'] as String?,
   latitude: Event._parseLatitude(json['latitude']),
   longitude: Event._parseLongitude(json['longitude']),
@@ -40,21 +52,29 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
   contactPhone: json['contact_phone'] as String?,
   websiteUrl: json['website_url'] as String?,
   ticketUrl: json['ticket_url'] as String?,
-  viewsCount: Event._parseInt(json['views_count']),
+  viewsCount: json['views_count'] == null
+      ? 0
+      : Event._parseInt(json['views_count']),
   featuredImage: json['featured_image'] == null
       ? null
       : Media.fromJson(json['featured_image'] as Map<String, dynamic>),
   media: (json['media'] as List<dynamic>?)
       ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
       .toList(),
-  categories: (json['categories'] as List<dynamic>)
-      .map((e) => Category.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  favoritesCount: Event._parseInt(json['favorites_count']),
-  isFavorited: Event._parseBool(json['is_favorited']),
-  userIsRegistered: json['user_is_registered'] as bool?,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String,
+  categories:
+      (json['categories'] as List<dynamic>?)
+          ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  favoritesCount: json['favorites_count'] == null
+      ? 0
+      : Event._parseInt(json['favorites_count']),
+  isFavorited: json['is_favorited'] == null
+      ? false
+      : Event._parseBool(json['is_favorited']),
+  userIsRegistered: json['user_is_registered'] as bool? ?? false,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
 );
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{

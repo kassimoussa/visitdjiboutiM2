@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/services/poi_service.dart';
+import '../../core/services/localization_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/api_response.dart';
 import '../../core/models/poi_list_response.dart';
@@ -13,6 +14,7 @@ class ApiTestPage extends StatefulWidget {
 
 class _ApiTestPageState extends State<ApiTestPage> {
   final PoiService _poiService = PoiService();
+  final LocalizationService _localizationService = LocalizationService();
   bool _isLoading = false;
   String _result = '';
   List<Poi> _pois = [];
@@ -145,6 +147,91 @@ class _ApiTestPageState extends State<ApiTestPage> {
     }
   }
 
+  Future<void> _testMultilingual() async {
+    setState(() {
+      _isLoading = true;
+      _result = 'Test du support multilingue...\n\n';
+    });
+
+    try {
+      // Test avec français
+      await _localizationService.setLanguage('fr');
+      final frResponse = await _poiService.getPois(perPage: 3, page: 1, useCache: false);
+      
+      // Test avec anglais  
+      await _localizationService.setLanguage('en');
+      final enResponse = await _poiService.getPois(perPage: 3, page: 1, useCache: false);
+
+      // Revenir à l'anglais pour le deuxième test
+      await _localizationService.setLanguage('en');
+
+      setState(() {
+        _isLoading = false;
+        
+        if (frResponse.isSuccess && enResponse.isSuccess && 
+            frResponse.hasData && enResponse.hasData) {
+          
+          _result = 'RÉSULTATS DU TEST MULTILINGUE:\n\n';
+          
+          _result += '🇫🇷 FRANÇAIS (Accept-Language: fr):\n';
+          _result += 'En-tête API: ${_localizationService.getApiLanguageHeader()}\n\n';
+          for (int i = 0; i < frResponse.data!.pois.length && i < 3; i++) {
+            final poi = frResponse.data!.pois[i];
+            _result += '${i+1}. ${poi.name}\n';
+            _result += '   Description: ${poi.shortDescription}\n';
+            _result += '   Région: ${poi.region}\n\n';
+          }
+          
+          _result += '🇬🇧 ANGLAIS (Accept-Language: en):\n';
+          _result += 'En-tête API: ${_localizationService.getApiLanguageHeader()}\n\n';
+          for (int i = 0; i < enResponse.data!.pois.length && i < 3; i++) {
+            final poi = enResponse.data!.pois[i];
+            _result += '${i+1}. ${poi.name}\n';
+            _result += '   Description: ${poi.shortDescription}\n';
+            _result += '   Région: ${poi.region}\n\n';
+          }
+          
+          // Analyse des résultats
+          _result += '📊 ANALYSE:\n';
+          
+          bool contentsDifferent = false;
+          for (int i = 0; i < 3 && i < frResponse.data!.pois.length && i < enResponse.data!.pois.length; i++) {
+            final frPoi = frResponse.data!.pois[i];
+            final enPoi = enResponse.data!.pois[i];
+            
+            if (frPoi.name != enPoi.name || 
+                frPoi.shortDescription != enPoi.shortDescription ||
+                frPoi.region != enPoi.region) {
+              contentsDifferent = true;
+              break;
+            }
+          }
+          
+          if (contentsDifferent) {
+            _result += '✅ L\'API supporte le multilingue - Les contenus changent selon la langue\n';
+          } else {
+            _result += '❌ L\'API ne supporte PAS le multilingue - Les contenus sont identiques\n';
+            _result += '\n💡 Solutions possibles:\n';
+            _result += '• L\'API backend doit être configurée pour supporter Accept-Language\n';
+            _result += '• Utiliser des données statiques multilingues côté client\n';
+            _result += '• Implémenter une logique de traduction côté client\n';
+          }
+          
+        } else {
+          _result += 'Erreur lors du test:\n';
+          _result += 'FR: ${frResponse.message}\n';
+          _result += 'EN: ${enResponse.message}\n';
+        }
+      });
+      
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _result = 'Exception lors du test multilingue: $e';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +266,14 @@ class _ApiTestPageState extends State<ApiTestPage> {
                 ElevatedButton(
                   onPressed: _isLoading ? null : _testGetPoiById,
                   child: const Text('Détails POI'),
+                ),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _testMultilingual,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Test Multilingue'),
                 ),
               ],
             ),

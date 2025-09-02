@@ -5,6 +5,8 @@ import '../../core/models/event_registration.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
+import '../widgets/reservation_form_widget.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Event event;
@@ -41,8 +43,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
   
   void _onScroll() {
-    // La galerie d'images fait 250px de hauteur
-    // On affiche le titre quand on a scrollé au-delà de cette hauteur
     const imageGalleryHeight = 250.0;
     final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
     
@@ -76,16 +76,16 @@ class _EventDetailPageState extends State<EventDetailPage> {
         });
       } else {
         setState(() {
-          _eventDetails = widget.event; // Fallback vers les données initiales
+          _eventDetails = widget.event;
           _isLoading = false;
           _errorMessage = response.message;
         });
       }
     } catch (e) {
       setState(() {
-        _eventDetails = widget.event; // Fallback vers les données initiales
+        _eventDetails = widget.event;
         _isLoading = false;
-        _errorMessage = 'Erreur lors du chargement des détails';
+        _errorMessage = 'Error loading details'; // TODO: Add translation key
       });
     }
   }
@@ -108,8 +108,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
           SnackBar(
             content: Text(
               _isFavorite 
-                ? '${widget.event.title} ajouté aux favoris' 
-                : '${widget.event.title} retiré des favoris',
+                ? '${widget.event.title ?? 'Cet événement'} ajouté aux favoris' 
+                : '${widget.event.title ?? 'Cet événement'} retiré des favoris',
             ),
             duration: const Duration(seconds: 2),
           ),
@@ -125,6 +125,26 @@ class _EventDetailPageState extends State<EventDetailPage> {
         );
       }
     }
+  }
+
+  void _showReservationForm(Event event) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: ReservationFormWidget(
+          event: event,
+          onSuccess: () {
+            // Fermer le modal et afficher un message de succès
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
   }
 
   void _showRegistrationBottomSheet() {
@@ -178,13 +198,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   List<String> _getImageUrls(Event event) {
     final List<String> urls = [];
-    
-    // Ajouter l'image featured en premier
     if (event.featuredImage != null) {
       urls.add(event.featuredImage!.imageUrl);
     }
-    
-    // Ajouter les autres images
     if (event.media != null) {
       for (final media in event.media!) {
         if (media.imageUrl != event.featuredImage?.imageUrl) {
@@ -192,8 +208,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
         }
       }
     }
-    
-    // Si aucune image, retourner une liste vide
     return urls;
   }
 
@@ -213,7 +227,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -239,23 +253,14 @@ class _EventDetailPageState extends State<EventDetailPage> {
           CustomScrollView(
             controller: _scrollController,
             slivers: [
-              // Contenu principal
               SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Galerie d'images (maintenant dans le contenu)
                     _buildImageGallery(event),
-                    
-                    // Header avec nom et actions
                     _buildHeader(event),
-                    
-                    // Contenu de l'événement
                     _buildContent(event),
-                    
-                    // Bouton d'inscription intégré dans le contenu
                     _buildRegistrationSection(event),
-                    
                     const SizedBox(height: 32),
                   ],
                 ),
@@ -263,7 +268,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ],
           ),
           
-          // Barre translucide en haut avec boutons et titre
           AnimatedPositioned(
             duration: const Duration(milliseconds: 200),
             top: 0,
@@ -274,10 +278,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
               duration: const Duration(milliseconds: 200),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withOpacity(0.9),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: Colors.black.withOpacity(0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -288,10 +292,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
-                        // Bouton retour
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -302,13 +305,11 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             ),
                           ),
                         ),
-                        
-                        // Titre au centre
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              event.title,
+                              event.title ?? 'Événement',
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -320,11 +321,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             ),
                           ),
                         ),
-                        
-                        // Bouton favoris
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -343,14 +342,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ),
           ),
           
-          // Boutons flottants normaux (quand la barre n'est pas visible)
           if (!_showTitle) ...[
             Positioned(
               top: MediaQuery.of(context).padding.top + 10,
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -367,7 +365,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               right: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -408,7 +406,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
       width: double.infinity,
       child: Stack(
         children: [
-          // PageView pour le swipe
           PageView.builder(
             controller: _imagePageController,
             physics: const BouncingScrollPhysics(),
@@ -449,7 +446,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
             },
           ),
           
-          // Indicateurs de pagination
           if (imageUrls.length > 1)
             Positioned(
               bottom: 16,
@@ -466,7 +462,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       shape: BoxShape.circle,
                       color: _currentImageIndex == index
                           ? Colors.white
-                          : Colors.white.withValues(alpha: 0.5),
+                          : Colors.white.withOpacity(0.5),
                     ),
                   );
                 }),
@@ -483,9 +479,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Titre principal
           Text(
-            event.title,
+            event.title ?? 'Événement inconnu',
             style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -495,7 +490,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
           
           const SizedBox(height: 12),
           
-          // Date et statut
           Row(
             children: [
               Icon(
@@ -514,7 +508,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   ),
                 ),
               ),
-              // Statut badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
@@ -535,7 +528,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
           
           const SizedBox(height: 12),
           
-          // Lieu
           Row(
             children: [
               Icon(
@@ -559,7 +551,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
           
           const SizedBox(height: 12),
           
-          // Prix
           Row(
             children: [
               Icon(
@@ -677,16 +668,15 @@ class _EventDetailPageState extends State<EventDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Informations sur les places disponibles
         if (event.maxParticipants != null) ...[
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+              color: const Color(0xFF3860F8).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: const Color(0xFF3860F8).withValues(alpha: 0.3),
+                color: const Color(0xFF3860F8).withOpacity(0.3),
               ),
             ),
             child: Row(
@@ -719,11 +709,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
           const SizedBox(height: 16),
         ],
         
-        // Bouton d'inscription
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: event.canRegister ? _showRegistrationBottomSheet : null,
+            onPressed: event.canRegister ? () => _showReservationForm(event) : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
@@ -734,7 +723,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               elevation: 0,
             ),
             child: Text(
-              event.canRegister ? 'S\'inscrire à l\'événement' : 'Inscription fermée',
+              event.canRegister ? 'Réserver pour cet événement' : 'Réservations fermées',
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -756,9 +745,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.orange.withValues(alpha: 0.1),
+              color: Colors.orange.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+              border: Border.all(color: Colors.orange.withOpacity(0.3)),
             ),
             child: Row(
               children: [
@@ -774,7 +763,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ),
           ),
         
-        // Badges de statut
         Padding(
           padding: const EdgeInsets.all(16),
           child: Wrap(
@@ -788,7 +776,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ),
         ),
         
-        // Description
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -803,7 +790,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                (event.description?.isNotEmpty ?? false) ? event.description! : event.shortDescription,
+                (event.description?.isNotEmpty ?? false) ? event.description! : (event.shortDescription ?? ''),
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[700],
@@ -816,12 +803,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
         
         const SizedBox(height: 24),
         
-        // Informations détaillées
         _buildInfoSection(event),
         
         const SizedBox(height: 24),
         
-        // Localisation
         if (event.latitude != null && event.longitude != null) _buildLocationSection(event),
         
         const SizedBox(height: 100), // Espace pour la bottom bar
@@ -984,7 +969,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: Colors.black.withOpacity(0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -1002,7 +987,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   markerId: MarkerId('event_${event.id}'),
                   position: LatLng(event.latitude!, event.longitude!),
                   infoWindow: InfoWindow(
-                    title: event.title,
+                    title: event.title ?? 'Événement',
                     snippet: event.displayLocation,
                   ),
                 ),
@@ -1043,7 +1028,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
   final TextEditingController _requirementsController = TextEditingController();
   
   bool _isLoading = false;
-  final bool _requiresGuestInfo = true; // Pour l'instant, toujours en mode invité
+  final bool _requiresGuestInfo = true;
   
   @override
   Widget build(BuildContext context) {
@@ -1060,7 +1045,6 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
           ),
           child: Column(
             children: [
-              // Handle
               Container(
                 width: 40,
                 height: 4,
@@ -1071,14 +1055,13 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                 ),
               ),
               
-              // Title
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        'Inscription - ${widget.event.title}',
+                        'Inscription - ${widget.event.title ?? 'Événement'}',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -1093,7 +1076,6 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                 ),
               ),
               
-              // Form
               Expanded(
                 child: Form(
                   key: _formKey,
@@ -1101,7 +1083,6 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                     controller: scrollController,
                     padding: const EdgeInsets.all(20),
                     children: [
-                      // Nombre de participants
                       TextFormField(
                         controller: _participantsController,
                         keyboardType: TextInputType.number,
@@ -1123,7 +1104,6 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       
                       const SizedBox(height: 16),
                       
-                      // Informations invité (toujours affichées pour l'instant)
                       if (_requiresGuestInfo) ...[
                         const Text(
                           'Informations de contact',
@@ -1159,7 +1139,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           ),
                           validator: (value) {
                             if (value?.isEmpty ?? true) return 'Ce champ est requis';
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                            if (!RegExp(r'^\w-\.]+@([\w-]+\.)+[\w-]{2,4}\\$\\').hasMatch(value!)) {
                               return 'Email invalide';
                             }
                             return null;
@@ -1185,7 +1165,6 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                         const SizedBox(height: 16),
                       ],
                       
-                      // Exigences spéciales
                       TextFormField(
                         controller: _requirementsController,
                         maxLines: 3,
@@ -1199,15 +1178,14 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       
                       const SizedBox(height: 24),
                       
-                      // Prix récapitulatif
                       if (!widget.event.isFree)
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                            color: const Color(0xFF3860F8).withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: const Color(0xFF3860F8).withValues(alpha: 0.3),
+                              color: const Color(0xFF3860F8).withOpacity(0.3),
                             ),
                           ),
                           child: Row(
@@ -1234,7 +1212,6 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       
                       const SizedBox(height: 24),
                       
-                      // Bouton d'inscription
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

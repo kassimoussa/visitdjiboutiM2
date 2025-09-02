@@ -5,6 +5,10 @@ import '../models/api_response.dart';
 import '../models/event.dart';
 import '../models/event_list_response.dart';
 import '../models/event_registration.dart';
+import '../models/pagination.dart';
+import 'cache_service.dart';
+import 'connectivity_service.dart';
+import 'localization_service.dart';
 
 class EventService {
   static final EventService _instance = EventService._internal();
@@ -12,6 +16,9 @@ class EventService {
   EventService._internal();
 
   final ApiClient _apiClient = ApiClient();
+  final CacheService _cacheService = CacheService();
+  final ConnectivityService _connectivityService = ConnectivityService();
+  final LocalizationService _localizationService = LocalizationService();
 
   /// Récupère la liste des événements avec filtres
   Future<ApiResponse<EventListData>> getEvents({
@@ -26,8 +33,45 @@ class EventService {
     String sortOrder = 'asc',
     int perPage = 15,
     int page = 1,
+    bool useCache = true,
   }) async {
     try {
+      // Vérifier le cache d'abord si hors ligne ou cache activé pour requête simple
+      final shouldUseCache = _connectivityService.isOffline || (useCache && search == null && categoryId == null && page == 1);
+      
+      if (shouldUseCache) {
+        final currentLang = _localizationService.currentLanguageCode;
+        final cachedEvents = await _cacheService.getCachedEvents(languageCode: currentLang);
+        if (cachedEvents != null) {
+          final cacheMessage = _connectivityService.isOffline ? 'Mode hors ligne - Données depuis le cache' : 'Données chargées depuis le cache';
+          print('[EVENT_SERVICE] $cacheMessage');
+          final events = cachedEvents.map((json) => Event.fromJson(json)).toList();
+          return ApiResponse<EventListData>(
+            success: true,
+            message: cacheMessage,
+            data: EventListData(
+              events: events,
+              pagination: Pagination(
+                currentPage: 1,
+                lastPage: 1,
+                perPage: events.length,
+                total: events.length,
+                from: 1,
+                to: events.length,
+              ),
+              filters: const EventFilters(categories: []),
+            ),
+          );
+        }
+      }
+      
+      // Si hors ligne et pas de cache, retourner erreur spécifique
+      if (_connectivityService.isOffline) {
+        return ApiResponse<EventListData>(
+          success: false,
+          message: 'Mode hors ligne - Aucune donnée en cache disponible. Connectez-vous pour télécharger les données.',
+        );
+      }
       final queryParams = <String, dynamic>{
         'sort_by': sortBy,
         'sort_order': sortOrder,
@@ -74,6 +118,15 @@ class EventService {
           try {
             final eventListData = EventListData.fromJson(dataSection);
             
+            // Mettre en cache les événements si la requête est simple (pas de filtres complexes)
+            if (useCache && search == null && categoryId == null && page == 1) {
+              final currentLang = _localizationService.currentLanguageCode;
+              await _cacheService.cacheEvents(
+                eventListData.events.map((event) => event.toJson()).toList(),
+                languageCode: currentLang,
+              );
+            }
+            
             return ApiResponse<EventListData>(
               success: success,
               message: message,
@@ -108,12 +161,36 @@ class EventService {
   /// Récupère les détails d'un événement par ID ou slug
   Future<ApiResponse<Event>> getEventById(dynamic id) async {
     try {
+      // Vérifier le cache d'abord si hors ligne
+      final currentLang = _localizationService.currentLanguageCode;
+      final cacheKey = 'event_detail_${id}_$currentLang';
+      if (_connectivityService.isOffline) {
+        final cachedData = await _cacheService.getCachedData<Map<String, dynamic>>(cacheKey, allowExpiredIfOffline: true);
+        if (cachedData != null) {
+          final event = Event.fromJson(cachedData);
+          print('[EVENT_SERVICE] Détail événement $id chargé depuis le cache (mode hors ligne)');
+          return ApiResponse<Event>(
+            success: true,
+            message: 'Mode hors ligne - Données depuis le cache',
+            data: event,
+          );
+        }
+        
+        return ApiResponse<Event>(
+          success: false,
+          message: 'Mode hors ligne - Détails de l\'événement non disponibles. Connectez-vous pour les télécharger.',
+        );
+      }
+
       final response = await _apiClient.dio.get(
         ApiConstants.eventsById(id),
       );
 
       final eventData = response.data['data']['event'] as Map<String, dynamic>;
       final event = Event.fromJson(eventData);
+      
+      // Mettre en cache pour usage hors ligne
+      await _cacheService.cacheData(cacheKey, eventData);
 
       return ApiResponse<Event>(
         success: response.data['success'],

@@ -43,7 +43,7 @@ class _SecurityPageState extends State<SecurityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sécurité'),
+        title: Text(AppLocalizations.of(context)!.profileSecurity),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
       ),

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/favorites_service.dart';
+import '../../core/services/cache_service.dart';
+import '../../core/services/localization_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/api_response.dart';
 import '../../core/models/category.dart';
 import 'poi_detail_page.dart';
 import '../widgets/poi_card.dart';
+import '../widgets/category_filter_widget.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -18,13 +22,17 @@ class DiscoverPage extends StatefulWidget {
 class _DiscoverPageState extends State<DiscoverPage> {
   final PoiService _poiService = PoiService();
   final FavoritesService _favoritesService = FavoritesService();
+  final CacheService _cacheService = CacheService();
+  final LocalizationService _localizationService = LocalizationService();
   final TextEditingController _searchController = TextEditingController();
   
-  List<Poi> _pois = [];
+  List<Poi> _allPois = [];  // Tous les POIs chargés
+  List<Poi> _filteredPois = [];  // POIs après filtrage local
   List<Category> _categories = [];
   bool _isLoading = true;
   String? _errorMessage;
-  String _selectedCategory = 'Tous';
+  Category? _selectedCategory;
+  String _currentSearchQuery = '';
   int _currentPage = 1;
   bool _hasMorePages = false;
   bool _isLoadingMore = false;
@@ -32,10 +40,26 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   void initState() {
     super.initState();
-    _loadPois();
+    
+    // Écouter les changements de langue
+    _localizationService.addListener(_onLanguageChanged);
+    
+    // Vider le cache POI au démarrage pour forcer le rechargement
+    _cacheService.clearPoiCache().then((_) => _loadAllPois());
   }
 
-  Future<void> _loadPois({bool loadMore = false}) async {
+  void _onLanguageChanged() {
+    // Recharger les données quand la langue change
+    print('[DISCOVER PAGE] Langue changée - Rechargement forcé des données');
+    
+    // Vider le cache et recharger
+    _cacheService.clearPoiCache();
+    _resetPagination();
+    _loadAllPoisForced();
+  }
+
+  // Charge tous les POIs une seule fois depuis l'API
+  Future<void> _loadAllPois({bool loadMore = false}) async {
     if (loadMore) {
       if (!_hasMorePages || _isLoadingMore) return;
       setState(() => _isLoadingMore = true);
@@ -44,32 +68,32 @@ class _DiscoverPageState extends State<DiscoverPage> {
         _isLoading = true;
         _errorMessage = null;
         _currentPage = 1;
-        _pois.clear();
+        _allPois.clear();
+        _filteredPois.clear();
       });
     }
 
     try {
       final ApiResponse<PoiListData> response = await _poiService.getPois(
-        search: _searchController.text.isEmpty ? null : _searchController.text,
-        categoryId: _selectedCategory == 'Tous' ? null : 
-                   _categories.firstWhere((c) => c.name == _selectedCategory, 
-                   orElse: () => const Category(id: -1, name: '', slug: '')).id,
         page: loadMore ? _currentPage + 1 : 1,
-        perPage: 10,
+        perPage: 100, // Charger plus de POIs d'un coup
+        useCache: true, // Utiliser le cache pour optimiser
       );
 
+      print('[DISCOVER PAGE] Réponse API reçue - success: ${response.isSuccess}, hasData: ${response.hasData}');
+      
       if (response.isSuccess && response.hasData) {
         final poisData = response.data!;
+        print('[DISCOVER PAGE] Nombre de POIs reçus: ${poisData.pois.length}');
+        
         setState(() {
           if (loadMore) {
-            _pois.addAll(poisData.pois);
+            _allPois.addAll(poisData.pois);
             _currentPage++;
           } else {
-            _pois = poisData.pois;
-            _categories = [
-              const Category(id: -1, name: 'Tous', slug: 'tous'),
-              ...poisData.filters.categories
-            ];
+            _allPois = poisData.pois;
+            // Créer des catégories avec hiérarchie pour l'écran Découvrir
+            _categories = _buildCategoriesHierarchy(poisData.filters.categories);
             _currentPage = poisData.pagination.currentPage;
           }
           _hasMorePages = poisData.pagination.hasNextPage;
@@ -77,42 +101,205 @@ class _DiscoverPageState extends State<DiscoverPage> {
           _isLoadingMore = false;
           _errorMessage = null;
         });
+        
+        // Appliquer les filtres actuels après le chargement
+        _applyFilters();
       } else {
         setState(() {
           _isLoading = false;
           _isLoadingMore = false;
-          _errorMessage = response.message ?? 'Erreur lors du chargement';
+          _errorMessage = response.message ?? 'Loading error'; // Temporaire
         });
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
         _isLoadingMore = false;
-        _errorMessage = 'Une erreur inattendue s\'est produite';
+        _errorMessage = 'Unexpected error'; // Temporaire
       });
     }
   }
 
+  /// Remet à zéro la pagination
+  void _resetPagination() {
+    _currentPage = 1;
+    _hasMorePages = true;
+    _allPois.clear();
+    _filteredPois.clear();
+  }
+
+  /// Version forcée qui bypass le cache pour les changements de langue
+  Future<void> _loadAllPoisForced() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+    }
+
+    try {
+      final ApiResponse<PoiListData> response = await _poiService.getPois(
+        perPage: 50,
+        page: 1,
+        useCache: false, // Force l'appel API sans cache
+      );
+
+      if (response.isSuccess && response.hasData) {
+        final poisData = response.data!;
+        
+        if (mounted) {
+          setState(() {
+            _allPois = poisData.pois;
+            _categories = _buildCategoriesHierarchy(poisData.filters.categories);
+            _currentPage = poisData.pagination.currentPage + 1;
+            _hasMorePages = poisData.pagination.hasNextPage;
+            _isLoading = false;
+            _errorMessage = null;
+          });
+          
+          print('[DISCOVER PAGE] POIs rechargés: ${_allPois.length} items (langue: ${_localizationService.currentLanguageCode})');
+          
+          // Appliquer les filtres après le rechargement
+          _applyFilters();
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _errorMessage = response.message ?? 'Erreur de chargement';
+          });
+        }
+      }
+    } catch (e) {
+      print('[DISCOVER PAGE] Erreur rechargement forcé: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = 'Erreur inattendue';
+        });
+      }
+    }
+  }
+
+  // Applique les filtres localement sans recharger depuis l'API
+  void _applyFilters() {
+    List<Poi> filtered = List.from(_allPois);
+    
+    // Filtrage par recherche textuelle
+    if (_currentSearchQuery.isNotEmpty) {
+      final searchQuery = _currentSearchQuery.toLowerCase();
+      filtered = filtered.where((poi) {
+        return poi.name.toLowerCase().contains(searchQuery) ||
+               (poi.description?.toLowerCase().contains(searchQuery) ?? false) ||
+               poi.primaryCategory.toLowerCase().contains(searchQuery);
+      }).toList();
+    }
+    
+    // Filtrage par catégorie
+    if (_selectedCategory != null) {
+      filtered = filtered.where((poi) {
+        if (_selectedCategory!.isParentCategory) {
+          // Si c'est une catégorie parente, inclure toutes ses sous-catégories
+          final childIds = _selectedCategory!.subCategories
+              ?.map((sub) => sub.id)
+              .toList() ?? [];
+          
+          return poi.categories.any((poiCategory) => 
+            poiCategory.id == _selectedCategory!.id || 
+            childIds.contains(poiCategory.id)
+          );
+        } else {
+          // Si c'est une sous-catégorie, filtrer exactement
+          return poi.categories.any((poiCategory) => poiCategory.id == _selectedCategory!.id);
+        }
+      }).toList();
+    }
+    
+    setState(() {
+      _filteredPois = filtered;
+    });
+    
+    print('[DISCOVER] Filtres appliqués: ${_filteredPois.length}/${_allPois.length} POIs');
+  }
+
   Future<void> _refreshPois() async {
-    await _loadPois();
+    await _loadAllPois();
   }
 
   void _onSearchChanged() {
-    // Délai pour éviter trop de requêtes
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (_searchController.text == _searchController.text) {
-        _loadPois();
-      }
+    // Délai pour éviter trop de filtrage
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (_searchController.text == _currentSearchQuery) return;
+      
+      setState(() {
+        _currentSearchQuery = _searchController.text;
+      });
+      _applyFilters();
     });
   }
 
-  void _onCategoryChanged(String category) {
+  void _onCategoryChanged(Category? category) {
     if (_selectedCategory != category) {
       setState(() {
         _selectedCategory = category;
       });
-      _loadPois();
+      _applyFilters();
     }
+  }
+  
+  // Construit une hiérarchie de catégories avec les données reçues de l'API
+  List<Category> _buildCategoriesHierarchy(List<Category> flatCategories) {
+    print('[DISCOVER] Nombre de catégories reçues: ${flatCategories.length}');
+    
+    // Séparer les catégories parentes (level 0 ou IDs spécifiques) et enfants
+    final parentCategories = <Category>[];
+    final childCategories = <Category>[];
+    
+    for (final category in flatCategories) {
+      print('[DISCOVER] Catégorie: ${category.name} (ID: ${category.id}, Level: ${category.level}, ParentId: ${category.parentId})');
+      
+      if (category.isParentCategory) {
+        parentCategories.add(category);
+      } else {
+        childCategories.add(category);
+      }
+    }
+    
+    // Construire la hiérarchie : associer les enfants à leurs parents
+    final categoriesWithChildren = <Category>[];
+    
+    for (final parent in parentCategories) {
+      // Trouver tous les enfants de cette catégorie parente
+      final children = childCategories
+          .where((child) => child.parentId == parent.id)
+          .toList();
+      
+      if (children.isNotEmpty) {
+        // Créer une nouvelle catégorie avec ses sous-catégories
+        final categoryWithChildren = Category(
+          id: parent.id,
+          name: parent.name,
+          slug: parent.slug,
+          description: parent.description,
+          color: parent.color,
+          icon: parent.icon,
+          parentId: parent.parentId,
+          level: parent.level,
+          subCategories: children,
+        );
+        categoriesWithChildren.add(categoryWithChildren);
+      } else {
+        // Ajouter la catégorie parente sans enfants
+        categoriesWithChildren.add(parent);
+      }
+    }
+    
+    print('[DISCOVER] Catégories parentes trouvées: ${categoriesWithChildren.length}');
+    for (final cat in categoriesWithChildren) {
+      print('[DISCOVER] Parent: ${cat.name} avec ${cat.subCategories?.length ?? 0} enfants');
+    }
+    
+    return categoriesWithChildren;
   }
 
   @override
@@ -136,7 +323,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         _searchController.clear();
-                        _loadPois();
+                        setState(() {
+                          _currentSearchQuery = '';
+                        });
+                        _applyFilters();
                       },
                     )
                   : null,
@@ -150,34 +340,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
         ),
 
-        // Filtres par catégorie
-        if (_categories.isNotEmpty)
-          Container(
-            height: isSmallScreen ? 45 : 50,
-            padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                final isSelected = category.name == _selectedCategory;
-
-                return Container(
-                  margin: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: Text(category.name),
-                    selected: isSelected,
-                    onSelected: (_) => _onCategoryChanged(category.name),
-                    backgroundColor: Colors.grey[200],
-                    selectedColor: const Color(0xFF3860F8),
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black87,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+        // Filtres supprimés - Interface simplifiée
 
         const SizedBox(height: 8),
 
@@ -191,15 +354,15 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   Widget _buildContent(bool isSmallScreen) {
     if (_isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: Color(0xFF3860F8),
             ),
-            SizedBox(height: 16),
-            Text('Chargement des points d\'intérêt...'),
+            const SizedBox(height: 16),
+            Text(AppLocalizations.of(context)!.commonLoading),
           ],
         ),
       );
@@ -226,19 +389,19 @@ class _DiscoverPageState extends State<DiscoverPage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _loadPois,
+              onPressed: _loadAllPois,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3860F8),
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),
       );
     }
 
-    if (_pois.isEmpty) {
+    if (_filteredPois.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -250,20 +413,25 @@ class _DiscoverPageState extends State<DiscoverPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Aucun point d\'intérêt trouvé',
+              _allPois.isEmpty 
+                ? 'Aucun point d\'intérêt disponible'
+                : 'Aucun résultat pour ces filtres',
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
               ),
             ),
-            if (_searchController.text.isNotEmpty || _selectedCategory != 'Tous')
+            if (_searchController.text.isNotEmpty || _selectedCategory != null)
               TextButton(
                 onPressed: () {
                   _searchController.clear();
-                  _selectedCategory = 'Tous';
-                  _loadPois();
+                  setState(() {
+                    _selectedCategory = null;
+                    _currentSearchQuery = '';
+                  });
+                  _applyFilters();
                 },
-                child: const Text('Effacer les filtres'),
+                child: const Text('Clear filters'), // Temporaire - clé à créer
               ),
           ],
         ),
@@ -275,13 +443,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
       color: const Color(0xFF3860F8),
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
-        itemCount: _pois.length + (_hasMorePages ? 1 : 0),
+        itemCount: _filteredPois.length + (_hasMorePages && _filteredPois.length == _allPois.length ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index >= _pois.length) {
-            // Indicateur de chargement pour plus de données
-            if (!_isLoadingMore) {
+          if (index >= _filteredPois.length) {
+            // Indicateur de chargement pour plus de données seulement si on affiche tous les POIs
+            if (!_isLoadingMore && _filteredPois.length == _allPois.length) {
               // Déclencher le chargement automatiquement
-              Future.microtask(() => _loadPois(loadMore: true));
+              Future.microtask(() => _loadAllPois(loadMore: true));
             }
             return Container(
               padding: const EdgeInsets.all(16),
@@ -293,7 +461,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             );
           }
 
-          final poi = _pois[index];
+          final poi = _filteredPois[index];
           return PoiCard(poi: poi);
         },
       ),
@@ -305,6 +473,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   void dispose() {
+    _localizationService.removeListener(_onLanguageChanged);
     _searchController.dispose();
     super.dispose();
   }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../core/services/image_preloader_service.dart';
+import 'offline_settings_page.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -8,6 +11,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final ImagePreloaderService _imagePreloader = ImagePreloaderService();
   bool _notificationsEnabled = true;
   bool _locationEnabled = true;
   bool _offlineMode = false;
@@ -15,12 +19,28 @@ class _SettingsPageState extends State<SettingsPage> {
   String _selectedLanguage = 'Français';
   String _selectedRegion = 'Toutes les régions';
   double _mapZoomLevel = 12.0;
+  String _cacheSize = 'Calcul en cours...';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCacheInfo();
+  }
+
+  Future<void> _loadCacheInfo() async {
+    final size = await _imagePreloader.getCacheSize();
+    if (mounted) {
+      setState(() {
+        _cacheSize = size;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        title: Text(AppLocalizations.of(context)!.drawerSettings),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -29,26 +49,26 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(16),
         children: [
           // Section Général
-          _buildSectionTitle('Général'),
+          _buildSectionTitle(AppLocalizations.of(context)!.settingsGeneral),
           
           _buildSettingItem(
             icon: Icons.language,
-            title: 'Langue',
+            title: AppLocalizations.of(context)!.drawerLanguage,
             subtitle: _selectedLanguage,
             onTap: () => _showLanguageSelector(),
           ),
           
           _buildSettingItem(
             icon: Icons.location_on,
-            title: 'Région préférée',
+            title: AppLocalizations.of(context)!.settingsPreferredRegion,
             subtitle: _selectedRegion,
             onTap: () => _showRegionSelector(),
           ),
           
           _buildSwitchItem(
             icon: Icons.dark_mode,
-            title: 'Mode sombre',
-            subtitle: 'Interface sombre pour économiser la batterie',
+            title: AppLocalizations.of(context)!.settingsDarkMode,
+            subtitle: AppLocalizations.of(context)!.settingsDarkModeSubtitle,
             value: _darkMode,
             onChanged: (value) {
               setState(() {
@@ -57,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    _darkMode ? 'Mode sombre activé' : 'Mode sombre désactivé',
+                    _darkMode ? AppLocalizations.of(context)!.settingsDarkModeActivated : AppLocalizations.of(context)!.settingsDarkModeDeactivated,
                   ),
                 ),
               );
@@ -67,12 +87,12 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 24),
           
           // Section Notifications
-          _buildSectionTitle('Notifications'),
+          _buildSectionTitle(AppLocalizations.of(context)!.drawerNotifications),
           
           _buildSwitchItem(
             icon: Icons.notifications,
-            title: 'Notifications push',
-            subtitle: 'Recevoir les alertes sur les nouveaux événements',
+            title: AppLocalizations.of(context)!.settingsPushNotifications,
+            subtitle: AppLocalizations.of(context)!.settingsPushNotificationsSubtitle,
             value: _notificationsEnabled,
             onChanged: (value) {
               setState(() {
@@ -83,8 +103,8 @@ class _SettingsPageState extends State<SettingsPage> {
           
           _buildSwitchItem(
             icon: Icons.event,
-            title: 'Rappels d\'événements',
-            subtitle: 'Notifications avant vos événements réservés',
+            title: AppLocalizations.of(context)!.settingsEventReminders,
+            subtitle: AppLocalizations.of(context)!.settingsEventRemindersSubtitle,
             value: _notificationsEnabled,
             onChanged: _notificationsEnabled ? (value) {
               // Logic pour rappels événements
@@ -93,8 +113,8 @@ class _SettingsPageState extends State<SettingsPage> {
           
           _buildSwitchItem(
             icon: Icons.new_releases,
-            title: 'Nouveaux POIs',
-            subtitle: 'Être informé des nouveaux lieux découverts',
+            title: AppLocalizations.of(context)!.settingsNewPois,
+            subtitle: AppLocalizations.of(context)!.settingsNewPoisSubtitle,
             value: _notificationsEnabled,
             onChanged: _notificationsEnabled ? (value) {
               // Logic pour nouveaux POIs
@@ -104,12 +124,12 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 24),
           
           // Section Localisation
-          _buildSectionTitle('Localisation'),
+          _buildSectionTitle(AppLocalizations.of(context)!.settingsLocation),
           
           _buildSwitchItem(
             icon: Icons.location_on,
-            title: 'Services de localisation',
-            subtitle: 'Permettre la géolocalisation pour les POIs proches',
+            title: AppLocalizations.of(context)!.settingsLocationServices,
+            subtitle: AppLocalizations.of(context)!.settingsLocationServicesSubtitle,
             value: _locationEnabled,
             onChanged: (value) {
               setState(() {
@@ -123,8 +143,8 @@ class _SettingsPageState extends State<SettingsPage> {
           
           _buildSliderItem(
             icon: Icons.zoom_in,
-            title: 'Niveau de zoom par défaut',
-            subtitle: 'Zoom initial sur la carte',
+            title: AppLocalizations.of(context)!.settingsDefaultZoom,
+            subtitle: AppLocalizations.of(context)!.settingsDefaultZoomSubtitle,
             value: _mapZoomLevel,
             min: 8.0,
             max: 18.0,
@@ -139,72 +159,68 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 24),
           
           // Section Données
-          _buildSectionTitle('Données & Stockage'),
+          _buildSectionTitle(AppLocalizations.of(context)!.settingsDataStorage),
           
-          _buildSwitchItem(
+          _buildSettingItem(
             icon: Icons.offline_pin,
-            title: 'Mode hors ligne',
-            subtitle: 'Télécharger les données pour utilisation offline',
-            value: _offlineMode,
-            onChanged: (value) {
-              setState(() {
-                _offlineMode = value;
-              });
-              if (value) {
-                _showOfflineDialog();
-              }
-            },
+            title: AppLocalizations.of(context)!.drawerOfflineMode,
+            subtitle: AppLocalizations.of(context)!.settingsOfflineModeSubtitle,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const OfflineSettingsPage(),
+              ),
+            ),
           ),
           
           _buildSettingItem(
             icon: Icons.storage,
-            title: 'Gérer le cache',
-            subtitle: 'Vider le cache des images et données (125 MB)',
+            title: AppLocalizations.of(context)!.settingsManageCache,
+            subtitle: AppLocalizations.of(context)!.settingsImageCache(_cacheSize),
             onTap: () => _showClearCacheDialog(),
           ),
           
           _buildSettingItem(
             icon: Icons.download,
-            title: 'Cartes hors ligne',
-            subtitle: 'Télécharger les cartes de Djibouti',
+            title: AppLocalizations.of(context)!.settingsOfflineMaps,
+            subtitle: AppLocalizations.of(context)!.settingsOfflineMapsSubtitle,
             onTap: () => _showOfflineMapDialog(),
           ),
           
           const SizedBox(height: 24),
           
           // Section Sécurité
-          _buildSectionTitle('Sécurité & Confidentialité'),
+          _buildSectionTitle(AppLocalizations.of(context)!.settingsSecurityPrivacy),
           
           _buildSettingItem(
             icon: Icons.security,
-            title: 'Confidentialité',
-            subtitle: 'Gérer vos données personnelles',
+            title: AppLocalizations.of(context)!.settingsPrivacy,
+            subtitle: AppLocalizations.of(context)!.settingsPrivacySubtitle,
             onTap: () => _showPrivacyDialog(),
           ),
           
           _buildSettingItem(
             icon: Icons.lock,
-            title: 'Conditions d\'utilisation',
-            subtitle: 'Lire les conditions d\'utilisation',
+            title: AppLocalizations.of(context)!.authTermsAndConditions,
+            subtitle: AppLocalizations.of(context)!.settingsTermsSubtitle,
             onTap: () => _showTermsDialog(),
           ),
           
           const SizedBox(height: 24),
           
           // Section Actions
-          _buildSectionTitle('Actions'),
+          _buildSectionTitle(AppLocalizations.of(context)!.settingsActions),
           
           _buildSettingItem(
             icon: Icons.backup,
-            title: 'Sauvegarder mes données',
-            subtitle: 'Favoris, réservations et préférences',
+            title: AppLocalizations.of(context)!.settingsBackupData,
+            subtitle: AppLocalizations.of(context)!.settingsBackupDataSubtitle,
             onTap: () => _showBackupDialog(),
           ),
           
           _buildSettingItem(
             icon: Icons.refresh,
-            title: 'Restaurer paramètres par défaut',
-            subtitle: 'Remettre tous les paramètres à zéro',
+            title: AppLocalizations.of(context)!.settingsResetSettings,
+            subtitle: AppLocalizations.of(context)!.settingsResetSettingsSubtitle,
             onTap: () => _showResetDialog(),
             textColor: const Color(0xFFEF4444),
           ),
@@ -458,7 +474,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             const SizedBox(height: 16),
             _buildRegionOption('Toutes les régions'),
-            _buildRegionOption('Djibouti Ville'),
+            _buildRegionOption('Djibouti'),
             _buildRegionOption('Tadjourah'),
             _buildRegionOption('Ali Sabieh'),
             _buildRegionOption('Dikhil'),
@@ -555,8 +571,9 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Vider le cache'),
-        content: const Text(
-          'Cette action supprimera toutes les images et données en cache (125 MB). Elles seront retéléchargées lors du prochain usage.',
+        content: Text(
+          'Cette action supprimera toutes les images en cache ($_cacheSize). '
+          'Elles seront retéléchargées lors du prochain usage.',
         ),
         actions: [
           TextButton(
@@ -564,14 +581,31 @@ class _SettingsPageState extends State<SettingsPage> {
             child: const Text('Annuler'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Cache vidé avec succès'),
-                  backgroundColor: Color(0xFF10B981),
-                ),
-              );
+              
+              try {
+                await _imagePreloader.clearImageCache();
+                await _loadCacheInfo();
+                
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Cache vidé avec succès'),
+                      backgroundColor: Color(0xFF10B981),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Erreur lors du vidage: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFEF4444),

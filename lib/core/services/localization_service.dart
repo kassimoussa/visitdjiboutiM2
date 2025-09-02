@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'device_info_service.dart';
+import '../api/api_client.dart';
+import 'cache_service.dart';
 
 class LocalizationService extends ChangeNotifier {
   static final LocalizationService _instance = LocalizationService._internal();
@@ -23,6 +25,7 @@ class LocalizationService extends ChangeNotifier {
 
   Locale _currentLocale = supportedLocales.first;
   final DeviceInfoService _deviceInfoService = DeviceInfoService();
+  final CacheService _cacheService = CacheService();
 
   Locale get currentLocale => _currentLocale;
   String get currentLanguageCode => _currentLocale.languageCode;
@@ -50,7 +53,11 @@ class LocalizationService extends ChangeNotifier {
         await _saveLanguage(_currentLocale.languageCode);
       }
       
-      print('Langue initialisée: ${_currentLocale.languageCode}');
+      // Mettre à jour le header API à l'initialisation
+      _updateApiLanguage();
+      
+      print('🌍 [INIT] Langue initialisée: ${_currentLocale.languageCode}');
+      print('📡 [INIT] Header API: ${getApiLanguageHeader()}');
       notifyListeners();
       
     } catch (e) {
@@ -71,8 +78,22 @@ class LocalizationService extends ChangeNotifier {
         _currentLocale = newLocale;
         await _saveLanguage(languageCode);
         
-        print('Langue changée vers: $languageCode');
+        // Mettre à jour le header API automatiquement
+        _updateApiLanguage();
+        
+        // NOTIFIER IMMÉDIATEMENT L'UI POUR LE CHANGEMENT DE LANGUE
         notifyListeners();
+        
+        print('🔄 [LANGUAGE CHANGE] Changement vers: $languageCode');
+        print('📱 [LANGUAGE CHANGE] Header API: ${getApiLanguageHeader()}');
+        print('🧹 [LANGUAGE CHANGE] Vidage de TOUS les caches...');
+        
+        // VIDER TOUS LES CACHES COMPLÈTEMENT EN ARRIÈRE-PLAN
+        _cacheService.clearAllCaches().then((_) {
+          print('✅ [LANGUAGE CHANGE] Caches vidés - Contenus seront rechargés dans la nouvelle langue');
+        }).catchError((e) {
+          print('❌ [LANGUAGE CHANGE] Erreur lors du vidage des caches: $e');
+        });
       }
     } catch (e) {
       print('Erreur lors du changement de langue: $e');
@@ -91,29 +112,20 @@ class LocalizationService extends ChangeNotifier {
 
   /// Obtient le header Accept-Language pour les appels API
   String getApiLanguageHeader() {
-    // Format: "fr-FR,fr;q=0.9,en;q=0.8,ar;q=0.7"
-    final primary = '${_currentLocale.languageCode}-${_currentLocale.countryCode}';
-    final secondary = _currentLocale.languageCode;
-    
-    // Ajouter les autres langues avec des priorités décroissantes
-    final otherLanguages = supportedLocales
-        .where((locale) => locale.languageCode != _currentLocale.languageCode)
-        .map((locale) => locale.languageCode)
-        .toList();
-    
-    final parts = [
-      primary,
-      '$secondary;q=0.9',
-    ];
-    
-    double priority = 0.8;
-    for (final lang in otherLanguages) {
-      parts.add('$lang;q=${priority.toStringAsFixed(1)}');
-      priority -= 0.1;
-    }
-    
-    return parts.join(',');
+    // Format SIMPLIFIÉ: juste le code de langue (ex: "en", "fr", "ar")
+    // Votre backend API attend probablement juste le code simple
+    return _currentLocale.languageCode;
   }
+
+  /// Met à jour la langue dans l'API client
+  void _updateApiLanguage() {
+    try {
+      ApiClient().updateLanguageHeader();
+    } catch (e) {
+      print('Erreur lors de la mise à jour de la langue API: $e');
+    }
+  }
+
 
   /// Vérifie si une langue est supportée
   bool _isLanguageSupported(String languageCode) {
@@ -216,4 +228,5 @@ class LocalizationService extends ChangeNotifier {
       'device_language': _deviceInfoService.getDeviceLanguage(),
     };
   }
+
 }

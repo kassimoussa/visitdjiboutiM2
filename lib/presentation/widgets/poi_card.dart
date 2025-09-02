@@ -3,6 +3,8 @@ import '../../core/models/poi.dart';
 import '../../core/services/favorites_service.dart';
 import '../pages/poi_detail_page.dart';
 import '../../core/utils/responsive.dart';
+import 'cached_image_widget.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class PoiCard extends StatefulWidget {
   final Poi poi;
@@ -25,6 +27,7 @@ class _PoiCardState extends State<PoiCard> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
       ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => Navigator.push(
           context,
@@ -34,9 +37,9 @@ class _PoiCardState extends State<PoiCard> {
         ),
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image avec badge featured
             Stack(
               children: [
                 Container(
@@ -48,40 +51,11 @@ class _PoiCardState extends State<PoiCard> {
                       top: Radius.circular(ResponsiveConstants.mediumRadius),
                     ),
                   ),
-                  child: poi.featuredImage != null && poi.imageUrl.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(ResponsiveConstants.mediumRadius),
-                          ),
-                          child: Image.network(
-                            poi.imageUrl,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Center(
-                                child: Icon(
-                                  Icons.place,
-                                  size: ResponsiveConstants.extraLargeIcon + 12.w,
-                                  color: Color(0xFF3860F8),
-                                ),
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(
-                                child: CircularProgressIndicator(
-                                  color: Color(0xFF3860F8),
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      : Center(
-                          child: Icon(
-                            Icons.place,
-                            size: ResponsiveConstants.extraLargeIcon + 12.w,
-                            color: Color(0xFF3860F8),
-                          ),
-                        ),
+                  child: PoiImageWidget(
+                    imageUrl: poi.imageUrl,
+                    height: ResponsiveConstants.largeCardImageHeight,
+                    width: double.infinity,
+                  ),
                 ),
                 if (poi.isFeatured)
                   Positioned(
@@ -108,23 +82,25 @@ class _PoiCardState extends State<PoiCard> {
                   ),
               ],
             ),
-
-            // Contenu
-            Padding(
-              padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Titre et favori
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Text(
-                          poi.name,
+                          poi.name ?? 'Lieu inconnu',
                           style: TextStyle(
                             fontSize: ResponsiveConstants.subtitle2,
                             fontWeight: FontWeight.bold,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       FutureBuilder<bool>(
@@ -136,13 +112,13 @@ class _PoiCardState extends State<PoiCard> {
                               try {
                                 final success = await _favoritesService.togglePoiFavorite(poi.id);
                                 if (success && mounted) {
-                                  setState(() {}); // Refresh pour mettre à jour l'UI
+                                  setState(() {});
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
                                         isFavorite
-                                          ? '${poi.name} retiré des favoris'
-                                          : '${poi.name} ajouté aux favoris',
+                                          ? '${poi.name ?? 'Ce lieu'} retiré des favoris'
+                                          : '${poi.name ?? 'Ce lieu'} ajouté aux favoris',
                                       ),
                                       duration: const Duration(seconds: 2),
                                     ),
@@ -151,8 +127,8 @@ class _PoiCardState extends State<PoiCard> {
                               } catch (e) {
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Erreur lors de la modification des favoris'),
+                                    SnackBar(
+                                      content: Text(AppLocalizations.of(context)!.commonErrorFavorites),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -168,28 +144,12 @@ class _PoiCardState extends State<PoiCard> {
                       ),
                     ],
                   ),
-
                   SizedBox(height: ResponsiveConstants.smallSpace),
-
-                  // Description
-                  Text(
-                    poi.shortDescription,
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: ResponsiveConstants.body2,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                  SizedBox(height: ResponsiveConstants.smallSpace * 1.5),
-
-                  // Métadonnées
-                  Wrap(
-                    spacing: ResponsiveConstants.smallSpace * 1.5,
-                    runSpacing: ResponsiveConstants.smallSpace,
-                    children: [
-                      // Catégorie
+                  Flexible(
+                    child: Wrap(
+                      spacing: ResponsiveConstants.smallSpace,
+                      runSpacing: ResponsiveConstants.smallSpace,
+                      children: [
                       if (poi.categories.isNotEmpty)
                         Container(
                           padding: EdgeInsets.symmetric(
@@ -209,8 +169,6 @@ class _PoiCardState extends State<PoiCard> {
                             ),
                           ),
                         ),
-
-                      // Région
                       Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: ResponsiveConstants.smallSpace,
@@ -230,7 +188,7 @@ class _PoiCardState extends State<PoiCard> {
                             ),
                             SizedBox(width: ResponsiveConstants.tinySpace),
                             Text(
-                              poi.region,
+                              poi.region ?? 'Inconnue',
                               style: TextStyle(
                                 color: Color(0xFF0072CE),
                                 fontSize: ResponsiveConstants.caption,
@@ -240,41 +198,11 @@ class _PoiCardState extends State<PoiCard> {
                           ],
                         ),
                       ),
-
-                      // Favoris count
-                      if (poi.favoritesCount > 0)
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: ResponsiveConstants.smallSpace,
-                            vertical: ResponsiveConstants.tinySpace,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.pink.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.favorite,
-                                size: ResponsiveConstants.caption,
-                                color: Colors.pink,
-                              ),
-                              SizedBox(width: ResponsiveConstants.tinySpace),
-                              Text(
-                                '${poi.favoritesCount}',
-                                style: TextStyle(
-                                  color: Colors.pink,
-                                  fontSize: ResponsiveConstants.caption,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                     ],
+                    ),
                   ),
                 ],
+                ),
               ),
             ),
           ],

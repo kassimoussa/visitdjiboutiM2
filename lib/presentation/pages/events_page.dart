@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
+import '../../core/services/localization_service.dart';
 import '../../core/models/event.dart';
 import '../../core/models/event_list_response.dart';
 import '../../core/models/api_response.dart';
 import '../../core/models/category.dart';
 import 'event_detail_page.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
@@ -17,6 +19,7 @@ class EventsPage extends StatefulWidget {
 class _EventsPageState extends State<EventsPage> {
   final EventService _eventService = EventService();
   final FavoritesService _favoritesService = FavoritesService();
+  final LocalizationService _localizationService = LocalizationService();
   final TextEditingController _searchController = TextEditingController();
   
   List<Event> _events = [];
@@ -32,7 +35,20 @@ class _EventsPageState extends State<EventsPage> {
   @override
   void initState() {
     super.initState();
+    
+    // Écouter les changements de langue
+    _localizationService.addListener(_onLanguageChanged);
+    
     _loadEvents();
+  }
+
+  void _onLanguageChanged() {
+    // Recharger les données quand la langue change
+    print('[EVENTS PAGE] Langue changée - Rechargement forcé des données');
+    
+    // Réinitialiser et recharger
+    _resetPagination();
+    _loadEventsForced();
   }
 
   Future<void> _loadEvents({bool loadMore = false}) async {
@@ -82,20 +98,73 @@ class _EventsPageState extends State<EventsPage> {
         setState(() {
           _isLoading = false;
           _isLoadingMore = false;
-          _errorMessage = response.message ?? 'Erreur lors du chargement';
+          _errorMessage = response.message ?? AppLocalizations.of(context)!.commonErrorLoading;
         });
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
         _isLoadingMore = false;
-        _errorMessage = 'Une erreur inattendue s\'est produite';
+        _errorMessage = AppLocalizations.of(context)!.commonErrorUnexpected;
       });
     }
   }
 
   Future<void> _refreshEvents() async {
     await _loadEvents();
+  }
+
+  /// Remet à zéro la pagination
+  void _resetPagination() {
+    _currentPage = 1;
+    _hasMorePages = true;
+    _events.clear();
+  }
+
+  /// Version forcée qui bypass le cache pour les changements de langue
+  Future<void> _loadEventsForced() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final searchQuery = _searchController.text.trim();
+      final ApiResponse<EventListData> response = await _eventService.getEvents(
+        search: searchQuery.isEmpty ? null : searchQuery,
+        status: _selectedStatus,
+        sortBy: 'start_date',
+        sortOrder: 'asc',
+        perPage: 20,
+        page: 1,
+        useCache: false, // Force l'appel API sans cache
+      );
+
+      if (response.isSuccess && response.hasData) {
+        final eventsData = response.data!;
+        
+        setState(() {
+          _events = eventsData.events;
+          _currentPage = eventsData.pagination.currentPage + 1;
+          _hasMorePages = eventsData.pagination.hasNextPage;
+          _isLoading = false;
+          _errorMessage = null;
+        });
+        
+        print('[EVENTS PAGE] Événements rechargés: ${_events.length} items (langue: ${_localizationService.currentLanguageCode})');
+      } else {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = response.message ?? 'Erreur de chargement';
+        });
+      }
+    } catch (e) {
+      print('[EVENTS PAGE] Erreur rechargement forcé: $e');
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Erreur inattendue';
+      });
+    }
   }
 
   void _onSearchChanged() {
@@ -139,7 +208,7 @@ class _EventsPageState extends State<EventsPage> {
             controller: _searchController,
             onChanged: (_) => _onSearchChanged(),
             decoration: InputDecoration(
-              hintText: 'Rechercher un événement...',
+              hintText: AppLocalizations.of(context)!.eventsSearchHint,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
@@ -167,11 +236,11 @@ class _EventsPageState extends State<EventsPage> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              _buildStatusChip('Tous', 'Tous'),
+              _buildStatusChip(AppLocalizations.of(context)!.eventsAll, 'Tous'),
               const SizedBox(width: 8),
-              _buildStatusChip('À venir', 'upcoming'),
+              _buildStatusChip(AppLocalizations.of(context)!.eventsUpcoming, 'upcoming'),
               const SizedBox(width: 8),
-              _buildStatusChip('En cours', 'ongoing'),
+              _buildStatusChip(AppLocalizations.of(context)!.eventsOngoing, 'ongoing'),
             ],
           ),
         ),
@@ -231,15 +300,15 @@ class _EventsPageState extends State<EventsPage> {
 
   Widget _buildContent(bool isSmallScreen) {
     if (_isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: Color(0xFF3860F8),
             ),
-            SizedBox(height: 16),
-            Text('Chargement des événements...'),
+            const SizedBox(height: 16),
+            Text(AppLocalizations.of(context)!.commonLoading),
           ],
         ),
       );
@@ -271,7 +340,7 @@ class _EventsPageState extends State<EventsPage> {
                 backgroundColor: const Color(0xFF3860F8),
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),
@@ -290,7 +359,7 @@ class _EventsPageState extends State<EventsPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Aucun événement trouvé',
+              AppLocalizations.of(context)!.eventsNoEventsFound,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -304,7 +373,7 @@ class _EventsPageState extends State<EventsPage> {
                   _selectedStatus = 'upcoming';
                   _loadEvents();
                 },
-                child: const Text('Effacer les filtres'),
+                child: Text(AppLocalizations.of(context)!.eventsClearFilters),
               ),
           ],
         ),
@@ -444,8 +513,8 @@ class _EventsPageState extends State<EventsPage> {
                         color: const Color(0xFF3860F8),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text(
-                        'Populaire',
+                      child:  Text(
+                        AppLocalizations.of(context)!.eventsPopular,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -489,8 +558,8 @@ class _EventsPageState extends State<EventsPage> {
                                     SnackBar(
                                       content: Text(
                                         isFavorite 
-                                          ? '${event.title} retiré des favoris' 
-                                          : '${event.title} ajouté aux favoris',
+                                          ? AppLocalizations.of(context)!.eventsRemovedFromFavorites(event.title)
+                                          : AppLocalizations.of(context)!.eventsAddedToFavorites(event.title),
                                       ),
                                       duration: const Duration(seconds: 2),
                                     ),
@@ -499,8 +568,8 @@ class _EventsPageState extends State<EventsPage> {
                               } catch (e) {
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Erreur lors de la modification des favoris'),
+                                    SnackBar(
+                                      content: Text(AppLocalizations.of(context)!.commonErrorFavorites),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -671,6 +740,7 @@ class _EventsPageState extends State<EventsPage> {
 
   @override
   void dispose() {
+    _localizationService.removeListener(_onLanguageChanged);
     _searchController.dispose();
     super.dispose();
   }

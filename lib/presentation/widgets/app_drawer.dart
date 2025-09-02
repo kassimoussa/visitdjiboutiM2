@@ -5,6 +5,9 @@ import 'package:vd_gem/presentation/pages/help_page.dart';
 import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
+import '../pages/reservations_page.dart';
+import '../pages/offline_settings_page.dart';
+import '../pages/api_test_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -44,33 +47,54 @@ class _AppDrawerState extends State<AppDrawer> {
                   children: [
                     _buildMenuItem(
                       icon: Icons.person,
-                      title: 'Profil',
+                      title: AppLocalizations.of(context)!.profileTitle,
                       onTap: () => _navigateTo(context, const ProfilePage()),
                     ),
                     
                     _buildMenuItem(
+                      icon: Icons.book_online,
+                      title: AppLocalizations.of(context)!.drawerReservations,
+                      subtitle: AppLocalizations.of(context)!.drawerReservationsSubtitle,
+                      onTap: () => _navigateTo(context, const ReservationsPage()),
+                    ),
+                    
+                    _buildMenuItem(
                       icon: Icons.language,
-                      title: 'Langue',
+                      title: AppLocalizations.of(context)!.profileLanguage,
                       subtitle: LocalizationService().currentLanguageName,
                       onTap: () => _showLanguageDialog(context),
                     ),
                     
                     _buildMenuItem(
                       icon: Icons.settings,
-                      title: 'Paramètres',
+                      title: AppLocalizations.of(context)!.profileSettings,
                       onTap: () => _navigateTo(context, const SettingsPage()),
                     ),
                     
                     _buildMenuItem(
+                      icon: Icons.wifi_off,
+                      title: AppLocalizations.of(context)!.drawerOfflineMode,
+                      onTap: () => _navigateTo(context, const OfflineSettingsPage()),
+                    ),
+                    
+                    _buildMenuItem(
                       icon: Icons.help_outline,
-                      title: 'Aide',
+                      title: AppLocalizations.of(context)!.drawerHelp,
                       onTap: () => _navigateTo(context, const HelpPage()),
                     ),
                     
                     _buildMenuItem(
                       icon: Icons.info_outline,
-                      title: 'À propos',
+                      title: AppLocalizations.of(context)!.profileAboutApp,
                       onTap: () => _navigateTo(context, const AboutPage()),
+                    ),
+                    
+                    // Menu développement - Test API
+                    _buildMenuItem(
+                      icon: Icons.api,
+                      title: 'Test API',
+                      subtitle: 'Tester les endpoints API',
+                      onTap: () => _navigateTo(context, const ApiTestPage()),
                     ),
                     
                     const Spacer(),
@@ -123,21 +147,21 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
               ),
               const SizedBox(width: 16),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Visit Djibouti',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.appTitle,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                     Text(
-                      'Découvrez les merveilles',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.appDescription,
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white70,
                       ),
@@ -168,13 +192,13 @@ class _AppDrawerState extends State<AppDrawer> {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Colors.white.withOpacity(0.2)),
           ),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.person_outline, color: Colors.white70, size: 20),
-              SizedBox(width: 8),
+              const Icon(Icons.person_outline, color: Colors.white70, size: 20),
+              const SizedBox(width: 8),
               Text(
-                'Explorateur anonyme',
-                style: TextStyle(
+                AppLocalizations.of(context)!.drawerAnonymousUser,
+                style: const TextStyle(
                   color: Colors.white70,
                   fontSize: 14,
                 ),
@@ -200,9 +224,9 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                   elevation: 0,
                 ),
-                child: const Text(
-                  'Créer compte',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                child: Text(
+                  AppLocalizations.of(context)!.authRegister,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -218,9 +242,9 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                   side: const BorderSide(color: Colors.white),
                 ),
-                child: const Text(
-                  'Connexion',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                child: Text(
+                  AppLocalizations.of(context)!.authLogin,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -260,7 +284,7 @@ class _AppDrawerState extends State<AppDrawer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user?.name ?? 'Utilisateur',
+                  user?.name ?? AppLocalizations.of(context)!.drawerGuest,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -268,7 +292,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                 ),
                 Text(
-                  'Connecté',
+                  AppLocalizations.of(context)!.drawerConnected,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.7),
                     fontSize: 12,
@@ -360,7 +384,7 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           const SizedBox(width: 8),
           Text(
-            'Version 1.0.0',
+            AppLocalizations.of(context)!.drawerVersion,
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 12,
@@ -392,41 +416,41 @@ class _AppDrawerState extends State<AppDrawer> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Choisir la langue'),
+        title: Text(AppLocalizations.of(context)!.drawerChooseLanguage),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Text('🇫🇷'),
-              title: const Text('Français'),
+              title: Text(AppLocalizations.of(context)!.languageFrench),
               trailing: LocalizationService().currentLocale.languageCode == 'fr'
                   ? const Icon(Icons.check, color: Color(0xFF3860F8))
                   : null,
-              onTap: () {
-                LocalizationService().setLanguage('fr');
+              onTap: () async {
                 Navigator.pop(context);
+                await LocalizationService().setLanguage('fr');
               },
             ),
             ListTile(
               leading: const Text('🇺🇸'),
-              title: const Text('English'),
+              title: Text(AppLocalizations.of(context)!.languageEnglish),
               trailing: LocalizationService().currentLocale.languageCode == 'en'
                   ? const Icon(Icons.check, color: Color(0xFF3860F8))
                   : null,
-              onTap: () {
-                LocalizationService().setLanguage('en');
+              onTap: () async {
                 Navigator.pop(context);
+                await LocalizationService().setLanguage('en');
               },
             ),
             ListTile(
               leading: const Text('🇸🇦'),
-              title: const Text('العربية'),
+              title: Text(AppLocalizations.of(context)!.languageArabic),
               trailing: LocalizationService().currentLocale.languageCode == 'ar'
                   ? const Icon(Icons.check, color: Color(0xFF3860F8))
                   : null,
-              onTap: () {
-                LocalizationService().setLanguage('ar');
+              onTap: () async {
                 Navigator.pop(context);
+                await LocalizationService().setLanguage('ar');
               },
             ),
           ],
@@ -441,20 +465,17 @@ class _AppDrawerState extends State<AppDrawer> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Déconnexion'),
-        content: const Text(
-          'Êtes-vous sûr de vouloir vous déconnecter ? '
-          'Vous redeviendrez un utilisateur anonyme.',
-        ),
+        title: Text(AppLocalizations.of(context)!.authLogout),
+        content: Text(AppLocalizations.of(context)!.drawerLogoutMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Déconnexion'),
+            child: Text(AppLocalizations.of(context)!.authLogout),
           ),
         ],
       ),
@@ -465,9 +486,9 @@ class _AppDrawerState extends State<AppDrawer> {
       
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Déconnexion réussie'),
-            backgroundColor: Color(0xFF009639),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.drawerLogoutSuccess),
+            backgroundColor: const Color(0xFF009639),
           ),
         );
         setState(() {}); // Refresh pour mettre à jour l'UI

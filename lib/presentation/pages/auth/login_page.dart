@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/services/anonymous_auth_service.dart';
+import '../../../generated/l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connexion'),
+        title: Text(AppLocalizations.of(context)!.authLogin),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -36,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const SizedBox(height: 24),
                 
-                const Text(
-                  'Bon retour !',
+                Text(
+                  AppLocalizations.of(context)!.authWelcomeBack,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 8),
                 
                 Text(
-                  'Connectez-vous à votre compte Visit Djibouti',
+                  AppLocalizations.of(context)!.authSignInSubtitle,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -69,8 +70,8 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       // Naviguer vers forgot password
                     },
-                    child: const Text(
-                      'Mot de passe oublié ?',
+                    child:  Text(
+                      AppLocalizations.of(context)!.authForgotPassword,
                       style: TextStyle(
                         color: Color(0xFF3860F8),
                         fontWeight: FontWeight.w600,
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'ou',
+                        AppLocalizations.of(context)!.authOr,
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ),
@@ -313,9 +314,9 @@ class _LoginPageState extends State<LoginPage> {
           color: Color(0xFF009639),
           size: 48,
         ),
-        title: const Text('Connexion réussie !'),
-        content: const Text(
-          'Bienvenue ! Vous êtes maintenant connecté à votre compte Visit Djibouti.',
+        title: Text(AppLocalizations.of(context)!.authSuccessTitle),
+        content: Text(
+          AppLocalizations.of(context)!.authWelcomeBack,
         ),
         actions: [
           TextButton(
@@ -326,7 +327,7 @@ class _LoginPageState extends State<LoginPage> {
                 (route) => false,
               );
             },
-            child: const Text('Continuer'),
+            child: Text(AppLocalizations.of(context)!.commonNext),
           ),
         ],
       ),
@@ -337,12 +338,12 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Erreur'),
+        title: Text(AppLocalizations.of(context)!.authErrorTitle),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.commonOk),
           ),
         ],
       ),

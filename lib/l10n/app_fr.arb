@@ -134,6 +134,10 @@
 
   "drawerGuest": "Invité",
   "drawerViewProfile": "Voir mon profil →",
+  "drawerProfile": "Profil",
+  "drawerReservations": "Mes Réservations",
+  "drawerReservationsSubtitle": "Gérer vos réservations",
+  "drawerOfflineMode": "Mode hors ligne",
   "drawerSettingsSection": "Paramètres",
   "drawerTestApi": "Test API",
   "drawerTestApiSubtitle": "Test des endpoints",
@@ -148,6 +152,13 @@
   "drawerTourismOffice": "Office du Tourisme",
   "drawerEmbassies": "Ambassades",
   "drawerEmergencyNumbers": "Numéros d'urgence",
+  "drawerAnonymousUser": "Explorateur anonyme",
+  "drawerCreateAccount": "Créer compte",
+  "drawerLogin": "Connexion",
+  "drawerConnected": "Connecté",
+  "drawerLogoutTitle": "Déconnexion",
+  "drawerLogoutMessage": "Êtes-vous sûr de vouloir vous déconnecter ? Vous redeviendrez un utilisateur anonyme.",
+  "drawerLogoutSuccess": "Déconnexion réussie",
   "drawerVersion": "Version 1.0.0",
   "drawerChooseLanguage": "Choisir la langue",
   "drawerLanguageChanged": "Langue changée vers {language}",
@@ -170,6 +181,13 @@
   
   "commonLoading": "Chargement...",
   "commonError": "Erreur",
+  "commonErrorUnknown": "Erreur inconnue",
+  "commonErrorSync": "Erreur de synchronisation",
+  "commonErrorDownload": "Erreur de téléchargement",
+  "commonErrorCache": "Erreur lors du vidage du cache",
+  "commonErrorFavorites": "Erreur lors de la modification des favoris",
+  "commonErrorLoading": "Erreur lors du chargement",
+  "commonErrorUnexpected": "Une erreur inattendue s'est produite",
   "commonRetry": "Réessayer",
   "commonCancel": "Annuler",
   "commonConfirm": "Confirmer",
@@ -185,5 +203,300 @@
   "commonSeeAll": "Voir tout",
   "commonShowMore": "Voir plus",
   "commonShowLess": "Voir moins",
-  "commonSend": "Envoyer"
+  "commonSend": "Envoyer",
+
+  "settingsGeneral": "Général",
+  "settingsPreferredRegion": "Région préférée",
+  "settingsDarkMode": "Mode sombre",
+  "settingsDarkModeSubtitle": "Interface sombre pour économiser la batterie",
+  "settingsDarkModeActivated": "Mode sombre activé",
+  "settingsDarkModeDeactivated": "Mode sombre désactivé",
+  "settingsPushNotifications": "Notifications push",
+  "settingsPushNotificationsSubtitle": "Recevoir les alertes sur les nouveaux événements",
+  "settingsEventReminders": "Rappels d'événements",
+  "settingsEventRemindersSubtitle": "Notifications avant vos événements réservés",
+  "settingsNewPois": "Nouveaux POIs",
+  "settingsNewPoisSubtitle": "Être informé des nouveaux lieux découverts",
+  "settingsLocation": "Localisation",
+  "settingsLocationServices": "Services de localisation",
+  "settingsLocationServicesSubtitle": "Permettre la géolocalisation pour les POIs proches",
+  "settingsDefaultZoom": "Niveau de zoom par défaut",
+  "settingsDefaultZoomSubtitle": "Zoom initial sur la carte",
+  "settingsDataStorage": "Données & Stockage",
+  "settingsOfflineModeSubtitle": "Gérer les téléchargements et la synchronisation",
+  "settingsManageCache": "Gérer le cache",
+  "settingsImageCache": "Cache des images: {size}",
+  "@settingsImageCache": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsOfflineMaps": "Cartes hors ligne",
+  "settingsOfflineMapsSubtitle": "Télécharger les cartes de Djibouti",
+  "settingsSecurityPrivacy": "Sécurité & Confidentialité",
+  "settingsPrivacy": "Confidentialité",
+  "settingsPrivacySubtitle": "Gérer vos données personnelles",
+  "settingsTermsSubtitle": "Lire les conditions d'utilisation",
+  "settingsActions": "Actions",
+  "settingsBackupData": "Sauvegarder mes données",
+  "settingsBackupDataSubtitle": "Favoris, réservations et préférences",
+  "settingsResetSettings": "Restaurer paramètres par défaut",
+  "settingsResetSettingsSubtitle": "Remettre tous les paramètres à zéro",
+  "settingsAllowGeolocation": "Autoriser la géolocalisation",
+  "settingsGeolocationRequest": "Visit Djibouti souhaite accéder à votre position pour vous montrer les points d'intérêt proches de vous.",
+  "settingsAllow": "Autoriser",
+  "settingsGeolocationEnabled": "Géolocalisation activée",
+  "settingsClearCache": "Vider le cache",
+  "settingsCacheClearedSuccess": "Cache vidé avec succès",
+  "settingsErrorClearing": "Erreur lors du vidage: {error}",
+  "@settingsErrorClearing": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsClear": "Vider",
+  
+  "eventsSearchHint": "Rechercher un événement...",
+  "eventsAll": "Tous",
+  "eventsNoEventsFound": "Aucun événement trouvé",
+  "eventsClearFilters": "Effacer les filtres",
+  "eventsPopular": "Populaire",
+  "eventsRemovedFromFavorites": "{title} retiré des favoris",
+  "@eventsRemovedFromFavorites": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "eventsAddedToFavorites": "{title} ajouté aux favoris",
+  "@eventsAddedToFavorites": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+
+  "homeShufflePois": "Mélanger les POIs",
+  "homeNoFeaturedPois": "Aucun POI en vedette disponible",
+  "homeNoUpcomingEvents": "Aucun événement à venir",
+  "homeDiscover": "Découvrir",
+  "homeTourOperators": "Opérateurs Touristiques",
+  "homeTourOperatorsSubtitle": "Planifiez votre aventure avec des experts",
+  "homeEssentialInfo": "Infos Essentielles",
+  "homeEssentialInfoSubtitle": "Organisation et liens utiles",
+  "homeEmbassies": "Ambassades",
+  "homeEmbassiesSubtitle": "Représentations diplomatiques à Djibouti et à l'étranger",
+  
+  "mapErrorLoadingPois": "Erreur lors du chargement des POIs: {message}",
+  "@mapErrorLoadingPois": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "mapError": "Erreur: {error}",
+  "@mapError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "mapUnknownPlace": "Lieu inconnu",
+  
+  "authWelcomeBack": "Bon retour !",
+  "authSignInSubtitle": "Connectez-vous à votre compte Visit Djibouti",
+  "authOr": "ou",
+  
+  "authSuccessTitle": "Connexion réussie !",
+  "authErrorTitle": "Erreur",
+  "authSignUpSuccessTitle": "Inscription réussie",
+  "authConversionProblemTitle": "Problème de conversion",
+  "authKeepDiscoveries": "Gardez vos découvertes !",
+  "authWelcomeToApp": "Bienvenue sur Visit Djibouti",
+  "authCreateAccountDescription": "Créez votre compte pour sauvegarder vos favoris et préférences",
+  "authDataPreserved": "Vos données actuelles seront préservées",
+  "authKeepingDataInfo": "✨ En créant votre compte, vous gardez :",
+  "authCurrentFavorites": "Tous vos favoris actuels",
+  "authPreferences": "Vos préférences",
+  "authBrowsingHistory": "Votre historique de navigation",
+  "authDiscoveredPlaces": "Vos lieux découverts",
+  
+  "aboutPageDescription": "Visit Djibouti est l'application officielle du tourisme djiboutien. Découvrez les sites exceptionnels, événements culturels et expériences uniques que notre pays a à offrir. Des paysages volcaniques aux fonds marins préservés, en passant par notre riche patrimoine culturel, explorez Djibouti comme jamais auparavant.",
+  "aboutPointsOfInterest": "Points d'Intérêt",
+  "aboutEvents": "Événements",
+  "aboutTourismOffice": "Office du Tourisme de Djibouti",
+  "aboutTourismOfficeSubtitle": "Organisme officiel de promotion touristique",
+  "aboutMinistry": "Ministère du Commerce et du Tourisme",
+  "aboutMinistrySubtitle": "République de Djibouti",
+  "aboutHotelsAssociation": "Association des Hôteliers",
+  "aboutHotelsAssociationSubtitle": "Secteur privé du tourisme",
+  
+  "helpHowCanWeHelp": "Comment pouvons-nous vous aider ?",
+  "helpSearchPlaceholder": "Rechercher dans l'aide...",
+  "helpContactUs": "Nous contacter",
+  "helpLiveChat": "Chat en direct",
+  "helpConnectingToChat": "Connexion au chat en cours...",
+  "helpStartChat": "Démarrer le chat",
+  "helpSubject": "Sujet",
+  "helpMessage": "Votre message",
+  "helpEmailOptional": "Votre email (optionnel)",
+  "helpProblemTitle": "Titre du problème",
+  "helpMessageSentSuccess": "Message envoyé avec succès !",
+  "helpHowToUseMap": "Comment utiliser la carte",
+  "helpBookEvent": "Réserver un événement",
+  "helpManageFavorites": "Gérer ses favoris",
+  "helpDescribeProblem": "Décrivez le problème rencontré...",
+  "helpDuration3Min": "3 min",
+  "helpDuration2Min": "2 min",
+  "helpDuration1Min": "1 min",
+  
+  "embassiesTitle": "Ambassades",
+  "embassiesCall": "Appeler",
+  "embassiesEmail": "Email",
+  "embassiesWebsite": "Site web",
+  "embassiesCannotOpenPhone": "Impossible d'ouvrir l'application téléphone",
+  "embassiesCannotOpenEmail": "Impossible d'ouvrir l'application email",
+  "embassiesCannotOpenWebsite": "Impossible d'ouvrir le site web",
+  
+  "essentialsTitle": "Infos Essentielles",
+  "essentialsUnavailableInfo": "Informations indisponibles",
+  "essentialsNoLinksAvailable": "Aucun lien disponible",
+  
+  "eventDetailErrorLoading": "Erreur lors du chargement des détails",
+  "eventDetailRegistrationConfirmed": "Inscription confirmée !",
+  "eventDetailReservationNumber": "Numéro de réservation: {number}",
+  "@eventDetailReservationNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailParticipantsCount": "Participants: {count}",
+  "@eventDetailParticipantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailSpecialRequirements": "Exigences spéciales: {requirements}",
+  "@eventDetailSpecialRequirements": {
+    "placeholders": {
+      "requirements": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailParticipantsLabel": "Nombre de participants",
+  "eventDetailFullNameLabel": "Nom complet",
+  "eventDetailEmailLabel": "Email",
+  "eventDetailPhoneLabel": "Téléphone",
+  "eventDetailSpecialRequirementsLabel": "Exigences spéciales (optionnel)",
+  "eventDetailSpecialRequirementsHint": "Allergies, besoins d'accessibilité, etc.",
+  "commonOk": "OK",
+  
+  "reservationsAll": "Toutes ({count})",
+  "@reservationsAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsConfirmed": "Confirmées ({count})",
+  "@reservationsConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsPending": "En attente ({count})",
+  "@reservationsPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsCancelled": "Annulées ({count})",
+  "@reservationsCancelled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsNoneAll": "Aucune réservation",
+  "reservationsNoneConfirmed": "Aucune réservation confirmée",
+  "reservationsNonePending": "Aucune réservation en attente",
+  "reservationsNoneCancelled": "Aucune réservation annulée",
+  "reservationsCancelTitle": "Annuler la réservation",
+  "reservationsDeleteTitle": "Supprimer la réservation",
+  
+  "tourOperatorsNoneFound": "Aucun opérateur touristique trouvé",
+  
+  "offlineLoadingSettings": "Chargement des paramètres...",
+  "offlineConnectionStatus": "État de la connexion",
+  "offlineClearCacheTitle": "Vider le cache",
+  
+  "profileUser": "Utilisateur",
+  "profileLogoutTitle": "Déconnexion",
+  "profilePersonalInfo": "Informations personnelles",
+  "profileEditTooltip": "Modifier",
+  "profileSecurity": "Sécurité",
+  
+  "apiTestTitle": "Test API POIs",
+  
+  "discoverClearFilters": "Effacer les filtres",
+  
+  "mapSearchHint": "Rechercher sur la carte...",
+  
+  "categoryFilterClear": "Effacer",
+  
+  "offlineIndicatorConnectionRestored": "Connexion rétablie !",
+  "offlineIndicatorOfflineMode": "Mode hors ligne",
+  "offlineIndicatorOfflineModeTitle": "Mode hors ligne",
+  
+  "reservationFormDateLabel": "Date *",
+  "reservationFormDatePlaceholder": "Sélectionner une date",
+  "reservationFormTimeLabel": "Heure",
+  "reservationFormTimePlaceholder": "HH:MM",
+  "reservationFormParticipantsLabel": "Nombre de personnes *",
+  "reservationFormParticipantsPlaceholder": "1",
+  "reservationFormNotesLabel": "Notes ou demandes spéciales",
+  "reservationFormNotesPlaceholder": "Allergies alimentaires, besoins spéciaux...",
+  "reservationFormPleaseSelectDate": "Veuillez sélectionner une date",
+  "reservationFormUnexpectedError": "Erreur inattendue: {error}",
+  "@reservationFormUnexpectedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "tourOperatorDetailsSnackbar": "Détails de {name}",
+  "@tourOperatorDetailsSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tourOperatorCallButton": "Appeler",
+  "tourOperatorWebsiteButton": "Site web",
+  
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+  "languageArabic": "العربية"
 }

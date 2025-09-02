@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/event_service.dart';
+import '../../core/services/cache_service.dart';
+import '../../core/services/localization_service.dart';
 import '../../core/models/poi.dart';
+import '../widgets/poi_card.dart';
+import '../widgets/event_card.dart';
 import '../../core/models/event.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/event_list_response.dart';
@@ -10,9 +16,14 @@ import 'poi_detail_page.dart';
 import 'event_detail_page.dart';
 import 'region_page.dart';
 import '../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
+import 'tour_operators_page.dart';
+import 'essentials_page.dart';
+import 'embassies_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Function(int) onTabChange;
+  const HomePage({super.key, required this.onTabChange});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,44 +32,113 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PoiService _poiService = PoiService();
   final EventService _eventService = EventService();
+  final CacheService _cacheService = CacheService();
+  final LocalizationService _localizationService = LocalizationService();
+  
   List<Poi> _featuredPois = [];
   List<Event> _upcomingEvents = [];
   bool _isLoadingPois = true;
   bool _isLoadingEvents = true;
 
+  PageController? _poisPageController;
+  PageController? _eventsPageController;
+  Timer? _timer;
+  int _currentPage = 0;
+
   @override
   void initState() {
     super.initState();
-    _loadFeaturedPois();
-    _loadUpcomingEvents();
+    _eventsPageController = PageController(viewportFraction: 0.85);
+    
+    // Écouter les changements de langue
+    _localizationService.addListener(_onLanguageChanged);
+    
+    _cacheService.clearPoiCache().then((_) {
+      _loadFeaturedPois();
+      _loadUpcomingEvents();
+    });
+  }
+
+  void _onLanguageChanged() {
+    // Recharger les données quand la langue change
+    print('[HOME PAGE] Langue changée - Rechargement forcé des données');
+    
+    // Vider le cache local immédiatement
+    _cacheService.clearPoiCache();
+    
+    // Ajouter un petit délai pour laisser le temps au service de mettre à jour les headers
+    Future.delayed(const Duration(milliseconds: 300), () {
+      print('[HOME PAGE] Rechargement avec nouveaux headers');
+      _loadFeaturedPoisForced();
+      _loadUpcomingEventsForced();
+    });
+  }
+
+  @override
+  void dispose() {
+    _localizationService.removeListener(_onLanguageChanged);
+    _timer?.cancel();
+    _poisPageController?.dispose();
+    _eventsPageController?.dispose();
+    super.dispose();
   }
 
   Future<void> _loadFeaturedPois() async {
+    print('🏠 [HOME] Chargement POIs - Langue: ${_localizationService.currentLanguageCode}');
     try {
-      // Chargez tous les POIs disponibles pour les mélanger
       final ApiResponse<PoiListData> response = await _poiService.getPois(
-        perPage: 20, // Chargez plus de POIs pour avoir plus de choix
+        perPage: 15,
+        useCache: false, // Force API call pour tester les traductions
       );
       
+      print('🏠 [HOME] Réponse API reçue - Success: ${response.isSuccess}');
       if (response.isSuccess && response.hasData) {
         final allPois = response.data!.pois;
-        
-        // Mélangez la liste et prenez les 5 premiers
         allPois.shuffle();
-        final randomPois = allPois.take(5).toList();
         
-        setState(() {
-          _featuredPois = randomPois;
-          _isLoadingPois = false;
-        });
+        if (mounted) {
+          setState(() {
+            _featuredPois = allPois.take(8).toList();
+            _isLoadingPois = false;
+          });
+          
+          print('🏠 [HOME] POIs chargés: ${_featuredPois.length} items');
+          print('🏠 [HOME] Premier POI: ${_featuredPois.isNotEmpty ? _featuredPois.first.name : "aucun"}');
+
+          if (_featuredPois.length > 1) {
+            _setupCarousel();
+          }
+        }
       } else {
-        setState(() {
-          _isLoadingPois = false;
-        });
+        if (mounted) setState(() => _isLoadingPois = false);
       }
     } catch (e) {
-      setState(() {
-        _isLoadingPois = false;
+      if (mounted) setState(() => _isLoadingPois = false);
+    }
+  }
+
+  void _setupCarousel() {
+    _currentPage = _featuredPois.isNotEmpty ? _featuredPois.length * 10 : 0;
+    _poisPageController?.dispose();
+    _poisPageController = PageController(
+      viewportFraction: 0.8,
+      initialPage: _currentPage,
+    );
+    _startAutoScroll();
+  }
+
+  void _startAutoScroll() {
+    _timer?.cancel();
+    if (_featuredPois.length > 1) {
+      _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+        if (_poisPageController != null && _poisPageController!.hasClients) {
+          _currentPage++;
+          _poisPageController!.animateToPage(
+            _currentPage,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOut,
+          );
+        }
       });
     }
   }
@@ -66,26 +146,92 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadUpcomingEvents() async {
     try {
       final ApiResponse<EventListData> response = await _eventService.getEvents(
-        status: 'upcoming', // Charger seulement les événements à venir
-        perPage: 3, // Limite à 3 événements pour l'écran d'accueil
+        status: 'upcoming',
+        perPage: 5,
         sortBy: 'start_date',
         sortOrder: 'asc',
       );
       
       if (response.isSuccess && response.hasData) {
-        setState(() {
-          _upcomingEvents = response.data!.events;
-          _isLoadingEvents = false;
-        });
+        if (mounted) {
+          setState(() {
+            _upcomingEvents = response.data!.events;
+            _isLoadingEvents = false;
+          });
+        }
       } else {
-        setState(() {
-          _isLoadingEvents = false;
-        });
+        if (mounted) setState(() => _isLoadingEvents = false);
       }
     } catch (e) {
-      setState(() {
-        _isLoadingEvents = false;
-      });
+      if (mounted) setState(() => _isLoadingEvents = false);
+    }
+  }
+
+  /// Version forcée qui bypass le cache pour les changements de langue
+  Future<void> _loadFeaturedPoisForced() async {
+    setState(() {
+      _isLoadingPois = true;
+    });
+    
+    try {
+      final ApiResponse<PoiListData> response = await _poiService.getPois(
+        perPage: 15,
+        useCache: false, // Force l'appel API sans cache
+      );
+      
+      if (response.isSuccess && response.hasData) {
+        final allPois = response.data!.pois;
+        allPois.shuffle();
+        
+        if (mounted) {
+          setState(() {
+            _featuredPois = allPois.take(8).toList();
+            _isLoadingPois = false;
+          });
+          print('[HOME PAGE] POIs rechargés: ${_featuredPois.length} items (langue: ${_localizationService.currentLanguageCode})');
+
+          if (_featuredPois.length > 1) {
+            _setupCarousel();
+          }
+        }
+      } else {
+        if (mounted) setState(() => _isLoadingPois = false);
+      }
+    } catch (e) {
+      print('[HOME PAGE] Erreur rechargement POIs: $e');
+      if (mounted) setState(() => _isLoadingPois = false);
+    }
+  }
+
+  /// Version forcée qui bypass le cache pour les changements de langue
+  Future<void> _loadUpcomingEventsForced() async {
+    setState(() {
+      _isLoadingEvents = true;
+    });
+    
+    try {
+      final ApiResponse<EventListData> response = await _eventService.getEvents(
+        status: 'upcoming',
+        perPage: 5,
+        sortBy: 'start_date',
+        sortOrder: 'asc',
+        useCache: false, // Force l'appel API sans cache
+      );
+      
+      if (response.isSuccess && response.hasData) {
+        if (mounted) {
+          setState(() {
+            _upcomingEvents = response.data!.events;
+            _isLoadingEvents = false;
+          });
+          print('[HOME PAGE] Événements rechargés: ${_upcomingEvents.length} items (langue: ${_localizationService.currentLanguageCode})');
+        }
+      } else {
+        if (mounted) setState(() => _isLoadingEvents = false);
+      }
+    } catch (e) {
+      print('[HOME PAGE] Erreur rechargement événements: $e');
+      if (mounted) setState(() => _isLoadingEvents = false);
     }
   }
 
@@ -99,366 +245,195 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Section Random POIs
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.homeFeaturedPois,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  onPressed: _isLoadingPois ? null : _loadFeaturedPois,
-                  icon: const Icon(Icons.refresh),
-                  tooltip: 'Mélanger les POIs',
-                  color: const Color(0xFF3860F8),
-                ),
-              ],
+            _buildSectionHeader(
+              title: AppLocalizations.of(context)!.homeFeaturedPois,
+              onShuffle: _isLoadingPois ? null : _loadFeaturedPois,
+              onSeeAll: () => widget.onTabChange(1),
             ),
             const SizedBox(height: 12),
-            SizedBox(
-              height: isSmallScreen ? 180 : 200,
-              child: _isLoadingPois
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFF3860F8),
-                    ),
-                  )
-                : _featuredPois.isEmpty
-                    ? Center(
-                        child: Text(
-                          'Aucun POI en vedette disponible',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
-                          ),
-                        ),
-                      )
-                    : ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _featuredPois.length,
-                        itemBuilder: (context, index) {
-                          final poi = _featuredPois[index];
-                          
-                          return Container(
-                            width: isSmallScreen ? 140 : 160,
-                            margin: EdgeInsets.only(right: isSmallScreen ? 8 : 12),
-                            child: Card(
-                              elevation: 4,
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PoiDetailPage(poi: poi),
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: isSmallScreen ? 80 : 100,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFE8D5A3),
-                                        borderRadius: const BorderRadius.vertical(
-                                          top: Radius.circular(12),
-                                        ),
-                                      ),
-                                      child: poi.featuredImage != null && poi.imageUrl.isNotEmpty
-                                          ? ClipRRect(
-                                              borderRadius: const BorderRadius.vertical(
-                                                top: Radius.circular(12),
-                                              ),
-                                              child: Image.network(
-                                                poi.imageUrl,
-                                                fit: BoxFit.cover,
-                                                errorBuilder: (context, error, stackTrace) {
-                                                  return const Center(
-                                                    child: Icon(
-                                                      Icons.place,
-                                                      size: 40,
-                                                      color: Color(0xFF3860F8),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                          : const Center(
-                                              child: Icon(
-                                                Icons.place,
-                                                size: 40,
-                                                color: Color(0xFF3860F8),
-                                              ),
-                                            ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            poi.name,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            poi.region,
-                                            style: TextStyle(
-                                              color: Colors.grey[600],
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-            ),
+            _buildFeaturedPoisCarousel(isSmallScreen),
             
             const SizedBox(height: 24),
             
-            // Section Événements à venir
-            Text(
-              AppLocalizations.of(context)!.homeUpcomingEvents,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            _buildSectionHeader(
+              title: AppLocalizations.of(context)!.homeUpcomingEvents,
+              onSeeAll: () => widget.onTabChange(2),
             ),
             const SizedBox(height: 12),
-            _isLoadingEvents
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFF3860F8),
-                    ),
-                  )
-                : _upcomingEvents.isEmpty
-                    ? Center(
-                        child: Text(
-                          'Aucun événement à venir',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: _upcomingEvents.map((event) => _buildEventCard(event)).toList(),
-                      ),
+            _buildUpcomingEventsCarousel(),
             
             const SizedBox(height: 24),
             
-            // Section Découvrir par région
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Découvrir par région',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Appuyez pour explorer',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
+            _buildSectionHeader(title: 'Découvrir par région', subtitle: 'Appuyez pour explorer'),
             const SizedBox(height: 12),
-            GridView.count(
-              crossAxisCount: isSmallScreen ? 1 : 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: isSmallScreen ? 8 : 12,
-              crossAxisSpacing: isSmallScreen ? 8 : 12,
-              childAspectRatio: isSmallScreen ? 2.5 : 1.5,
-              children: [
-                _buildRegionCard('Djibouti Ville', '🏙️', const Color(0xFF3860F8)),
-                _buildRegionCard('Tadjourah', '🏔️', const Color(0xFF009639)),
-                _buildRegionCard('Ali Sabieh', '🌄', const Color(0xFF0072CE)),
-                _buildRegionCard('Dikhil', '🏜️', const Color(0xFFE8D5A3)),
-                _buildRegionCard('Obock', '⛵', const Color(0xFF006B96)),
-                _buildRegionCard('Arta', '🌿', const Color(0xFF10B981)),
-              ],
-            ),
+            _buildRegionGrid(isSmallScreen),
+
+            const SizedBox(height: 24),
+            _buildSectionHeader(title: 'Essentiels'),
+            const SizedBox(height: 12),
+            _buildEssentialsSection(),
           ],
         ),
     );
   }
 
-  Widget _buildEventCard(Event event) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EventDetailPage(event: event),
-          ),
-        ),
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Image occupant toute la hauteur à gauche
-              Container(
-                width: 80,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF3860F8),
-                ),
-                child: event.imageUrl.isNotEmpty
-                    ? Image.network(
-                        event.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                            child: Text(
-                              _getEventEmoji(event.primaryCategory),
-                              style: const TextStyle(fontSize: 24, color: Colors.white),
-                            ),
-                          );
-                        },
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          );
-                        },
-                      )
-                    : Center(
-                        child: Text(
-                          _getEventEmoji(event.primaryCategory),
-                          style: const TextStyle(fontSize: 24, color: Colors.white),
-                        ),
-                      ),
+  Widget _buildSectionHeader({required String title, String? subtitle, VoidCallback? onShuffle, VoidCallback? onSeeAll}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              // Contenu à droite
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        event.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _formatEventDate(event),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        event.displayLocation,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
+            ),
+            if (subtitle != null)
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                  fontStyle: FontStyle.italic,
                 ),
               ),
-              // Icône flèche
-              const Padding(
-                padding: EdgeInsets.only(right: 16.0),
-                child: Icon(Icons.arrow_forward_ios, size: 16),
-              ),
-            ],
-          ),
+          ],
         ),
-      ),
+        Row(
+          children: [
+            if (onSeeAll != null)
+              TextButton(
+                onPressed: onSeeAll,
+                child: Text(
+                  AppLocalizations.of(context)!.commonSeeAll,
+                  style: const TextStyle(color: Color(0xFF3860F8)),
+                ),
+              ),
+            if (onShuffle != null)
+              IconButton(
+                onPressed: onShuffle,
+                icon: const Icon(Icons.refresh),
+                tooltip: AppLocalizations.of(context)!.homeShufflePois,
+                color: const Color(0xFF3860F8),
+              ),
+          ],
+        ),
+      ],
     );
   }
 
-  String _formatEventDate(Event event) {
-    try {
-      final DateTime startDate = DateTime.parse(event.startDate);
-      final DateTime? endDate = event.endDate != null ? DateTime.parse(event.endDate!) : null;
-      
-      if (endDate != null && !_isSameDay(startDate, endDate)) {
-        return '${_formatDate(startDate)} - ${_formatDate(endDate)}';
-      } else {
-        return _formatDate(startDate);
-      }
-    } catch (e) {
-      return event.startDate;
-    }
+  Widget _buildFeaturedPoisCarousel(bool isSmallScreen) {
+    return SizedBox(
+      height: 320.h,
+      child: _isLoadingPois
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
+          : _featuredPois.isEmpty
+              ? Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.homeNoFeaturedPois,
+                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                  ),
+                )
+              : NotificationListener<ScrollNotification>(
+                  onNotification: (notification) {
+                    if (notification is UserScrollNotification) {
+                      _timer?.cancel();
+                    } else if (notification is ScrollEndNotification) {
+                      _startAutoScroll();
+                    }
+                    return true;
+                  },
+                  child: PageView.builder(
+                    controller: _poisPageController,
+                    itemBuilder: (context, index) {
+                      final poi = _featuredPois[index % _featuredPois.length];
+                      return AnimatedBuilder(
+                        animation: _poisPageController!,
+                        builder: (context, child) {
+                          double scale = 1.0;
+                          if (_poisPageController!.position.haveDimensions) {
+                            double page = _poisPageController!.page ?? 0.0;
+                            double difference = (page - index).abs();
+                            scale = max(0.85, 1.0 - difference * 0.15);
+                          }
+                          return Transform.scale(
+                            scale: scale,
+                            child: child,
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: PoiCard(poi: poi),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+    );
   }
 
-  String _formatDate(DateTime date) {
-    const months = [
-      'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun',
-      'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
+  Widget _buildUpcomingEventsCarousel() {
+    return SizedBox(
+      height: 340.h,
+      child: _isLoadingEvents
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
+          : _upcomingEvents.isEmpty
+              ? Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.homeNoUpcomingEvents,
+                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                  ),
+                )
+              : PageView.builder(
+                  controller: _eventsPageController,
+                  itemCount: _upcomingEvents.length,
+                  itemBuilder: (context, index) {
+                    final event = _upcomingEvents[index];
+                    return AnimatedBuilder(
+                      animation: _eventsPageController!,
+                      builder: (context, child) {
+                        double scale = 1.0;
+                        if (_eventsPageController!.position.haveDimensions) {
+                          double page = _eventsPageController!.page ?? 0.0;
+                          double difference = (page - index).abs();
+                          scale = max(0.85, 1.0 - difference * 0.15);
+                        }
+                        return Transform.scale(
+                          scale: scale,
+                          child: child,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: EventCard(event: event),
+                      ),
+                    );
+                  },
+                ),
+    );
   }
 
-  bool _isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-           date1.month == date2.month &&
-           date1.day == date2.day;
-  }
-
-  String _getEventEmoji(String category) {
-    switch (category.toLowerCase()) {
-      case 'festival':
-      case 'musique':
-      case 'concert':
-        return '🎵';
-      case 'sport':
-      case 'marathon':
-      case 'course':
-        return '🏃';
-      case 'conférence':
-      case 'salon':
-      case 'exposition':
-        return '🏢';
-      case 'culture':
-      case 'art':
-        return '🎭';
-      case 'gastronomie':
-      case 'culinaire':
-        return '🍽️';
-      case 'nature':
-      case 'écologie':
-        return '🌿';
-      default:
-        return '📅';
-    }
+  Widget _buildRegionGrid(bool isSmallScreen) {
+    return GridView.count(
+      crossAxisCount: isSmallScreen ? 1 : 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: isSmallScreen ? 8 : 12,
+      crossAxisSpacing: isSmallScreen ? 8 : 12,
+      childAspectRatio: isSmallScreen ? 2.5 : 1.5,
+      children: [
+        _buildRegionCard('Djibouti', '🏙️', const Color(0xFF3860F8)),
+        _buildRegionCard('Tadjourah', '🏔️', const Color(0xFF009639)),
+        _buildRegionCard('Ali Sabieh', '🌄', const Color(0xFF0072CE)),
+        _buildRegionCard('Dikhil', '🏜️', const Color(0xFFE8D5A3)),
+        _buildRegionCard('Obock', '⛵', const Color(0xFF006B96)),
+        _buildRegionCard('Arta', '🌿', const Color(0xFF10B981)),
+      ],
+    );
   }
 
   Widget _buildRegionCard(String title, String emoji, Color color) {
@@ -466,11 +441,8 @@ class _HomePageState extends State<HomePage> {
       elevation: 4,
       child: InkWell(
         onTap: () {
-          // Feedback haptique (si disponible)
           try {
-            // Vibration légère sur Android
           } catch (e) {
-            // Ignorer si la vibration n'est pas supportée
           }
           
           Navigator.push(
@@ -493,13 +465,13 @@ class _HomePageState extends State<HomePage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                color.withValues(alpha: 0.9),
-                color.withValues(alpha: 0.7),
+                color.withOpacity(0.9),
+                color.withOpacity(0.7),
               ],
             ),
             boxShadow: [
               BoxShadow(
-                color: color.withValues(alpha: 0.3),
+                color: color.withOpacity(0.3),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -507,7 +479,6 @@ class _HomePageState extends State<HomePage> {
           ),
           child: Stack(
             children: [
-              // Effet de brillance
               Positioned(
                 top: 8,
                 right: 8,
@@ -515,12 +486,11 @@ class _HomePageState extends State<HomePage> {
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                 ),
               ),
-              // Contenu principal
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -548,9 +518,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Découvrir',
+                      AppLocalizations.of(context)!.homeDiscover,
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: Colors.white.withOpacity(0.9),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -565,4 +535,44 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildEssentialsSection() {
+    return Column(
+      children: [
+        _buildEssentialLink(
+          icon: Icons.business_center,
+          title: AppLocalizations.of(context)!.homeTourOperators,
+          subtitle: AppLocalizations.of(context)!.homeTourOperatorsSubtitle,
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TourOperatorsPage())),
+        ),
+        const SizedBox(height: 12),
+        _buildEssentialLink(
+          icon: Icons.info_outline,
+          title: AppLocalizations.of(context)!.homeEssentialInfo,
+          subtitle: AppLocalizations.of(context)!.homeEssentialInfoSubtitle,
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EssentialsPage())),
+        ),
+        const SizedBox(height: 12),
+        _buildEssentialLink(
+          icon: Icons.account_balance,
+          title: AppLocalizations.of(context)!.homeEmbassies,
+          subtitle: AppLocalizations.of(context)!.homeEmbassiesSubtitle,
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EmbassiesPage())),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEssentialLink({required IconData icon, required String title, required String subtitle, required VoidCallback onTap}) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: Icon(icon, color: const Color(0xFF3860F8), size: 32),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: onTap,
+      ),
+    );
+  }
 }

@@ -164,12 +164,13 @@ Backend organized in categories (see `ApiConstants`):
 - 5-tab navigation with IndexedStack preservation
 - Modern Material Design 3 UI with Djibouti theming
 - Multilingual support (French, English, Arabic)
-- Comprehensive fake data for development
+- Comprehensive reservation system with creation, cancellation, and deletion
+- Complete offline mode with intelligent caching and synchronization
 
 ### 🚀 Next Steps
-1. Connect live API endpoints (backend is configured)
+1. ~~Connect live API endpoints~~ ✅ **DONE** - All endpoints connected and functional
 2. Implement Google Maps with POI markers
-3. Add offline caching and synchronization
+3. ~~Add offline caching and synchronization~~ ✅ **DONE** - Full offline system implemented
 4. Migrate to BLoC for state management
 5. Add comprehensive testing suite
 
@@ -189,6 +190,54 @@ The app implements a "0% friction" onboarding:
 - Configurable timeout settings (30s)
 - Language header management for localization
 
+### Offline Mode Architecture
+Complete offline system implemented with intelligent caching and synchronization:
+
+**Core Services:**
+- `ConnectivityService` - Automatic network detection with `connectivity_plus`
+- `CacheService` - Smart caching with expiration (15min normal, 7 days offline)
+- `SyncService` - Automatic sync on connectivity restoration
+
+**Features:**
+- Automatic offline detection with visual indicators
+- Data persistence for POIs, events, and favorites
+- Background synchronization when network returns
+- Region-based data download (all 6 Djibouti regions)
+- Cache statistics and management UI
+- Smart cache expiration with offline fallback
+
+**UI Components:**
+- `OfflineIndicator` - Animated connectivity status bar
+- `OfflineSettingsPage` - Complete offline management interface
+- `ConnectivityIcon` - AppBar status indicator
+
+**Integration:**
+- Services initialized at app startup
+- POI and Event services use cache automatically
+- Seamless online/offline experience
+- Navigation available from Settings and App Drawer
+
+### Reservation System
+Full-featured reservation management:
+
+**Core Features:**
+- Create reservations for POIs and Events that accept reservations
+- Unified form with date/time pickers and contact information
+- Real-time validation and availability checking
+- Confirmation number-based operations (not ID-based)
+
+**Management:**
+- List all reservations with filtering (All, Confirmed, Pending, Cancelled)
+- Cancel pending reservations
+- Delete cancelled reservations permanently
+- Detailed reservation information modal
+
+**API Integration:**
+- `POST /api/reservations` - Create new reservations
+- `PATCH /api/reservations/{confirmation_number}/cancel` - Cancel reservations  
+- `DELETE /api/reservations/{confirmation_number}` - Delete cancelled reservations
+- `GET /api/reservations` - List user reservations with filtering
+
 ### Code Generation
 Models use `json_serializable` - run `dart run build_runner build` after model changes.
 
@@ -196,6 +245,7 @@ Models use `json_serializable` - run `dart run build_runner build` after model c
 - Widget tests in `test/widget_test.dart`
 - Services can be unit tested independently
 - API integration testable via `ApiTestPage`
+- Offline functionality testable by disabling network
 
 ## Getting Started
 

@@ -6,6 +6,8 @@ import '../api/api_client.dart';
 import 'poi_service.dart';
 import 'event_service.dart';
 import 'anonymous_auth_service.dart';
+import 'connectivity_service.dart';
+import 'cache_service.dart';
 
 enum FavoriteType { poi, event }
 
@@ -27,6 +29,8 @@ class FavoritesService {
   final EventService _eventService = EventService();
   final AnonymousAuthService _authService = AnonymousAuthService();
   final ApiClient _apiClient = ApiClient();
+  final ConnectivityService _connectivityService = ConnectivityService();
+  final CacheService _cacheService = CacheService();
   
   // Cache en mémoire pour éviter les appels répétés
   List<int>? _cachedPoiIds;
@@ -109,7 +113,11 @@ class FavoritesService {
       }
 
       // Trier par date d'ajout en favori (les plus récents en premier)
-      favorites.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      favorites.sort((a, b) {
+        final aDate = DateTime.tryParse(a.createdAt ?? '') ?? DateTime(1970);
+        final bDate = DateTime.tryParse(b.createdAt ?? '') ?? DateTime(1970);
+        return bDate.compareTo(aDate);
+      });
       
       return favorites;
     } catch (e) {
@@ -132,7 +140,11 @@ class FavoritesService {
       }
 
       // Trier par date d'ajout en favori (les plus récents en premier)
-      favorites.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      favorites.sort((a, b) {
+        final aDate = DateTime.tryParse(a.createdAt ?? '') ?? DateTime(1970);
+        final bDate = DateTime.tryParse(b.createdAt ?? '') ?? DateTime(1970);
+        return bDate.compareTo(aDate);
+      });
       
       return favorites;
     } catch (e) {

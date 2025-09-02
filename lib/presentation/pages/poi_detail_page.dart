@@ -6,6 +6,8 @@ import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
+import '../widgets/reservation_form_widget.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class PoiDetailPage extends StatefulWidget {
   final Poi poi;
@@ -37,8 +39,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
   }
   
   void _onScroll() {
-    // La galerie d'images fait 250px de hauteur
-    // On affiche le titre quand on a scrollé au-delà de cette hauteur
     const imageGalleryHeight = 250.0;
     final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
     
@@ -47,6 +47,26 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         _showTitle = shouldShowTitle;
       });
     }
+  }
+
+  void _showReservationForm(Poi poi) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: ReservationFormWidget(
+          poi: poi,
+          onSuccess: () {
+            // Fermer le modal et afficher un message de succès
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
   }
 
   Future<void> _loadPoiDetails() async {
@@ -80,7 +100,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
   }
 
   Future<void> _openInMaps(Poi poi) async {
-    // Essaie Google Maps en premier, puis Apple Maps en fallback
     try {
       await _openInGoogleMaps(poi);
     } catch (e) {
@@ -101,7 +120,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Future<void> _openInGoogleMaps(Poi poi) async {
     final url = Uri.parse(
-      'https://www.google.com/maps/dir/?api=1&destination=${poi.latitude},${poi.longitude}&destination_place_id=${Uri.encodeComponent(poi.name)}'
+      'https://www.google.com/maps/dir/?api=1&destination=${poi.latitude},${poi.longitude}&destination_place_id=${Uri.encodeComponent(poi.name ?? '')}'
     );
     
     if (await canLaunchUrl(url)) {
@@ -113,7 +132,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Future<void> _openInAppleMaps(Poi poi) async {
     final url = Uri.parse(
-      'https://maps.apple.com/?daddr=${poi.latitude},${poi.longitude}&q=${Uri.encodeComponent(poi.name)}'
+      'https://maps.apple.com/?daddr=${poi.latitude},${poi.longitude}&q=${Uri.encodeComponent(poi.name ?? '')}'
     );
     
     if (await canLaunchUrl(url)) {
@@ -125,13 +144,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   List<String> _getImageUrls(Poi poi) {
     final List<String> urls = [];
-    
-    // Ajouter l'image featured en premier
     if (poi.featuredImage != null) {
       urls.add(poi.featuredImage!.url);
     }
-    
-    // Ajouter les autres images
     if (poi.media != null) {
       for (final media in poi.media!) {
         if (media.url != poi.featuredImage?.url) {
@@ -139,8 +154,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         }
       }
     }
-    
-    // Si aucune image, retourner une liste vide
     return urls;
   }
 
@@ -160,7 +173,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -212,7 +225,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       backgroundColor: const Color(0xFF3860F8),
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text('Réessayer'),
+                    child: Text(AppLocalizations.of(context)!.commonRetry),
                   ),
                 ],
               ),
@@ -222,7 +235,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -247,47 +260,29 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           CustomScrollView(
             controller: _scrollController,
             slivers: [
-              // Contenu principal
               SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Galerie d'images (maintenant dans le contenu)
                     _buildImageGallery(poi),
-                    
-                    // Header avec nom et actions
                     _buildHeader(poi),
-                    
-                    // Description - prioritize full description from detailed POI
                     if (poi.description?.isNotEmpty == true)
                       _buildDescriptionSection(poi)
                     else if (poi.shortDescription.isNotEmpty)
                       _buildShortDescriptionSection(poi)
                     else
                       _buildNoDescriptionPlaceholder(poi),
-                    
-                    // Localisation
                     _buildLocationSection(poi),
-                    
-                    // Informations pratiques
                     _buildPracticalInfoSection(poi),
-                    
-                    // Catégories
                     _buildCategoriesSection(poi),
-                    
-                    // Conseils
                     if (poi.tips?.isNotEmpty == true)
                       _buildTipsSection(poi),
-                    
-                    // Contact
                     if (poi.contact?.isNotEmpty == true)
                       _buildContactSection(poi),
-                    
                     const SizedBox(height: 24),
-                    
-                    // Bouton partager
+                    if (poi.allowReservations)
+                      _buildReservationSection(poi),
                     _buildShareSection(poi),
-                    
                     const SizedBox(height: 32),
                   ],
                 ),
@@ -295,7 +290,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ],
           ),
           
-          // Barre translucide en haut avec boutons et titre
           AnimatedPositioned(
             duration: const Duration(milliseconds: 200),
             top: 0,
@@ -306,10 +300,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               duration: const Duration(milliseconds: 200),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: Colors.white.withOpacity(0.9),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: Colors.black.withOpacity(0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -320,10 +314,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
-                        // Bouton retour
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -334,13 +327,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             ),
                           ),
                         ),
-                        
-                        // Titre au centre
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              poi.name,
+                              poi.name ?? 'Lieu inconnu',
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -352,11 +343,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             ),
                           ),
                         ),
-                        
-                        // Bouton favoris
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -389,14 +378,13 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ),
           ),
           
-          // Boutons flottants normaux (quand la barre n'est pas visible)
           if (!_showTitle) ...[
             Positioned(
               top: MediaQuery.of(context).padding.top + 10,
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -414,7 +402,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               right: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -470,12 +458,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       width: double.infinity,
       child: Stack(
         children: [
-          // PageView pour le swipe
           PageView.builder(
             controller: _imagePageController,
             physics: const BouncingScrollPhysics(),
             onPageChanged: (index) {
-              print('PageView changed to index: $index');
               setState(() {
                 _currentImageIndex = index;
               });
@@ -512,300 +498,36 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             },
           ),
           
-          
-            
-            // Image indicators modifiés
-            Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: imageUrls.asMap().entries.map((entry) {
-                  final isActive = entry.key == _currentImageIndex;
-                  return GestureDetector(
-                    onTap: () {
-                      print('Indicator ${entry.key} tapped!');
-                      setState(() {
-                        _currentImageIndex = entry.key;
-                      });
-                    },
-                    child: Container(
-                      width: isActive ? 12 : 8,
-                      height: isActive ? 12 : 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.6),
-                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-      ),
-      );
-  }
-
-  Widget _buildOldImageSliverAppBar(Poi poi) {
-    final imageUrls = _getImageUrls(poi);
-    final hasImages = imageUrls.isNotEmpty;
-    
-    return SliverAppBar(
-      expandedHeight: 300,
-      pinned: true,
-      backgroundColor: const Color(0xFF3860F8),
-      flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          fit: StackFit.expand,
-          children: [
-            if (hasImages) ...[
-              // Image actuelle avec navigation par boutons
-              Stack(
-                children: [
-                  // Image principale
-                  GestureDetector(
-                    onTap: () {
-                      // Tap pour passer à l'image suivante
-                      if (_currentImageIndex < imageUrls.length - 1) {
-                        setState(() {
-                          _currentImageIndex++;
-                        });
-                      } else {
-                        setState(() {
-                          _currentImageIndex = 0; // Revenir au début
-                        });
-                      }
-                    },
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      child: SizedBox(
-                        key: ValueKey(_currentImageIndex),
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: Image.network(
-                          imageUrls[_currentImageIndex],
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: const Color(0xFFE8D5A3),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.place,
-                                  size: 80,
-                                  color: Color(0xFF3860F8),
-                                ),
-                              ),
-                            );
-                          },
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
-                              color: const Color(0xFFE8D5A3),
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  color: Color(0xFF3860F8),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imageUrls.asMap().entries.map((entry) {
+                final isActive = entry.key == _currentImageIndex;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _currentImageIndex = entry.key;
+                    });
+                  },
+                  child: Container(
+                    width: isActive ? 12 : 8,
+                    height: isActive ? 12 : 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                      border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
                     ),
                   ),
-                  
-                  // Boutons de navigation (seulement si plus d'une image)
-                  if (imageUrls.length > 1) ...[
-                    // Bouton précédent
-                    Positioned(
-                      left: 16,
-                      top: 0,
-                      bottom: 0,
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_currentImageIndex > 0) {
-                              setState(() {
-                                _currentImageIndex--;
-                              });
-                            } else {
-                              setState(() {
-                                _currentImageIndex = imageUrls.length - 1;
-                              });
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.5),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.chevron_left,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    
-                    // Bouton suivant
-                    Positioned(
-                      right: 16,
-                      top: 0,
-                      bottom: 0,
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (_currentImageIndex < imageUrls.length - 1) {
-                              setState(() {
-                                _currentImageIndex++;
-                              });
-                            } else {
-                              setState(() {
-                                _currentImageIndex = 0;
-                              });
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.5),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.chevron_right,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    
-                    // Instructions de navigation
-                    Positioned(
-                      top: 16,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.6),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Text(
-                            'Appuyez pour changer d\'image (${_currentImageIndex + 1}/${imageUrls.length})',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-              
-              // Gradient overlay
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withValues(alpha: 0.3),
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.7),
-                    ],
-                    stops: const [0.0, 0.5, 1.0],
-                  ),
-                ),
-              ),
-              
-              // Image indicators modifiés
-              if (imageUrls.length > 1)
-                Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: imageUrls.asMap().entries.map((entry) {
-                      final isActive = entry.key == _currentImageIndex;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _currentImageIndex = entry.key;
-                          });
-                        },
-                        child: Container(
-                          width: isActive ? 12 : 8,
-                          height: isActive ? 12 : 8,
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.6),
-                            border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-            ] else ...[
-              // Image par défaut
-              Container(
-                color: const Color(0xFFE8D5A3),
-                child: const Center(
-                  child: Icon(
-                    Icons.place,
-                    size: 80,
-                    color: Color(0xFF3860F8),
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-      actions: [
-        Container(
-          margin: const EdgeInsets.only(right: 8),
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.3),
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              setState(() {
-                _isFavorite = !_isFavorite;
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    _isFavorite 
-                        ? 'Ajouté aux favoris' 
-                        : 'Retiré des favoris'
-                  ),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            },
-            icon: Icon(
-              _isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: _isFavorite ? Colors.red : Colors.white,
+                );
+              }).toList(),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -815,19 +537,15 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Nom du POI
           Text(
-            poi.name,
+            poi.name ?? 'Lieu inconnu',
             style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
               height: 1.2,
             ),
           ),
-          
           const SizedBox(height: 8),
-          
-          // Région et statistiques
           Row(
             children: [
               Icon(
@@ -837,7 +555,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
               const SizedBox(width: 4),
               Text(
-                poi.region,
+                poi.region ?? 'Inconnue',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[600],
@@ -886,7 +604,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -907,7 +625,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            poi.description!,
+            poi.description ?? poi.shortDescription,
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey[700],
@@ -938,7 +656,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -987,7 +705,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+              color: const Color(0xFF3860F8).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(
@@ -999,7 +717,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Découvrez ce lieu unique à ${poi.region} ! Explorez ses particularités en visitant sur place.',
+              'Découvrez ce lieu unique à ${poi.region ?? 'Inconnue'} ! Explorez ses particularités en visitant sur place.',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[700],
@@ -1013,7 +731,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     );
   }
 
-
   Widget _buildLocationSection(Poi poi) {
     return _buildInfoSection(
       icon: Icons.map,
@@ -1021,7 +738,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Carte Google Maps interactive
           Container(
             width: double.infinity,
             height: 250,
@@ -1042,7 +758,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         markerId: MarkerId('poi_${poi.id}'),
                         position: LatLng(poi.latitude, poi.longitude),
                         infoWindow: InfoWindow(
-                          title: poi.name,
+                          title: poi.name ?? 'Lieu inconnu',
                           snippet: poi.displayAddress,
                         ),
                       ),
@@ -1057,8 +773,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     compassEnabled: false,
                   ),
                 ),
-                
-                // Bouton pour ouvrir dans l'app de navigation
                 Positioned(
                   bottom: 12,
                   right: 12,
@@ -1072,12 +786,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ],
             ),
           ),
-          
           const SizedBox(height: 16),
-          
           const SizedBox(height: 12),
-          
-          // Adresse
           _buildInfoRow(
             Icons.location_on,
             'Adresse',
@@ -1134,7 +844,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xFF009639).withValues(alpha: 0.1),
+                color: const Color(0xFF009639).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -1176,14 +886,14 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+              color: const Color(0xFF3860F8).withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: const Color(0xFF3860F8).withValues(alpha: 0.3),
+                color: const Color(0xFF3860F8).withOpacity(0.3),
               ),
             ),
             child: Text(
-              category.name,
+              category.name ?? 'Catégorie',
               style: const TextStyle(
                 color: Color(0xFF3860F8),
                 fontSize: 14,
@@ -1214,6 +924,25 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     );
   }
 
+  Widget _buildReservationSection(Poi poi) {
+    return Container(
+      margin: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
+      child: ElevatedButton.icon(
+        onPressed: () => _showReservationForm(poi),
+        icon: const Icon(Icons.bookmark_add),
+        label: const Text('Réserver ce lieu'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildShareSection(Poi poi) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -1221,12 +950,12 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         onPressed: () {
           HapticFeedback.lightImpact();
           final shareText = '''
-🏛️ ${poi.name}
+🏛️ ${poi.name ?? 'Lieu inconnu'}
 
 📍 ${poi.displayAddress}
-🌍 ${poi.region}, Djibouti
+🌍 ${poi.region ?? 'Inconnue'}, Djibouti
 
-${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu unique à ${poi.region} !'}
+${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu unique à ${poi.region ?? 'Inconnue'} !'}
 
 📱 Partagé depuis Visit Djibouti
 ''';
@@ -1265,7 +994,6 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
       children: lines.map((line) {
         if (line.trim().isEmpty) return const SizedBox(height: 4);
         
-        // Détection du type de contact
         if (line.toLowerCase().contains('telephone') || 
             line.toLowerCase().contains('téléphone') ||
             line.toLowerCase().contains('tél')) {
@@ -1276,19 +1004,14 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
                    line.toLowerCase().contains('website')) {
           return _buildContactHeader('Site web', Icons.language);
         } else if (line.startsWith('+') || RegExp(r'^\d').hasMatch(line)) {
-          // Numéro de téléphone
           return _buildContactInfo(line, Icons.phone, false);
         } else if (line.contains('@')) {
-          // Email
           return _buildContactInfo(line, Icons.email, false);
         } else if (line.contains('http') || line.contains('www')) {
-          // URL
           return _buildContactInfo(line, Icons.language, false);
         } else if (line.contains('facebook') || line.contains('m.me')) {
-          // Facebook
           return _buildContactInfo(line, Icons.facebook, false);
         } else {
-          // Texte normal
           return Padding(
             padding: const EdgeInsets.only(bottom: 4),
             child: Text(
@@ -1345,7 +1068,7 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
         child: Text(
           info.trim(),
           style: TextStyle(
-            color: Colors.grey[700], // Always black/gray, no underlining
+            color: Colors.grey[700],
             fontSize: 14,
           ),
         ),
@@ -1369,7 +1092,7 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -1383,7 +1106,7 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? const Color(0xFF3860F8)).withValues(alpha: 0.1),
+                  color: (iconColor ?? const Color(0xFF3860F8)).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(

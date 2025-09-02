@@ -75,26 +75,30 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
 
   String _getTabLabel(String tab) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return tab; // Fallback
     switch (tab) {
       case 'all':
-        return AppLocalizations.of(context)!.favoritesAllTab;
+        return l10n.favoritesAllTab;
       case 'pois':
-        return AppLocalizations.of(context)!.favoritesPoisTab;
+        return l10n.favoritesPoisTab;
       case 'events':
-        return AppLocalizations.of(context)!.favoritesEventsTab;
+        return l10n.favoritesEventsTab;
       default:
         return tab;
     }
   }
 
   String _getSortLabel(String sort) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return sort; // Fallback
     switch (sort) {
       case 'recent':
-        return AppLocalizations.of(context)!.favoritesSortRecent;
+        return l10n.favoritesSortRecent;
       case 'alphabetical':
-        return AppLocalizations.of(context)!.favoritesSortAlphabetical;
+        return l10n.favoritesSortAlphabetical;
       case 'rating':
-        return AppLocalizations.of(context)!.favoritesSortRating;
+        return l10n.favoritesSortRating;
       default:
         return sort;
     }
@@ -267,15 +271,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
     items.sort((a, b) {
       switch (_sortBy) {
         case 'recent':
-          final aDate = a is Poi ? a.createdAt : (a as Event).createdAt;
-          final bDate = b is Poi ? b.createdAt : (b as Event).createdAt;
+          final aDateStr = a is Poi ? a.createdAt : (a as Event).createdAt;
+          final bDateStr = b is Poi ? b.createdAt : (b as Event).createdAt;
+          final aDate = DateTime.tryParse(aDateStr ?? '') ?? DateTime(1970);
+          final bDate = DateTime.tryParse(bDateStr ?? '') ?? DateTime(1970);
           return bDate.compareTo(aDate);
         case 'alphabetical':
-          final aName = a is Poi ? a.name : (a as Event).title;
-          final bName = b is Poi ? b.name : (b as Event).title;
+          final aName = (a is Poi ? a.name : (a as Event).title) ?? '';
+          final bName = (b is Poi ? b.name : (b as Event).title) ?? '';
           return aName.compareTo(bName);
         case 'rating':
-          final aRating = a is Poi ? 4.0 : 4.5;
+          final aRating = a is Poi ? 4.0 : 4.5; // Note: Event model does not have rating
           final bRating = b is Poi ? 4.0 : 4.5;
           return bRating.compareTo(aRating);
         default:

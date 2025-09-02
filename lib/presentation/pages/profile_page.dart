@@ -9,6 +9,7 @@ import 'package:vd_gem/core/models/anonymous_user.dart';
 import 'package:vd_gem/core/utils/responsive.dart';
 import 'package:vd_gem/presentation/pages/profile/personal_info_page.dart';
 import 'package:vd_gem/presentation/pages/profile/security_page.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -174,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  _user?.name ?? 'Utilisateur',
+                  _user?.name ?? AppLocalizations.of(context)!.profileUser,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -481,7 +482,7 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(height: ResponsiveConstants.largeSpace),
           _buildSectionItem(
             icon: Icons.logout,
-            title: 'Déconnexion',
+            title: AppLocalizations.of(context)!.authLogout,
             subtitle: 'Se déconnecter du compte',
             onTap: _handleLogout,
             isDestructive: true,
@@ -561,7 +562,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Déconnexion'),
+        title: Text(AppLocalizations.of(context)!.profileLogoutTitle),
         content: const Text(
           'Êtes-vous sûr de vouloir vous déconnecter ? '
           'Vous redeviendrez un utilisateur anonyme.',
@@ -574,7 +575,7 @@ class _ProfilePageState extends State<ProfilePage> {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Déconnexion'),
+            child: Text(AppLocalizations.of(context)!.authLogout),
           ),
         ],
       ),
@@ -588,9 +589,9 @@ class _ProfilePageState extends State<ProfilePage> {
       if (success) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Déconnexion réussie'),
-              backgroundColor: Color(0xFF009639),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.drawerLogoutSuccess),
+              backgroundColor: const Color(0xFF009639),
             ),
           );
         }
@@ -634,7 +635,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Choisir la langue'),
+        title: Text(AppLocalizations.of(context)!.drawerChooseLanguage),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

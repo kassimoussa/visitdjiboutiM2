@@ -11,6 +11,9 @@ class Category {
   final String? description;
   final String? color;
   final String? icon;
+  final int? parentId;
+  final int? level;
+  final List<Category>? subCategories;
 
   const Category({
     required this.id,
@@ -19,6 +22,9 @@ class Category {
     this.description,
     this.color,
     this.icon,
+    this.parentId,
+    this.level,
+    this.subCategories,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) =>
@@ -35,5 +41,18 @@ class Category {
       return value.toInt();
     }
     return -1; // Default value for null or unparseable data
+  }
+
+  bool get isParentCategory => level == 0 || [5, 15, 20, 26].contains(id);
+  bool get hasSubCategories => subCategories != null && subCategories!.isNotEmpty;
+  
+  List<int> getAllChildrenIds() {
+    final ids = <int>[id];
+    if (hasSubCategories) {
+      for (final subCategory in subCategories!) {
+        ids.addAll(subCategory.getAllChildrenIds());
+      }
+    }
+    return ids;
   }
 }

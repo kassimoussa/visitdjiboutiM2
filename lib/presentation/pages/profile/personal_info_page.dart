@@ -45,7 +45,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Informations personnelles'),
+        title: Text(AppLocalizations.of(context)!.profilePersonalInfo),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         actions: [
@@ -53,7 +53,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             IconButton(
               onPressed: () => setState(() => _isEditing = true),
               icon: const Icon(Icons.edit),
-              tooltip: 'Modifier',
+              tooltip: AppLocalizations.of(context)!.profileEditTooltip,
             ),
         ],
       ),

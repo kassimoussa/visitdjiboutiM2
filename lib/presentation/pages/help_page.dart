@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -10,8 +11,8 @@ class HelpPage extends StatefulWidget {
 class _HelpPageState extends State<HelpPage> {
   final List<Map<String, dynamic>> _faqItems = [
     {
-      'question': 'Comment utiliser la géolocalisation ?',
-      'answer': 'Activez les services de localisation dans les paramètres de votre téléphone, puis autorisez Visit Djibouti à accéder à votre position. L\'app vous montrera automatiquement les POIs proches de vous.',
+      'question': 'How to use geolocation?', // TODO: Add translation key
+      'answer': 'Enable location services in your phone settings, then allow Visit Djibouti to access your location. The app will automatically show you nearby POIs.', // TODO: Add translation key
       'category': 'Navigation',
       'isExpanded': false,
     },
@@ -80,7 +81,7 @@ class _HelpPageState extends State<HelpPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Aide'),
+        title: Text(AppLocalizations.of(context)!.drawerHelp),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -96,7 +97,7 @@ class _HelpPageState extends State<HelpPage> {
             child: Column(
               children: [
                 const Text(
-                  'Comment pouvons-nous vous aider ?',
+                  'How can we help you?', // TODO: Add translation key
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -259,6 +260,7 @@ class _HelpPageState extends State<HelpPage> {
         width: 80,
         margin: const EdgeInsets.only(right: 12),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               width: 48,
@@ -273,16 +275,17 @@ class _HelpPageState extends State<HelpPage> {
                 size: 24,
               ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+            Flexible(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

@@ -185,5 +185,190 @@
   "commonSeeAll": "عرض الكل",
   "commonShowMore": "عرض المزيد",
   "commonShowLess": "عرض أقل",
-  "commonSend": "إرسال"
+  "commonSend": "إرسال",
+  
+  "authSuccessTitle": "نجح تسجيل الدخول!",
+  "authErrorTitle": "خطأ",
+  "authSignUpSuccessTitle": "نجح التسجيل",
+  "authConversionProblemTitle": "مشكلة في التحويل",
+  "authKeepDiscoveries": "احتفظ باكتشافاتك!",
+  "authWelcomeToApp": "مرحباً بك في زيارة جيبوتي",
+  "authCreateAccountDescription": "أنشئ حسابك لحفظ المفضلة والإعدادات",
+  "authDataPreserved": "ستبقى بياناتك الحالية محفوظة",
+  "authKeepingDataInfo": "✨ بإنشاء حسابك، ستحتفظ بـ:",
+  "authCurrentFavorites": "جميع مفضلاتك الحالية",
+  "authPreferences": "إعداداتك",
+  "authBrowsingHistory": "سجل تصفحك",
+  "authDiscoveredPlaces": "أماكنك المكتشفة",
+  
+  "aboutPageDescription": "زيارة جيبوتي هو التطبيق الرسمي للسياحة الجيبوتية. اكتشف المواقع الاستثنائية والفعاليات الثقافية والتجارب الفريدة التي يقدمها بلدنا. من المناظر البركانية إلى قيعان البحر البكر، مروراً بتراثنا الثقافي الغني، استكشف جيبوتي كما لم تفعل من قبل.",
+  "aboutPointsOfInterest": "نقاط الاهتمام",
+  "aboutEvents": "الفعاليات",
+  "aboutTourismOffice": "مكتب السياحة الجيبوتي",
+  "aboutTourismOfficeSubtitle": "منظمة الترويج السياحي الرسمية",
+  "aboutMinistry": "وزارة التجارة والسياحة",
+  "aboutMinistrySubtitle": "جمهورية جيبوتي",
+  "aboutHotelsAssociation": "جمعية الفنادق",
+  "aboutHotelsAssociationSubtitle": "القطاع السياحي الخاص",
+  
+  "helpHowCanWeHelp": "كيف يمكننا مساعدتك؟",
+  "helpSearchPlaceholder": "البحث في المساعدة...",
+  "helpContactUs": "اتصل بنا",
+  "helpLiveChat": "دردشة مباشرة",
+  "helpConnectingToChat": "الاتصال بالدردشة...",
+  "helpStartChat": "بدء الدردشة",
+  "helpSubject": "الموضوع",
+  "helpMessage": "رسالتك",
+  "helpEmailOptional": "بريدك الإلكتروني (اختياري)",
+  "helpProblemTitle": "عنوان المشكلة",
+  "helpMessageSentSuccess": "تم إرسال الرسالة بنجاح!",
+  "helpHowToUseMap": "كيفية استخدام الخريطة",
+  "helpBookEvent": "حجز فعالية",
+  "helpManageFavorites": "إدارة المفضلات",
+  "helpDescribeProblem": "صف المشكلة التي واجهتها...",
+  "helpDuration3Min": "3 دقائق",
+  "helpDuration2Min": "دقيقتان",
+  "helpDuration1Min": "دقيقة واحدة",
+  
+  "embassiesTitle": "السفارات",
+  "embassiesCall": "اتصال",
+  "embassiesEmail": "بريد إلكتروني",
+  "embassiesWebsite": "الموقع الإلكتروني",
+  "embassiesCannotOpenPhone": "لا يمكن فتح تطبيق الهاتف",
+  "embassiesCannotOpenEmail": "لا يمكن فتح تطبيق البريد الإلكتروني",
+  "embassiesCannotOpenWebsite": "لا يمكن فتح الموقع الإلكتروني",
+  
+  "essentialsTitle": "المعلومات الأساسية",
+  "essentialsUnavailableInfo": "المعلومات غير متوفرة",
+  "essentialsNoLinksAvailable": "لا توجد روابط متاحة",
+  
+  "eventDetailErrorLoading": "خطأ في تحميل التفاصيل",
+  "eventDetailRegistrationConfirmed": "تم تأكيد التسجيل!",
+  "eventDetailReservationNumber": "رقم الحجز: {number}",
+  "@eventDetailReservationNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailParticipantsCount": "المشاركون: {count}",
+  "@eventDetailParticipantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailSpecialRequirements": "المتطلبات الخاصة: {requirements}",
+  "@eventDetailSpecialRequirements": {
+    "placeholders": {
+      "requirements": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailParticipantsLabel": "عدد المشاركين",
+  "eventDetailFullNameLabel": "الاسم الكامل",
+  "eventDetailEmailLabel": "البريد الإلكتروني",
+  "eventDetailPhoneLabel": "الهاتف",
+  "eventDetailSpecialRequirementsLabel": "المتطلبات الخاصة (اختياري)",
+  "eventDetailSpecialRequirementsHint": "الحساسيات، احتياجات إمكانية الوصول، إلخ.",
+  "commonOk": "موافق",
+  
+  "reservationsAll": "الكل ({count})",
+  "@reservationsAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsConfirmed": "مؤكدة ({count})",
+  "@reservationsConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsPending": "قيد الانتظار ({count})",
+  "@reservationsPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsCancelled": "ملغاة ({count})",
+  "@reservationsCancelled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsNoneAll": "لا توجد حجوزات",
+  "reservationsNoneConfirmed": "لا توجد حجوزات مؤكدة",
+  "reservationsNonePending": "لا توجد حجوزات قيد الانتظار",
+  "reservationsNoneCancelled": "لا توجد حجوزات ملغاة",
+  "reservationsCancelTitle": "إلغاء الحجز",
+  "reservationsDeleteTitle": "حذف الحجز",
+  
+  "tourOperatorsNoneFound": "لم يتم العثور على منظمي رحلات",
+  
+  "offlineLoadingSettings": "تحميل الإعدادات...",
+  "offlineConnectionStatus": "حالة الاتصال",
+  "offlineClearCacheTitle": "مسح ذاكرة التخزين المؤقت",
+  
+  "profileUser": "مستخدم",
+  "profileLogoutTitle": "تسجيل الخروج",
+  "profilePersonalInfo": "المعلومات الشخصية",
+  "profileEditTooltip": "تعديل",
+  "profileSecurity": "الأمان",
+  
+  "apiTestTitle": "اختبار API للمواقع",
+  
+  "discoverClearFilters": "مسح المرشحات",
+  
+  "mapSearchHint": "البحث في الخريطة...",
+  
+  "categoryFilterClear": "مسح",
+  
+  "offlineIndicatorConnectionRestored": "تم استعادة الاتصال!",
+  "offlineIndicatorOfflineMode": "وضع عدم الاتصال",
+  "offlineIndicatorOfflineModeTitle": "وضع عدم الاتصال",
+  
+  "reservationFormDateLabel": "التاريخ *",
+  "reservationFormDatePlaceholder": "اختر تاريخاً",
+  "reservationFormTimeLabel": "الوقت",
+  "reservationFormTimePlaceholder": "ساعة:دقيقة",
+  "reservationFormParticipantsLabel": "عدد الأشخاص *",
+  "reservationFormParticipantsPlaceholder": "1",
+  "reservationFormNotesLabel": "ملاحظات أو طلبات خاصة",
+  "reservationFormNotesPlaceholder": "حساسية الطعام، احتياجات خاصة...",
+  "reservationFormPleaseSelectDate": "يرجى اختيار تاريخ",
+  "reservationFormUnexpectedError": "خطأ غير متوقع: {error}",
+  "@reservationFormUnexpectedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "tourOperatorDetailsSnackbar": "تفاصيل {name}",
+  "@tourOperatorDetailsSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tourOperatorCallButton": "اتصال",
+  "tourOperatorWebsiteButton": "الموقع الإلكتروني",
+  
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+  "languageArabic": "العربية"
 }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'api_constants.dart';
 import '../services/anonymous_auth_service.dart';
+import '../services/localization_service.dart';
 
 class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
@@ -8,6 +9,7 @@ class ApiClient {
   ApiClient._internal();
 
   late final Dio _dio;
+  final LocalizationService _localizationService = LocalizationService();
 
   Dio get dio => _dio;
 
@@ -15,10 +17,13 @@ class ApiClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiConstants.baseUrl,
-        headers: ApiConstants.defaultHeaders,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
+        headers: {
+          ...ApiConstants.defaultHeaders,
+          'Accept-Language': _localizationService.getApiLanguageHeader(),
+        },
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 10),
+        sendTimeout: const Duration(seconds: 10),
       ),
     );
 
@@ -35,6 +40,9 @@ class ApiClient {
           } else {
             print('[DEBUG] Token NON TROUVÉ. La requête partira sans authentification.');
           }
+          
+          // Toujours mettre à jour la langue pour chaque requête
+          options.headers['Accept-Language'] = _localizationService.getApiLanguageHeader();
           
           print('[API REQUEST] ${options.method} ${options.path}');
           print('[API REQUEST HEADERS] ${options.headers}');
@@ -64,5 +72,12 @@ class ApiClient {
 
   void setLanguage(String language) {
     _dio.options.headers['Accept-Language'] = language;
+  }
+
+  /// Met à jour le header Accept-Language avec les préférences actuelles
+  void updateLanguageHeader() {
+    final languageHeader = _localizationService.getApiLanguageHeader();
+    _dio.options.headers['Accept-Language'] = languageHeader;
+    print('[API] Language header updated to: $languageHeader');
   }
 }

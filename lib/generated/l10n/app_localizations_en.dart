@@ -309,6 +309,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drawerViewProfile => 'View my profile →';
 
   @override
+  String get drawerProfile => 'Profile';
+
+  @override
+  String get drawerReservations => 'My Reservations';
+
+  @override
+  String get drawerReservationsSubtitle => 'Manage your bookings';
+
+  @override
+  String get drawerOfflineMode => 'Offline mode';
+
+  @override
   String get drawerSettingsSection => 'Settings';
 
   @override
@@ -349,6 +361,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drawerEmergencyNumbers => 'Emergency numbers';
+
+  @override
+  String get drawerAnonymousUser => 'Anonymous explorer';
+
+  @override
+  String get drawerCreateAccount => 'Create account';
+
+  @override
+  String get drawerLogin => 'Login';
+
+  @override
+  String get drawerConnected => 'Connected';
+
+  @override
+  String get drawerLogoutTitle => 'Logout';
+
+  @override
+  String get drawerLogoutMessage =>
+      'Are you sure you want to logout? You will become an anonymous user again.';
+
+  @override
+  String get drawerLogoutSuccess => 'Successfully logged out';
 
   @override
   String get drawerVersion => 'Version 1.0.0';
@@ -394,6 +428,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonError => 'Error';
+
+  @override
+  String get commonErrorUnknown => 'Unknown error';
+
+  @override
+  String get commonErrorSync => 'Synchronization error';
+
+  @override
+  String get commonErrorDownload => 'Download error';
+
+  @override
+  String get commonErrorCache => 'Error clearing cache';
+
+  @override
+  String get commonErrorFavorites => 'Error updating favorites';
+
+  @override
+  String get commonErrorLoading => 'Loading error';
+
+  @override
+  String get commonErrorUnexpected => 'An unexpected error occurred';
 
   @override
   String get commonRetry => 'Retry';
@@ -442,4 +497,548 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonSend => 'Send';
+
+  @override
+  String get settingsGeneral => 'General';
+
+  @override
+  String get settingsPreferredRegion => 'Preferred region';
+
+  @override
+  String get settingsDarkMode => 'Dark mode';
+
+  @override
+  String get settingsDarkModeSubtitle => 'Dark interface to save battery';
+
+  @override
+  String get settingsDarkModeActivated => 'Dark mode activated';
+
+  @override
+  String get settingsDarkModeDeactivated => 'Dark mode deactivated';
+
+  @override
+  String get settingsPushNotifications => 'Push notifications';
+
+  @override
+  String get settingsPushNotificationsSubtitle =>
+      'Receive alerts about new events';
+
+  @override
+  String get settingsEventReminders => 'Event reminders';
+
+  @override
+  String get settingsEventRemindersSubtitle =>
+      'Notifications before your booked events';
+
+  @override
+  String get settingsNewPois => 'New POIs';
+
+  @override
+  String get settingsNewPoisSubtitle => 'Be informed of new discovered places';
+
+  @override
+  String get settingsLocation => 'Location';
+
+  @override
+  String get settingsLocationServices => 'Location services';
+
+  @override
+  String get settingsLocationServicesSubtitle =>
+      'Allow geolocation for nearby POIs';
+
+  @override
+  String get settingsDefaultZoom => 'Default zoom level';
+
+  @override
+  String get settingsDefaultZoomSubtitle => 'Initial zoom on map';
+
+  @override
+  String get settingsDataStorage => 'Data & Storage';
+
+  @override
+  String get settingsOfflineModeSubtitle =>
+      'Manage downloads and synchronization';
+
+  @override
+  String get settingsManageCache => 'Manage cache';
+
+  @override
+  String settingsImageCache(String size) {
+    return 'Image cache: $size';
+  }
+
+  @override
+  String get settingsOfflineMaps => 'Offline maps';
+
+  @override
+  String get settingsOfflineMapsSubtitle => 'Download maps of Djibouti';
+
+  @override
+  String get settingsSecurityPrivacy => 'Security & Privacy';
+
+  @override
+  String get settingsPrivacy => 'Privacy';
+
+  @override
+  String get settingsPrivacySubtitle => 'Manage your personal data';
+
+  @override
+  String get settingsTermsSubtitle => 'Read terms of use';
+
+  @override
+  String get settingsActions => 'Actions';
+
+  @override
+  String get settingsBackupData => 'Backup my data';
+
+  @override
+  String get settingsBackupDataSubtitle =>
+      'Favorites, reservations and preferences';
+
+  @override
+  String get settingsResetSettings => 'Reset to default settings';
+
+  @override
+  String get settingsResetSettingsSubtitle => 'Reset all settings to zero';
+
+  @override
+  String get settingsAllowGeolocation => 'Allow geolocation';
+
+  @override
+  String get settingsGeolocationRequest =>
+      'Visit Djibouti wants to access your location to show you nearby points of interest.';
+
+  @override
+  String get settingsAllow => 'Allow';
+
+  @override
+  String get settingsGeolocationEnabled => 'Geolocation enabled';
+
+  @override
+  String get settingsClearCache => 'Clear cache';
+
+  @override
+  String get settingsCacheClearedSuccess => 'Cache cleared successfully';
+
+  @override
+  String settingsErrorClearing(String error) {
+    return 'Error while clearing: $error';
+  }
+
+  @override
+  String get settingsClear => 'Clear';
+
+  @override
+  String get eventsSearchHint => 'Search for an event...';
+
+  @override
+  String get eventsAll => 'All';
+
+  @override
+  String get eventsNoEventsFound => 'No events found';
+
+  @override
+  String get eventsClearFilters => 'Clear filters';
+
+  @override
+  String get eventsPopular => 'Popular';
+
+  @override
+  String eventsRemovedFromFavorites(String title) {
+    return '$title removed from favorites';
+  }
+
+  @override
+  String eventsAddedToFavorites(String title) {
+    return '$title added to favorites';
+  }
+
+  @override
+  String get homeShufflePois => 'Shuffle POIs';
+
+  @override
+  String get homeNoFeaturedPois => 'No featured POIs available';
+
+  @override
+  String get homeNoUpcomingEvents => 'No upcoming events';
+
+  @override
+  String get homeDiscover => 'Discover';
+
+  @override
+  String get homeTourOperators => 'Tour Operators';
+
+  @override
+  String get homeTourOperatorsSubtitle => 'Plan your adventure with experts';
+
+  @override
+  String get homeEssentialInfo => 'Essential Info';
+
+  @override
+  String get homeEssentialInfoSubtitle => 'Organization and useful links';
+
+  @override
+  String get homeEmbassies => 'Embassies';
+
+  @override
+  String get homeEmbassiesSubtitle =>
+      'Diplomatic representations in Djibouti and abroad';
+
+  @override
+  String mapErrorLoadingPois(String message) {
+    return 'Error loading POIs: $message';
+  }
+
+  @override
+  String mapError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get mapUnknownPlace => 'Unknown place';
+
+  @override
+  String get authWelcomeBack => 'Welcome back!';
+
+  @override
+  String get authSignInSubtitle => 'Sign in to your Visit Djibouti account';
+
+  @override
+  String get authOr => 'or';
+
+  @override
+  String get authSuccessTitle => 'Login successful!';
+
+  @override
+  String get authErrorTitle => 'Error';
+
+  @override
+  String get authSignUpSuccessTitle => 'Registration successful';
+
+  @override
+  String get authConversionProblemTitle => 'Conversion problem';
+
+  @override
+  String get authKeepDiscoveries => 'Keep your discoveries!';
+
+  @override
+  String get authWelcomeToApp => 'Welcome to Visit Djibouti';
+
+  @override
+  String get authCreateAccountDescription =>
+      'Create your account to save your favorites and preferences';
+
+  @override
+  String get authDataPreserved => 'Your current data will be preserved';
+
+  @override
+  String get authKeepingDataInfo => '✨ By creating your account, you keep:';
+
+  @override
+  String get authCurrentFavorites => 'All your current favorites';
+
+  @override
+  String get authPreferences => 'Your preferences';
+
+  @override
+  String get authBrowsingHistory => 'Your browsing history';
+
+  @override
+  String get authDiscoveredPlaces => 'Your discovered places';
+
+  @override
+  String get aboutPageDescription =>
+      'Visit Djibouti is the official tourism application of Djibouti. Discover exceptional sites, cultural events and unique experiences that our country has to offer. From volcanic landscapes to pristine seabeds, including our rich cultural heritage, explore Djibouti like never before.';
+
+  @override
+  String get aboutPointsOfInterest => 'Points of Interest';
+
+  @override
+  String get aboutEvents => 'Events';
+
+  @override
+  String get aboutTourismOffice => 'Djibouti Tourism Office';
+
+  @override
+  String get aboutTourismOfficeSubtitle =>
+      'Official tourism promotion organization';
+
+  @override
+  String get aboutMinistry => 'Ministry of Commerce and Tourism';
+
+  @override
+  String get aboutMinistrySubtitle => 'Republic of Djibouti';
+
+  @override
+  String get aboutHotelsAssociation => 'Hotels Association';
+
+  @override
+  String get aboutHotelsAssociationSubtitle => 'Private tourism sector';
+
+  @override
+  String get helpHowCanWeHelp => 'How can we help you?';
+
+  @override
+  String get helpSearchPlaceholder => 'Search in help...';
+
+  @override
+  String get helpContactUs => 'Contact us';
+
+  @override
+  String get helpLiveChat => 'Live chat';
+
+  @override
+  String get helpConnectingToChat => 'Connecting to chat...';
+
+  @override
+  String get helpStartChat => 'Start chat';
+
+  @override
+  String get helpSubject => 'Subject';
+
+  @override
+  String get helpMessage => 'Your message';
+
+  @override
+  String get helpEmailOptional => 'Your email (optional)';
+
+  @override
+  String get helpProblemTitle => 'Problem title';
+
+  @override
+  String get helpMessageSentSuccess => 'Message sent successfully!';
+
+  @override
+  String get helpHowToUseMap => 'How to use the map';
+
+  @override
+  String get helpBookEvent => 'Book an event';
+
+  @override
+  String get helpManageFavorites => 'Manage favorites';
+
+  @override
+  String get helpDescribeProblem => 'Describe the problem encountered...';
+
+  @override
+  String get helpDuration3Min => '3 min';
+
+  @override
+  String get helpDuration2Min => '2 min';
+
+  @override
+  String get helpDuration1Min => '1 min';
+
+  @override
+  String get embassiesTitle => 'Embassies';
+
+  @override
+  String get embassiesCall => 'Call';
+
+  @override
+  String get embassiesEmail => 'Email';
+
+  @override
+  String get embassiesWebsite => 'Website';
+
+  @override
+  String get embassiesCannotOpenPhone => 'Cannot open phone application';
+
+  @override
+  String get embassiesCannotOpenEmail => 'Cannot open email application';
+
+  @override
+  String get embassiesCannotOpenWebsite => 'Cannot open website';
+
+  @override
+  String get essentialsTitle => 'Essential Info';
+
+  @override
+  String get essentialsUnavailableInfo => 'Information unavailable';
+
+  @override
+  String get essentialsNoLinksAvailable => 'No links available';
+
+  @override
+  String get eventDetailErrorLoading => 'Error loading details';
+
+  @override
+  String get eventDetailRegistrationConfirmed => 'Registration confirmed!';
+
+  @override
+  String eventDetailReservationNumber(String number) {
+    return 'Reservation number: $number';
+  }
+
+  @override
+  String eventDetailParticipantsCount(String count) {
+    return 'Participants: $count';
+  }
+
+  @override
+  String eventDetailSpecialRequirements(String requirements) {
+    return 'Special requirements: $requirements';
+  }
+
+  @override
+  String get eventDetailParticipantsLabel => 'Number of participants';
+
+  @override
+  String get eventDetailFullNameLabel => 'Full name';
+
+  @override
+  String get eventDetailEmailLabel => 'Email';
+
+  @override
+  String get eventDetailPhoneLabel => 'Phone';
+
+  @override
+  String get eventDetailSpecialRequirementsLabel =>
+      'Special requirements (optional)';
+
+  @override
+  String get eventDetailSpecialRequirementsHint =>
+      'Allergies, accessibility needs, etc.';
+
+  @override
+  String get commonOk => 'OK';
+
+  @override
+  String reservationsAll(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String reservationsConfirmed(int count) {
+    return 'Confirmed ($count)';
+  }
+
+  @override
+  String reservationsPending(int count) {
+    return 'Pending ($count)';
+  }
+
+  @override
+  String reservationsCancelled(int count) {
+    return 'Cancelled ($count)';
+  }
+
+  @override
+  String get reservationsNoneAll => 'No reservations';
+
+  @override
+  String get reservationsNoneConfirmed => 'No confirmed reservations';
+
+  @override
+  String get reservationsNonePending => 'No pending reservations';
+
+  @override
+  String get reservationsNoneCancelled => 'No cancelled reservations';
+
+  @override
+  String get reservationsCancelTitle => 'Cancel reservation';
+
+  @override
+  String get reservationsDeleteTitle => 'Delete reservation';
+
+  @override
+  String get tourOperatorsNoneFound => 'No tour operators found';
+
+  @override
+  String get offlineLoadingSettings => 'Loading settings...';
+
+  @override
+  String get offlineConnectionStatus => 'Connection status';
+
+  @override
+  String get offlineClearCacheTitle => 'Clear cache';
+
+  @override
+  String get profileUser => 'User';
+
+  @override
+  String get profileLogoutTitle => 'Logout';
+
+  @override
+  String get profilePersonalInfo => 'Personal Information';
+
+  @override
+  String get profileEditTooltip => 'Edit';
+
+  @override
+  String get profileSecurity => 'Security';
+
+  @override
+  String get apiTestTitle => 'API POIs Test';
+
+  @override
+  String get discoverClearFilters => 'Clear filters';
+
+  @override
+  String get mapSearchHint => 'Search on map...';
+
+  @override
+  String get categoryFilterClear => 'Clear';
+
+  @override
+  String get offlineIndicatorConnectionRestored => 'Connection restored!';
+
+  @override
+  String get offlineIndicatorOfflineMode => 'Offline mode';
+
+  @override
+  String get offlineIndicatorOfflineModeTitle => 'Offline mode';
+
+  @override
+  String get reservationFormDateLabel => 'Date *';
+
+  @override
+  String get reservationFormDatePlaceholder => 'Select a date';
+
+  @override
+  String get reservationFormTimeLabel => 'Time';
+
+  @override
+  String get reservationFormTimePlaceholder => 'HH:MM';
+
+  @override
+  String get reservationFormParticipantsLabel => 'Number of people *';
+
+  @override
+  String get reservationFormParticipantsPlaceholder => '1';
+
+  @override
+  String get reservationFormNotesLabel => 'Notes or special requests';
+
+  @override
+  String get reservationFormNotesPlaceholder =>
+      'Food allergies, special needs...';
+
+  @override
+  String get reservationFormPleaseSelectDate => 'Please select a date';
+
+  @override
+  String reservationFormUnexpectedError(String error) {
+    return 'Unexpected error: $error';
+  }
+
+  @override
+  String tourOperatorDetailsSnackbar(String name) {
+    return 'Details of $name';
+  }
+
+  @override
+  String get tourOperatorCallButton => 'Call';
+
+  @override
+  String get tourOperatorWebsiteButton => 'Website';
+
+  @override
+  String get languageFrench => 'Français';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageArabic => 'العربية';
 }

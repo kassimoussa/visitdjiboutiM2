@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -7,7 +8,7 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('À propos'),
+        title: Text(AppLocalizations.of(context)!.drawerAbout),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -66,7 +67,7 @@ class AboutPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Text(
-                'Visit Djibouti est l\'application officielle de l\'Office du Tourisme de Djibouti. Découvrez les merveilles de notre pays : des paysages lunaires du lac Assal aux récifs coralliens des îles Moucha, en passant par les marchés animés de Djibouti-ville.',
+                'Visit Djibouti is the official app of the Djibouti Tourism Office. Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.', // TODO: Add translation key
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.5,
@@ -83,7 +84,7 @@ class AboutPage extends StatelessWidget {
                 Expanded(
                   child: _buildStatCard(
                     '50+',
-                    'Points d\'intérêt',
+                    'Points of Interest', // TODO: Add translation key
                     Icons.place,
                     const Color(0xFF3860F8),
                   ),
@@ -92,7 +93,7 @@ class AboutPage extends StatelessWidget {
                 Expanded(
                   child: _buildStatCard(
                     '100+',
-                    'Événements',
+                    'Events', // TODO: Add translation key
                     Icons.event,
                     const Color(0xFF009639),
                   ),

@@ -15,17 +15,18 @@ The application is built with Flutter and targets both iOS and Android platforms
 *   **Events:** Discover upcoming events and register for them.
 *   **Favorites:** Save favorite POIs and events for later access.
 *   **Tour Operators:** Find and get information about tour operators.
-*   **Multi-language Support:** The app supports French, English, and Arabic.
+*   **Multi-language Support:** The app supports French, English, and Arabic, managed via `.arb` files.
 *   **Google Maps Integration:** Interactive maps for visualizing POIs and their locations.
 
 ### Technologies:
 
 *   **Frontend:** Flutter
 *   **Backend:** Laravel (pre-existing)
-*   **State Management:** BLoC
 *   **HTTP Client:** Dio
-*   **Routing:** go_router
-*   **Database:** Not specified, but `shared_preferences` and `flutter_secure_storage` are used for local storage.
+*   **API Client Generation:** Likely uses `retrofit` with `json_serializable` and `build_runner`.
+*   **Local Storage:** `shared_preferences` for simple data and `flutter_secure_storage` for secure data.
+*   **UI Helpers:** `cached_network_image` for network image caching and `shimmer` for loading animations.
+*   **Device & System:** `url_launcher` for opening external links, `device_info_plus`, `package_info_plus`, and `connectivity_plus` for accessing device and network information.
 
 ## Building and Running the Project
 
@@ -41,9 +42,9 @@ The application is built with Flutter and targets both iOS and Android platforms
     ```bash
     flutter pub get
     ```
-2.  **Run the code generator:**
+2.  **Run the code generator (for API client, etc.):**
     ```bash
-    flutter pub run build_runner build
+    flutter pub run build_runner build --delete-conflicting-outputs
     ```
 3.  **Run the app:**
     ```bash
@@ -70,27 +71,17 @@ The application is built with Flutter and targets both iOS and Android platforms
 
 ### Architecture:
 
-The project follows a clean architecture pattern, with the code organized into three main layers:
+The project appears to follow a clean architecture pattern, with the code organized into layers:
 
 *   **Data:** Handles data from the API and local storage.
-*   **Domain:** Contains the business logic of the application.
-*   **Presentation:** The UI layer, which uses the BLoC pattern for state management.
+*   **Domain:** Contains the business logic of the application (inferred).
+*   **Presentation:** The UI layer of the application.
 
 ### API Integration:
 
-*   The API client is generated using the `retrofit` and `json_serializable` packages.
+*   The API client is generated using `json_serializable`.
 *   The API documentation is available in the `API_DOCUMENTATION.md` file.
-*   The base URL for the API is `https://your-domain.com/api`. This should be configured in the app.
-
-### State Management:
-
-*   The project uses the `flutter_bloc` package for state management.
-*   BLoCs are used to manage the state of the UI and to interact with the domain layer.
-
-### Routing:
-
-*   The project uses the `go_router` package for navigation.
-*   The routes are defined in the `lib/app/routes.dart` file.
+*   The base URL for the API should be configured within the app.
 
 ### Testing:
 
@@ -104,9 +95,6 @@ The project follows a clean architecture pattern, with the code organized into t
 
 *   `pubspec.yaml`: Defines the project's dependencies and metadata.
 *   `lib/main.dart`: The entry point of the application.
-*   `lib/core/api/api_client.dart`: The Dio HTTP client configuration.
-*   `lib/core/services/event_service.dart`: The service for fetching event data.
-*   `lib/core/services/poi_service.dart`: The service for fetching POI data.
-*   `lib/presentation/pages/home_page.dart`: The home screen of the app.
+*   `l10n.yaml` & `lib/l10n/`: Configuration and files for localization.
 *   `API_DOCUMENTATION.md`: The complete documentation of the backend API.
 *   `MOBILE_APP_DEVELOPMENT_BRIEF.md`: The initial project brief with detailed requirements.

@@ -6,7 +6,14 @@
       "Bash(grep:*)",
       "Bash(flutter run:*)",
       "Bash(/usr/bin/flutter analyze)",
-      "Bash(/mnt/c/flutter/bin/flutter:*)"
+      "Bash(/mnt/c/flutter/bin/flutter:*)",
+      "Bash(flutter packages pub run:*)",
+      "Bash(flutter pub run:*)",
+      "Bash(curl:*)",
+      "Bash(dart analyze:*)",
+      "Bash(find:*)",
+      "Bash(flutter gen-l10n:*)",
+      "Bash(flutter pub:*)"
     ],
     "deny": [],
     "ask": []

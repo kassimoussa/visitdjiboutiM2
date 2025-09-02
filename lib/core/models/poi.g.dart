@@ -8,7 +8,7 @@ part of 'poi.dart';
 
 Poi _$PoiFromJson(Map<String, dynamic> json) => Poi(
   id: Poi._parseInt(json['id']),
-  slug: json['slug'] as String,
+  slug: json['slug'] as String?,
   name: json['name'] as String,
   shortDescription: json['short_description'] as String,
   description: json['description'] as String?,
@@ -17,8 +17,8 @@ Poi _$PoiFromJson(Map<String, dynamic> json) => Poi(
   fullAddress: json['full_address'] as String?,
   latitude: Poi._parseLatitude(json['latitude']),
   longitude: Poi._parseLongitude(json['longitude']),
-  isFeatured: json['is_featured'] as bool,
-  allowReservations: json['allow_reservations'] as bool,
+  isFeatured: json['is_featured'] as bool? ?? false,
+  allowReservations: json['allow_reservations'] as bool? ?? false,
   website: json['website'] as String?,
   contact: json['contact'] as String?,
   openingHours: json['opening_hours'] as String?,
@@ -30,13 +30,17 @@ Poi _$PoiFromJson(Map<String, dynamic> json) => Poi(
   media: (json['media'] as List<dynamic>?)
       ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
       .toList(),
-  categories: (json['categories'] as List<dynamic>)
-      .map((e) => Category.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  favoritesCount: Poi._parseInt(json['favorites_count']),
-  isFavorited: json['is_favorited'] as bool,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String,
+  categories:
+      (json['categories'] as List<dynamic>?)
+          ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  favoritesCount: json['favorites_count'] == null
+      ? 0
+      : Poi._parseInt(json['favorites_count']),
+  isFavorited: json['is_favorited'] as bool? ?? false,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
   distance: (json['distance'] as num?)?.toDouble(),
 );
 
