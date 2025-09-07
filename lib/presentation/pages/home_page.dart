@@ -12,8 +12,6 @@ import '../../core/models/event.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/event_list_response.dart';
 import '../../core/models/api_response.dart';
-import 'poi_detail_page.dart';
-import 'event_detail_page.dart';
 import 'region_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
@@ -264,12 +262,15 @@ class _HomePageState extends State<HomePage> {
             
             const SizedBox(height: 24),
             
-            _buildSectionHeader(title: 'Découvrir par région', subtitle: 'Appuyez pour explorer'),
+            _buildSectionHeader(
+              title: AppLocalizations.of(context)!.homeDiscoverByRegion,
+              subtitle: AppLocalizations.of(context)!.homeDiscoverByRegionSubtitle,
+            ),
             const SizedBox(height: 12),
             _buildRegionGrid(isSmallScreen),
 
             const SizedBox(height: 24),
-            _buildSectionHeader(title: 'Essentiels'),
+            _buildSectionHeader(title: AppLocalizations.of(context)!.homeEssentials),
             const SizedBox(height: 12),
             _buildEssentialsSection(),
           ],

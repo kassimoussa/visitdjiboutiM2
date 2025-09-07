@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/event.dart';
-import '../models/event_registration.dart';
 import '../api/api_client.dart';
 import 'event_service.dart';
 import 'anonymous_auth_service.dart';

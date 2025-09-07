@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'poi_service.dart';
 import 'event_service.dart';
 import 'cache_service.dart';

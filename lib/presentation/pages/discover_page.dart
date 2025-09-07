@@ -7,9 +7,7 @@ import '../../core/models/poi.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/api_response.dart';
 import '../../core/models/category.dart';
-import 'poi_detail_page.dart';
 import '../widgets/poi_card.dart';
-import '../widgets/category_filter_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
 
 class DiscoverPage extends StatefulWidget {
@@ -316,7 +314,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             controller: _searchController,
             onChanged: (_) => _onSearchChanged(),
             decoration: InputDecoration(
-              hintText: 'Rechercher un lieu...',
+              hintText: AppLocalizations.of(context)!.discoverSearchHint,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(

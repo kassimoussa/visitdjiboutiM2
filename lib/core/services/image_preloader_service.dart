@@ -1,13 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:dio/dio.dart';
 import 'poi_service.dart';
 import 'event_service.dart';
-import '../models/poi.dart';
-import '../models/event.dart';
-import '../models/api_response.dart';
 
 class ImagePreloaderService {
   static final ImagePreloaderService _instance = ImagePreloaderService._internal();

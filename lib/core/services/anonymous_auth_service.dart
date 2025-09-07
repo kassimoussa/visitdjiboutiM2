@@ -967,9 +967,7 @@ class AnonymousAuthService {
         email = userData['email']?.toString() ?? '';
       }
       
-      if (phone == null) {
-        phone = userData['phone']?.toString();
-      }
+      phone ??= userData['phone']?.toString();
       
       return User(
         id: _parseIntSafely(userData['id']) ?? 0,
@@ -1036,14 +1034,14 @@ class AnonymousAuthService {
             return 'Erreur serveur temporaire. L\'API n\'est peut-être pas disponible pour cette fonctionnalité.';
           }
           
-          return data['message'] ?? 'Erreur serveur ${statusCode}';
+          return data['message'] ?? 'Erreur serveur $statusCode';
         }
         
         if (statusCode == 500) {
           return 'Erreur serveur interne (500). Veuillez réessayer plus tard ou utiliser l\'inscription normale.';
         }
         
-        return 'Erreur serveur ${statusCode}';
+        return 'Erreur serveur $statusCode';
       case DioExceptionType.cancel:
         return 'Requête annulée';
       case DioExceptionType.unknown:

@@ -42,6 +42,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeExploreMore => 'استكشف المزيد';
 
   @override
+  String get homeDiscoverByRegion => 'اكتشف حسب المنطقة';
+
+  @override
+  String get homeDiscoverByRegionSubtitle => 'انقر للاستكشاف';
+
+  @override
+  String get homeEssentials => 'الأساسيات';
+
+  @override
+  String get homeDiscover => 'اكتشف';
+
+  @override
   String get discoverTitle => 'اكتشف جيبوتي';
 
   @override
@@ -79,6 +91,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get eventsSoldOut => 'مكتمل';
+
+  @override
+  String get eventsEnded => 'منتهية';
 
   @override
   String get eventsFree => 'مجاني';
@@ -661,9 +676,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeNoUpcomingEvents => 'Aucun événement à venir';
-
-  @override
-  String get homeDiscover => 'Découvrir';
 
   @override
   String get homeTourOperators => 'Opérateurs Touristiques';

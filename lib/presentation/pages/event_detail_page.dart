@@ -6,7 +6,6 @@ import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
-import '../../generated/l10n/app_localizations.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Event event;

@@ -214,7 +214,7 @@ class _MapPageState extends State<MapPage> {
                 controller: _searchController,
                 onChanged: _filterPois,
                 decoration: InputDecoration(
-                  hintText: 'Rechercher sur la carte...',
+                  hintText: AppLocalizations.of(context)!.discoverSearchHint,
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(

@@ -70,9 +70,10 @@ class _EventsPageState extends State<EventsPage> {
         categoryId: _selectedCategory == 'Tous' ? null : 
                    _categories.firstWhere((c) => c.name == _selectedCategory, 
                    orElse: () => const Category(id: -1, name: '', slug: '')).id,
-        status: _selectedStatus == 'Tous' ? null : _selectedStatus,
+        status: _selectedStatus == 'all' ? null : _selectedStatus,
         page: loadMore ? _currentPage + 1 : 1,
         perPage: 10,
+        useCache: false, // Force API call to get categories
       );
 
       if (response.isSuccess && response.hasData) {
@@ -87,6 +88,8 @@ class _EventsPageState extends State<EventsPage> {
               const Category(id: -1, name: 'Tous', slug: 'tous'),
               ...eventsData.filters.categories
             ];
+            print('[EVENTS PAGE] Catégories reçues: ${eventsData.filters.categories.length}');
+            print('[EVENTS PAGE] Total catégories avec "Tous": ${_categories.length}');
             _currentPage = eventsData.pagination.currentPage;
           }
           _hasMorePages = eventsData.pagination.hasNextPage;
@@ -137,7 +140,7 @@ class _EventsPageState extends State<EventsPage> {
         sortOrder: 'asc',
         perPage: 20,
         page: 1,
-        useCache: false, // Force l'appel API sans cache
+        useCache: false, // Force l'appel API sans cache pour avoir les catégories
       );
 
       if (response.isSuccess && response.hasData) {
@@ -236,7 +239,7 @@ class _EventsPageState extends State<EventsPage> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              _buildStatusChip(AppLocalizations.of(context)!.eventsAll, 'Tous'),
+              _buildStatusChip(AppLocalizations.of(context)!.eventsAll, 'all'),
               const SizedBox(width: 8),
               _buildStatusChip(AppLocalizations.of(context)!.eventsUpcoming, 'upcoming'),
               const SizedBox(width: 8),
@@ -490,7 +493,7 @@ class _EventsPageState extends State<EventsPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      event.statusText,
+                      event.getStatusText(context),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -658,7 +661,7 @@ class _EventsPageState extends State<EventsPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          event.priceText,
+                          event.getPriceText(context),
                           style: TextStyle(
                             color: event.isFree 
                                 ? const Color(0xFF009639)
@@ -689,7 +692,7 @@ class _EventsPageState extends State<EventsPage> {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              event.participantsText,
+                              event.getParticipantsText(context),
                               style: const TextStyle(
                                 color: Colors.orange,
                                 fontSize: 12,

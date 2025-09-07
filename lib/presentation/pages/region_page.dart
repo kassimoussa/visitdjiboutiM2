@@ -4,7 +4,6 @@ import '../../core/models/poi.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/api_response.dart';
 import '../../core/utils/responsive.dart';
-import 'poi_detail_page.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/smart_loading_widget.dart';
 import '../../core/services/preload_service.dart';

@@ -5,7 +5,6 @@ import '../models/api_response.dart';
 import '../models/poi.dart';
 import '../models/poi_list_response.dart';
 import '../models/pagination.dart';
-import '../models/category.dart';
 import 'cache_service.dart';
 import 'connectivity_service.dart';
 import 'localization_service.dart';

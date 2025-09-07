@@ -21,6 +21,10 @@
   "homeFeaturedPois": "أماكن للاكتشاف",
   "homeUpcomingEvents": "الفعاليات القادمة",
   "homeExploreMore": "استكشف المزيد",
+  "homeDiscoverByRegion": "اكتشف حسب المنطقة",
+  "homeDiscoverByRegionSubtitle": "انقر للاستكشاف",
+  "homeEssentials": "الأساسيات",
+  "homeDiscover": "اكتشف",
   
   "discoverTitle": "اكتشف جيبوتي",
   "discoverCategories": "الفئات",
@@ -36,6 +40,7 @@
   "eventsRegister": "سجل",
   "eventsRegistered": "مسجل",
   "eventsSoldOut": "مكتمل",
+  "eventsEnded": "منتهية",
   "eventsFree": "مجاني",
   "eventsPrice": "{price} فرنك جيبوتي",
   "@eventsPrice": {

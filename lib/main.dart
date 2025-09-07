@@ -10,9 +10,7 @@ import 'package:vd_gem/core/services/anonymous_auth_service.dart';
 import 'package:vd_gem/core/services/localization_service.dart';
 import 'package:vd_gem/core/services/api_language_sync_service.dart';
 import 'package:vd_gem/core/services/preload_service.dart';
-import 'package:vd_gem/core/services/image_preloader_service.dart';
 import 'package:vd_gem/core/services/connectivity_service.dart';
-import 'package:vd_gem/core/services/sync_service.dart';
 import 'package:vd_gem/core/utils/responsive.dart';
 import 'package:vd_gem/generated/l10n/app_localizations.dart';
 

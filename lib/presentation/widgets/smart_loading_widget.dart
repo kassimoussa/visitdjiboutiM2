@@ -117,6 +117,8 @@ class _SmartLoadingWidgetState extends State<SmartLoadingWidget>
 }
 
 class AnimatedDots extends StatefulWidget {
+  const AnimatedDots({super.key});
+
   @override
   State<AnimatedDots> createState() => _AnimatedDotsState();
 }

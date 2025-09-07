@@ -42,6 +42,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeExploreMore => 'Explorer plus';
 
   @override
+  String get homeDiscoverByRegion => 'Découvrir par région';
+
+  @override
+  String get homeDiscoverByRegionSubtitle => 'Appuyez pour explorer';
+
+  @override
+  String get homeEssentials => 'Essentiels';
+
+  @override
+  String get homeDiscover => 'Découvrir';
+
+  @override
   String get discoverTitle => 'Découvrir Djibouti';
 
   @override
@@ -79,6 +91,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get eventsSoldOut => 'Complet';
+
+  @override
+  String get eventsEnded => 'Terminé';
 
   @override
   String get eventsFree => 'Gratuit';
@@ -671,9 +686,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get homeNoUpcomingEvents => 'Aucun événement à venir';
-
-  @override
-  String get homeDiscover => 'Découvrir';
 
   @override
   String get homeTourOperators => 'Opérateurs Touristiques';

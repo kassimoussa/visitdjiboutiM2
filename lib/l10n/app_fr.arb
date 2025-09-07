@@ -21,6 +21,10 @@
   "homeFeaturedPois": "Lieux à découvrir",
   "homeUpcomingEvents": "Événements à venir",
   "homeExploreMore": "Explorer plus",
+  "homeDiscoverByRegion": "Découvrir par région",
+  "homeDiscoverByRegionSubtitle": "Appuyez pour explorer",
+  "homeEssentials": "Essentiels",
+  "homeDiscover": "Découvrir",
   
   "discoverTitle": "Découvrir Djibouti",
   "discoverCategories": "Catégories",
@@ -36,6 +40,7 @@
   "eventsRegister": "S'inscrire",
   "eventsRegistered": "Inscrit",
   "eventsSoldOut": "Complet",
+  "eventsEnded": "Terminé",
   "eventsFree": "Gratuit",
   "eventsPrice": "{price} DJF",
   "@eventsPrice": {

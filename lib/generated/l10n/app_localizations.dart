@@ -166,6 +166,30 @@ abstract class AppLocalizations {
   /// **'Explorer plus'**
   String get homeExploreMore;
 
+  /// No description provided for @homeDiscoverByRegion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir par région'**
+  String get homeDiscoverByRegion;
+
+  /// No description provided for @homeDiscoverByRegionSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appuyez pour explorer'**
+  String get homeDiscoverByRegionSubtitle;
+
+  /// No description provided for @homeEssentials.
+  ///
+  /// In fr, this message translates to:
+  /// **'Essentiels'**
+  String get homeEssentials;
+
+  /// No description provided for @homeDiscover.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir'**
+  String get homeDiscover;
+
   /// No description provided for @discoverTitle.
   ///
   /// In fr, this message translates to:
@@ -243,6 +267,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Complet'**
   String get eventsSoldOut;
+
+  /// No description provided for @eventsEnded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminé'**
+  String get eventsEnded;
 
   /// No description provided for @eventsFree.
   ///
@@ -1341,12 +1371,6 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucun événement à venir'**
   String get homeNoUpcomingEvents;
-
-  /// No description provided for @homeDiscover.
-  ///
-  /// In fr, this message translates to:
-  /// **'Découvrir'**
-  String get homeDiscover;
 
   /// No description provided for @homeTourOperators.
   ///

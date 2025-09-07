@@ -26,7 +26,7 @@ class EmbassyService {
   }) async {
     try {
       // Vérifier le cache d'abord si hors ligne
-      final cacheKey = 'embassy_service_${type}_${search}_${countryCode}';
+      final cacheKey = 'embassy_service_${type}_${search}_$countryCode';
       if (_connectivityService.isOffline) {
         final cachedData = await _cacheService.getCachedData<List<dynamic>>(cacheKey, allowExpiredIfOffline: true);
         if (cachedData != null) {

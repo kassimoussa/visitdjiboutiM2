@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
-import '../../core/utils/responsive.dart';
 
 class TourOperatorCard extends StatelessWidget {
   final TourOperator operator;

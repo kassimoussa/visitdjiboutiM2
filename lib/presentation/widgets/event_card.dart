@@ -165,7 +165,7 @@ class _EventCardState extends State<EventCard> {
                 borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
               ),
               child: Text(
-                event.statusText,
+                event.getStatusText(context),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: ResponsiveConstants.caption,
@@ -225,7 +225,7 @@ class _EventCardState extends State<EventCard> {
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
-            event.priceText,
+            event.getPriceText(context),
             style: TextStyle(
               fontSize: ResponsiveConstants.caption,
               fontWeight: FontWeight.w600,
@@ -273,18 +273,28 @@ class _EventCardState extends State<EventCard> {
   }
 
   Widget _buildFavoriteButton(Event event) {
-    return Container(
-      width: 32.w,
-      height: 32.h,
-      decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
-      ),
-      child: IconButton(
-        onPressed: () => _toggleFavorite(event),
-        icon: Icon(Icons.favorite, color: Colors.red, size: ResponsiveConstants.smallIcon),
-        padding: EdgeInsets.zero,
-      ),
+    return FutureBuilder<bool>(
+      future: _favoritesService.isEventFavorite(event.id),
+      builder: (context, snapshot) {
+        final isFavorite = snapshot.data ?? false;
+        return Container(
+          width: 32.w,
+          height: 32.h,
+          decoration: BoxDecoration(
+            color: isFavorite ? Colors.red.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+          ),
+          child: IconButton(
+            onPressed: () => _toggleFavorite(event),
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.grey[600],
+              size: ResponsiveConstants.smallIcon,
+            ),
+            padding: EdgeInsets.zero,
+          ),
+        );
+      },
     );
   }
 

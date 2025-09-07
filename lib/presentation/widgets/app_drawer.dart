@@ -6,8 +6,6 @@ import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
 import '../pages/reservations_page.dart';
-import '../pages/offline_settings_page.dart';
-import '../pages/api_test_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -72,12 +70,6 @@ class _AppDrawerState extends State<AppDrawer> {
                     ),
                     
                     _buildMenuItem(
-                      icon: Icons.wifi_off,
-                      title: AppLocalizations.of(context)!.drawerOfflineMode,
-                      onTap: () => _navigateTo(context, const OfflineSettingsPage()),
-                    ),
-                    
-                    _buildMenuItem(
                       icon: Icons.help_outline,
                       title: AppLocalizations.of(context)!.drawerHelp,
                       onTap: () => _navigateTo(context, const HelpPage()),
@@ -87,14 +79,6 @@ class _AppDrawerState extends State<AppDrawer> {
                       icon: Icons.info_outline,
                       title: AppLocalizations.of(context)!.profileAboutApp,
                       onTap: () => _navigateTo(context, const AboutPage()),
-                    ),
-                    
-                    // Menu développement - Test API
-                    _buildMenuItem(
-                      icon: Icons.api,
-                      title: 'Test API',
-                      subtitle: 'Tester les endpoints API',
-                      onTap: () => _navigateTo(context, const ApiTestPage()),
                     ),
                     
                     const Spacer(),

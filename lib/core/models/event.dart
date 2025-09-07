@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'media.dart';
 import 'category.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 part 'event.g.dart';
 
@@ -136,7 +138,9 @@ class Event {
   String get imageUrl => featuredImage?.imageUrl ?? '';
   String get displayLocation => fullLocation ?? location;
   bool get hasMedia => media != null && media!.isNotEmpty;
+  // Note: Use getPriceText(context) instead for localized text
   String get priceText => isFree ? 'Gratuit' : '${price.toStringAsFixed(0)} DJF';
+  // Note: Use getStatusText(context) instead for localized text
   String get statusText {
     if (hasEnded) return 'Terminé';
     if (isOngoing) return 'En cours';
@@ -145,6 +149,28 @@ class Event {
   }
   
   bool get canRegister => isActive && !hasEnded && !isSoldOut;
+  
+  // Localized methods
+  String getPriceText(BuildContext context) {
+    return isFree 
+      ? AppLocalizations.of(context)!.eventsFree
+      : '${price.toStringAsFixed(0)} DJF';
+  }
+  
+  String getStatusText(BuildContext context) {
+    if (hasEnded) return AppLocalizations.of(context)!.eventsPast;
+    if (isOngoing) return AppLocalizations.of(context)!.eventsOngoing;
+    if (isSoldOut) return AppLocalizations.of(context)!.eventsSoldOut;
+    return AppLocalizations.of(context)!.eventsUpcoming;
+  }
+  
+  String getParticipantsText(BuildContext context) {
+    if (maxParticipants != null) {
+      return '$currentParticipants / $maxParticipants participants';
+    }
+    return '$currentParticipants participants';
+  }
+  // Note: Use getParticipantsText(context) instead for localized text
   String get participantsText {
     if (maxParticipants != null) {
       return '$currentParticipants / $maxParticipants participants';

@@ -79,8 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ]);
       
       setState(() {
-        _favoritesStats = futures[0] as Map<String, dynamic>;
-        _registrationsStats = futures[1] as Map<String, dynamic>;
+        _favoritesStats = futures[0];
+        _registrationsStats = futures[1];
       });
     } catch (e) {
       print('[DEBUG PROFILE] Erreur lors du chargement des stats: $e');
