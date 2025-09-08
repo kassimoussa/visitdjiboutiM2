@@ -876,7 +876,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get eventDetailErrorLoading => 'خطأ في تحميل التفاصيل';
 
   @override
-  String get eventDetailRegistrationConfirmed => 'تم تأكيد التسجيل!';
+  String get eventDetailRegistrationConfirmed => 'تأكيد التسجيل!';
 
   @override
   String eventDetailReservationNumber(String number) {
@@ -884,17 +884,12 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String eventDetailParticipantsCount(String count) {
-    return 'المشاركون: $count';
-  }
-
-  @override
   String eventDetailSpecialRequirements(String requirements) {
-    return 'المتطلبات الخاصة: $requirements';
+    return 'المتطلبات الخاصة';
   }
 
   @override
-  String get eventDetailParticipantsLabel => 'عدد المشاركين';
+  String get eventDetailParticipantsLabel => 'مشاركين';
 
   @override
   String get eventDetailFullNameLabel => 'الاسم الكامل';
@@ -915,6 +910,169 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonOk => 'موافق';
+
+  @override
+  String get commonConnectionError => 'خطأ في الاتصال';
+
+  @override
+  String get commonNoNavigationApp => 'لم يتم العثور على تطبيق ملاحة';
+
+  @override
+  String get commonUnknownPlace => 'مكان غير معروف';
+
+  @override
+  String get commonUnknown => 'غير معروف';
+
+  @override
+  String get commonDescription => 'الوصف';
+
+  @override
+  String get commonOverview => 'نظرة عامة';
+
+  @override
+  String get commonDiscoverPlace => 'اكتشف هذا المكان الفريد في';
+
+  @override
+  String get commonExploreOnSite => 'استكشف ميزاته من خلال الزيارة شخصياً.';
+
+  @override
+  String get commonLocation => 'الموقع';
+
+  @override
+  String get commonAddress => 'العنوان';
+
+  @override
+  String get commonPracticalInfo => 'معلومات عملية';
+
+  @override
+  String get commonOpeningHours => 'ساعات العمل';
+
+  @override
+  String get commonEntryPrice => 'سعر الدخول';
+
+  @override
+  String get commonWebsite => 'الموقع الإلكتروني';
+
+  @override
+  String get commonReservationsAccepted => 'يتم قبول الحجوزات';
+
+  @override
+  String get commonCategories => 'الفئات';
+
+  @override
+  String get commonCategory => 'فئة';
+
+  @override
+  String get commonVisitorTips => 'نصائح للزائرين';
+
+  @override
+  String get commonContact => 'اتصال';
+
+  @override
+  String get commonReservePlace => 'احجز هذا المكان';
+
+  @override
+  String get commonSharePlace => 'شارك هذا المكان';
+
+  @override
+  String get commonSharedFrom => 'مشارك من Visit Djibouti';
+
+  @override
+  String get commonCopiedToClipboard => 'تم نسخ المعلومات إلى الحافظة!';
+
+  @override
+  String get commonPhone => 'الهاتف';
+
+  @override
+  String get commonEmail => 'البريد الإلكتروني';
+
+  @override
+  String get commonCopy => 'نسخ';
+
+  @override
+  String get commonEvent => 'حدث';
+
+  @override
+  String get commonUnknownEvent => 'حدث غير معروف';
+
+  @override
+  String get commonInformations => 'المعلومات';
+
+  @override
+  String get commonDate => 'التاريخ';
+
+  @override
+  String get commonFieldRequired => 'هذا الحقل مطلوب';
+
+  @override
+  String get eventDetailRegistrationNumber => 'رقم التسجيل';
+
+  @override
+  String get eventDetailParticipants => 'المشاركين';
+
+  @override
+  String get eventDetailEventEnded => 'انتهى هذا الحدث';
+
+  @override
+  String get eventDetailEventFull => 'الحدث مكتمل';
+
+  @override
+  String get eventDetailSpotsRemaining => 'أماكن متبقية';
+
+  @override
+  String get eventDetailReserveEvent => 'احجز لهذا الحدث';
+
+  @override
+  String get eventDetailReservationsClosed => 'الحجوزات مغلقة';
+
+  @override
+  String get eventDetailDetailsUnavailable => 'قد تكون بعض التفاصيل غير متاحة';
+
+  @override
+  String get eventDetailPopular => 'شائع';
+
+  @override
+  String get eventDetailFree => 'مجاني';
+
+  @override
+  String get eventDetailEndDate => 'تاريخ الانتهاء';
+
+  @override
+  String get eventDetailVenue => 'المكان';
+
+  @override
+  String get eventDetailPrice => 'السعر';
+
+  @override
+  String get eventDetailRegistration => 'التسجيل';
+
+  @override
+  String get eventDetailParticipantsCount => 'عدد المشاركين';
+
+  @override
+  String get eventDetailInvalidNumber => 'رقم غير صحيح';
+
+  @override
+  String get eventDetailMaxParticipants => 'الحد الأقصى';
+
+  @override
+  String get eventDetailContactInfo => 'معلومات الاتصال';
+
+  @override
+  String get eventDetailFullName => 'الاسم الكامل';
+
+  @override
+  String get eventDetailSpecialRequirementsOptional =>
+      'المتطلبات الخاصة (اختياري)';
+
+  @override
+  String get eventDetailInvalidEmail => 'بريد إلكتروني غير صحيح';
+
+  @override
+  String get eventDetailTotalToPay => 'المجموع المطلوب دفعه';
+
+  @override
+  String get eventDetailConfirmRegistration => 'تأكيد التسجيل';
 
   @override
   String reservationsAll(int count) {
@@ -1054,4 +1212,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get languageArabic => 'العربية';
+
+  @override
+  String get eventDetailRegistrationError => 'خطأ في التسجيل';
+
+  @override
+  String get commonUnexpectedError => 'حدث خطأ غير متوقع';
 }

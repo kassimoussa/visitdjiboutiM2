@@ -80,13 +80,13 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         });
       } else {
         setState(() {
-          _errorMessage = response.message ?? 'Erreur lors du chargement des détails';
+          _errorMessage = response.message ?? AppLocalizations.of(context)!.commonError;
           _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Erreur de connexion';
+        _errorMessage = AppLocalizations.of(context)!.commonConnectionError;
         _isLoading = false;
       });
     }
@@ -108,8 +108,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Aucune application de navigation trouvée'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.commonNoNavigationApp),
               backgroundColor: Colors.red,
             ),
           );
@@ -331,7 +331,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              poi.name ?? 'Lieu inconnu',
+                              poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -414,8 +414,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       SnackBar(
                         content: Text(
                           _isFavorite 
-                              ? 'Ajouté aux favoris' 
-                              : 'Retiré des favoris'
+                              ? AppLocalizations.of(context)!.favoritesAddedToFavorites 
+                              : AppLocalizations.of(context)!.favoritesRemovedFromFavorites
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -538,7 +538,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            poi.name ?? 'Lieu inconnu',
+            poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
             style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -555,7 +555,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
               const SizedBox(width: 4),
               Text(
-                poi.region ?? 'Inconnue',
+                poi.region ?? AppLocalizations.of(context)!.commonUnknown,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[600],
@@ -614,8 +614,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Description',
+              Text(
+                AppLocalizations.of(context)!.commonDescription,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -666,8 +666,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Aperçu',
+              Text(
+                AppLocalizations.of(context)!.commonOverview,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -717,7 +717,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Découvrez ce lieu unique à ${poi.region ?? 'Inconnue'} ! Explorez ses particularités en visitant sur place.',
+              '${AppLocalizations.of(context)!.commonDiscoverPlace} ${poi.region ?? AppLocalizations.of(context)!.commonUnknown} ! ${AppLocalizations.of(context)!.commonExploreOnSite}',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[700],
@@ -734,7 +734,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
   Widget _buildLocationSection(Poi poi) {
     return _buildInfoSection(
       icon: Icons.map,
-      title: 'Localisation',
+      title: AppLocalizations.of(context)!.commonLocation,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -790,7 +790,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           const SizedBox(height: 12),
           _buildInfoRow(
             Icons.location_on,
-            'Adresse',
+            AppLocalizations.of(context)!.commonAddress,
             poi.displayAddress,
           ),
         ],
@@ -810,13 +810,13 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
     return _buildInfoSection(
       icon: Icons.access_time,
-      title: 'Informations pratiques',
+      title: AppLocalizations.of(context)!.commonPracticalInfo,
       child: Column(
         children: [
           if (hasOpeningHours)
             _buildInfoRow(
               Icons.schedule,
-              'Horaires',
+              AppLocalizations.of(context)!.commonOpeningHours,
               poi.openingHours!,
             ),
           
@@ -824,7 +824,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             if (hasOpeningHours) const SizedBox(height: 12),
             _buildInfoRow(
               Icons.attach_money,
-              'Prix d\'entrée',
+              AppLocalizations.of(context)!.commonEntryPrice,
               poi.entryFee!,
             ),
           ],
@@ -833,7 +833,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             if (hasOpeningHours || hasEntryFee) const SizedBox(height: 12),
             _buildInfoRow(
               Icons.language,
-              'Site web',
+              AppLocalizations.of(context)!.commonWebsite,
               poi.website!,
               isLink: true,
             ),
@@ -855,8 +855,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     size: 20,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Réservations acceptées',
+                  Text(
+                    AppLocalizations.of(context)!.commonReservationsAccepted,
                     style: TextStyle(
                       color: Color(0xFF009639),
                       fontWeight: FontWeight.w500,
@@ -878,7 +878,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
     return _buildInfoSection(
       icon: Icons.category,
-      title: 'Catégories',
+      title: AppLocalizations.of(context)!.commonCategories,
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
@@ -893,7 +893,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
             ),
             child: Text(
-              category.name ?? 'Catégorie',
+              category.name ?? AppLocalizations.of(context)!.commonCategory,
               style: const TextStyle(
                 color: Color(0xFF3860F8),
                 fontSize: 14,
@@ -909,7 +909,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
   Widget _buildTipsSection(Poi poi) {
     return _buildInfoSection(
       icon: Icons.lightbulb_outline,
-      title: 'Conseils aux visiteurs',
+      title: AppLocalizations.of(context)!.commonVisitorTips,
       content: poi.tips!,
       backgroundColor: const Color(0xFFFFF3CD),
       iconColor: const Color(0xFF856404),
@@ -919,7 +919,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
   Widget _buildContactSection(Poi poi) {
     return _buildInfoSection(
       icon: Icons.contact_phone,
-      title: 'Contact',
+      title: AppLocalizations.of(context)!.commonContact,
       child: _buildFormattedContact(poi.contact!),
     );
   }
@@ -930,7 +930,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       child: ElevatedButton.icon(
         onPressed: () => _showReservationForm(poi),
         icon: const Icon(Icons.bookmark_add),
-        label: const Text('Réserver ce lieu'),
+        label: Text(AppLocalizations.of(context)!.commonReservePlace),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
@@ -950,19 +950,19 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         onPressed: () {
           HapticFeedback.lightImpact();
           final shareText = '''
-🏛️ ${poi.name ?? 'Lieu inconnu'}
+🏛️ ${poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace}
 
 📍 ${poi.displayAddress}
-🌍 ${poi.region ?? 'Inconnue'}, Djibouti
+🌍 ${poi.region ?? AppLocalizations.of(context)!.commonUnknown}, Djibouti
 
-${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu unique à ${poi.region ?? 'Inconnue'} !'}
+${poi.shortDescription.isNotEmpty ? poi.shortDescription : '${AppLocalizations.of(context)!.commonDiscoverPlace} ${poi.region ?? AppLocalizations.of(context)!.commonUnknown} !'}
 
-📱 Partagé depuis Visit Djibouti
+📱 ${AppLocalizations.of(context)!.commonSharedFrom}
 ''';
           
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Informations copiées dans le presse-papier !'),
+              content: Text(AppLocalizations.of(context)!.commonCopiedToClipboard),
               action: SnackBarAction(
                 label: 'OK',
                 onPressed: () {},
@@ -973,7 +973,7 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
           Clipboard.setData(ClipboardData(text: shareText));
         },
         icon: const Icon(Icons.share),
-        label: const Text('Partager ce lieu'),
+        label: Text(AppLocalizations.of(context)!.commonSharePlace),
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF3860F8),
           foregroundColor: Colors.white,
@@ -997,12 +997,12 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
         if (line.toLowerCase().contains('telephone') || 
             line.toLowerCase().contains('téléphone') ||
             line.toLowerCase().contains('tél')) {
-          return _buildContactHeader('Téléphone', Icons.phone);
+          return _buildContactHeader(AppLocalizations.of(context)!.commonPhone, Icons.phone);
         } else if (line.toLowerCase().contains('email')) {
-          return _buildContactHeader('Email', Icons.email);
+          return _buildContactHeader(AppLocalizations.of(context)!.commonEmail, Icons.email);
         } else if (line.toLowerCase().contains('site web') || 
                    line.toLowerCase().contains('website')) {
-          return _buildContactHeader('Site web', Icons.language);
+          return _buildContactHeader(AppLocalizations.of(context)!.commonWebsite, Icons.language);
         } else if (line.startsWith('+') || RegExp(r'^\d').hasMatch(line)) {
           return _buildContactInfo(line, Icons.phone, false);
         } else if (line.contains('@')) {
@@ -1055,9 +1055,9 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : 'Découvrez ce lieu u
           HapticFeedback.lightImpact();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Contact: $info'),
+              content: Text('${AppLocalizations.of(context)!.commonContact}: $info'),
               action: SnackBarAction(
-                label: 'Copier',
+                label: AppLocalizations.of(context)!.commonCopy,
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: info));
                 },

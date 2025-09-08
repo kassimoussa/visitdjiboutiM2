@@ -883,17 +883,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String eventDetailParticipantsCount(String count) {
-    return 'Participants: $count';
-  }
-
-  @override
   String eventDetailSpecialRequirements(String requirements) {
-    return 'Special requirements: $requirements';
+    return 'Special requirements';
   }
 
   @override
-  String get eventDetailParticipantsLabel => 'Number of participants';
+  String get eventDetailParticipantsLabel => 'participants';
 
   @override
   String get eventDetailFullNameLabel => 'Full name';
@@ -914,6 +909,170 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get commonConnectionError => 'Connection error';
+
+  @override
+  String get commonNoNavigationApp => 'No navigation app found';
+
+  @override
+  String get commonUnknownPlace => 'Unknown place';
+
+  @override
+  String get commonUnknown => 'Unknown';
+
+  @override
+  String get commonDescription => 'Description';
+
+  @override
+  String get commonOverview => 'Overview';
+
+  @override
+  String get commonDiscoverPlace => 'Discover this unique place in';
+
+  @override
+  String get commonExploreOnSite =>
+      'Explore its features by visiting in person.';
+
+  @override
+  String get commonLocation => 'Location';
+
+  @override
+  String get commonAddress => 'Address';
+
+  @override
+  String get commonPracticalInfo => 'Practical information';
+
+  @override
+  String get commonOpeningHours => 'Opening hours';
+
+  @override
+  String get commonEntryPrice => 'Entry price';
+
+  @override
+  String get commonWebsite => 'Website';
+
+  @override
+  String get commonReservationsAccepted => 'Reservations accepted';
+
+  @override
+  String get commonCategories => 'Categories';
+
+  @override
+  String get commonCategory => 'Category';
+
+  @override
+  String get commonVisitorTips => 'Visitor tips';
+
+  @override
+  String get commonContact => 'Contact';
+
+  @override
+  String get commonReservePlace => 'Reserve this place';
+
+  @override
+  String get commonSharePlace => 'Share this place';
+
+  @override
+  String get commonSharedFrom => 'Shared from Visit Djibouti';
+
+  @override
+  String get commonCopiedToClipboard => 'Information copied to clipboard!';
+
+  @override
+  String get commonPhone => 'Phone';
+
+  @override
+  String get commonEmail => 'Email';
+
+  @override
+  String get commonCopy => 'Copy';
+
+  @override
+  String get commonEvent => 'Event';
+
+  @override
+  String get commonUnknownEvent => 'Unknown event';
+
+  @override
+  String get commonInformations => 'Informations';
+
+  @override
+  String get commonDate => 'Date';
+
+  @override
+  String get commonFieldRequired => 'This field is required';
+
+  @override
+  String get eventDetailRegistrationNumber => 'Registration number';
+
+  @override
+  String get eventDetailParticipants => 'Participants';
+
+  @override
+  String get eventDetailEventEnded => 'This event has ended';
+
+  @override
+  String get eventDetailEventFull => 'Event full';
+
+  @override
+  String get eventDetailSpotsRemaining => 'spots remaining';
+
+  @override
+  String get eventDetailReserveEvent => 'Reserve for this event';
+
+  @override
+  String get eventDetailReservationsClosed => 'Reservations closed';
+
+  @override
+  String get eventDetailDetailsUnavailable => 'Some details may be unavailable';
+
+  @override
+  String get eventDetailPopular => 'Popular';
+
+  @override
+  String get eventDetailFree => 'Free';
+
+  @override
+  String get eventDetailEndDate => 'End date';
+
+  @override
+  String get eventDetailVenue => 'Venue';
+
+  @override
+  String get eventDetailPrice => 'Price';
+
+  @override
+  String get eventDetailRegistration => 'Registration';
+
+  @override
+  String get eventDetailParticipantsCount => 'Number of participants';
+
+  @override
+  String get eventDetailInvalidNumber => 'Invalid number';
+
+  @override
+  String get eventDetailMaxParticipants => 'Maximum';
+
+  @override
+  String get eventDetailContactInfo => 'Contact information';
+
+  @override
+  String get eventDetailFullName => 'Full name';
+
+  @override
+  String get eventDetailSpecialRequirementsOptional =>
+      'Special requirements (optional)';
+
+  @override
+  String get eventDetailInvalidEmail => 'Invalid email';
+
+  @override
+  String get eventDetailTotalToPay => 'Total to pay';
+
+  @override
+  String get eventDetailConfirmRegistration => 'Confirm registration';
 
   @override
   String reservationsAll(int count) {
@@ -1053,4 +1212,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageArabic => 'العربية';
+
+  @override
+  String get eventDetailRegistrationError => 'Registration error';
+
+  @override
+  String get commonUnexpectedError => 'An unexpected error occurred';
 }

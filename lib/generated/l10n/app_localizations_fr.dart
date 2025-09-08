@@ -897,17 +897,12 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String eventDetailParticipantsCount(String count) {
-    return 'Participants: $count';
-  }
-
-  @override
   String eventDetailSpecialRequirements(String requirements) {
-    return 'Exigences spéciales: $requirements';
+    return 'Exigences spéciales';
   }
 
   @override
-  String get eventDetailParticipantsLabel => 'Nombre de participants';
+  String get eventDetailParticipantsLabel => 'participants';
 
   @override
   String get eventDetailFullNameLabel => 'Nom complet';
@@ -928,6 +923,173 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get commonConnectionError => 'Erreur de connexion';
+
+  @override
+  String get commonNoNavigationApp =>
+      'Aucune application de navigation trouvée';
+
+  @override
+  String get commonUnknownPlace => 'Lieu inconnu';
+
+  @override
+  String get commonUnknown => 'Inconnue';
+
+  @override
+  String get commonDescription => 'Description';
+
+  @override
+  String get commonOverview => 'Aperçu';
+
+  @override
+  String get commonDiscoverPlace => 'Découvrez ce lieu unique à';
+
+  @override
+  String get commonExploreOnSite =>
+      'Explorez ses particularités en visitant sur place.';
+
+  @override
+  String get commonLocation => 'Localisation';
+
+  @override
+  String get commonAddress => 'Adresse';
+
+  @override
+  String get commonPracticalInfo => 'Informations pratiques';
+
+  @override
+  String get commonOpeningHours => 'Horaires';
+
+  @override
+  String get commonEntryPrice => 'Prix d\'entrée';
+
+  @override
+  String get commonWebsite => 'Site web';
+
+  @override
+  String get commonReservationsAccepted => 'Réservations acceptées';
+
+  @override
+  String get commonCategories => 'Catégories';
+
+  @override
+  String get commonCategory => 'Catégorie';
+
+  @override
+  String get commonVisitorTips => 'Conseils aux visiteurs';
+
+  @override
+  String get commonContact => 'Contact';
+
+  @override
+  String get commonReservePlace => 'Réserver ce lieu';
+
+  @override
+  String get commonSharePlace => 'Partager ce lieu';
+
+  @override
+  String get commonSharedFrom => 'Partagé depuis Visit Djibouti';
+
+  @override
+  String get commonCopiedToClipboard =>
+      'Informations copiées dans le presse-papier !';
+
+  @override
+  String get commonPhone => 'Téléphone';
+
+  @override
+  String get commonEmail => 'Email';
+
+  @override
+  String get commonCopy => 'Copier';
+
+  @override
+  String get commonEvent => 'Événement';
+
+  @override
+  String get commonUnknownEvent => 'Événement inconnu';
+
+  @override
+  String get commonInformations => 'Informations';
+
+  @override
+  String get commonDate => 'Date';
+
+  @override
+  String get commonFieldRequired => 'Ce champ est requis';
+
+  @override
+  String get eventDetailRegistrationNumber => 'Numéro de réservation';
+
+  @override
+  String get eventDetailParticipants => 'Participants';
+
+  @override
+  String get eventDetailEventEnded => 'Cet événement est terminé';
+
+  @override
+  String get eventDetailEventFull => 'Événement complet';
+
+  @override
+  String get eventDetailSpotsRemaining => 'places restantes';
+
+  @override
+  String get eventDetailReserveEvent => 'Réserver pour cet événement';
+
+  @override
+  String get eventDetailReservationsClosed => 'Réservations fermées';
+
+  @override
+  String get eventDetailDetailsUnavailable =>
+      'Certains détails peuvent être indisponibles';
+
+  @override
+  String get eventDetailPopular => 'Populaire';
+
+  @override
+  String get eventDetailFree => 'Gratuit';
+
+  @override
+  String get eventDetailEndDate => 'Date de fin';
+
+  @override
+  String get eventDetailVenue => 'Lieu';
+
+  @override
+  String get eventDetailPrice => 'Prix';
+
+  @override
+  String get eventDetailRegistration => 'Inscription';
+
+  @override
+  String get eventDetailParticipantsCount => 'Nombre de participants';
+
+  @override
+  String get eventDetailInvalidNumber => 'Nombre invalide';
+
+  @override
+  String get eventDetailMaxParticipants => 'Maximum';
+
+  @override
+  String get eventDetailContactInfo => 'Informations de contact';
+
+  @override
+  String get eventDetailFullName => 'Nom complet';
+
+  @override
+  String get eventDetailSpecialRequirementsOptional =>
+      'Exigences spéciales (optionnel)';
+
+  @override
+  String get eventDetailInvalidEmail => 'Email invalide';
+
+  @override
+  String get eventDetailTotalToPay => 'Total à payer';
+
+  @override
+  String get eventDetailConfirmRegistration => 'Confirmer l\'inscription';
 
   @override
   String reservationsAll(int count) {
@@ -1068,4 +1230,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageArabic => 'العربية';
+
+  @override
+  String get eventDetailRegistrationError => 'Erreur lors de l\'inscription';
+
+  @override
+  String get commonUnexpectedError => 'Une erreur inattendue s\'est produite';
 }

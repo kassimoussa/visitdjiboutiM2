@@ -6,6 +6,7 @@ import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Event event;
@@ -84,7 +85,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
       setState(() {
         _eventDetails = widget.event;
         _isLoading = false;
-        _errorMessage = 'Error loading details'; // TODO: Add translation key
+        _errorMessage = AppLocalizations.of(context)!.commonErrorLoading;
       });
     }
   }
@@ -107,8 +108,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
           SnackBar(
             content: Text(
               _isFavorite 
-                ? '${widget.event.title ?? 'Cet événement'} ajouté aux favoris' 
-                : '${widget.event.title ?? 'Cet événement'} retiré des favoris',
+                ? AppLocalizations.of(context)!.favoritesAddedToFavorites
+                : AppLocalizations.of(context)!.favoritesRemovedFromFavorites,
             ),
             duration: const Duration(seconds: 2),
           ),
@@ -117,8 +118,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Erreur lors de la modification des favoris'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.commonErrorFavorites),
             backgroundColor: Colors.red,
           ),
         );
@@ -172,23 +173,23 @@ class _EventDetailPageState extends State<EventDetailPage> {
           color: Color(0xFF009639),
           size: 48,
         ),
-        title: const Text('Inscription confirmée !'),
+        title: Text(AppLocalizations.of(context)!.eventDetailRegistrationConfirmed),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Numéro de réservation: ${registration.registration.registrationNumber}'),
+            Text('${AppLocalizations.of(context)!.eventDetailRegistrationNumber}: ${registration.registration.registrationNumber}'),
             const SizedBox(height: 8),
-            Text('Participants: ${registration.registration.participantsCount}'),
+            Text('${AppLocalizations.of(context)!.eventDetailParticipants}: ${registration.registration.participantsCount}'),
             if (registration.registration.specialRequirements != null) ...[
               const SizedBox(height: 8),
-              Text('Exigences spéciales: ${registration.registration.specialRequirements}'),
+              Text('${AppLocalizations.of(context)!.eventDetailSpecialRequirements}: ${registration.registration.specialRequirements}'),
             ],
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.commonOk),
           ),
         ],
       ),
@@ -308,7 +309,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              event.title ?? 'Événement',
+                              event.title ?? AppLocalizations.of(context)!.commonEvent,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -479,7 +480,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            event.title ?? 'Événement inconnu',
+            event.title ?? AppLocalizations.of(context)!.commonUnknownEvent,
             style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -631,8 +632,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.grey[300]!),
         ),
-        child: const Text(
-          'Cet événement est terminé',
+        child: Text(
+          AppLocalizations.of(context)!.eventDetailEventEnded,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
@@ -652,8 +653,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.red[200]!),
         ),
-        child: const Text(
-          'Événement complet',
+        child: Text(
+          AppLocalizations.of(context)!.eventDetailEventFull,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
@@ -687,7 +688,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  '${event.currentParticipants}/${event.maxParticipants} participants',
+                  '${event.currentParticipants}/${event.maxParticipants} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}',
                   style: const TextStyle(
                     color: Color(0xFF3860F8),
                     fontWeight: FontWeight.w500,
@@ -696,7 +697,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 const Spacer(),
                 if (event.availableSpots != null && event.availableSpots! > 0)
                   Text(
-                    '${event.availableSpots} places restantes',
+                    '${event.availableSpots} ${AppLocalizations.of(context)!.eventDetailSpotsRemaining}',
                     style: TextStyle(
                       color: event.availableSpots! < 10 ? Colors.orange : Colors.green,
                       fontWeight: FontWeight.w500,
@@ -722,7 +723,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               elevation: 0,
             ),
             child: Text(
-              event.canRegister ? 'Réserver pour cet événement' : 'Réservations fermées',
+              event.canRegister ? AppLocalizations.of(context)!.eventDetailReserveEvent : AppLocalizations.of(context)!.eventDetailReservationsClosed,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -754,7 +755,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Certains détails peuvent être indisponibles',
+                    AppLocalizations.of(context)!.eventDetailDetailsUnavailable,
                     style: TextStyle(color: Colors.orange[700]),
                   ),
                 ),
@@ -780,8 +781,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Description',
+              Text(
+                AppLocalizations.of(context)!.commonDescription,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -848,8 +849,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
         color: const Color(0xFF3860F8),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Text(
-        'Populaire',
+      child: Text(
+        AppLocalizations.of(context)!.eventDetailPopular,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -865,8 +866,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
         color: const Color(0xFF009639),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Text(
-        'Gratuit',
+      child: Text(
+        AppLocalizations.of(context)!.eventDetailFree,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -881,8 +882,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Informations',
+          Text(
+            AppLocalizations.of(context)!.commonInformations,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -890,21 +891,21 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ),
           const SizedBox(height: 16),
           
-          _buildInfoRow(Icons.calendar_today, 'Date', event.formattedDateRange ?? event.startDate),
+          _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, event.formattedDateRange ?? event.startDate),
           
           if (event.endDate?.isNotEmpty == true && event.endDate != event.startDate)
-            _buildInfoRow(Icons.schedule, 'Date de fin', event.endDate!),
+            _buildInfoRow(Icons.schedule, AppLocalizations.of(context)!.eventDetailEndDate, event.endDate!),
           
-          _buildInfoRow(Icons.location_on, 'Lieu', event.displayLocation),
+          _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.eventDetailVenue, event.displayLocation),
           
           if (!event.isFree)
-            _buildInfoRow(Icons.attach_money, 'Prix', event.priceText),
+            _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.priceText),
           
           if ((event.maxParticipants ?? 0) > 0)
-            _buildInfoRow(Icons.people, 'Participants', event.participantsText),
+            _buildInfoRow(Icons.people, AppLocalizations.of(context)!.eventDetailParticipantsLabel, event.participantsText),
           
           if (event.categories.isNotEmpty)
-            _buildInfoRow(Icons.category, 'Catégorie', event.primaryCategory),
+            _buildInfoRow(Icons.category, AppLocalizations.of(context)!.commonCategory, event.primaryCategory),
         ],
       ),
     );
@@ -950,10 +951,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Localisation',
+            AppLocalizations.of(context)!.commonLocation,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -1031,6 +1032,13 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
   
   @override
   Widget build(BuildContext context) {
+    // Store translations locally for use in validators
+    final localizations = AppLocalizations.of(context)!;
+    final fieldRequiredText = localizations.commonFieldRequired;
+    final invalidNumberText = localizations.eventDetailInvalidNumber;
+    final maxParticipantsText = localizations.eventDetailMaxParticipants;
+    final invalidEmailText = localizations.eventDetailInvalidEmail;
+    
     return DraggableScrollableSheet(
       initialChildSize: 0.8,
       minChildSize: 0.5,
@@ -1060,7 +1068,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Inscription - ${widget.event.title ?? 'Événement'}',
+                        '${AppLocalizations.of(context)!.eventDetailRegistration} - ${widget.event.title ?? AppLocalizations.of(context)!.commonEvent}',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -1085,17 +1093,17 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       TextFormField(
                         controller: _participantsController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Nombre de participants',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.people),
+                        decoration: InputDecoration(
+                          labelText: localizations.eventDetailParticipantsCount,
+                          border: const OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.people),
                         ),
                         validator: (value) {
-                          if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                          if (value?.isEmpty ?? true) return fieldRequiredText;
                           final count = int.tryParse(value!);
-                          if (count == null || count < 1) return 'Nombre invalide';
+                          if (count == null || count < 1) return invalidNumberText;
                           if ((widget.event.maxParticipants ?? 0) > 0 && count > (widget.event.maxParticipants ?? 0)) {
-                            return 'Maximum ${widget.event.maxParticipants} participants';
+                            return '$maxParticipantsText ${widget.event.maxParticipants}';
                           }
                           return null;
                         },
@@ -1104,8 +1112,8 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       const SizedBox(height: 16),
                       
                       if (_requiresGuestInfo) ...[
-                        const Text(
-                          'Informations de contact',
+                        Text(
+                          localizations.eventDetailContactInfo,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -1115,13 +1123,13 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                         
                         TextFormField(
                           controller: _nameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Nom complet',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.person),
+                          decoration: InputDecoration(
+                            labelText: localizations.eventDetailFullName,
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.person),
                           ),
                           validator: (value) {
-                            if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                            if (value?.isEmpty ?? true) return fieldRequiredText;
                             return null;
                           },
                         ),
@@ -1131,15 +1139,15 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            labelText: 'Email',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.email),
+                          decoration: InputDecoration(
+                            labelText: localizations.eventDetailEmailLabel,
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.email),
                           ),
                           validator: (value) {
-                            if (value?.isEmpty ?? true) return 'Ce champ est requis';
-                            if (!RegExp(r'^\w-\.]+@([\w-]+\.)+[\w-]{2,4}\\$\\').hasMatch(value!)) {
-                              return 'Email invalide';
+                            if (value?.isEmpty ?? true) return fieldRequiredText;
+                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                              return invalidEmailText;
                             }
                             return null;
                           },
@@ -1150,13 +1158,13 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                         TextFormField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
-                          decoration: const InputDecoration(
-                            labelText: 'Téléphone',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.phone),
+                          decoration: InputDecoration(
+                            labelText: localizations.eventDetailPhoneLabel,
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.phone),
                           ),
                           validator: (value) {
-                            if (value?.isEmpty ?? true) return 'Ce champ est requis';
+                            if (value?.isEmpty ?? true) return fieldRequiredText;
                             return null;
                           },
                         ),
@@ -1167,11 +1175,11 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       TextFormField(
                         controller: _requirementsController,
                         maxLines: 3,
-                        decoration: const InputDecoration(
-                          labelText: 'Exigences spéciales (optionnel)',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.note),
-                          hintText: 'Allergies, besoins d\'accessibilité, etc.',
+                        decoration: InputDecoration(
+                          labelText: localizations.eventDetailSpecialRequirementsLabel,
+                          border: const OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.note),
+                          hintText: localizations.eventDetailSpecialRequirementsHint,
                         ),
                       ),
                       
@@ -1190,8 +1198,8 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                'Total à payer',
+                              Text(
+                                localizations.eventDetailTotalToPay,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -1232,8 +1240,8 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 )
-                              : const Text(
-                                  'Confirmer l\'inscription',
+                              : Text(
+                                  localizations.eventDetailConfirmRegistration,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -1283,10 +1291,10 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
       if (response.isSuccess && response.hasData) {
         widget.onRegistrationSuccess(response.data!);
       } else {
-        _showErrorDialog(response.message ?? 'Erreur lors de l\'inscription');
+        _showErrorDialog(response.message ?? AppLocalizations.of(context)!.eventDetailRegistrationError);
       }
     } catch (e) {
-      _showErrorDialog('Une erreur inattendue s\'est produite');
+      _showErrorDialog(AppLocalizations.of(context)!.commonUnexpectedError);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -1298,12 +1306,12 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Erreur'),
+        title: Text(AppLocalizations.of(context)!.commonError),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.commonOk),
           ),
         ],
       ),

@@ -385,6 +385,12 @@
       }
     }
   },
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "eventDetailSpecialRequirements": "Exigences spéciales: {requirements}",
   "@eventDetailSpecialRequirements": {
     "placeholders": {

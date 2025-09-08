@@ -1762,22 +1762,16 @@ abstract class AppLocalizations {
   /// **'Numéro de réservation: {number}'**
   String eventDetailReservationNumber(String number);
 
-  /// No description provided for @eventDetailParticipantsCount.
-  ///
-  /// In fr, this message translates to:
-  /// **'Participants: {count}'**
-  String eventDetailParticipantsCount(String count);
-
   /// No description provided for @eventDetailSpecialRequirements.
   ///
   /// In fr, this message translates to:
-  /// **'Exigences spéciales: {requirements}'**
+  /// **'Exigences spéciales'**
   String eventDetailSpecialRequirements(String requirements);
 
   /// No description provided for @eventDetailParticipantsLabel.
   ///
   /// In fr, this message translates to:
-  /// **'Nombre de participants'**
+  /// **'participants'**
   String get eventDetailParticipantsLabel;
 
   /// No description provided for @eventDetailFullNameLabel.
@@ -1815,6 +1809,330 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'OK'**
   String get commonOk;
+
+  /// No description provided for @commonConnectionError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de connexion'**
+  String get commonConnectionError;
+
+  /// No description provided for @commonNoNavigationApp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune application de navigation trouvée'**
+  String get commonNoNavigationApp;
+
+  /// No description provided for @commonUnknownPlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu inconnu'**
+  String get commonUnknownPlace;
+
+  /// No description provided for @commonUnknown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inconnue'**
+  String get commonUnknown;
+
+  /// No description provided for @commonDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Description'**
+  String get commonDescription;
+
+  /// No description provided for @commonOverview.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu'**
+  String get commonOverview;
+
+  /// No description provided for @commonDiscoverPlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrez ce lieu unique à'**
+  String get commonDiscoverPlace;
+
+  /// No description provided for @commonExploreOnSite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Explorez ses particularités en visitant sur place.'**
+  String get commonExploreOnSite;
+
+  /// No description provided for @commonLocation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Localisation'**
+  String get commonLocation;
+
+  /// No description provided for @commonAddress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse'**
+  String get commonAddress;
+
+  /// No description provided for @commonPracticalInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations pratiques'**
+  String get commonPracticalInfo;
+
+  /// No description provided for @commonOpeningHours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Horaires'**
+  String get commonOpeningHours;
+
+  /// No description provided for @commonEntryPrice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prix d\'entrée'**
+  String get commonEntryPrice;
+
+  /// No description provided for @commonWebsite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Site web'**
+  String get commonWebsite;
+
+  /// No description provided for @commonReservationsAccepted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservations acceptées'**
+  String get commonReservationsAccepted;
+
+  /// No description provided for @commonCategories.
+  ///
+  /// In fr, this message translates to:
+  /// **'Catégories'**
+  String get commonCategories;
+
+  /// No description provided for @commonCategory.
+  ///
+  /// In fr, this message translates to:
+  /// **'Catégorie'**
+  String get commonCategory;
+
+  /// No description provided for @commonVisitorTips.
+  ///
+  /// In fr, this message translates to:
+  /// **'Conseils aux visiteurs'**
+  String get commonVisitorTips;
+
+  /// No description provided for @commonContact.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contact'**
+  String get commonContact;
+
+  /// No description provided for @commonReservePlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réserver ce lieu'**
+  String get commonReservePlace;
+
+  /// No description provided for @commonSharePlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partager ce lieu'**
+  String get commonSharePlace;
+
+  /// No description provided for @commonSharedFrom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partagé depuis Visit Djibouti'**
+  String get commonSharedFrom;
+
+  /// No description provided for @commonCopiedToClipboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations copiées dans le presse-papier !'**
+  String get commonCopiedToClipboard;
+
+  /// No description provided for @commonPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get commonPhone;
+
+  /// No description provided for @commonEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get commonEmail;
+
+  /// No description provided for @commonCopy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Copier'**
+  String get commonCopy;
+
+  /// No description provided for @commonEvent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événement'**
+  String get commonEvent;
+
+  /// No description provided for @commonUnknownEvent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événement inconnu'**
+  String get commonUnknownEvent;
+
+  /// No description provided for @commonInformations.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations'**
+  String get commonInformations;
+
+  /// No description provided for @commonDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date'**
+  String get commonDate;
+
+  /// No description provided for @commonFieldRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce champ est requis'**
+  String get commonFieldRequired;
+
+  /// No description provided for @eventDetailRegistrationNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro de réservation'**
+  String get eventDetailRegistrationNumber;
+
+  /// No description provided for @eventDetailParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Participants'**
+  String get eventDetailParticipants;
+
+  /// No description provided for @eventDetailEventEnded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet événement est terminé'**
+  String get eventDetailEventEnded;
+
+  /// No description provided for @eventDetailEventFull.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événement complet'**
+  String get eventDetailEventFull;
+
+  /// No description provided for @eventDetailSpotsRemaining.
+  ///
+  /// In fr, this message translates to:
+  /// **'places restantes'**
+  String get eventDetailSpotsRemaining;
+
+  /// No description provided for @eventDetailReserveEvent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réserver pour cet événement'**
+  String get eventDetailReserveEvent;
+
+  /// No description provided for @eventDetailReservationsClosed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservations fermées'**
+  String get eventDetailReservationsClosed;
+
+  /// No description provided for @eventDetailDetailsUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certains détails peuvent être indisponibles'**
+  String get eventDetailDetailsUnavailable;
+
+  /// No description provided for @eventDetailPopular.
+  ///
+  /// In fr, this message translates to:
+  /// **'Populaire'**
+  String get eventDetailPopular;
+
+  /// No description provided for @eventDetailFree.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gratuit'**
+  String get eventDetailFree;
+
+  /// No description provided for @eventDetailEndDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de fin'**
+  String get eventDetailEndDate;
+
+  /// No description provided for @eventDetailVenue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu'**
+  String get eventDetailVenue;
+
+  /// No description provided for @eventDetailPrice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prix'**
+  String get eventDetailPrice;
+
+  /// No description provided for @eventDetailRegistration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription'**
+  String get eventDetailRegistration;
+
+  /// No description provided for @eventDetailParticipantsCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre de participants'**
+  String get eventDetailParticipantsCount;
+
+  /// No description provided for @eventDetailInvalidNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre invalide'**
+  String get eventDetailInvalidNumber;
+
+  /// No description provided for @eventDetailMaxParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maximum'**
+  String get eventDetailMaxParticipants;
+
+  /// No description provided for @eventDetailContactInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de contact'**
+  String get eventDetailContactInfo;
+
+  /// No description provided for @eventDetailFullName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom complet'**
+  String get eventDetailFullName;
+
+  /// No description provided for @eventDetailSpecialRequirementsOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exigences spéciales (optionnel)'**
+  String get eventDetailSpecialRequirementsOptional;
+
+  /// No description provided for @eventDetailInvalidEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email invalide'**
+  String get eventDetailInvalidEmail;
+
+  /// No description provided for @eventDetailTotalToPay.
+  ///
+  /// In fr, this message translates to:
+  /// **'Total à payer'**
+  String get eventDetailTotalToPay;
+
+  /// No description provided for @eventDetailConfirmRegistration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer l\'inscription'**
+  String get eventDetailConfirmRegistration;
 
   /// No description provided for @reservationsAll.
   ///
@@ -2067,6 +2385,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'العربية'**
   String get languageArabic;
+
+  /// No description provided for @eventDetailRegistrationError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de l\'inscription'**
+  String get eventDetailRegistrationError;
+
+  /// No description provided for @commonUnexpectedError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur inattendue s\'est produite'**
+  String get commonUnexpectedError;
 }
 
 class _AppLocalizationsDelegate

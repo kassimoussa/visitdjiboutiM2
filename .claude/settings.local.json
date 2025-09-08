@@ -13,7 +13,9 @@
       "Bash(dart analyze:*)",
       "Bash(find:*)",
       "Bash(flutter gen-l10n:*)",
-      "Bash(flutter pub:*)"
+      "Bash(flutter pub:*)",
+      "Bash(flutter clean:*)",
+      "Bash(sed:*)"
     ],
     "deny": [],
     "ask": []
