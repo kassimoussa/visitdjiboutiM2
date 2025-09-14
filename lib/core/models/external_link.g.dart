@@ -7,19 +7,19 @@ part of 'external_link.dart';
 // **************************************************************************
 
 ExternalLink _$ExternalLinkFromJson(Map<String, dynamic> json) => ExternalLink(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      url: json['url'] as String,
-      platform: json['platform'] as String,
-      order: (json['order'] as num).toInt(),
-      icon: json['icon'] as String,
-      color: json['color'] as String,
-      isExternal: json['is_external'] as bool,
-      domain: json['domain'] as String,
-      organizationInfoId: (json['organization_info_id'] as num).toInt(),
-      createdAt: json['created_at'] as String?,
-      updatedAt: json['updated_at'] as String?,
-    );
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+  url: json['url'] as String,
+  platform: json['platform'] as String,
+  order: (json['order'] as num).toInt(),
+  icon: json['icon'] as String,
+  color: json['color'] as String,
+  isExternal: json['is_external'] as bool,
+  domain: json['domain'] as String,
+  organizationInfoId: (json['organization_info_id'] as num).toInt(),
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
+);
 
 Map<String, dynamic> _$ExternalLinkToJson(ExternalLink instance) =>
     <String, dynamic>{

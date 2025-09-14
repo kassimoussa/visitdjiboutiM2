@@ -7,19 +7,19 @@ part of 'organization.dart';
 // **************************************************************************
 
 Organization _$OrganizationFromJson(Map<String, dynamic> json) => Organization(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      description: json['description'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String,
-      address: json['address'] as String,
-      openingHours: json['opening_hours'] as String,
-      logo: json['logo'] == null
-          ? null
-          : Media.fromJson(json['logo'] as Map<String, dynamic>),
-      createdAt: json['created_at'] as String?,
-      updatedAt: json['updated_at'] as String?,
-    );
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+  description: json['description'] as String,
+  email: json['email'] as String,
+  phone: json['phone'] as String,
+  address: json['address'] as String,
+  openingHours: json['opening_hours'] as String,
+  logo: json['logo'] == null
+      ? null
+      : Media.fromJson(json['logo'] as Map<String, dynamic>),
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
+);
 
 Map<String, dynamic> _$OrganizationToJson(Organization instance) =>
     <String, dynamic>{

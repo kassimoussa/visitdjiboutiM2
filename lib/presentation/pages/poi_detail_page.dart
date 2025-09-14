@@ -8,6 +8,7 @@ import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
+import 'tour_operator_detail_page.dart';
 
 class PoiDetailPage extends StatefulWidget {
   final Poi poi;
@@ -277,8 +278,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     _buildCategoriesSection(poi),
                     if (poi.tips?.isNotEmpty == true)
                       _buildTipsSection(poi),
-                    if (poi.contact?.isNotEmpty == true)
+                    if (poi.hasContacts)
                       _buildContactSection(poi),
+                    if (poi.hasTourOperators)
+                      _buildTourOperatorsSection(poi),
                     const SizedBox(height: 24),
                     if (poi.allowReservations)
                       _buildReservationSection(poi),
@@ -920,7 +923,79 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     return _buildInfoSection(
       icon: Icons.contact_phone,
       title: AppLocalizations.of(context)!.commonContact,
-      child: _buildFormattedContact(poi.contact!),
+      child: _buildFormattedContact(poi.primaryContact?.phone ?? 'Aucun contact disponible'),
+    );
+  }
+
+  Widget _buildTourOperatorsSection(Poi poi) {
+    if (poi.tourOperators.isEmpty) return const SizedBox.shrink();
+
+    return _buildInfoSection(
+      icon: Icons.groups,
+      title: '🏕️ Nos Partenaires Locaux',
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: poi.tourOperators.map((operator) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TourOperatorDetailPage(operator: operator),
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF3860F8), Color(0xFF5B7BFF)],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF3860F8).withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.tour,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      operator.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -1180,5 +1255,27 @@ ${poi.shortDescription.isNotEmpty ? poi.shortDescription : '${AppLocalizations.o
         ],
       ),
     );
+  }
+
+  void _makePhoneCall(String phone) async {
+    final uri = Uri.parse('tel:$phone');
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      }
+    } catch (e) {
+      // Ignore errors silently
+    }
+  }
+
+  void _openWebsite(String website) async {
+    final uri = Uri.parse(website);
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      // Ignore errors silently
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
+import '../pages/tour_operator_detail_page.dart';
 
 class TourOperatorCard extends StatelessWidget {
   final TourOperator operator;
@@ -15,12 +16,10 @@ class TourOperatorCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: () {
-          // Naviguer vers la page de détail de l'opérateur
-          // Pour l'instant, juste un message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Détails de ${operator.name ?? 'Opérateur'}'),
-              duration: const Duration(seconds: 1),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TourOperatorDetailPage(operator: operator),
             ),
           );
         },

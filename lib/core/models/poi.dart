@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'media.dart';
 import 'category.dart';
+import 'contact.dart';
+import 'tour_operator.dart';
 
 part 'poi.g.dart';
 
@@ -26,7 +28,6 @@ class Poi {
   @JsonKey(name: 'allow_reservations', defaultValue: false)
   final bool allowReservations;
   final String? website;
-  final String? contact;
   @JsonKey(name: 'opening_hours')
   final String? openingHours;
   @JsonKey(name: 'entry_fee')
@@ -37,6 +38,27 @@ class Poi {
   final List<Media>? media;
   @JsonKey(defaultValue: [])
   final List<Category> categories;
+  
+  // Nouveaux champs pour les contacts
+  @JsonKey(defaultValue: [])
+  final List<Contact> contacts;
+  @JsonKey(name: 'has_contacts', defaultValue: false)
+  final bool hasContacts;
+  @JsonKey(name: 'contacts_count', fromJson: _parseInt, defaultValue: 0)
+  final int contactsCount;
+  @JsonKey(name: 'primary_contact')
+  final Contact? primaryContact;
+  
+  // Nouveaux champs pour les tour operators
+  @JsonKey(name: 'tour_operators', defaultValue: [])
+  final List<TourOperator> tourOperators;
+  @JsonKey(name: 'has_tour_operators', defaultValue: false)
+  final bool hasTourOperators;
+  @JsonKey(name: 'tour_operators_count', fromJson: _parseInt, defaultValue: 0)
+  final int tourOperatorsCount;
+  @JsonKey(name: 'primary_tour_operator')
+  final TourOperator? primaryTourOperator;
+  
   @JsonKey(name: 'favorites_count', fromJson: _parseInt, defaultValue: 0)
   final int favoritesCount;
   @JsonKey(name: 'is_favorited', defaultValue: false)
@@ -61,13 +83,20 @@ class Poi {
     required this.isFeatured,
     required this.allowReservations,
     this.website,
-    this.contact,
     this.openingHours,
     this.entryFee,
     this.tips,
     this.featuredImage,
     this.media,
     required this.categories,
+    required this.contacts,
+    required this.hasContacts,
+    required this.contactsCount,
+    this.primaryContact,
+    required this.tourOperators,
+    required this.hasTourOperators,
+    required this.tourOperatorsCount,
+    this.primaryTourOperator,
     required this.favoritesCount,
     required this.isFavorited,
     this.createdAt,
@@ -75,42 +104,7 @@ class Poi {
     this.distance,
   });
 
-  factory Poi.fromJson(Map<String, dynamic> json) {
-    return Poi(
-      id: _parseInt(json['id']),
-      slug: json['slug'] as String? ?? '',
-      name: json['name'] as String? ?? 'Lieu inconnu',
-      shortDescription: json['short_description'] as String? ?? '',
-      description: json['description'] as String?,
-      address: json['address'] as String?,
-      region: json['region'] as String? ?? 'Inconnue',
-      fullAddress: json['full_address'] as String?,
-      latitude: _parseLatitude(json['latitude']),
-      longitude: _parseLongitude(json['longitude']),
-      isFeatured: (json['is_featured'] as bool?) ?? false,
-      allowReservations: (json['allow_reservations'] as bool?) ?? false,
-      website: json['website'] as String?,
-      contact: json['contact'] as String?,
-      openingHours: json['opening_hours'] as String?,
-      entryFee: json['entry_fee'] as String?,
-      tips: json['tips'] as String?,
-      featuredImage: json['featured_image'] == null
-          ? null
-          : Media.fromJson(json['featured_image'] as Map<String, dynamic>),
-      media: (json['media'] as List<dynamic>?)
-          ?.map((e) => Media.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      categories: (json['categories'] as List<dynamic>?)
-          ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
-          .toList() ?? [],
-      favoritesCount: _parseInt(json['favorites_count']),
-      isFavorited: (json['is_favorited'] as bool?) ?? false,
-      createdAt: json['created_at'] as String?,
-      updatedAt: json['updated_at'] as String?,
-      distance: (json['distance'] as num?)?.toDouble(),
-    );
-  }
-
+  factory Poi.fromJson(Map<String, dynamic> json) => _$PoiFromJson(json);
   Map<String, dynamic> toJson() => _$PoiToJson(this);
 
   String get primaryCategory => categories.isNotEmpty ? categories.first.name : 'Général';
