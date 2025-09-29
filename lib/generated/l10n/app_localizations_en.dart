@@ -942,6 +942,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonAddress => 'Address';
 
   @override
+  String get commonCoordinates => 'Coordinates';
+
+  @override
   String get commonPracticalInfo => 'Practical information';
 
   @override

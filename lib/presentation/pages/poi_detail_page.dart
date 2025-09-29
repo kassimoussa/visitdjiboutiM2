@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:io' show Platform;
 import 'package:url_launcher/url_launcher.dart';
+// Google Maps import - utilisé seulement sur Android
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/favorites_service.dart';
@@ -741,63 +743,224 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Remplacer Google Maps par une image statique ou un placeholder sur iOS
           Container(
             width: double.infinity,
             height: 250,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
+              color: const Color(0xFF3860F8).withOpacity(0.1),
             ),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(poi.latitude, poi.longitude),
-                      zoom: 15.0,
-                    ),
-                    markers: {
-                      Marker(
-                        markerId: MarkerId('poi_${poi.id}'),
-                        position: LatLng(poi.latitude, poi.longitude),
-                        infoWindow: InfoWindow(
-                          title: poi.name ?? 'Lieu inconnu',
-                          snippet: poi.displayAddress,
-                        ),
-                      ),
-                    },
-                    zoomControlsEnabled: false,
-                    myLocationButtonEnabled: false,
-                    mapToolbarEnabled: false,
-                    scrollGesturesEnabled: true,
-                    zoomGesturesEnabled: true,
-                    rotateGesturesEnabled: false,
-                    tiltGesturesEnabled: false,
-                    compassEnabled: false,
-                  ),
-                ),
-                Positioned(
-                  bottom: 12,
-                  right: 12,
-                  child: FloatingActionButton.small(
-                    onPressed: () => _openInMaps(poi),
-                    backgroundColor: const Color(0xFF3860F8),
-                    foregroundColor: Colors.white,
-                    child: const Icon(Icons.directions),
-                  ),
-                ),
-              ],
-            ),
+            child: _buildGoogleMapView(poi),
           ),
           const SizedBox(height: 16),
-          const SizedBox(height: 12),
           _buildInfoRow(
             Icons.location_on,
             AppLocalizations.of(context)!.commonAddress,
             poi.displayAddress,
           ),
+          const SizedBox(height: 12),
+          _buildInfoRow(
+            Icons.my_location,
+            AppLocalizations.of(context)!.commonCoordinates,
+            '${poi.latitude.toStringAsFixed(4)}, ${poi.longitude.toStringAsFixed(4)}',
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStaticMapView(Poi poi) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF3860F8).withOpacity(0.2),
+                  const Color(0xFFE8D5A3).withOpacity(0.2),
+                ],
+              ),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        const Icon(
+                          Icons.place,
+                          size: 48,
+                          color: Color(0xFF3860F8),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          poi.name ?? 'Lieu',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          poi.displayAddress,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 12,
+          right: 12,
+          child: FloatingActionButton.small(
+            onPressed: () => _openInMaps(poi),
+            backgroundColor: const Color(0xFF3860F8),
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.directions),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGoogleMapView(Poi poi) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(poi.latitude, poi.longitude),
+              zoom: 13.0,
+            ),
+            markers: {
+              Marker(
+                markerId: MarkerId('poi_${poi.id}'),
+                position: LatLng(poi.latitude, poi.longitude),
+                infoWindow: InfoWindow(
+                  title: poi.name ?? 'Lieu inconnu',
+                  snippet: poi.displayAddress,
+                ),
+              ),
+            },
+            zoomControlsEnabled: false,
+            myLocationButtonEnabled: false,
+            mapToolbarEnabled: false,
+            scrollGesturesEnabled: true,
+            zoomGesturesEnabled: true,
+            rotateGesturesEnabled: false,
+            tiltGesturesEnabled: false,
+            compassEnabled: false,
+          ),
+        ),
+        Positioned(
+          bottom: 12,
+          right: 12,
+          child: FloatingActionButton.small(
+            onPressed: () => _openInMaps(poi),
+            backgroundColor: const Color(0xFF3860F8),
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.directions),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMapPlaceholder(Poi poi) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF3860F8).withOpacity(0.2),
+                  const Color(0xFFE8D5A3).withOpacity(0.2),
+                ],
+              ),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        const Icon(
+                          Icons.place,
+                          size: 48,
+                          color: Color(0xFF3860F8),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          poi.name ?? 'Lieu',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          poi.displayAddress,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 12,
+          right: 12,
+          child: FloatingActionButton.small(
+            onPressed: () => _openInMaps(poi),
+            backgroundColor: const Color(0xFF3860F8),
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.directions),
+          ),
+        ),
+      ],
     );
   }
 

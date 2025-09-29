@@ -957,6 +957,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonAddress => 'Adresse';
 
   @override
+  String get commonCoordinates => 'Coordonnées';
+
+  @override
   String get commonPracticalInfo => 'Informations pratiques';
 
   @override

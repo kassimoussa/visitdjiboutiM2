@@ -942,6 +942,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonAddress => 'العنوان';
 
   @override
+  String get commonCoordinates => 'Coordonnées';
+
+  @override
   String get commonPracticalInfo => 'معلومات عملية';
 
   @override

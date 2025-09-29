@@ -1870,6 +1870,12 @@ abstract class AppLocalizations {
   /// **'Adresse'**
   String get commonAddress;
 
+  /// No description provided for @commonCoordinates.
+  ///
+  /// In fr, this message translates to:
+  /// **'Coordonnées'**
+  String get commonCoordinates;
+
   /// No description provided for @commonPracticalInfo.
   ///
   /// In fr, this message translates to:

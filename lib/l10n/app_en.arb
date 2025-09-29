@@ -418,6 +418,7 @@
   "commonExploreOnSite": "Explore its features by visiting in person.",
   "commonLocation": "Location",
   "commonAddress": "Address",
+  "commonCoordinates": "Coordinates",
   "commonPracticalInfo": "Practical information",
   "commonOpeningHours": "Opening hours",
   "commonEntryPrice": "Entry price",
