@@ -46,6 +46,13 @@ class ApiConstants {
   static const String tourOperators = '/tour-operators';
   static const String tourOperatorsNearby = '/tour-operators/nearby';
   static String tourOperatorById(dynamic id) => '/tour-operators/$id';
+
+  // Tours endpoints
+  static const String tours = '/tours';
+  static String tourById(dynamic id) => '/tours/$id';
+  static String tourBooking(int scheduleId) => '/tours/schedules/$scheduleId/book';
+  static const String tourMyBookings = '/tours/my-bookings';
+  static String tourCancelBooking(int bookingId) => '/tours/bookings/$bookingId';
   
   // Default headers
   static Map<String, String> get defaultHeaders => {

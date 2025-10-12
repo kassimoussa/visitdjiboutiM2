@@ -1221,4 +1221,57 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonUnexpectedError => 'حدث خطأ غير متوقع';
+
+  @override
+  String get operatorFeatured => 'مميز';
+
+  @override
+  String get operatorLabel => 'منظم الرحلات السياحية';
+
+  @override
+  String get operatorAddress => 'العنوان';
+
+  @override
+  String get operatorDescription => 'الوصف';
+
+  @override
+  String get operatorContact => 'جهة الاتصال';
+
+  @override
+  String get operatorPhone => 'الهاتف';
+
+  @override
+  String get operatorEmail => 'البريد الإلكتروني';
+
+  @override
+  String get operatorWebsite => 'الموقع الإلكتروني';
+
+  @override
+  String get operatorCall => 'اتصل';
+
+  @override
+  String get operatorTours => 'الجولات المعروضة';
+
+  @override
+  String get operatorSeeAll => 'عرض الكل';
+
+  @override
+  String get operatorNoTours => 'لا توجد جولات متاحة';
+
+  @override
+  String get operatorNoToursMessage => 'لم ينشر هذا المنظم أي جولات بعد.';
+
+  @override
+  String get homeFeaturedTours => 'Tours guidés';
+
+  @override
+  String get homeNoFeaturedTours => 'Aucun tour guidé disponible';
+
+  @override
+  String get tourFeatured => 'À la une';
+
+  @override
+  String tourMaxParticipants(int count) {
+    return '$count places max';
+  }
 }

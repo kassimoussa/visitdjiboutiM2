@@ -9,7 +9,7 @@ import 'anonymous_auth_service.dart';
 import 'connectivity_service.dart';
 import 'cache_service.dart';
 
-enum FavoriteType { poi, event }
+enum FavoriteType { poi, event, tour }
 
 class FavoritesService {
   static final FavoritesService _instance = FavoritesService._internal();
@@ -23,6 +23,7 @@ class FavoritesService {
   // Clés de stockage unifiées
   static const String _favoritePoisKey = 'favorite_poi_ids';
   static const String _favoriteEventsKey = 'favorite_event_ids';
+  static const String _favoriteToursKey = 'favorite_tour_ids';
   static const String _lastSyncKey = 'favorites_last_sync';
   
   final PoiService _poiService = PoiService();
@@ -35,13 +36,14 @@ class FavoritesService {
   // Cache en mémoire pour éviter les appels répétés
   List<int>? _cachedPoiIds;
   List<int>? _cachedEventIds;
+  List<int>? _cachedTourIds;
   DateTime? _lastCacheUpdate;
 
   /// Obtient la liste des IDs favoris depuis SharedPreferences avec cache
   Future<List<int>> _getFavoriteIds(FavoriteType type) async {
     try {
       // Vérifier le cache
-      if (_lastCacheUpdate != null && 
+      if (_lastCacheUpdate != null &&
           DateTime.now().difference(_lastCacheUpdate!).inMinutes < 5) {
         if (type == FavoriteType.poi && _cachedPoiIds != null) {
           return _cachedPoiIds!;
@@ -49,18 +51,34 @@ class FavoritesService {
         if (type == FavoriteType.event && _cachedEventIds != null) {
           return _cachedEventIds!;
         }
+        if (type == FavoriteType.tour && _cachedTourIds != null) {
+          return _cachedTourIds!;
+        }
       }
-      
+
       final prefs = await SharedPreferences.getInstance();
-      final key = type == FavoriteType.poi ? _favoritePoisKey : _favoriteEventsKey;
+      String key;
+      switch (type) {
+        case FavoriteType.poi:
+          key = _favoritePoisKey;
+          break;
+        case FavoriteType.event:
+          key = _favoriteEventsKey;
+          break;
+        case FavoriteType.tour:
+          key = _favoriteToursKey;
+          break;
+      }
       final favoriteIds = prefs.getStringList(key) ?? [];
       final ids = favoriteIds.map((id) => int.tryParse(id) ?? 0).where((id) => id > 0).toList();
-      
+
       // Mettre à jour le cache
       if (type == FavoriteType.poi) {
         _cachedPoiIds = ids;
-      } else {
+      } else if (type == FavoriteType.event) {
         _cachedEventIds = ids;
+      } else if (type == FavoriteType.tour) {
+        _cachedTourIds = ids;
       }
       _lastCacheUpdate = DateTime.now();
       
@@ -75,15 +93,28 @@ class FavoritesService {
     try {
       // Sauvegarder localement
       final prefs = await SharedPreferences.getInstance();
-      final key = type == FavoriteType.poi ? _favoritePoisKey : _favoriteEventsKey;
+      String key;
+      switch (type) {
+        case FavoriteType.poi:
+          key = _favoritePoisKey;
+          break;
+        case FavoriteType.event:
+          key = _favoriteEventsKey;
+          break;
+        case FavoriteType.tour:
+          key = _favoriteToursKey;
+          break;
+      }
       final stringIds = ids.map((id) => id.toString()).toList();
       await prefs.setStringList(key, stringIds);
-      
+
       // Mettre à jour le cache
       if (type == FavoriteType.poi) {
         _cachedPoiIds = ids;
-      } else {
+      } else if (type == FavoriteType.event) {
         _cachedEventIds = ids;
+      } else if (type == FavoriteType.tour) {
+        _cachedTourIds = ids;
       }
       _lastCacheUpdate = DateTime.now();
       
@@ -206,6 +237,30 @@ class FavoritesService {
     }
   }
   
+  /// Ajoute un tour aux favoris (local + API)
+  Future<bool> addTourToFavorites(int tourId) async {
+    try {
+      final favoriteIds = await _getFavoriteIds(FavoriteType.tour);
+
+      if (!favoriteIds.contains(tourId)) {
+        favoriteIds.add(tourId);
+        await _saveFavoriteIds(FavoriteType.tour, favoriteIds);
+
+        // Appel API pour synchroniser
+        await _toggleFavoriteOnAPI(FavoriteType.tour, tourId, true);
+
+        // Incrémenter le compteur pour les triggers de conversion
+        await _authService.incrementFavoritesCount();
+
+        return true;
+      }
+      return false; // Déjà en favori
+    } catch (e) {
+      print('Erreur lors de l\'ajout Tour aux favoris: $e');
+      return false;
+    }
+  }
+
   /// Ajoute un item aux favoris (méthode générique pour compatibilité)
   @Deprecated('Utilisez addPoiToFavorites() ou addEventToFavorites()')
   Future<bool> addToFavorites(int poiId) async {
@@ -259,7 +314,31 @@ class FavoritesService {
       return false;
     }
   }
-  
+
+  /// Supprime un Tour des favoris (local + API)
+  Future<bool> removeTourFromFavorites(int tourId) async {
+    try {
+      final favoriteIds = await _getFavoriteIds(FavoriteType.tour);
+
+      if (favoriteIds.contains(tourId)) {
+        favoriteIds.remove(tourId);
+        await _saveFavoriteIds(FavoriteType.tour, favoriteIds);
+
+        // Appel API pour synchroniser
+        await _toggleFavoriteOnAPI(FavoriteType.tour, tourId, false);
+
+        // Décrémenter le compteur pour les triggers de conversion
+        await _authService.decrementFavoritesCount();
+
+        return true;
+      }
+      return false; // N'était pas en favori
+    } catch (e) {
+      print('Erreur lors de la suppression Tour des favoris: $e');
+      return false;
+    }
+  }
+
   /// Supprime un item des favoris (méthode générique pour compatibilité)
   @Deprecated('Utilisez removePoiFromFavorites() ou removeEventFromFavorites()')
   Future<bool> removeFromFavorites(int poiId) async {
@@ -322,22 +401,49 @@ class FavoritesService {
     }
   }
   
+  /// Vérifie si un tour est en favori
+  Future<bool> isTourFavorite(int tourId) async {
+    try {
+      final favoriteIds = await _getFavoriteIds(FavoriteType.tour);
+      return favoriteIds.contains(tourId);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Toggle l'état favori d'un Tour
+  Future<bool> toggleTourFavorite(int tourId) async {
+    try {
+      final isCurrentlyFavorite = await isTourFavorite(tourId);
+
+      if (isCurrentlyFavorite) {
+        return await removeTourFromFavorites(tourId);
+      } else {
+        return await addTourToFavorites(tourId);
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   /// Toggle l'état favori (méthode générique pour compatibilité)
   @Deprecated('Utilisez togglePoiFavorite() ou toggleEventFavorite()')
   Future<bool> toggleFavorite(int poiId) async {
     return await togglePoiFavorite(poiId);
   }
 
-  /// Efface tous les favoris (POIs et Events)
+  /// Efface tous les favoris (POIs, Events et Tours)
   Future<bool> clearAllFavorites() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_favoritePoisKey);
       await prefs.remove(_favoriteEventsKey);
-      
+      await prefs.remove(_favoriteToursKey);
+
       // Vider le cache
       _cachedPoiIds = null;
       _cachedEventIds = null;
+      _cachedTourIds = null;
       _lastCacheUpdate = null;
       
       // Synchroniser avec l'API
@@ -438,9 +544,18 @@ class FavoritesService {
         return;
       }
       
-      final endpoint = type == FavoriteType.poi 
-          ? '/favorites/pois/$itemId'
-          : '/favorites/events/$itemId';
+      String endpoint;
+      switch (type) {
+        case FavoriteType.poi:
+          endpoint = '/favorites/pois/$itemId';
+          break;
+        case FavoriteType.event:
+          endpoint = '/favorites/events/$itemId';
+          break;
+        case FavoriteType.tour:
+          endpoint = '/favorites/tours/$itemId';
+          break;
+      }
       
       if (isAdding) {
         await _apiClient.dio.post(endpoint);

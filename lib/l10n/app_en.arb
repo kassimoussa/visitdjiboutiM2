@@ -564,5 +564,31 @@
   "languageArabic": "العربية",
   
   "eventDetailRegistrationError": "Registration error",
-  "commonUnexpectedError": "An unexpected error occurred"
+  "commonUnexpectedError": "An unexpected error occurred",
+
+  "operatorFeatured": "Featured",
+  "operatorLabel": "Tour Operator",
+  "operatorAddress": "Address",
+  "operatorDescription": "Description",
+  "operatorContact": "Contact",
+  "operatorPhone": "Phone",
+  "operatorEmail": "Email",
+  "operatorWebsite": "Website",
+  "operatorCall": "Call",
+  "operatorTours": "Offered Tours",
+  "operatorSeeAll": "See All",
+  "operatorNoTours": "No tours available",
+  "operatorNoToursMessage": "This operator has not published any tours yet.",
+
+  "homeFeaturedTours": "Guided Tours",
+  "homeNoFeaturedTours": "No guided tours available",
+  "tourFeatured": "Featured",
+  "tourMaxParticipants": "{count} spots max",
+  "@tourMaxParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

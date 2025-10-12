@@ -22,7 +22,10 @@
       "Bash(flutter:*)",
       "Bash(killall:*)",
       "Bash(xcrun simctl shutdown:*)",
-      "Bash(xcrun simctl boot:*)"
+      "Bash(xcrun simctl boot:*)",
+      "WebFetch(domain:197.241.32.130)",
+      "Bash(python3:*)",
+      "Bash(nc:*)"
     ],
     "deny": [],
     "ask": []

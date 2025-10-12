@@ -52,7 +52,19 @@ class TourOperatorService {
       final response = await _apiClient.dio.get('/tour-operators/$id');
 
       if (response.statusCode == 200) {
-        final operator = TourOperator.fromJson(response.data['data']);
+        print('[TOUR OPERATOR SERVICE] Raw response data: ${response.data}');
+        final data = response.data['data'];
+        print('[TOUR OPERATOR SERVICE] Operator data: $data');
+        print('[TOUR OPERATOR SERVICE] Tours in data: ${data['tours']}');
+
+        final operator = TourOperator.fromJson(data);
+        print('[TOUR OPERATOR SERVICE] Parsed operator tours: ${operator.tours?.length ?? 0}');
+
+        if (operator.tours != null) {
+          for (var tour in operator.tours!) {
+            print('[TOUR OPERATOR SERVICE] Tour: ${tour.title} (${tour.id})');
+          }
+        }
 
         return ApiResponse<TourOperator>(
           success: true,

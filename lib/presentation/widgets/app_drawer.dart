@@ -6,6 +6,7 @@ import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
 import '../pages/reservations_page.dart';
+import '../pages/tours_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -49,6 +50,13 @@ class _AppDrawerState extends State<AppDrawer> {
                       onTap: () => _navigateTo(context, const ProfilePage()),
                     ),
                     
+                    _buildMenuItem(
+                      icon: Icons.tour,
+                      title: 'Tours',
+                      subtitle: 'Découvrez nos circuits guidés',
+                      onTap: () => _navigateTo(context, const ToursPage()),
+                    ),
+
                     _buildMenuItem(
                       icon: Icons.book_online,
                       title: AppLocalizations.of(context)!.drawerReservations,

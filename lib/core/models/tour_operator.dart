@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'tour.dart';
 
 part 'tour_operator.g.dart';
 
@@ -22,6 +23,7 @@ class TourOperator {
   final String? logo;
   @JsonKey(name: 'gallery_preview')
   final List<String>? galleryPreview;
+  final List<Tour>? tours;
 
   const TourOperator({
     required this.id,
@@ -39,6 +41,7 @@ class TourOperator {
     this.featured,
     this.logo,
     this.galleryPreview,
+    this.tours,
   });
 
   factory TourOperator.fromJson(Map<String, dynamic> json) => _$TourOperatorFromJson(json);

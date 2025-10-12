@@ -24,6 +24,9 @@ TourOperator _$TourOperatorFromJson(Map<String, dynamic> json) => TourOperator(
   galleryPreview: (json['gallery_preview'] as List<dynamic>?)
       ?.map((e) => e as String)
       .toList(),
+  tours: (json['tours'] as List<dynamic>?)
+      ?.map((e) => Tour.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$TourOperatorToJson(TourOperator instance) =>
@@ -43,4 +46,5 @@ Map<String, dynamic> _$TourOperatorToJson(TourOperator instance) =>
       'featured': instance.featured,
       'logo': instance.logo,
       'gallery_preview': instance.galleryPreview,
+      'tours': instance.tours,
     };

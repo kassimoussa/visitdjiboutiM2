@@ -435,5 +435,19 @@
   "languageArabic": "العربية",
   
   "eventDetailRegistrationError": "خطأ في التسجيل",
-  "commonUnexpectedError": "حدث خطأ غير متوقع"
+  "commonUnexpectedError": "حدث خطأ غير متوقع",
+
+  "operatorFeatured": "مميز",
+  "operatorLabel": "منظم الرحلات السياحية",
+  "operatorAddress": "العنوان",
+  "operatorDescription": "الوصف",
+  "operatorContact": "جهة الاتصال",
+  "operatorPhone": "الهاتف",
+  "operatorEmail": "البريد الإلكتروني",
+  "operatorWebsite": "الموقع الإلكتروني",
+  "operatorCall": "اتصل",
+  "operatorTours": "الجولات المعروضة",
+  "operatorSeeAll": "عرض الكل",
+  "operatorNoTours": "لا توجد جولات متاحة",
+  "operatorNoToursMessage": "لم ينشر هذا المنظم أي جولات بعد."
 }

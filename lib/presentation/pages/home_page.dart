@@ -3,11 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/event_service.dart';
+import '../../core/services/tour_service.dart';
 import '../../core/services/cache_service.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/models/poi.dart';
+import '../../core/models/simple_tour.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
+import '../widgets/simple_tour_card.dart';
 import '../../core/models/event.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/event_list_response.dart';
@@ -16,6 +19,7 @@ import 'region_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 import 'tour_operators_page.dart';
+import 'all_tours_page.dart';
 import 'essentials_page.dart';
 import 'embassies_page.dart';
 
@@ -30,16 +34,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PoiService _poiService = PoiService();
   final EventService _eventService = EventService();
+  final TourService _tourService = TourService();
   final CacheService _cacheService = CacheService();
   final LocalizationService _localizationService = LocalizationService();
-  
+
   List<Poi> _featuredPois = [];
   List<Event> _upcomingEvents = [];
+  List<SimpleTour> _featuredTours = [];
   bool _isLoadingPois = true;
   bool _isLoadingEvents = true;
+  bool _isLoadingTours = true;
 
   PageController? _poisPageController;
   PageController? _eventsPageController;
+  PageController? _toursPageController;
   Timer? _timer;
   int _currentPage = 0;
 
@@ -54,6 +62,7 @@ class _HomePageState extends State<HomePage> {
     _cacheService.clearPoiCache().then((_) {
       _loadFeaturedPois();
       _loadUpcomingEvents();
+      _loadFeaturedTours();
     });
   }
 
@@ -69,6 +78,7 @@ class _HomePageState extends State<HomePage> {
       print('[HOME PAGE] Rechargement avec nouveaux headers');
       _loadFeaturedPoisForced();
       _loadUpcomingEventsForced();
+      _loadFeaturedToursForced();
     });
   }
 
@@ -78,6 +88,7 @@ class _HomePageState extends State<HomePage> {
     _timer?.cancel();
     _poisPageController?.dispose();
     _eventsPageController?.dispose();
+    _toursPageController?.dispose();
     super.dispose();
   }
 
@@ -165,6 +176,21 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _loadFeaturedTours() async {
+    try {
+      final tours = await _tourService.getFeaturedTours(limit: 5);
+
+      if (mounted) {
+        setState(() {
+          _featuredTours = tours;
+          _isLoadingTours = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingTours = false);
+    }
+  }
+
   /// Version forcée qui bypass le cache pour les changements de langue
   Future<void> _loadFeaturedPoisForced() async {
     setState(() {
@@ -233,6 +259,28 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /// Version forcée qui bypass le cache pour les changements de langue
+  Future<void> _loadFeaturedToursForced() async {
+    setState(() {
+      _isLoadingTours = true;
+    });
+
+    try {
+      final tours = await _tourService.getFeaturedTours(limit: 5);
+
+      if (mounted) {
+        setState(() {
+          _featuredTours = tours;
+          _isLoadingTours = false;
+        });
+        print('[HOME PAGE] Tours rechargés: ${_featuredTours.length} items (langue: ${_localizationService.currentLanguageCode})');
+      }
+    } catch (e) {
+      print('[HOME PAGE] Erreur rechargement tours: $e');
+      if (mounted) setState(() => _isLoadingTours = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -259,9 +307,21 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 12),
             _buildUpcomingEventsCarousel(),
-            
+
             const SizedBox(height: 24),
-            
+
+            _buildSectionHeader(
+              title: AppLocalizations.of(context)!.homeFeaturedTours,
+              onSeeAll: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AllToursPage()),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildFeaturedToursCarousel(),
+
+            const SizedBox(height: 24),
+
             _buildSectionHeader(
               title: AppLocalizations.of(context)!.homeDiscoverByRegion,
               subtitle: AppLocalizations.of(context)!.homeDiscoverByRegionSubtitle,
@@ -411,6 +471,49 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: EventCard(event: event),
+                      ),
+                    );
+                  },
+                ),
+    );
+  }
+
+  Widget _buildFeaturedToursCarousel() {
+    _toursPageController ??= PageController(viewportFraction: 0.85);
+
+    return SizedBox(
+      height: 340.h,
+      child: _isLoadingTours
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
+          : _featuredTours.isEmpty
+              ? Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.homeNoFeaturedTours,
+                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                  ),
+                )
+              : PageView.builder(
+                  controller: _toursPageController,
+                  itemCount: _featuredTours.length,
+                  itemBuilder: (context, index) {
+                    final tour = _featuredTours[index];
+                    return AnimatedBuilder(
+                      animation: _toursPageController!,
+                      builder: (context, child) {
+                        double scale = 1.0;
+                        if (_toursPageController!.position.haveDimensions) {
+                          double page = _toursPageController!.page ?? 0.0;
+                          double difference = (page - index).abs();
+                          scale = max(0.85, 1.0 - difference * 0.15);
+                        }
+                        return Transform.scale(
+                          scale: scale,
+                          child: child,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: SimpleTourCard(tour: tour),
                       ),
                     );
                   },

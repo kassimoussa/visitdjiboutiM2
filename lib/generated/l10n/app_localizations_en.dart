@@ -1221,4 +1221,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonUnexpectedError => 'An unexpected error occurred';
+
+  @override
+  String get operatorFeatured => 'Featured';
+
+  @override
+  String get operatorLabel => 'Tour Operator';
+
+  @override
+  String get operatorAddress => 'Address';
+
+  @override
+  String get operatorDescription => 'Description';
+
+  @override
+  String get operatorContact => 'Contact';
+
+  @override
+  String get operatorPhone => 'Phone';
+
+  @override
+  String get operatorEmail => 'Email';
+
+  @override
+  String get operatorWebsite => 'Website';
+
+  @override
+  String get operatorCall => 'Call';
+
+  @override
+  String get operatorTours => 'Offered Tours';
+
+  @override
+  String get operatorSeeAll => 'See All';
+
+  @override
+  String get operatorNoTours => 'No tours available';
+
+  @override
+  String get operatorNoToursMessage =>
+      'This operator has not published any tours yet.';
+
+  @override
+  String get homeFeaturedTours => 'Guided Tours';
+
+  @override
+  String get homeNoFeaturedTours => 'No guided tours available';
+
+  @override
+  String get tourFeatured => 'Featured';
+
+  @override
+  String tourMaxParticipants(int count) {
+    return '$count spots max';
+  }
 }

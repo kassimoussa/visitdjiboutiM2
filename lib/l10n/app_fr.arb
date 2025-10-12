@@ -556,5 +556,31 @@
   "languageArabic": "العربية",
   
   "eventDetailRegistrationError": "Erreur lors de l'inscription",
-  "commonUnexpectedError": "Une erreur inattendue s'est produite"
+  "commonUnexpectedError": "Une erreur inattendue s'est produite",
+
+  "operatorFeatured": "Recommandé",
+  "operatorLabel": "Opérateur Touristique",
+  "operatorAddress": "Adresse",
+  "operatorDescription": "Description",
+  "operatorContact": "Contact",
+  "operatorPhone": "Téléphone",
+  "operatorEmail": "Email",
+  "operatorWebsite": "Site web",
+  "operatorCall": "Appeler",
+  "operatorTours": "Tours proposés",
+  "operatorSeeAll": "Voir tout",
+  "operatorNoTours": "Aucun tour disponible",
+  "operatorNoToursMessage": "Cet opérateur n'a pas encore publié de tours.",
+
+  "homeFeaturedTours": "Tours guidés",
+  "homeNoFeaturedTours": "Aucun tour guidé disponible",
+  "tourFeatured": "À la une",
+  "tourMaxParticipants": "{count} places max",
+  "@tourMaxParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

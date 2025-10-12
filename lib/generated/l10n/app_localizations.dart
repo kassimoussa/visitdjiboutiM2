@@ -2403,6 +2403,108 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Une erreur inattendue s\'est produite'**
   String get commonUnexpectedError;
+
+  /// No description provided for @operatorFeatured.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommandé'**
+  String get operatorFeatured;
+
+  /// No description provided for @operatorLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Opérateur Touristique'**
+  String get operatorLabel;
+
+  /// No description provided for @operatorAddress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse'**
+  String get operatorAddress;
+
+  /// No description provided for @operatorDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Description'**
+  String get operatorDescription;
+
+  /// No description provided for @operatorContact.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contact'**
+  String get operatorContact;
+
+  /// No description provided for @operatorPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get operatorPhone;
+
+  /// No description provided for @operatorEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get operatorEmail;
+
+  /// No description provided for @operatorWebsite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Site web'**
+  String get operatorWebsite;
+
+  /// No description provided for @operatorCall.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appeler'**
+  String get operatorCall;
+
+  /// No description provided for @operatorTours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tours proposés'**
+  String get operatorTours;
+
+  /// No description provided for @operatorSeeAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir tout'**
+  String get operatorSeeAll;
+
+  /// No description provided for @operatorNoTours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun tour disponible'**
+  String get operatorNoTours;
+
+  /// No description provided for @operatorNoToursMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet opérateur n\'a pas encore publié de tours.'**
+  String get operatorNoToursMessage;
+
+  /// No description provided for @homeFeaturedTours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tours guidés'**
+  String get homeFeaturedTours;
+
+  /// No description provided for @homeNoFeaturedTours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun tour guidé disponible'**
+  String get homeNoFeaturedTours;
+
+  /// No description provided for @tourFeatured.
+  ///
+  /// In fr, this message translates to:
+  /// **'À la une'**
+  String get tourFeatured;
+
+  /// No description provided for @tourMaxParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} places max'**
+  String tourMaxParticipants(int count);
 }
 
 class _AppLocalizationsDelegate

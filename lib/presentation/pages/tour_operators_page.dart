@@ -130,15 +130,6 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                               color: Color(0xFF1D2233),
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Les partenaires locaux seront bientôt disponibles',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 14,
-                            ),
-                          ),
                         ],
                       ),
                     )
