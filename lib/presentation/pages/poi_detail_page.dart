@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:io' show Platform;
 import 'package:url_launcher/url_launcher.dart';
 // Google Maps import - utilisé seulement sur Android
 import 'package:google_maps_flutter/google_maps_flutter.dart';

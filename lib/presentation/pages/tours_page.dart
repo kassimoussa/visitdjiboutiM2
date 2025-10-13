@@ -3,7 +3,6 @@ import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/tour_operator_service.dart';
-import '../../generated/l10n/app_localizations.dart';
 import '../widgets/shimmer_loading.dart';
 import 'tour_detail_page.dart';
 

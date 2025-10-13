@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';

@@ -5,7 +5,6 @@ import '../../core/models/tour_operator.dart';
 import '../../core/models/tour_booking.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
-import '../../generated/l10n/app_localizations.dart';
 import '../widgets/shimmer_loading.dart';
 
 class TourDetailPage extends StatefulWidget {
