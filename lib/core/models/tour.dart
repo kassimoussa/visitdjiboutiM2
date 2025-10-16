@@ -151,10 +151,16 @@ class Tour {
   final Media? featuredImage;
   final List<Media>? media;
   final List<Category>? categories;
-  @JsonKey(name: 'schedules')
+  @JsonKey(name: 'upcoming_schedules')
   final List<TourSchedule>? schedules;
   @JsonKey(name: 'next_available_date')
   final String? nextAvailableDate;
+  @JsonKey(name: 'start_date')
+  final String? startDate;
+  @JsonKey(name: 'end_date')
+  final String? endDate;
+  @JsonKey(name: 'available_spots')
+  final int? availableSpots;
   @JsonKey(name: 'average_rating')
   final double? averageRating;
   @JsonKey(name: 'reviews_count')
@@ -195,6 +201,9 @@ class Tour {
     this.categories,
     this.schedules,
     this.nextAvailableDate,
+    this.startDate,
+    this.endDate,
+    this.availableSpots,
     this.averageRating,
     this.reviewsCount,
     this.createdAt,
@@ -244,6 +253,9 @@ class Tour {
       categories: tour.categories,
       schedules: tour.schedules,
       nextAvailableDate: tour.nextAvailableDate,
+      startDate: tour.startDate,
+      endDate: tour.endDate,
+      availableSpots: tour.availableSpots,
       averageRating: tour.averageRating,
       reviewsCount: tour.reviewsCount,
       createdAt: tour.createdAt,
@@ -328,6 +340,15 @@ class Tour {
   bool get hasLocation => latitude != null && longitude != null;
   bool get hasImages => (media?.isNotEmpty ?? false) || featuredImage != null;
   String get firstImageUrl => featuredImage?.url ?? media?.first.url ?? '';
+
+  // Disponibilité pour réservation directe (sans schedules)
+  bool get isBookable => isActive && (availableSpots ?? 0) > 0;
+  bool get hasAvailableSpots => (availableSpots ?? 0) > 0;
+  String? get displayDateRange {
+    if (startDate == null) return null;
+    if (endDate == null) return startDate;
+    return '$startDate - $endDate';
+  }
 }
 
 @JsonSerializable()

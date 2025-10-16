@@ -143,10 +143,6 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   _buildOperatorInfo(tour.tourOperator!),
                   const SizedBox(height: 24),
                 ],
-                if (tour.hasSchedules) ...[
-                  _buildSchedules(tour),
-                  const SizedBox(height: 24),
-                ],
                 if (tour.media?.isNotEmpty ?? false) ...[
                   _buildMediaGallery(tour.media!.map((m) => m.url).toList()),
                   const SizedBox(height: 100), // Espace pour le bottom bar
@@ -299,29 +295,35 @@ class _TourDetailPageState extends State<TourDetailPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            if (tour.displayDateRange != null)
+              _buildInfoRow(
+                Icons.calendar_today,
+                'Dates',
+                tour.displayDateRange!,
+              ),
+            if (tour.availableSpots != null)
+              _buildInfoRow(
+                Icons.event_seat,
+                'Places disponibles',
+                '${tour.availableSpots} places',
+              ),
             if (tour.maxParticipants != null)
               _buildInfoRow(
                 Icons.group,
-                'Participants',
-                'Max ${tour.maxParticipants} personnes',
+                'Participants max',
+                '${tour.maxParticipants} personnes',
               ),
             if (tour.minParticipants != null)
               _buildInfoRow(
                 Icons.group,
-                'Minimum',
+                'Minimum requis',
                 '${tour.minParticipants} personnes',
               ),
             _buildInfoRow(
               Icons.language,
               'Langues',
-              'Français, Anglais', // Default languages for tour operators
+              'Français, Anglais',
             ),
-            if (tour.nextAvailableDate != null)
-              _buildInfoRow(
-                Icons.calendar_today,
-                'Prochaine date',
-                tour.nextAvailableDate!,
-              ),
           ],
         ),
       ),
@@ -561,89 +563,6 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  Widget _buildSchedules(Tour tour) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Créneaux disponibles',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        ...tour.schedules!.map((schedule) => _buildScheduleCard(tour, schedule)),
-      ],
-    );
-  }
-
-  Widget _buildScheduleCard(Tour tour, TourSchedule schedule) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  schedule.startDate,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  schedule.displayPrice,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF3860F8),
-                  ),
-                ),
-              ],
-            ),
-            if (schedule.startTime != null) ...[
-              const SizedBox(height: 4),
-              Text(
-                'Heure: ${schedule.startTime}${schedule.endTime != null ? ' - ${schedule.endTime}' : ''}',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${schedule.availableSpots} places disponibles',
-                  style: TextStyle(
-                    color: schedule.availableSpots > 0 ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: schedule.isAvailable
-                      ? () => _showBookingDialog(tour, schedule)
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3860F8),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: Text(schedule.isSoldOut ? 'Complet' : 'Réserver'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildMediaGallery(List<String> media) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -727,7 +646,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
             Expanded(
               flex: 2,
               child: ElevatedButton(
-                onPressed: tour.hasSchedules ? () => _showBookingOptions(tour) : null,
+                onPressed: tour.isBookable ? () => _showDirectBookingDialog(tour) : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3860F8),
                   foregroundColor: Colors.white,
@@ -737,7 +656,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   ),
                 ),
                 child: Text(
-                  tour.hasSchedules ? 'Réserver maintenant' : 'Aucun créneau disponible',
+                  tour.isBookable ? 'S\'inscrire maintenant' : 'Places épuisées',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -748,92 +667,15 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  void _showBookingOptions(Tour tour) {
-    if (!tour.hasSchedules) return;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        maxChildSize: 0.9,
-        minChildSize: 0.4,
-        expand: false,
-        builder: (context, scrollController) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Choisir un créneau',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: tour.schedules!.length,
-                    itemBuilder: (context, index) {
-                      final schedule = tour.schedules![index];
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        child: ListTile(
-                          title: Text(schedule.startDate),
-                          subtitle: schedule.startTime != null
-                              ? Text('${schedule.startTime}${schedule.endTime != null ? ' - ${schedule.endTime}' : ''}')
-                              : null,
-                          trailing: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                schedule.displayPrice,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF3860F8),
-                                ),
-                              ),
-                              Text(
-                                '${schedule.availableSpots} places',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                          onTap: schedule.isAvailable
-                              ? () {
-                                  Navigator.pop(context);
-                                  _showBookingDialog(tour, schedule);
-                                }
-                              : null,
-                          enabled: schedule.isAvailable,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  void _showBookingDialog(Tour tour, TourSchedule schedule) {
+  void _showDirectBookingDialog(Tour tour) {
     showDialog(
       context: context,
-      builder: (context) => TourBookingDialog(
+      builder: (context) => DirectTourBookingDialog(
         tour: tour,
-        schedule: schedule,
         onBookingSuccess: (booking) {
           _showBookingConfirmation(booking);
+          // Recharger les détails du tour pour mettre à jour les places disponibles
+          _loadTourDetails();
         },
       ),
     );
@@ -904,23 +746,21 @@ class _TourDetailPageState extends State<TourDetailPage> {
   }
 }
 
-class TourBookingDialog extends StatefulWidget {
+class DirectTourBookingDialog extends StatefulWidget {
   final Tour tour;
-  final TourSchedule schedule;
   final Function(TourBooking) onBookingSuccess;
 
-  const TourBookingDialog({
+  const DirectTourBookingDialog({
     super.key,
     required this.tour,
-    required this.schedule,
     required this.onBookingSuccess,
   });
 
   @override
-  State<TourBookingDialog> createState() => _TourBookingDialogState();
+  State<DirectTourBookingDialog> createState() => _DirectTourBookingDialogState();
 }
 
-class _TourBookingDialogState extends State<TourBookingDialog> {
+class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -952,10 +792,11 @@ class _TourBookingDialogState extends State<TourBookingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final totalAmount = widget.schedule.price * _participantsCount;
+    final totalAmount = widget.tour.price * _participantsCount;
+    final maxParticipants = widget.tour.availableSpots ?? widget.tour.maxParticipants ?? 1;
 
     return AlertDialog(
-      title: const Text('Réserver ce tour'),
+      title: const Text('Inscription au tour'),
       content: SizedBox(
         width: double.maxFinite,
         child: Form(
@@ -965,7 +806,7 @@ class _TourBookingDialogState extends State<TourBookingDialog> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Résumé de la réservation
+                // Résumé du tour
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(12),
@@ -976,9 +817,9 @@ class _TourBookingDialogState extends State<TourBookingDialog> {
                           widget.tour.title,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('Date: ${widget.schedule.startDate}'),
-                        if (widget.schedule.startTime != null)
-                          Text('Heure: ${widget.schedule.startTime}'),
+                        if (widget.tour.displayDateRange != null)
+                          Text('Dates: ${widget.tour.displayDateRange}'),
+                        Text('${widget.tour.availableSpots} places disponibles'),
                       ],
                     ),
                   ),
@@ -1005,7 +846,7 @@ class _TourBookingDialogState extends State<TourBookingDialog> {
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
-                      onPressed: _participantsCount < widget.schedule.availableSpots
+                      onPressed: _participantsCount < maxParticipants
                           ? () => setState(() => _participantsCount++)
                           : null,
                       icon: const Icon(Icons.add),
@@ -1135,8 +976,8 @@ class _TourBookingDialogState extends State<TourBookingDialog> {
     setState(() => _isLoading = true);
 
     try {
-      final booking = await TourService().bookTour(
-        scheduleId: widget.schedule.id,
+      final booking = await TourService().bookTourDirect(
+        tourId: widget.tour.id,
         participantsCount: _participantsCount,
         userName: !_isAuthenticated ? _nameController.text : null,
         userEmail: !_isAuthenticated ? _emailController.text : null,
@@ -1146,17 +987,23 @@ class _TourBookingDialogState extends State<TourBookingDialog> {
             : null,
       );
 
-      Navigator.of(context).pop();
-      widget.onBookingSuccess(booking.data.reservation);
+      if (mounted) {
+        Navigator.of(context).pop();
+        widget.onBookingSuccess(booking.data.reservation);
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de la réservation: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'inscription: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 }

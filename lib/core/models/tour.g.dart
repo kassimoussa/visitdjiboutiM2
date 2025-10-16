@@ -41,10 +41,13 @@ Tour _$TourFromJson(Map<String, dynamic> json) => Tour(
   categories: (json['categories'] as List<dynamic>?)
       ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
       .toList(),
-  schedules: (json['schedules'] as List<dynamic>?)
+  schedules: (json['upcoming_schedules'] as List<dynamic>?)
       ?.map((e) => TourSchedule.fromJson(e as Map<String, dynamic>))
       .toList(),
   nextAvailableDate: json['next_available_date'] as String?,
+  startDate: json['start_date'] as String?,
+  endDate: json['end_date'] as String?,
+  availableSpots: (json['available_spots'] as num?)?.toInt(),
   averageRating: (json['average_rating'] as num?)?.toDouble(),
   reviewsCount: (json['reviews_count'] as num?)?.toInt(),
   createdAt: json['created_at'] as String?,
@@ -78,8 +81,11 @@ Map<String, dynamic> _$TourToJson(Tour instance) => <String, dynamic>{
   'featured_image': instance.featuredImage,
   'media': instance.media,
   'categories': instance.categories,
-  'schedules': instance.schedules,
+  'upcoming_schedules': instance.schedules,
   'next_available_date': instance.nextAvailableDate,
+  'start_date': instance.startDate,
+  'end_date': instance.endDate,
+  'available_spots': instance.availableSpots,
   'average_rating': instance.averageRating,
   'reviews_count': instance.reviewsCount,
   'created_at': instance.createdAt,

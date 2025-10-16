@@ -194,6 +194,59 @@ class TourService {
     }
   }
 
+  Future<TourBookingResponse> bookTourDirect({
+    required int tourId,
+    required int participantsCount,
+    String? userName,
+    String? userEmail,
+    String? userPhone,
+    String? specialRequirements,
+  }) async {
+    print('[TOUR SERVICE] Inscription directe au tour: $tourId');
+
+    final requestData = <String, dynamic>{
+      'participants_count': participantsCount,
+    };
+
+    if (specialRequirements != null && specialRequirements.isNotEmpty) {
+      requestData['special_requirements'] = specialRequirements;
+    }
+
+    // Pour utilisateurs non authentifiés
+    if (userName != null) {
+      requestData['user_name'] = userName;
+    }
+    if (userEmail != null) {
+      requestData['user_email'] = userEmail;
+    }
+    if (userPhone != null) {
+      requestData['user_phone'] = userPhone;
+    }
+
+    print('[TOUR SERVICE] Données inscription: $requestData');
+
+    try {
+      final response = await _apiClient.post(
+        '${ApiConstants.tours}/$tourId/book',
+        data: requestData,
+      );
+
+      print('[TOUR SERVICE] Statut inscription: ${response.statusCode}');
+      print('[TOUR SERVICE] Réponse inscription: ${response.data}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final bookingResponse = TourBookingResponse.fromJson(response.data);
+        print('[TOUR SERVICE] Inscription créée: ${bookingResponse.data.reservation.confirmationNumber}');
+        return bookingResponse;
+      } else {
+        throw Exception('Erreur lors de l\'inscription: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('[TOUR SERVICE] Erreur inscription: $e');
+      rethrow;
+    }
+  }
+
   Future<TourBookingListResponse> getMyBookings({
     BookingStatus? status,
     int page = 1,
