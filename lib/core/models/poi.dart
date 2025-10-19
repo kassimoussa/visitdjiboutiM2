@@ -13,7 +13,7 @@ class Poi {
   final String? slug;
   final String name;
   @JsonKey(name: 'short_description')
-  final String shortDescription;
+  final String? shortDescription;
   final String? description;
   final String? address;
   final String region;
@@ -73,7 +73,7 @@ class Poi {
     required this.id,
     this.slug,
     required this.name,
-    required this.shortDescription,
+    this.shortDescription,
     this.description,
     this.address,
     required this.region,

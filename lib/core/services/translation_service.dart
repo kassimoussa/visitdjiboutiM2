@@ -19,7 +19,9 @@ class TranslationService {
   /// Traduit la description d'un POI selon la langue actuelle
   String translatePoiDescription(Poi poi) {
     final currentLang = _localizationService.currentLanguageCode;
-    return _getStaticTranslation(poi.shortDescription, currentLang);
+    return poi.shortDescription != null
+        ? _getStaticTranslation(poi.shortDescription!, currentLang)
+        : '';
   }
 
   /// Traduit le nom d'un événement selon la langue actuelle

@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = 'http://197.241.32.130:8080/api';
+  static const String baseUrl = 'http://91.134.241.240/api';
   
   // POIs endpoints
   static const String pois = '/pois';
@@ -50,9 +50,13 @@ class ApiConstants {
   // Tours endpoints
   static const String tours = '/tours';
   static String tourById(dynamic id) => '/tours/$id';
-  static String tourBooking(int scheduleId) => '/tours/schedules/$scheduleId/book';
-  static const String tourMyBookings = '/tours/my-bookings';
-  static String tourCancelBooking(int bookingId) => '/tours/bookings/$bookingId';
+
+  // Tour reservations endpoints
+  static String tourReservationCreate(dynamic tourId) => '/tour-reservations/$tourId/register';
+  static const String tourReservations = '/tour-reservations';
+  static String tourReservationById(int reservationId) => '/tour-reservations/$reservationId';
+  static String tourReservationUpdate(int reservationId) => '/tour-reservations/$reservationId';
+  static String tourReservationCancel(int reservationId) => '/tour-reservations/$reservationId/cancel';
   
   // Default headers
   static Map<String, String> get defaultHeaders => {

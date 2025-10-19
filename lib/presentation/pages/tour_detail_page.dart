@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
-import '../../core/models/tour_booking.dart';
+import '../../core/models/tour_reservation.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../widgets/shimmer_loading.dart';
@@ -123,16 +123,24 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   _buildSection('Description', tour.description!),
                   const SizedBox(height: 24),
                 ],
-                if (tour.includes?.isNotEmpty ?? false) ...[
-                  _buildIncludesExcludes('Inclus', tour.includes!, true),
-                  const SizedBox(height: 16),
-                ],
-                if (tour.excludes?.isNotEmpty ?? false) ...[
-                  _buildIncludesExcludes('Non inclus', tour.excludes!, false),
+                if (tour.itinerary != null) ...[
+                  _buildSection('Itinéraire', tour.itinerary!),
                   const SizedBox(height: 24),
                 ],
-                if (tour.requirements != null) ...[
-                  _buildSection('Prérequis', tour.requirements!),
+                if (tour.highlights?.isNotEmpty ?? false) ...[
+                  _buildListSection('Points forts', tour.highlights!, Icons.star, Colors.amber),
+                  const SizedBox(height: 24),
+                ],
+                if (tour.whatToBring?.isNotEmpty ?? false) ...[
+                  _buildListSection('À apporter', tour.whatToBring!, Icons.backpack, const Color(0xFF3860F8)),
+                  const SizedBox(height: 24),
+                ],
+                if (tour.ageRestrictions?.hasRestrictions ?? false) ...[
+                  _buildAgeRestrictions(tour.ageRestrictions!),
+                  const SizedBox(height: 24),
+                ],
+                if (tour.weatherDependent) ...[
+                  _buildWeatherWarning(),
                   const SizedBox(height: 24),
                 ],
                 if (tour.meetingPoint != null) ...[
@@ -244,27 +252,17 @@ class _TourDetailPageState extends State<TourDetailPage> {
           ],
         ),
 
-        if (tour.averageRating != null && tour.reviewsCount != null) ...[
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              ...List.generate(5, (index) {
-                return Icon(
-                  index < tour.averageRating!.round()
-                      ? Icons.star
-                      : Icons.star_border,
-                  color: Colors.amber,
-                  size: 20,
-                );
-              }),
-              const SizedBox(width: 8),
-              Text(
-                '${tour.averageRating!.toStringAsFixed(1)} (${tour.reviewsCount} avis)',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ],
-          ),
-        ],
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            const Icon(Icons.visibility, size: 16, color: Colors.grey),
+            const SizedBox(width: 4),
+            Text(
+              '${tour.viewsCount} vues',
+              style: TextStyle(color: Colors.grey[600], fontSize: 14),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -374,7 +372,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  Widget _buildIncludesExcludes(String title, List<String> items, bool isIncluded) {
+  Widget _buildListSection(String title, List<String> items, IconData icon, Color color) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -391,11 +389,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                isIncluded ? Icons.check_circle : Icons.cancel,
-                color: isIncluded ? Colors.green : Colors.red,
-                size: 20,
-              ),
+              Icon(icon, color: color, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(item, style: const TextStyle(fontSize: 16)),
@@ -407,7 +401,65 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
+  Widget _buildAgeRestrictions(AgeRestrictions restrictions) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            const Icon(Icons.person, color: Color(0xFF3860F8)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Restrictions d\'âge',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(restrictions.text, style: const TextStyle(fontSize: 14)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWeatherWarning() {
+    return Card(
+      elevation: 2,
+      color: Colors.orange[50],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(Icons.wb_sunny, color: Colors.orange[700]),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Ce tour est dépendant des conditions météorologiques',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.orange[900],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildMeetingPoint(Tour tour) {
+    final meetingPoint = tour.meetingPoint!;
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -430,16 +482,24 @@ class _TourDetailPageState extends State<TourDetailPage> {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              tour.meetingPoint!,
-              style: const TextStyle(fontSize: 16),
-            ),
-            if (tour.hasLocation) ...[
+            if (meetingPoint.description != null)
+              Text(
+                meetingPoint.description!,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+            if (meetingPoint.address != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                meetingPoint.address!,
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              ),
+            ],
+            if (meetingPoint.hasCoordinates) ...[
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () => _openInMaps(tour.latitude!, tour.longitude!),
+                  onPressed: () => _openInMaps(meetingPoint.latitude!, meetingPoint.longitude!),
                   icon: const Icon(Icons.directions),
                   label: const Text('Voir sur la carte'),
                   style: ElevatedButton.styleFrom(
@@ -474,11 +534,11 @@ class _TourDetailPageState extends State<TourDetailPage> {
             const SizedBox(height: 12),
             Row(
               children: [
-                if (operator.logo != null && operator.logo!.isNotEmpty)
+                if (operator.logo?.url.isNotEmpty ?? false)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      operator.logo!,
+                      operator.logo!.url,
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
@@ -681,7 +741,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  void _showBookingConfirmation(TourBooking booking) {
+  void _showBookingConfirmation(TourReservation reservation) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -690,24 +750,22 @@ class _TourDetailPageState extends State<TourDetailPage> {
           children: [
             Icon(Icons.check_circle, color: Colors.green),
             SizedBox(width: 8),
-            Text('Réservation confirmée'),
+            Text('Réservation créée'),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Numéro de confirmation: ${booking.confirmationNumber}'),
+            Text('Réservation #${reservation.id}'),
             const SizedBox(height: 8),
-            Text('Participants: ${booking.participantsCount}'),
-            Text('Montant: ${booking.displayAmount}'),
-            if (booking.requiresPayment) ...[
-              const SizedBox(height: 8),
-              const Text(
-                'Paiement requis: Contactez l\'opérateur pour finaliser le paiement.',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
+            Text('Participants: ${reservation.numberOfPeople}'),
+            Text('Statut: ${reservation.displayStatus}'),
+            const SizedBox(height: 12),
+            Text(
+              'Votre réservation est en attente de confirmation par l\'opérateur.',
+              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+            ),
           ],
         ),
         actions: [
@@ -748,7 +806,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
 
 class DirectTourBookingDialog extends StatefulWidget {
   final Tour tour;
-  final Function(TourBooking) onBookingSuccess;
+  final Function(TourReservation) onBookingSuccess;
 
   const DirectTourBookingDialog({
     super.key,
@@ -765,9 +823,9 @@ class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _requirementsController = TextEditingController();
+  final _notesController = TextEditingController();
 
-  int _participantsCount = 1;
+  int _numberOfPeople = 1;
   bool _isLoading = false;
   bool _isAuthenticated = false;
 
@@ -782,7 +840,7 @@ class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _requirementsController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -792,8 +850,8 @@ class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final totalAmount = widget.tour.price * _participantsCount;
-    final maxParticipants = widget.tour.availableSpots ?? widget.tour.maxParticipants ?? 1;
+    final totalAmount = widget.tour.price * _numberOfPeople;
+    final maxParticipants = widget.tour.availableSpots;
 
     return AlertDialog(
       title: const Text('Inscription au tour'),
@@ -836,20 +894,25 @@ class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: _participantsCount > 1
-                          ? () => setState(() => _participantsCount--)
+                      onPressed: _numberOfPeople > 1
+                          ? () => setState(() => _numberOfPeople--)
                           : null,
                       icon: const Icon(Icons.remove),
                     ),
                     Text(
-                      '$_participantsCount',
+                      '$_numberOfPeople',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
-                      onPressed: _participantsCount < maxParticipants
-                          ? () => setState(() => _participantsCount++)
+                      onPressed: _numberOfPeople < maxParticipants
+                          ? () => setState(() => _numberOfPeople++)
                           : null,
                       icon: const Icon(Icons.add),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '(max: $maxParticipants)',
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ],
                 ),
@@ -900,16 +963,16 @@ class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
                   const SizedBox(height: 16),
                 ],
 
-                // Exigences spéciales
+                // Notes
                 Text(
-                  'Exigences spéciales',
+                  'Notes ou demandes spéciales',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
-                  controller: _requirementsController,
+                  controller: _notesController,
                   decoration: const InputDecoration(
-                    labelText: 'Exigences particulières (optionnel)',
+                    labelText: 'Notes (optionnel)',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 3,
@@ -976,26 +1039,26 @@ class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
     setState(() => _isLoading = true);
 
     try {
-      final booking = await TourService().bookTourDirect(
+      final response = await TourService().createReservation(
         tourId: widget.tour.id,
-        participantsCount: _participantsCount,
-        userName: !_isAuthenticated ? _nameController.text : null,
-        userEmail: !_isAuthenticated ? _emailController.text : null,
-        userPhone: !_isAuthenticated ? _phoneController.text : null,
-        specialRequirements: _requirementsController.text.isNotEmpty
-            ? _requirementsController.text
+        numberOfPeople: _numberOfPeople,
+        guestName: !_isAuthenticated ? _nameController.text : null,
+        guestEmail: !_isAuthenticated ? _emailController.text : null,
+        guestPhone: !_isAuthenticated ? _phoneController.text : null,
+        notes: _notesController.text.isNotEmpty
+            ? _notesController.text
             : null,
       );
 
       if (mounted) {
         Navigator.of(context).pop();
-        widget.onBookingSuccess(booking.data.reservation);
+        widget.onBookingSuccess(response.reservation);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de l\'inscription: $e'),
+            content: Text('Erreur lors de la réservation: $e'),
             backgroundColor: Colors.red,
           ),
         );

@@ -2,7 +2,7 @@ import '../api/api_client.dart';
 import '../api/api_constants.dart';
 import '../models/tour.dart';
 import '../models/simple_tour.dart';
-import '../models/tour_booking.dart';
+import '../models/tour_reservation.dart';
 import '../models/api_response.dart';
 
 class TourService {
@@ -141,40 +141,41 @@ class TourService {
     }
   }
 
-  Future<TourBookingResponse> bookTour({
-    required int scheduleId,
-    required int participantsCount,
-    String? userName,
-    String? userEmail,
-    String? userPhone,
-    String? specialRequirements,
+  /// Créer une réservation pour un tour
+  Future<TourReservationResponse> createReservation({
+    required int tourId,
+    required int numberOfPeople,
+    String? guestName,
+    String? guestEmail,
+    String? guestPhone,
+    String? notes,
   }) async {
-    print('[TOUR SERVICE] Réservation tour schedule: $scheduleId');
+    print('[TOUR SERVICE] Création réservation tour: $tourId');
 
     final requestData = <String, dynamic>{
-      'participants_count': participantsCount,
+      'number_of_people': numberOfPeople,
     };
 
-    if (specialRequirements != null && specialRequirements.isNotEmpty) {
-      requestData['special_requirements'] = specialRequirements;
+    if (notes != null && notes.isNotEmpty) {
+      requestData['notes'] = notes;
     }
 
-    // Pour utilisateurs non authentifiés
-    if (userName != null) {
-      requestData['user_name'] = userName;
+    // Pour utilisateurs non authentifiés (invités)
+    if (guestName != null) {
+      requestData['guest_name'] = guestName;
     }
-    if (userEmail != null) {
-      requestData['user_email'] = userEmail;
+    if (guestEmail != null) {
+      requestData['guest_email'] = guestEmail;
     }
-    if (userPhone != null) {
-      requestData['user_phone'] = userPhone;
+    if (guestPhone != null) {
+      requestData['guest_phone'] = guestPhone;
     }
 
     print('[TOUR SERVICE] Données réservation: $requestData');
 
     try {
       final response = await _apiClient.post(
-        '${ApiConstants.tours}/schedules/$scheduleId/book',
+        ApiConstants.tourReservationCreate(tourId),
         data: requestData,
       );
 
@@ -182,9 +183,9 @@ class TourService {
       print('[TOUR SERVICE] Réponse réservation: ${response.data}');
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        final bookingResponse = TourBookingResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Réservation créée: ${bookingResponse.data.reservation.confirmationNumber}');
-        return bookingResponse;
+        final reservationResponse = TourReservationResponse.fromJson(response.data);
+        print('[TOUR SERVICE] Réservation créée: ID ${reservationResponse.reservation.id}');
+        return reservationResponse;
       } else {
         throw Exception('Erreur lors de la réservation: ${response.statusCode}');
       }
@@ -194,61 +195,9 @@ class TourService {
     }
   }
 
-  Future<TourBookingResponse> bookTourDirect({
-    required int tourId,
-    required int participantsCount,
-    String? userName,
-    String? userEmail,
-    String? userPhone,
-    String? specialRequirements,
-  }) async {
-    print('[TOUR SERVICE] Inscription directe au tour: $tourId');
-
-    final requestData = <String, dynamic>{
-      'participants_count': participantsCount,
-    };
-
-    if (specialRequirements != null && specialRequirements.isNotEmpty) {
-      requestData['special_requirements'] = specialRequirements;
-    }
-
-    // Pour utilisateurs non authentifiés
-    if (userName != null) {
-      requestData['user_name'] = userName;
-    }
-    if (userEmail != null) {
-      requestData['user_email'] = userEmail;
-    }
-    if (userPhone != null) {
-      requestData['user_phone'] = userPhone;
-    }
-
-    print('[TOUR SERVICE] Données inscription: $requestData');
-
-    try {
-      final response = await _apiClient.post(
-        '${ApiConstants.tours}/$tourId/book',
-        data: requestData,
-      );
-
-      print('[TOUR SERVICE] Statut inscription: ${response.statusCode}');
-      print('[TOUR SERVICE] Réponse inscription: ${response.data}');
-
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        final bookingResponse = TourBookingResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Inscription créée: ${bookingResponse.data.reservation.confirmationNumber}');
-        return bookingResponse;
-      } else {
-        throw Exception('Erreur lors de l\'inscription: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('[TOUR SERVICE] Erreur inscription: $e');
-      rethrow;
-    }
-  }
-
-  Future<TourBookingListResponse> getMyBookings({
-    BookingStatus? status,
+  /// Récupérer la liste de mes réservations
+  Future<TourReservationListResponse> getMyReservations({
+    ReservationStatus? status,
     int page = 1,
     int perPage = 20,
   }) async {
@@ -265,16 +214,16 @@ class TourService {
 
     try {
       final response = await _apiClient.get(
-        '${ApiConstants.tours}/my-bookings',
+        ApiConstants.tourReservations,
         queryParameters: queryParameters,
       );
 
       print('[TOUR SERVICE] Statut mes réservations: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final bookingListResponse = TourBookingListResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Réservations chargées: ${bookingListResponse.data.bookings.length}');
-        return bookingListResponse;
+        final reservationListResponse = TourReservationListResponse.fromJson(response.data);
+        print('[TOUR SERVICE] Réservations chargées: ${reservationListResponse.data.data.length}');
+        return reservationListResponse;
       } else {
         throw Exception('Erreur lors du chargement des réservations: ${response.statusCode}');
       }
@@ -284,20 +233,86 @@ class TourService {
     }
   }
 
-  Future<ApiResponse> cancelBooking(int bookingId) async {
-    print('[TOUR SERVICE] Annulation réservation: $bookingId');
+  /// Récupérer les détails d'une réservation
+  Future<TourReservation> getReservationDetails(int reservationId) async {
+    print('[TOUR SERVICE] Récupération détails réservation: $reservationId');
 
     try {
-      final response = await _apiClient.delete(
-        '${ApiConstants.tours}/bookings/$bookingId',
+      final response = await _apiClient.get(
+        ApiConstants.tourReservationById(reservationId),
+      );
+
+      print('[TOUR SERVICE] Statut détails réservation: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final data = response.data['data'] as Map<String, dynamic>;
+        final reservation = TourReservation.fromJson(data);
+        print('[TOUR SERVICE] Détails réservation chargés: ID ${reservation.id}');
+        return reservation;
+      } else {
+        throw Exception('Réservation non trouvée: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('[TOUR SERVICE] Erreur détails réservation: $e');
+      rethrow;
+    }
+  }
+
+  /// Mettre à jour une réservation
+  Future<TourReservationResponse> updateReservation({
+    required int reservationId,
+    int? numberOfPeople,
+    String? notes,
+  }) async {
+    print('[TOUR SERVICE] Modification réservation: $reservationId');
+
+    final requestData = <String, dynamic>{};
+
+    if (numberOfPeople != null) {
+      requestData['number_of_people'] = numberOfPeople;
+    }
+    if (notes != null) {
+      requestData['notes'] = notes;
+    }
+
+    print('[TOUR SERVICE] Données modification: $requestData');
+
+    try {
+      final response = await _apiClient.patch(
+        ApiConstants.tourReservationUpdate(reservationId),
+        data: requestData,
+      );
+
+      print('[TOUR SERVICE] Statut modification: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final reservationResponse = TourReservationResponse.fromJson(response.data);
+        print('[TOUR SERVICE] Réservation modifiée avec succès');
+        return reservationResponse;
+      } else {
+        throw Exception('Erreur lors de la modification: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('[TOUR SERVICE] Erreur modification: $e');
+      rethrow;
+    }
+  }
+
+  /// Annuler une réservation
+  Future<TourReservationResponse> cancelReservation(int reservationId) async {
+    print('[TOUR SERVICE] Annulation réservation: $reservationId');
+
+    try {
+      final response = await _apiClient.patch(
+        ApiConstants.tourReservationCancel(reservationId),
       );
 
       print('[TOUR SERVICE] Statut annulation: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final apiResponse = ApiResponse<dynamic>.fromJson(response.data, (json) => json);
+        final reservationResponse = TourReservationResponse.fromJson(response.data);
         print('[TOUR SERVICE] Réservation annulée avec succès');
-        return apiResponse;
+        return reservationResponse;
       } else {
         throw Exception('Erreur lors de l\'annulation: ${response.statusCode}');
       }

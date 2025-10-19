@@ -50,12 +50,12 @@ class _AppDrawerState extends State<AppDrawer> {
                       onTap: () => _navigateTo(context, const ProfilePage()),
                     ),
                     
-                    _buildMenuItem(
+                    /* _buildMenuItem(
                       icon: Icons.tour,
                       title: 'Tours',
                       subtitle: 'Découvrez nos circuits guidés',
                       onTap: () => _navigateTo(context, const ToursPage()),
-                    ),
+                    ), */
 
                     _buildMenuItem(
                       icon: Icons.book_online,

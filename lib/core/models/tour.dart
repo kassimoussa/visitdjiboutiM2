@@ -6,20 +6,25 @@ import 'simple_tour.dart';
 
 part 'tour.g.dart';
 
-int _durationFromJson(dynamic duration) {
+// Parse duration object from API
+TourDuration _durationFromJson(dynamic duration) {
   if (duration == null) {
-    return 0;
-  } else if (duration is num) {
-    return duration.toInt();
+    return TourDuration(hours: null, days: 1, formatted: '1 jour');
   } else if (duration is Map<String, dynamic>) {
-    if (duration.containsKey('hours')) {
-      final hours = duration['hours'];
-      if (hours is num) {
-        return hours.toInt();
-      }
-    }
+    return TourDuration(
+      hours: duration['hours'] as int?,
+      days: duration['days'] as int? ?? 1,
+      formatted: duration['formatted'] as String? ?? '',
+    );
+  } else if (duration is num) {
+    // Fallback pour ancienne structure (hours uniquement)
+    return TourDuration(
+      hours: duration.toInt(),
+      days: 1,
+      formatted: '${duration.toInt()}h',
+    );
   }
-  return 0;
+  return TourDuration(hours: null, days: 1, formatted: '1 jour');
 }
 
 int _priceFromJson(dynamic price) {
@@ -42,6 +47,43 @@ Media? _mediaFromJson(dynamic media) {
   return null;
 }
 
+// Parse age restrictions from API
+AgeRestrictions? _ageRestrictionsFromJson(dynamic ageRestrictions) {
+  if (ageRestrictions == null) {
+    return null;
+  } else if (ageRestrictions is Map<String, dynamic>) {
+    return AgeRestrictions(
+      min: ageRestrictions['min'] as int?,
+      max: ageRestrictions['max'] as int?,
+      text: ageRestrictions['text'] as String? ?? '',
+    );
+  }
+  return null;
+}
+
+// Parse meeting point from API
+MeetingPoint? _meetingPointFromJson(dynamic meetingPoint) {
+  if (meetingPoint == null) {
+    return null;
+  } else if (meetingPoint is Map<String, dynamic>) {
+    return MeetingPoint(
+      latitude: (meetingPoint['latitude'] as num?)?.toDouble(),
+      longitude: (meetingPoint['longitude'] as num?)?.toDouble(),
+      address: meetingPoint['address'] as String?,
+      description: meetingPoint['description'] as String?,
+    );
+  } else if (meetingPoint is String) {
+    // Fallback pour ancienne structure (string uniquement)
+    return MeetingPoint(
+      latitude: null,
+      longitude: null,
+      address: meetingPoint,
+      description: null,
+    );
+  }
+  return null;
+}
+
 TourOperator? _tourOperatorFromJson(dynamic operator) {
   if (operator == null) {
     return null;
@@ -51,54 +93,32 @@ TourOperator? _tourOperatorFromJson(dynamic operator) {
   return null;
 }
 
-String? _meetingPointFromJson(dynamic meetingPoint) {
-  if (meetingPoint == null) {
-    return null;
-  } else if (meetingPoint is String) {
-    return meetingPoint;
-  } else if (meetingPoint is Map<String, dynamic>) {
-    // Extraire la description ou l'adresse du point de rendez-vous
-    final description = meetingPoint['description'] as String?;
-    final address = meetingPoint['address'] as String?;
-
-    if (description != null && description.isNotEmpty) {
-      return description;
-    } else if (address != null && address.isNotEmpty) {
-      return address;
-    } else {
-      // Si pas de description, créer une chaîne avec les coordonnées
-      final lat = meetingPoint['latitude'] as String?;
-      final lng = meetingPoint['longitude'] as String?;
-      if (lat != null && lng != null) {
-        return 'Coordonnées: $lat, $lng';
-      }
+// Parse tour type from API - handles null values
+TourType _typeFromJson(dynamic type) {
+  if (type == null) {
+    return TourType.mixed; // Default value when type is null
+  }
+  if (type is String) {
+    switch (type.toLowerCase()) {
+      case 'poi':
+        return TourType.poi;
+      case 'event':
+        return TourType.event;
+      case 'mixed':
+        return TourType.mixed;
+      case 'cultural':
+        return TourType.cultural;
+      case 'adventure':
+        return TourType.adventure;
+      case 'nature':
+        return TourType.nature;
+      case 'gastronomic':
+        return TourType.gastronomic;
+      default:
+        return TourType.mixed;
     }
   }
-  return null;
-}
-
-double? _latitudeFromJson(dynamic meetingPoint) {
-  if (meetingPoint is Map<String, dynamic>) {
-    final lat = meetingPoint['latitude'];
-    if (lat is String) {
-      return double.tryParse(lat);
-    } else if (lat is num) {
-      return lat.toDouble();
-    }
-  }
-  return null;
-}
-
-double? _longitudeFromJson(dynamic meetingPoint) {
-  if (meetingPoint is Map<String, dynamic>) {
-    final lng = meetingPoint['longitude'];
-    if (lng is String) {
-      return double.tryParse(lng);
-    } else if (lng is num) {
-      return lng.toDouble();
-    }
-  }
-  return null;
+  return TourType.mixed;
 }
 
 @JsonSerializable()
@@ -109,6 +129,8 @@ class Tour {
   @JsonKey(name: 'short_description')
   final String? shortDescription;
   final String? description;
+  final String? itinerary;
+  @JsonKey(fromJson: _typeFromJson)
   final TourType type;
   @JsonKey(name: 'type_label', includeIfNull: false)
   final String? typeLabel;
@@ -116,55 +138,49 @@ class Tour {
   final TourDifficulty difficulty;
   @JsonKey(name: 'difficulty_label', includeIfNull: false)
   final String? difficultyLabel;
-  @JsonKey(fromJson: _priceFromJson)
+  @JsonKey(fromJson: _priceFromJson, defaultValue: 0)
   final int price;
   @JsonKey(name: 'formatted_price', includeIfNull: false)
   final String? formattedPrice;
+  @JsonKey(defaultValue: 'DJF')
   final String currency;
+  @JsonKey(name: 'is_free', defaultValue: false)
+  final bool isFree;
   @JsonKey(fromJson: _durationFromJson)
-  final int durationHours;
-  @JsonKey(name: 'formatted_duration', includeIfNull: false)
-  final String? formattedDuration;
+  final TourDuration duration;
   @JsonKey(name: 'max_participants')
   final int? maxParticipants;
   @JsonKey(name: 'min_participants')
   final int? minParticipants;
-  @JsonKey(name: 'is_featured')
+  @JsonKey(name: 'available_spots', defaultValue: 0)
+  final int availableSpots;
+  @JsonKey(name: 'is_featured', defaultValue: false)
   final bool isFeatured;
   @JsonKey(name: 'is_active', defaultValue: true)
   final bool isActive;
-  @JsonKey(name: 'includes')
-  final List<String>? includes;
-  @JsonKey(name: 'excludes')
-  final List<String>? excludes;
-  @JsonKey(name: 'requirements')
-  final String? requirements;
+  final List<String>? highlights;
+  @JsonKey(name: 'what_to_bring')
+  final List<String>? whatToBring;
+  @JsonKey(name: 'age_restrictions', fromJson: _ageRestrictionsFromJson)
+  final AgeRestrictions? ageRestrictions;
+  @JsonKey(name: 'weather_dependent', defaultValue: false)
+  final bool weatherDependent;
+  @JsonKey(name: 'views_count', defaultValue: 0)
+  final int viewsCount;
   @JsonKey(name: 'meeting_point', fromJson: _meetingPointFromJson)
-  final String? meetingPoint;
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  final double? latitude;
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  final double? longitude;
+  final MeetingPoint? meetingPoint;
   @JsonKey(name: 'tour_operator', fromJson: _tourOperatorFromJson)
   final TourOperator? tourOperator;
   @JsonKey(name: 'featured_image', fromJson: _mediaFromJson)
   final Media? featuredImage;
   final List<Media>? media;
   final List<Category>? categories;
-  @JsonKey(name: 'upcoming_schedules')
-  final List<TourSchedule>? schedules;
-  @JsonKey(name: 'next_available_date')
-  final String? nextAvailableDate;
   @JsonKey(name: 'start_date')
   final String? startDate;
   @JsonKey(name: 'end_date')
   final String? endDate;
-  @JsonKey(name: 'available_spots')
-  final int? availableSpots;
-  @JsonKey(name: 'average_rating')
-  final double? averageRating;
-  @JsonKey(name: 'reviews_count')
-  final int? reviewsCount;
+  @JsonKey(name: 'formatted_date_range')
+  final String? formattedDateRange;
   @JsonKey(name: 'created_at')
   final String? createdAt;
   @JsonKey(name: 'updated_at')
@@ -176,6 +192,7 @@ class Tour {
     required this.title,
     this.shortDescription,
     this.description,
+    this.itinerary,
     required this.type,
     this.typeLabel,
     required this.difficulty,
@@ -183,103 +200,53 @@ class Tour {
     required this.price,
     this.formattedPrice,
     required this.currency,
-    required this.durationHours,
-    this.formattedDuration,
+    required this.isFree,
+    required this.duration,
     this.maxParticipants,
     this.minParticipants,
+    required this.availableSpots,
     required this.isFeatured,
     required this.isActive,
-    this.includes,
-    this.excludes,
-    this.requirements,
+    this.highlights,
+    this.whatToBring,
+    this.ageRestrictions,
+    required this.weatherDependent,
+    required this.viewsCount,
     this.meetingPoint,
-    this.latitude,
-    this.longitude,
     this.tourOperator,
     this.featuredImage,
     this.media,
     this.categories,
-    this.schedules,
-    this.nextAvailableDate,
     this.startDate,
     this.endDate,
-    this.availableSpots,
-    this.averageRating,
-    this.reviewsCount,
+    this.formattedDateRange,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory Tour.fromJson(Map<String, dynamic> json) {
-    final tour = _$TourFromJson(json);
-
-    // Extraire latitude et longitude du meeting_point
-    double? latitude;
-    double? longitude;
-    if (json.containsKey('meeting_point') && json['meeting_point'] is Map<String, dynamic>) {
-      final meetingPointData = json['meeting_point'] as Map<String, dynamic>;
-      latitude = _latitudeFromJson(meetingPointData);
-      longitude = _longitudeFromJson(meetingPointData);
-    }
-
-    return Tour(
-      id: tour.id,
-      slug: tour.slug,
-      title: tour.title,
-      shortDescription: tour.shortDescription,
-      description: tour.description,
-      type: tour.type,
-      typeLabel: tour.typeLabel,
-      difficulty: tour.difficulty,
-      difficultyLabel: tour.difficultyLabel,
-      price: tour.price,
-      formattedPrice: tour.formattedPrice,
-      currency: tour.currency,
-      durationHours: tour.durationHours,
-      formattedDuration: tour.formattedDuration,
-      maxParticipants: tour.maxParticipants,
-      minParticipants: tour.minParticipants,
-      isFeatured: tour.isFeatured,
-      isActive: tour.isActive,
-      includes: tour.includes,
-      excludes: tour.excludes,
-      requirements: tour.requirements,
-      meetingPoint: tour.meetingPoint,
-      latitude: latitude,
-      longitude: longitude,
-      tourOperator: tour.tourOperator,
-      featuredImage: tour.featuredImage,
-      media: tour.media,
-      categories: tour.categories,
-      schedules: tour.schedules,
-      nextAvailableDate: tour.nextAvailableDate,
-      startDate: tour.startDate,
-      endDate: tour.endDate,
-      availableSpots: tour.availableSpots,
-      averageRating: tour.averageRating,
-      reviewsCount: tour.reviewsCount,
-      createdAt: tour.createdAt,
-      updatedAt: tour.updatedAt,
-    );
-  }
+  factory Tour.fromJson(Map<String, dynamic> json) => _$TourFromJson(json);
 
   factory Tour.fromSimpleTour(SimpleTour simpleTour) {
     return Tour(
       id: simpleTour.id,
       slug: simpleTour.slug,
       title: simpleTour.title,
-      type: _stringToTourType(simpleTour.type),
+      type: _stringToTourType(simpleTour.type ?? 'mixed'),
       typeLabel: simpleTour.typeLabel,
       difficulty: _stringToTourDifficulty(simpleTour.difficulty),
       difficultyLabel: simpleTour.difficultyLabel,
       price: int.tryParse(simpleTour.price) ?? 0,
       formattedPrice: simpleTour.formattedPrice,
       currency: simpleTour.currency,
-      durationHours: 1, // Default duration
+      isFree: (int.tryParse(simpleTour.price) ?? 0) == 0,
+      duration: TourDuration(hours: null, days: 1, formatted: '1 jour'),
+      availableSpots: 0, // À définir via l'API
       maxParticipants: simpleTour.maxParticipants,
       minParticipants: simpleTour.minParticipants,
       isFeatured: simpleTour.isFeatured,
-      isActive: true, // Default to active
+      isActive: true,
+      weatherDependent: false,
+      viewsCount: 0,
       featuredImage: simpleTour.featuredImage != null
         ? Media(
             id: 0,
@@ -296,7 +263,9 @@ class Tour {
             description: '',
           )
         : null,
-      nextAvailableDate: simpleTour.nextAvailableDate ?? simpleTour.startDate,
+      startDate: simpleTour.startDate,
+      endDate: simpleTour.endDate,
+      formattedDateRange: simpleTour.nextAvailableDate ?? simpleTour.startDate,
     );
   }
 
@@ -333,79 +302,85 @@ class Tour {
   }
 
   String get displayPrice => formattedPrice ?? '$price $currency';
-  String get displayDuration => formattedDuration ?? '${durationHours}h';
+  String get displayDuration => duration.formatted;
   String get displayType => typeLabel ?? type.label;
   String get displayDifficulty => difficultyLabel ?? difficulty.label;
-  bool get hasSchedules => schedules?.isNotEmpty ?? false;
-  bool get hasLocation => latitude != null && longitude != null;
+  bool get hasLocation => meetingPoint?.hasCoordinates ?? false;
   bool get hasImages => (media?.isNotEmpty ?? false) || featuredImage != null;
   String get firstImageUrl => featuredImage?.url ?? media?.first.url ?? '';
-
-  // Disponibilité pour réservation directe (sans schedules)
-  bool get isBookable => isActive && (availableSpots ?? 0) > 0;
-  bool get hasAvailableSpots => (availableSpots ?? 0) > 0;
-  String? get displayDateRange {
-    if (startDate == null) return null;
-    if (endDate == null) return startDate;
-    return '$startDate - $endDate';
-  }
+  bool get isBookable => isActive && availableSpots > 0;
+  bool get hasAvailableSpots => availableSpots > 0;
+  String? get displayDateRange => formattedDateRange;
+  double? get latitude => meetingPoint?.latitude;
+  double? get longitude => meetingPoint?.longitude;
 }
 
+// TourDuration - Objet représentant la durée d'un tour
 @JsonSerializable()
-class TourSchedule {
-  final int id;
-  @JsonKey(name: 'tour_id')
-  final int tourId;
-  @JsonKey(name: 'start_date')
-  final String startDate;
-  @JsonKey(name: 'end_date')
-  final String? endDate;
-  @JsonKey(name: 'start_time')
-  final String? startTime;
-  @JsonKey(name: 'end_time')
-  final String? endTime;
-  @JsonKey(name: 'max_participants')
-  final int maxParticipants;
-  @JsonKey(name: 'current_participants')
-  final int currentParticipants;
-  @JsonKey(name: 'available_spots')
-  final int availableSpots;
-  @JsonKey(name: 'is_sold_out')
-  final bool isSoldOut;
-  @JsonKey(name: 'is_active')
-  final bool isActive;
-  final int price;
-  @JsonKey(name: 'special_price')
-  final int? specialPrice;
-  @JsonKey(name: 'created_at')
-  final String? createdAt;
+class TourDuration {
+  final int? hours;
+  @JsonKey(defaultValue: 1)
+  final int days;
+  @JsonKey(defaultValue: '')
+  final String formatted;
 
-  TourSchedule({
-    required this.id,
-    required this.tourId,
-    required this.startDate,
-    this.endDate,
-    this.startTime,
-    this.endTime,
-    required this.maxParticipants,
-    required this.currentParticipants,
-    required this.availableSpots,
-    required this.isSoldOut,
-    required this.isActive,
-    required this.price,
-    this.specialPrice,
-    this.createdAt,
+  TourDuration({
+    this.hours,
+    required this.days,
+    required this.formatted,
   });
 
-  factory TourSchedule.fromJson(Map<String, dynamic> json) => _$TourScheduleFromJson(json);
-  Map<String, dynamic> toJson() => _$TourScheduleToJson(this);
+  factory TourDuration.fromJson(Map<String, dynamic> json) => _$TourDurationFromJson(json);
+  Map<String, dynamic> toJson() => _$TourDurationToJson(this);
+}
 
-  String get displayPrice => specialPrice != null ? '$specialPrice DJF' : '$price DJF';
-  bool get hasDiscount => specialPrice != null && specialPrice! < price;
-  bool get isAvailable => !isSoldOut && isActive && availableSpots > 0;
+// MeetingPoint - Point de rendez-vous avec coordonnées GPS
+@JsonSerializable()
+class MeetingPoint {
+  final double? latitude;
+  final double? longitude;
+  final String? address;
+  final String? description;
+
+  MeetingPoint({
+    this.latitude,
+    this.longitude,
+    this.address,
+    this.description,
+  });
+
+  factory MeetingPoint.fromJson(Map<String, dynamic> json) => _$MeetingPointFromJson(json);
+  Map<String, dynamic> toJson() => _$MeetingPointToJson(this);
+
+  bool get hasCoordinates => latitude != null && longitude != null;
+  String get displayText => description ?? address ?? 'Point de rendez-vous non spécifié';
+}
+
+// AgeRestrictions - Restrictions d'âge pour un tour
+@JsonSerializable()
+class AgeRestrictions {
+  final int? min;
+  final int? max;
+  @JsonKey(defaultValue: '')
+  final String text;
+
+  AgeRestrictions({
+    this.min,
+    this.max,
+    required this.text,
+  });
+
+  factory AgeRestrictions.fromJson(Map<String, dynamic> json) => _$AgeRestrictionsFromJson(json);
+  Map<String, dynamic> toJson() => _$AgeRestrictionsToJson(this);
+
+  bool get hasRestrictions => min != null || max != null;
 }
 
 enum TourType {
+  @JsonValue('poi')
+  poi,
+  @JsonValue('event')
+  event,
   @JsonValue('mixed')
   mixed,
   @JsonValue('cultural')
@@ -421,6 +396,10 @@ enum TourType {
 extension TourTypeExtension on TourType {
   String get label {
     switch (this) {
+      case TourType.poi:
+        return 'Visite de site';
+      case TourType.event:
+        return 'Accompagnement événement';
       case TourType.mixed:
         return 'Circuit mixte';
       case TourType.cultural:
@@ -436,6 +415,10 @@ extension TourTypeExtension on TourType {
 
   String get icon {
     switch (this) {
+      case TourType.poi:
+        return '📍';
+      case TourType.event:
+        return '🎉';
       case TourType.mixed:
         return '🌍';
       case TourType.cultural:

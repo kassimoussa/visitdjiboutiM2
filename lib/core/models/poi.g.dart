@@ -10,7 +10,7 @@ Poi _$PoiFromJson(Map<String, dynamic> json) => Poi(
   id: Poi._parseInt(json['id']),
   slug: json['slug'] as String?,
   name: json['name'] as String,
-  shortDescription: json['short_description'] as String,
+  shortDescription: json['short_description'] as String?,
   description: json['description'] as String?,
   address: json['address'] as String?,
   region: json['region'] as String,

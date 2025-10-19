@@ -77,18 +77,6 @@ class _EventCardState extends State<EventCard> {
                   SizedBox(height: ResponsiveConstants.smallSpace),
                   _buildEventInfo(event),
                   SizedBox(height: ResponsiveConstants.smallSpace),
-                  if (event.shortDescription.isNotEmpty)
-                    Text(
-                      event.shortDescription,
-                      style: TextStyle(
-                        fontSize: ResponsiveConstants.body2,
-                        color: Colors.grey[600],
-                        height: 1.4,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
                   _buildEventFooter(event),
                 ],
               ),

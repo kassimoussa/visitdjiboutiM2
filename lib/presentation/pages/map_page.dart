@@ -126,7 +126,7 @@ class _MapPageState extends State<MapPage> {
         _filteredPois = _pois.where((poi) {
           return (poi.name ?? '').toLowerCase().contains(query.toLowerCase()) ||
                  poi.primaryCategory.toLowerCase().contains(query.toLowerCase()) ||
-                 poi.shortDescription.toLowerCase().contains(query.toLowerCase());
+                 (poi.shortDescription ?? '').toLowerCase().contains(query.toLowerCase());
         }).toList();
       }
       _markers = _createMarkers(_filteredPois);
@@ -202,9 +202,9 @@ class _MapPageState extends State<MapPage> {
                         poi.primaryCategory,
                         style: const TextStyle(color: Colors.grey),
                       ),
-                      if (poi.shortDescription.isNotEmpty)
+                      if (poi.shortDescription?.isNotEmpty == true)
                         Text(
-                          poi.shortDescription,
+                          poi.shortDescription!,
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,

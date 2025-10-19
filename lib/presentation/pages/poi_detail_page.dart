@@ -270,7 +270,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     _buildHeader(poi),
                     if (poi.description?.isNotEmpty == true)
                       _buildDescriptionSection(poi)
-                    else if (poi.shortDescription.isNotEmpty)
+                    else if (poi.shortDescription?.isNotEmpty == true)
                       _buildShortDescriptionSection(poi)
                     else
                       _buildNoDescriptionPlaceholder(poi),
@@ -629,7 +629,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            poi.description ?? poi.shortDescription,
+            poi.description ?? poi.shortDescription ?? '',
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey[700],
@@ -681,7 +681,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            poi.shortDescription,
+            poi.shortDescription ?? '',
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey[700],
@@ -1192,7 +1192,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 📍 ${poi.displayAddress}
 🌍 ${poi.region ?? AppLocalizations.of(context)!.commonUnknown}, Djibouti
 
-${poi.shortDescription.isNotEmpty ? poi.shortDescription : '${AppLocalizations.of(context)!.commonDiscoverPlace} ${poi.region ?? AppLocalizations.of(context)!.commonUnknown} !'}
+${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocalizations.of(context)!.commonDiscoverPlace} ${poi.region ?? AppLocalizations.of(context)!.commonUnknown} !'}
 
 📱 ${AppLocalizations.of(context)!.commonSharedFrom}
 ''';

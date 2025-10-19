@@ -12,26 +12,30 @@ Tour _$TourFromJson(Map<String, dynamic> json) => Tour(
   title: json['title'] as String,
   shortDescription: json['short_description'] as String?,
   description: json['description'] as String?,
-  type: $enumDecode(_$TourTypeEnumMap, json['type']),
+  itinerary: json['itinerary'] as String?,
+  type: _typeFromJson(json['type']),
   typeLabel: json['type_label'] as String?,
   difficulty: $enumDecode(_$TourDifficultyEnumMap, json['difficulty_level']),
   difficultyLabel: json['difficulty_label'] as String?,
-  price: _priceFromJson(json['price']),
+  price: json['price'] == null ? 0 : _priceFromJson(json['price']),
   formattedPrice: json['formatted_price'] as String?,
-  currency: json['currency'] as String,
-  durationHours: _durationFromJson(json['durationHours']),
-  formattedDuration: json['formatted_duration'] as String?,
+  currency: json['currency'] as String? ?? 'DJF',
+  isFree: json['is_free'] as bool? ?? false,
+  duration: _durationFromJson(json['duration']),
   maxParticipants: (json['max_participants'] as num?)?.toInt(),
   minParticipants: (json['min_participants'] as num?)?.toInt(),
-  isFeatured: json['is_featured'] as bool,
+  availableSpots: (json['available_spots'] as num?)?.toInt() ?? 0,
+  isFeatured: json['is_featured'] as bool? ?? false,
   isActive: json['is_active'] as bool? ?? true,
-  includes: (json['includes'] as List<dynamic>?)
+  highlights: (json['highlights'] as List<dynamic>?)
       ?.map((e) => e as String)
       .toList(),
-  excludes: (json['excludes'] as List<dynamic>?)
+  whatToBring: (json['what_to_bring'] as List<dynamic>?)
       ?.map((e) => e as String)
       .toList(),
-  requirements: json['requirements'] as String?,
+  ageRestrictions: _ageRestrictionsFromJson(json['age_restrictions']),
+  weatherDependent: json['weather_dependent'] as bool? ?? false,
+  viewsCount: (json['views_count'] as num?)?.toInt() ?? 0,
   meetingPoint: _meetingPointFromJson(json['meeting_point']),
   tourOperator: _tourOperatorFromJson(json['tour_operator']),
   featuredImage: _mediaFromJson(json['featured_image']),
@@ -41,15 +45,9 @@ Tour _$TourFromJson(Map<String, dynamic> json) => Tour(
   categories: (json['categories'] as List<dynamic>?)
       ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
       .toList(),
-  schedules: (json['upcoming_schedules'] as List<dynamic>?)
-      ?.map((e) => TourSchedule.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  nextAvailableDate: json['next_available_date'] as String?,
   startDate: json['start_date'] as String?,
   endDate: json['end_date'] as String?,
-  availableSpots: (json['available_spots'] as num?)?.toInt(),
-  averageRating: (json['average_rating'] as num?)?.toDouble(),
-  reviewsCount: (json['reviews_count'] as num?)?.toInt(),
+  formattedDateRange: json['formatted_date_range'] as String?,
   createdAt: json['created_at'] as String?,
   updatedAt: json['updated_at'] as String?,
 );
@@ -60,6 +58,7 @@ Map<String, dynamic> _$TourToJson(Tour instance) => <String, dynamic>{
   'title': instance.title,
   'short_description': instance.shortDescription,
   'description': instance.description,
+  'itinerary': instance.itinerary,
   'type': _$TourTypeEnumMap[instance.type]!,
   'type_label': ?instance.typeLabel,
   'difficulty_level': _$TourDifficultyEnumMap[instance.difficulty]!,
@@ -67,37 +66,28 @@ Map<String, dynamic> _$TourToJson(Tour instance) => <String, dynamic>{
   'price': instance.price,
   'formatted_price': ?instance.formattedPrice,
   'currency': instance.currency,
-  'durationHours': instance.durationHours,
-  'formatted_duration': ?instance.formattedDuration,
+  'is_free': instance.isFree,
+  'duration': instance.duration,
   'max_participants': instance.maxParticipants,
   'min_participants': instance.minParticipants,
+  'available_spots': instance.availableSpots,
   'is_featured': instance.isFeatured,
   'is_active': instance.isActive,
-  'includes': instance.includes,
-  'excludes': instance.excludes,
-  'requirements': instance.requirements,
+  'highlights': instance.highlights,
+  'what_to_bring': instance.whatToBring,
+  'age_restrictions': instance.ageRestrictions,
+  'weather_dependent': instance.weatherDependent,
+  'views_count': instance.viewsCount,
   'meeting_point': instance.meetingPoint,
   'tour_operator': instance.tourOperator,
   'featured_image': instance.featuredImage,
   'media': instance.media,
   'categories': instance.categories,
-  'upcoming_schedules': instance.schedules,
-  'next_available_date': instance.nextAvailableDate,
   'start_date': instance.startDate,
   'end_date': instance.endDate,
-  'available_spots': instance.availableSpots,
-  'average_rating': instance.averageRating,
-  'reviews_count': instance.reviewsCount,
+  'formatted_date_range': instance.formattedDateRange,
   'created_at': instance.createdAt,
   'updated_at': instance.updatedAt,
-};
-
-const _$TourTypeEnumMap = {
-  TourType.mixed: 'mixed',
-  TourType.cultural: 'cultural',
-  TourType.adventure: 'adventure',
-  TourType.nature: 'nature',
-  TourType.gastronomic: 'gastronomic',
 };
 
 const _$TourDifficultyEnumMap = {
@@ -107,39 +97,56 @@ const _$TourDifficultyEnumMap = {
   TourDifficulty.expert: 'expert',
 };
 
-TourSchedule _$TourScheduleFromJson(Map<String, dynamic> json) => TourSchedule(
-  id: (json['id'] as num).toInt(),
-  tourId: (json['tour_id'] as num).toInt(),
-  startDate: json['start_date'] as String,
-  endDate: json['end_date'] as String?,
-  startTime: json['start_time'] as String?,
-  endTime: json['end_time'] as String?,
-  maxParticipants: (json['max_participants'] as num).toInt(),
-  currentParticipants: (json['current_participants'] as num).toInt(),
-  availableSpots: (json['available_spots'] as num).toInt(),
-  isSoldOut: json['is_sold_out'] as bool,
-  isActive: json['is_active'] as bool,
-  price: (json['price'] as num).toInt(),
-  specialPrice: (json['special_price'] as num?)?.toInt(),
-  createdAt: json['created_at'] as String?,
+const _$TourTypeEnumMap = {
+  TourType.poi: 'poi',
+  TourType.event: 'event',
+  TourType.mixed: 'mixed',
+  TourType.cultural: 'cultural',
+  TourType.adventure: 'adventure',
+  TourType.nature: 'nature',
+  TourType.gastronomic: 'gastronomic',
+};
+
+TourDuration _$TourDurationFromJson(Map<String, dynamic> json) => TourDuration(
+  hours: (json['hours'] as num?)?.toInt(),
+  days: (json['days'] as num?)?.toInt() ?? 1,
+  formatted: json['formatted'] as String? ?? '',
 );
 
-Map<String, dynamic> _$TourScheduleToJson(TourSchedule instance) =>
+Map<String, dynamic> _$TourDurationToJson(TourDuration instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'tour_id': instance.tourId,
-      'start_date': instance.startDate,
-      'end_date': instance.endDate,
-      'start_time': instance.startTime,
-      'end_time': instance.endTime,
-      'max_participants': instance.maxParticipants,
-      'current_participants': instance.currentParticipants,
-      'available_spots': instance.availableSpots,
-      'is_sold_out': instance.isSoldOut,
-      'is_active': instance.isActive,
-      'price': instance.price,
-      'special_price': instance.specialPrice,
-      'created_at': instance.createdAt,
+      'hours': instance.hours,
+      'days': instance.days,
+      'formatted': instance.formatted,
+    };
+
+MeetingPoint _$MeetingPointFromJson(Map<String, dynamic> json) => MeetingPoint(
+  latitude: (json['latitude'] as num?)?.toDouble(),
+  longitude: (json['longitude'] as num?)?.toDouble(),
+  address: json['address'] as String?,
+  description: json['description'] as String?,
+);
+
+Map<String, dynamic> _$MeetingPointToJson(MeetingPoint instance) =>
+    <String, dynamic>{
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'address': instance.address,
+      'description': instance.description,
+    };
+
+AgeRestrictions _$AgeRestrictionsFromJson(Map<String, dynamic> json) =>
+    AgeRestrictions(
+      min: (json['min'] as num?)?.toInt(),
+      max: (json['max'] as num?)?.toInt(),
+      text: json['text'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$AgeRestrictionsToJson(AgeRestrictions instance) =>
+    <String, dynamic>{
+      'min': instance.min,
+      'max': instance.max,
+      'text': instance.text,
     };
 
 TourListResponse _$TourListResponseFromJson(Map<String, dynamic> json) =>

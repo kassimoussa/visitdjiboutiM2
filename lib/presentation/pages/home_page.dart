@@ -19,7 +19,7 @@ import 'region_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 import 'tour_operators_page.dart';
-import 'all_tours_page.dart';
+import 'tours_page.dart';
 import 'essentials_page.dart';
 import 'embassies_page.dart';
 
@@ -314,7 +314,7 @@ class _HomePageState extends State<HomePage> {
               title: AppLocalizations.of(context)!.homeFeaturedTours,
               onSeeAll: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const AllToursPage()),
+                MaterialPageRoute(builder: (_) => const ToursPage(showFeaturedOnly: true)),
               ),
             ),
             const SizedBox(height: 12),

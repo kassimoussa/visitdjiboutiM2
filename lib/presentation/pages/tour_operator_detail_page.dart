@@ -740,18 +740,18 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
 
                     const Spacer(),
 
-                    // Note si disponible
-                    if (tour.averageRating != null && tour.averageRating! > 0)
+                    // Nombre de vues
+                    if (tour.viewsCount > 0)
                       Row(
                         children: [
                           const Icon(
-                            Icons.star,
+                            Icons.visibility,
                             size: 12,
-                            color: Colors.amber,
+                            color: Colors.grey,
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${tour.averageRating!.toStringAsFixed(1)} (${tour.reviewsCount ?? 0})',
+                            '${tour.viewsCount} vues',
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.grey[600],

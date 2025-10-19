@@ -7,7 +7,7 @@ class SimpleTour {
   final int id;
   final String slug;
   final String title;
-  final String type;
+  final String? type;
   @JsonKey(name: 'type_label')
   final String? typeLabel;
   @JsonKey(name: 'difficulty_level')
@@ -15,6 +15,7 @@ class SimpleTour {
   @JsonKey(name: 'difficulty_label')
   final String? difficultyLabel;
   final String price;
+  @JsonKey(defaultValue: 'DJF')
   final String currency;
   @JsonKey(name: 'formatted_price')
   final String? formattedPrice;
@@ -61,7 +62,7 @@ class SimpleTour {
 
   // Getters pour compatibilité
   String get displayPrice => formattedPrice ?? '$price $currency';
-  String get displayType => typeLabel ?? type;
+  String get displayType => typeLabel ?? type ?? '';
   String get displayDifficulty => difficultyLabel ?? difficulty;
   bool get hasImages => featuredImage != null;
   String get firstImageUrl => featuredImage?['url'] ?? '';

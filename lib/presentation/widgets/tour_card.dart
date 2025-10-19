@@ -214,14 +214,14 @@ class _TourCardState extends State<TourCard> {
           ],
         ),
         SizedBox(height: ResponsiveConstants.tinySpace),
-        if (tour.meetingPoint != null && tour.meetingPoint!.isNotEmpty)
+        if (tour.meetingPoint != null)
           Row(
             children: [
               Icon(Icons.location_on_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Expanded(
                 child: Text(
-                  tour.meetingPoint!,
+                  tour.meetingPoint!.displayText,
                   style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
