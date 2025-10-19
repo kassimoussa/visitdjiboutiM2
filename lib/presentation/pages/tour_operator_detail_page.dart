@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/tour_operator_service.dart';
+import '../../core/services/favorites_service.dart';
 import '../../core/models/tour.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'tour_detail_page.dart';
@@ -20,9 +22,11 @@ class TourOperatorDetailPage extends StatefulWidget {
 class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
   final TourService _tourService = TourService();
   final TourOperatorService _operatorService = TourOperatorService();
+  final FavoritesService _favoritesService = FavoritesService();
   TourOperator? _operatorWithTours;
   List<Tour> _operatorTours = [];
   bool _isLoadingTours = true;
+  Map<int, bool> _tourFavoriteStatus = {};
 
   @override
   void initState() {
@@ -46,6 +50,12 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
           print('[OPERATOR DETAIL] Tour: ${tour.title} (ID: ${tour.id})');
         }
 
+        // Charger le statut favori pour chaque tour
+        for (var tour in tours) {
+          final isFavorite = await _favoritesService.isTourFavorite(tour.id);
+          _tourFavoriteStatus[tour.id] = isFavorite;
+        }
+
         setState(() {
           _operatorTours = tours;
           _isLoadingTours = false;
@@ -61,6 +71,29 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
       setState(() {
         _isLoadingTours = false;
       });
+    }
+  }
+
+  Future<void> _toggleTourFavorite(Tour tour) async {
+    final success = await _favoritesService.toggleTourFavorite(tour.id);
+    if (success) {
+      setState(() {
+        _tourFavoriteStatus[tour.id] = !(_tourFavoriteStatus[tour.id] ?? false);
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              _tourFavoriteStatus[tour.id] == true
+                  ? 'Tour ajouté aux favoris'
+                  : 'Tour retiré des favoris',
+            ),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 
@@ -90,6 +123,9 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
+    final operator = _operatorWithTours ?? widget.operator;
+    final logoUrl = operator.logoUrl;
+
     return SliverAppBar(
       expandedHeight: 200,
       pinned: true,
@@ -121,12 +157,41 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             ),
           ),
           child: Stack(
+            fit: StackFit.expand,
             children: [
-              Positioned.fill(
-                child: Icon(
+              if (logoUrl.isNotEmpty)
+                CachedNetworkImage(
+                  imageUrl: logoUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    color: Colors.white.withOpacity(0.1),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.white.withOpacity(0.1),
+                    child: const Icon(
+                      Icons.business_center,
+                      size: 120,
+                      color: Colors.white54,
+                    ),
+                  ),
+                )
+              else
+                Icon(
                   Icons.business_center,
                   size: 120,
                   color: Colors.white.withOpacity(0.1),
+                ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.4),
+                    ],
+                    stops: const [0.5, 1.0],
+                  ),
                 ),
               ),
               if (widget.operator.featured == true)
@@ -153,6 +218,9 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
   }
 
   Widget _buildHeaderInfo() {
+    final operator = _operatorWithTours ?? widget.operator;
+    final logoUrl = operator.logoUrl;
+
     return Container(
       margin: const EdgeInsets.all(24),
       padding: const EdgeInsets.all(20),
@@ -172,18 +240,40 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.1),
+              if (logoUrl.isNotEmpty)
+                ClipRRect(
                   borderRadius: BorderRadius.circular(12),
+                  child: CachedNetworkImage(
+                    imageUrl: logoUrl,
+                    height: 50,
+                    width: 50,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      height: 50,
+                      width: 50,
+                      color: Colors.grey[200],
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      height: 50,
+                      width: 50,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.business_center),
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF3860F8).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.tour,
+                    color: Color(0xFF3860F8),
+                    size: 24,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.tour,
-                  color: Color(0xFF3860F8),
-                  size: 24,
-                ),
-              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -597,45 +687,80 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image du tour
-            Container(
-              height: 120,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                color: Colors.grey[200],
-              ),
-              child: tour.hasImages
-                  ? ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.network(
-                        tour.firstImageUrl,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[200],
-                            child: const Icon(
+            // Image du tour avec icône favori
+            Stack(
+              children: [
+                Container(
+                  height: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    color: Colors.grey[200],
+                  ),
+                  child: tour.hasImages
+                      ? ClipRRect(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          child: Image.network(
+                            tour.firstImageUrl,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[200],
+                                child: const Icon(
+                                  Icons.tour,
+                                  size: 40,
+                                  color: Colors.grey,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF3860F8).withOpacity(0.1),
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          ),
+                          child: const Center(
+                            child: Icon(
                               Icons.tour,
                               size: 40,
-                              color: Colors.grey,
+                              color: Color(0xFF3860F8),
                             ),
-                          );
-                        },
-                      ),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF3860F8).withOpacity(0.1),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.tour,
-                          size: 40,
-                          color: Color(0xFF3860F8),
+                          ),
                         ),
+                ),
+                // Icône favori en haut à droite
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () => _toggleTourFavorite(tour),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        _tourFavoriteStatus[tour.id] == true
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: _tourFavoriteStatus[tour.id] == true
+                            ? Colors.red
+                            : Colors.grey[600],
+                        size: 20,
                       ),
                     ),
+                  ),
+                ),
+              ],
             ),
 
             // Contenu du tour

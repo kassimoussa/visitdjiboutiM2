@@ -5,6 +5,7 @@ import '../../core/models/tour_operator.dart';
 import '../../core/models/tour_reservation.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
+import '../../core/services/favorites_service.dart';
 import '../widgets/shimmer_loading.dart';
 
 class TourDetailPage extends StatefulWidget {
@@ -19,15 +20,21 @@ class TourDetailPage extends StatefulWidget {
 class _TourDetailPageState extends State<TourDetailPage> {
   final TourService _tourService = TourService();
   final AnonymousAuthService _authService = AnonymousAuthService();
+  final FavoritesService _favoritesService = FavoritesService();
 
   Tour? _detailedTour;
   bool _isLoading = true;
   String? _errorMessage;
+  bool _isFavorite = false;
+  bool _hasActiveReservation = false;
+  TourReservation? _userReservation;
 
   @override
   void initState() {
     super.initState();
     _loadTourDetails();
+    _checkFavoriteStatus();
+    _checkUserReservation();
   }
 
   Future<void> _loadTourDetails() async {
@@ -47,6 +54,89 @@ class _TourDetailPageState extends State<TourDetailPage> {
         _errorMessage = 'Erreur lors du chargement: $e';
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    final isFavorite = await _favoritesService.isTourFavorite(widget.tour.id);
+    setState(() {
+      _isFavorite = isFavorite;
+    });
+  }
+
+  Future<void> _checkUserReservation() async {
+    try {
+      // Récupérer toutes les réservations actives de l'utilisateur pour les tours
+      final response = await _tourService.getMyReservations();
+
+      if (response.success && response.data.data.isNotEmpty) {
+        // Vérifier si une réservation existe pour ce tour spécifique
+        final reservations = response.data.data;
+
+        // Chercher une réservation pour ce tour avec un statut actif
+        // On cherche uniquement par tourId et status, sans parser l'objet tour complet
+        for (var reservation in reservations) {
+          if (reservation.tourId == widget.tour.id &&
+              (reservation.status == ReservationStatus.confirmed ||
+               reservation.status == ReservationStatus.pending)) {
+            if (mounted) {
+              setState(() {
+                _hasActiveReservation = true;
+                _userReservation = reservation;
+              });
+            }
+            return;
+          }
+        }
+
+        // Aucune réservation trouvée
+        if (mounted) {
+          setState(() {
+            _hasActiveReservation = false;
+            _userReservation = null;
+          });
+        }
+      } else {
+        // Aucune réservation
+        if (mounted) {
+          setState(() {
+            _hasActiveReservation = false;
+            _userReservation = null;
+          });
+        }
+      }
+    } catch (e) {
+      print('Erreur lors de la vérification de la réservation: $e');
+      // En cas d'erreur, on considère qu'il n'y a pas de réservation
+      if (mounted) {
+        setState(() {
+          _hasActiveReservation = false;
+          _userReservation = null;
+        });
+      }
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    final success = await _favoritesService.toggleTourFavorite(widget.tour.id);
+    if (success) {
+      setState(() {
+        _isFavorite = !_isFavorite;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              _isFavorite
+                  ? 'Tour ajouté aux favoris'
+                  : 'Tour retiré des favoris',
+            ),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 
@@ -123,10 +213,10 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   _buildSection('Description', tour.description!),
                   const SizedBox(height: 24),
                 ],
-                if (tour.itinerary != null) ...[
+                /* if (tour.itinerary != null) ...[
                   _buildSection('Itinéraire', tour.itinerary!),
                   const SizedBox(height: 24),
-                ],
+                ], */
                 if (tour.highlights?.isNotEmpty ?? false) ...[
                   _buildListSection('Points forts', tour.highlights!, Icons.star, Colors.amber),
                   const SizedBox(height: 24),
@@ -185,6 +275,13 @@ class _TourDetailPageState extends State<TourDetailPage> {
               ),
       ),
       actions: [
+        IconButton(
+          icon: Icon(
+            _isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: _isFavorite ? Colors.red : Colors.white,
+          ),
+          onPressed: _toggleFavorite,
+        ),
         IconButton(
           icon: const Icon(Icons.share),
           onPressed: () => _shareTour(tour),
@@ -299,29 +396,16 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 'Dates',
                 tour.displayDateRange!,
               ),
-            if (tour.availableSpots != null)
-              _buildInfoRow(
-                Icons.event_seat,
-                'Places disponibles',
-                '${tour.availableSpots} places',
-              ),
-            if (tour.maxParticipants != null)
-              _buildInfoRow(
-                Icons.group,
-                'Participants max',
-                '${tour.maxParticipants} personnes',
-              ),
-            if (tour.minParticipants != null)
-              _buildInfoRow(
-                Icons.group,
-                'Minimum requis',
-                '${tour.minParticipants} personnes',
-              ),
             _buildInfoRow(
+              Icons.event_seat,
+              'Places disponibles',
+              '${tour.availableSpots} places',
+            ), 
+            /* _buildInfoRow(
               Icons.language,
               'Langues',
               'Français, Anglais',
-            ),
+            ), */
           ],
         ),
       ),
@@ -706,18 +790,37 @@ class _TourDetailPageState extends State<TourDetailPage> {
             Expanded(
               flex: 2,
               child: ElevatedButton(
-                onPressed: tour.isBookable ? () => _showDirectBookingDialog(tour) : null,
+                onPressed: _hasActiveReservation
+                    ? null
+                    : (tour.isBookable ? () => _showDirectBookingDialog(tour) : null),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3860F8),
+                  backgroundColor: _hasActiveReservation
+                      ? const Color(0xFF009639)
+                      : const Color(0xFF3860F8),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  disabledBackgroundColor: _hasActiveReservation
+                      ? const Color(0xFF009639)
+                      : Colors.grey,
+                  disabledForegroundColor: Colors.white,
                 ),
-                child: Text(
-                  tour.isBookable ? 'S\'inscrire maintenant' : 'Places épuisées',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_hasActiveReservation) ...[
+                      const Icon(Icons.check_circle, size: 20),
+                      const SizedBox(width: 8),
+                    ],
+                    Text(
+                      _hasActiveReservation
+                          ? 'Déjà inscrit'
+                          : (tour.isBookable ? 'S\'inscrire maintenant' : 'Places épuisées'),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -736,6 +839,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
           _showBookingConfirmation(booking);
           // Recharger les détails du tour pour mettre à jour les places disponibles
           _loadTourDetails();
+          // Vérifier à nouveau l'état de réservation de l'utilisateur
+          _checkUserReservation();
         },
       ),
     );

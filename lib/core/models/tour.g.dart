@@ -21,7 +21,7 @@ Tour _$TourFromJson(Map<String, dynamic> json) => Tour(
   formattedPrice: json['formatted_price'] as String?,
   currency: json['currency'] as String? ?? 'DJF',
   isFree: json['is_free'] as bool? ?? false,
-  duration: _durationFromJson(json['duration']),
+  duration: _durationFromJsonField(json['duration']),
   maxParticipants: (json['max_participants'] as num?)?.toInt(),
   minParticipants: (json['min_participants'] as num?)?.toInt(),
   availableSpots: (json['available_spots'] as num?)?.toInt() ?? 0,

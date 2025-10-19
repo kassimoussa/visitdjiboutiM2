@@ -17,9 +17,6 @@ TourReservation _$TourReservationFromJson(Map<String, dynamic> json) =>
       numberOfPeople: (json['number_of_people'] as num).toInt(),
       notes: json['notes'] as String?,
       status: $enumDecode(_$ReservationStatusEnumMap, json['status']),
-      tour: json['tour'] == null
-          ? null
-          : Tour.fromJson(json['tour'] as Map<String, dynamic>),
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
     );
@@ -35,7 +32,6 @@ Map<String, dynamic> _$TourReservationToJson(TourReservation instance) =>
       'number_of_people': instance.numberOfPeople,
       'notes': instance.notes,
       'status': _$ReservationStatusEnumMap[instance.status]!,
-      'tour': instance.tour,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

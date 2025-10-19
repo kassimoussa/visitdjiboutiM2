@@ -31,6 +31,8 @@ class TourReservation {
   final ReservationStatus status;
 
   // Relation tour (optionnelle, incluse dans certaines réponses)
+  // Ignore le parsing car l'objet tour peut avoir des champs incompatibles
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final Tour? tour;
 
   // Timestamps

@@ -6,24 +6,35 @@ import 'simple_tour.dart';
 
 part 'tour.g.dart';
 
-// Parse duration object from API
-TourDuration _durationFromJson(dynamic duration) {
-  if (duration == null) {
-    return TourDuration(hours: null, days: 1, formatted: '1 jour');
-  } else if (duration is Map<String, dynamic>) {
+// Parse duration field - handles null or empty values from API
+TourDuration _durationFromJsonField(dynamic duration) {
+  // Par défaut, retourner une durée vide
+  return TourDuration(hours: null, days: 1, formatted: '1 jour');
+}
+
+// Parse duration from full JSON object with duration_hours and formatted_duration
+TourDuration _durationFromJson(Map<String, dynamic> json) {
+  // L'API retourne duration_hours et formatted_duration, pas un objet duration
+  final hours = (json['duration_hours'] as num?)?.toInt();
+  final formatted = json['formatted_duration'] as String?;
+
+  if (formatted != null && formatted.isNotEmpty) {
+    // Si on a un formatted_duration, l'utiliser
     return TourDuration(
-      hours: duration['hours'] as int?,
-      days: duration['days'] as int? ?? 1,
-      formatted: duration['formatted'] as String? ?? '',
+      hours: hours,
+      days: 1, // Par défaut 1 jour
+      formatted: formatted,
     );
-  } else if (duration is num) {
-    // Fallback pour ancienne structure (hours uniquement)
+  } else if (hours != null) {
+    // Si on a seulement les heures
     return TourDuration(
-      hours: duration.toInt(),
+      hours: hours,
       days: 1,
-      formatted: '${duration.toInt()}h',
+      formatted: '${hours}h',
     );
   }
+
+  // Fallback
   return TourDuration(hours: null, days: 1, formatted: '1 jour');
 }
 
@@ -42,6 +53,9 @@ Media? _mediaFromJson(dynamic media) {
   if (media == null) {
     return null;
   } else if (media is Map<String, dynamic>) {
+    if (!media.containsKey('id')) {
+      media['id'] = 0;
+    }
     return Media.fromJson(media);
   }
   return null;
@@ -146,7 +160,7 @@ class Tour {
   final String currency;
   @JsonKey(name: 'is_free', defaultValue: false)
   final bool isFree;
-  @JsonKey(fromJson: _durationFromJson)
+  @JsonKey(fromJson: _durationFromJsonField)
   final TourDuration duration;
   @JsonKey(name: 'max_participants')
   final int? maxParticipants;
@@ -224,7 +238,49 @@ class Tour {
     this.updatedAt,
   });
 
-  factory Tour.fromJson(Map<String, dynamic> json) => _$TourFromJson(json);
+  factory Tour.fromJson(Map<String, dynamic> json) {
+    final tour = _$TourFromJson(json);
+    // Construire duration à partir des champs duration_hours et formatted_duration
+    final duration = _durationFromJson(json);
+
+    return Tour(
+      id: tour.id,
+      slug: tour.slug,
+      title: tour.title,
+      shortDescription: tour.shortDescription,
+      description: tour.description,
+      itinerary: tour.itinerary,
+      type: tour.type,
+      typeLabel: tour.typeLabel,
+      difficulty: tour.difficulty,
+      difficultyLabel: tour.difficultyLabel,
+      price: tour.price,
+      formattedPrice: tour.formattedPrice,
+      currency: tour.currency,
+      isFree: tour.isFree,
+      duration: duration, // Utiliser la duration parsée
+      maxParticipants: tour.maxParticipants,
+      minParticipants: tour.minParticipants,
+      availableSpots: tour.availableSpots,
+      isFeatured: tour.isFeatured,
+      isActive: tour.isActive,
+      highlights: tour.highlights,
+      whatToBring: tour.whatToBring,
+      ageRestrictions: tour.ageRestrictions,
+      weatherDependent: tour.weatherDependent,
+      viewsCount: tour.viewsCount,
+      meetingPoint: tour.meetingPoint,
+      tourOperator: tour.tourOperator,
+      featuredImage: tour.featuredImage,
+      media: tour.media,
+      categories: tour.categories,
+      startDate: tour.startDate,
+      endDate: tour.endDate,
+      formattedDateRange: tour.formattedDateRange,
+      createdAt: tour.createdAt,
+      updatedAt: tour.updatedAt,
+    );
+  }
 
   factory Tour.fromSimpleTour(SimpleTour simpleTour) {
     return Tour(

@@ -6,8 +6,10 @@ import '../../core/services/event_service.dart';
 import '../../core/services/conversion_trigger_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/event.dart';
+import '../../core/models/tour.dart';
 import 'poi_detail_page.dart';
 import 'event_detail_page.dart';
+import 'tour_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
@@ -28,8 +30,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   List<Poi> _favoritePois = [];
   List<Event> _favoriteEvents = [];
+  List<Tour> _favoriteTours = [];
   bool _isLoading = true;
-  String _selectedTab = 'all'; // all, pois, events  
+  String _selectedTab = 'all'; // all, pois, events, tours
   String _sortBy = 'recent';
   final List<String> _sortOptions = ['recent', 'alphabetical', 'rating'];
 
@@ -53,15 +56,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   Future<void> _loadFavorites() async {
     setState(() => _isLoading = true);
-    
+
     try {
       final pois = await _favoritesService.getFavoritePois();
       final events = await _favoritesService.getFavoriteEvents();
-      
+      final tours = await _favoritesService.getFavoriteTours();
+
       if (mounted) {
         setState(() {
           _favoritePois = pois;
           _favoriteEvents = events;
+          _favoriteTours = tours;
           _isLoading = false;
         });
       }
@@ -83,6 +88,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
         return l10n.favoritesPoisTab;
       case 'events':
         return l10n.favoritesEventsTab;
+      case 'tours':
+        return 'Tours'; // TODO: Add translation
       default:
         return tab;
     }
@@ -111,12 +118,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
         child: Column(
           children: [
             _buildHeader(),
-            if (!_isLoading && (_favoritePois.isNotEmpty || _favoriteEvents.isNotEmpty))
+            if (!_isLoading && (_favoritePois.isNotEmpty || _favoriteEvents.isNotEmpty || _favoriteTours.isNotEmpty))
               _buildTabBar(),
             Expanded(
               child: _isLoading
                   ? _buildLoadingState()
-                  : (_favoritePois.isEmpty && _favoriteEvents.isEmpty)
+                  : (_favoritePois.isEmpty && _favoriteEvents.isEmpty && _favoriteTours.isEmpty)
                       ? _buildEmptyState()
                       : _buildFavoritesList(),
             ),
@@ -140,7 +147,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
             ),
           ),
           const Spacer(),
-          if (!_isLoading && (_favoritePois.isNotEmpty || _favoriteEvents.isNotEmpty))
+          if (!_isLoading && (_favoritePois.isNotEmpty || _favoriteEvents.isNotEmpty || _favoriteTours.isNotEmpty))
             PopupMenuButton<String>(
               initialValue: _sortBy,
               onSelected: (value) {
@@ -170,45 +177,48 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
 
   Widget _buildTabBar() {
-    final totalCount = _favoritePois.length + _favoriteEvents.length;
-    
+    final totalCount = _favoritePois.length + _favoriteEvents.length + _favoriteTours.length;
+
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-      child: Row(
-        children: [
-          _buildTabButton('all', totalCount),
-          const SizedBox(width: 8),
-          _buildTabButton('pois', _favoritePois.length),
-          const SizedBox(width: 8),
-          _buildTabButton('events', _favoriteEvents.length),
-        ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _buildTabButton('all', totalCount),
+            const SizedBox(width: 8),
+            _buildTabButton('pois', _favoritePois.length),
+            const SizedBox(width: 8),
+            _buildTabButton('events', _favoriteEvents.length),
+            const SizedBox(width: 8),
+            _buildTabButton('tours', _favoriteTours.length),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildTabButton(String tab, int count) {
     final isSelected = _selectedTab == tab;
-    
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => setState(() => _selectedTab = tab),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF3860F8) : Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isSelected ? const Color(0xFF3860F8) : Colors.grey[300]!,
-            ),
+
+    return GestureDetector(
+      onTap: () => setState(() => _selectedTab = tab),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF3860F8) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF3860F8) : Colors.grey[300]!,
           ),
-          child: Text(
-            '${_getTabLabel(tab)} ($count)',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.grey[700],
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
+        ),
+        child: Text(
+          '${_getTabLabel(tab)} ($count)',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.grey[700],
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
           ),
         ),
       ),
@@ -244,6 +254,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
             return PoiCard(poi: item);
           } else if (item is Event) {
             return EventCard(event: item);
+          } else if (item is Tour) {
+            return _buildTourCard(item);
           }
           return const SizedBox.shrink();
         },
@@ -253,11 +265,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   List<dynamic> _getFilteredItems() {
     List<dynamic> items = [];
-    
+
     switch (_selectedTab) {
       case 'all':
         items.addAll(_favoritePois);
         items.addAll(_favoriteEvents);
+        items.addAll(_favoriteTours);
         break;
       case 'pois':
         items.addAll(_favoritePois);
@@ -265,22 +278,53 @@ class _FavoritesPageState extends State<FavoritesPage> {
       case 'events':
         items.addAll(_favoriteEvents);
         break;
+      case 'tours':
+        items.addAll(_favoriteTours);
+        break;
     }
-    
+
     items.sort((a, b) {
       switch (_sortBy) {
         case 'recent':
-          final aDateStr = a is Poi ? a.createdAt : (a as Event).createdAt;
-          final bDateStr = b is Poi ? b.createdAt : (b as Event).createdAt;
+          String? aDateStr;
+          String? bDateStr;
+          if (a is Poi) {
+            aDateStr = a.createdAt;
+          } else if (a is Event) {
+            aDateStr = a.createdAt;
+          } else if (a is Tour) {
+            aDateStr = a.createdAt;
+          }
+          if (b is Poi) {
+            bDateStr = b.createdAt;
+          } else if (b is Event) {
+            bDateStr = b.createdAt;
+          } else if (b is Tour) {
+            bDateStr = b.createdAt;
+          }
           final aDate = DateTime.tryParse(aDateStr ?? '') ?? DateTime(1970);
           final bDate = DateTime.tryParse(bDateStr ?? '') ?? DateTime(1970);
           return bDate.compareTo(aDate);
         case 'alphabetical':
-          final aName = (a is Poi ? a.name : (a as Event).title) ?? '';
-          final bName = (b is Poi ? b.name : (b as Event).title) ?? '';
+          String aName = '';
+          String bName = '';
+          if (a is Poi) {
+            aName = a.name;
+          } else if (a is Event) {
+            aName = a.title;
+          } else if (a is Tour) {
+            aName = a.title;
+          }
+          if (b is Poi) {
+            bName = b.name;
+          } else if (b is Event) {
+            bName = b.title;
+          } else if (b is Tour) {
+            bName = b.title;
+          }
           return aName.compareTo(bName);
         case 'rating':
-          final aRating = a is Poi ? 4.0 : 4.5; // Note: Event model does not have rating
+          final aRating = a is Poi ? 4.0 : 4.5;
           final bRating = b is Poi ? 4.0 : 4.5;
           return bRating.compareTo(aRating);
         default:
@@ -495,6 +539,135 @@ class _FavoritesPageState extends State<FavoritesPage> {
         width: double.infinity,
         height: 160,
         color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildTourCard(Tour tour) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TourDetailPage(tour: tour),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image du tour
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: tour.featuredImage?.url != null
+                  ? Image.network(
+                      tour.featuredImage!.url,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 200,
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.tour, size: 64, color: Colors.grey),
+                        );
+                      },
+                    )
+                  : Container(
+                      height: 200,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.tour, size: 64, color: Colors.grey),
+                    ),
+            ),
+            // Contenu
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tour.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1D2233),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          tour.type.label,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF3860F8),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          tour.difficulty.label,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
+                      const SizedBox(width: 4),
+                      Text(
+                        tour.displayDuration,
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      ),
+                      const Spacer(),
+                      Text(
+                        tour.displayPrice,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF009639),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

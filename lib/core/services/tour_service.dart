@@ -3,7 +3,6 @@ import '../api/api_constants.dart';
 import '../models/tour.dart';
 import '../models/simple_tour.dart';
 import '../models/tour_reservation.dart';
-import '../models/api_response.dart';
 
 class TourService {
   static final TourService _instance = TourService._internal();

@@ -240,7 +240,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF1D2233),
                               ),
-                              maxLines: 2,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

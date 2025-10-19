@@ -6,7 +6,6 @@ import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
 import '../pages/reservations_page.dart';
-import '../pages/tours_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/services/anonymous_auth_service.dart';

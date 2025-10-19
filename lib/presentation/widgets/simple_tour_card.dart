@@ -1,14 +1,88 @@
 import 'package:flutter/material.dart';
 import '../../core/models/simple_tour.dart';
 import '../../core/models/tour.dart';
+import '../../core/services/favorites_service.dart';
 import '../../core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../pages/tour_detail_page.dart';
 
-class SimpleTourCard extends StatelessWidget {
+class SimpleTourCard extends StatefulWidget {
   final SimpleTour tour;
 
   const SimpleTourCard({super.key, required this.tour});
+
+  @override
+  State<SimpleTourCard> createState() => _SimpleTourCardState();
+}
+
+class _SimpleTourCardState extends State<SimpleTourCard> {
+  final FavoritesService _favoritesService = FavoritesService();
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFavoriteStatus();
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    final isFavorite = await _favoritesService.isTourFavorite(widget.tour.id);
+    if (mounted) {
+      setState(() {
+        _isFavorite = isFavorite;
+      });
+    }
+  }
+
+  Widget _buildFavoriteButton() {
+    return Container(
+      width: 32.w,
+      height: 32.h,
+      decoration: BoxDecoration(
+        color: _isFavorite ? Colors.red.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+      ),
+      child: IconButton(
+        onPressed: _toggleFavorite,
+        icon: Icon(
+          _isFavorite ? Icons.favorite : Icons.favorite_border,
+          color: _isFavorite ? Colors.red : Colors.grey[600],
+          size: ResponsiveConstants.smallIcon,
+        ),
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
+
+  Future<void> _toggleFavorite() async {
+    try {
+      final success = await _favoritesService.toggleTourFavorite(widget.tour.id);
+      if (success && mounted) {
+        setState(() {
+          _isFavorite = !_isFavorite;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              _isFavorite
+                  ? AppLocalizations.of(context)!.favoritesAddedToFavorites
+                  : AppLocalizations.of(context)!.favoritesRemovedFromFavorites,
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.commonError),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +112,24 @@ class SimpleTourCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  tour.title,
-                  style: TextStyle(
-                    fontSize: ResponsiveConstants.body1,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1D2233),
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.tour.title,
+                        style: TextStyle(
+                          fontSize: ResponsiveConstants.body1,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1D2233),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(width: ResponsiveConstants.smallSpace),
+                    _buildFavoriteButton(),
+                  ],
                 ),
                 SizedBox(height: ResponsiveConstants.smallSpace),
                 _buildTourInfo(),
@@ -69,9 +152,9 @@ class SimpleTourCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(ResponsiveConstants.mediumRadius)),
-            child: tour.hasImages
+            child: widget.tour.hasImages
                 ? Image.network(
-                    tour.firstImageUrl,
+                    widget.tour.firstImageUrl,
                     width: double.infinity,
                     height: ResponsiveConstants.cardImageHeight,
                     fit: BoxFit.cover,
@@ -89,7 +172,7 @@ class SimpleTourCard extends StatelessWidget {
               ),
             ),
           ),
-          if (tour.isFeatured)
+          if (widget.tour.isFeatured)
             Positioned(
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
@@ -128,7 +211,7 @@ class SimpleTourCard extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              tour.displayType,
+              widget.tour.displayType,
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[600],
@@ -145,14 +228,14 @@ class SimpleTourCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (tour.operatorName.isNotEmpty)
+        if (widget.tour.operatorName.isNotEmpty)
           Row(
             children: [
               Icon(Icons.business_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Expanded(
                 child: Text(
-                  tour.operatorName,
+                  widget.tour.operatorName,
                   style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -181,7 +264,7 @@ class SimpleTourCard extends StatelessWidget {
               Icon(Icons.calendar_today, size: ResponsiveConstants.smallIcon * 0.875, color: const Color(0xFF009639)),
               SizedBox(width: ResponsiveConstants.tinySpace),
               Text(
-                tour.displayDate,
+                widget.tour.displayDate,
                 style: TextStyle(
                   fontSize: ResponsiveConstants.caption,
                   fontWeight: FontWeight.w600,
@@ -198,7 +281,7 @@ class SimpleTourCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
-            tour.displayType,
+            widget.tour.displayType,
             style: TextStyle(
               color: const Color(0xFF3860F8),
               fontSize: ResponsiveConstants.caption,
@@ -211,7 +294,7 @@ class SimpleTourCard extends StatelessWidget {
   }
 
   void _navigateToTourDetail(BuildContext context) {
-    final tourDetail = Tour.fromSimpleTour(tour);
+    final tourDetail = Tour.fromSimpleTour(widget.tour);
     Navigator.push(
       context,
       MaterialPageRoute(

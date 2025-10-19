@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/poi.dart';
 import '../models/event.dart';
+import '../models/tour.dart';
 import '../api/api_client.dart';
 import 'poi_service.dart';
 import 'event_service.dart';
+import 'tour_service.dart';
 import 'anonymous_auth_service.dart';
 import 'connectivity_service.dart';
 import 'cache_service.dart';
@@ -25,9 +27,10 @@ class FavoritesService {
   static const String _favoriteEventsKey = 'favorite_event_ids';
   static const String _favoriteToursKey = 'favorite_tour_ids';
   static const String _lastSyncKey = 'favorites_last_sync';
-  
+
   final PoiService _poiService = PoiService();
   final EventService _eventService = EventService();
+  final TourService _tourService = TourService();
   final AnonymousAuthService _authService = AnonymousAuthService();
   final ApiClient _apiClient = ApiClient();
   final ConnectivityService _connectivityService = ConnectivityService();
@@ -176,7 +179,36 @@ class FavoritesService {
         final bDate = DateTime.tryParse(b.createdAt ?? '') ?? DateTime(1970);
         return bDate.compareTo(aDate);
       });
-      
+
+      return favorites;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Obtient la liste complète des Tours favoris avec leurs données
+  Future<List<Tour>> getFavoriteTours() async {
+    try {
+      final favoriteIds = await _getFavoriteIds(FavoriteType.tour);
+      final List<Tour> favorites = [];
+
+      // Récupérer les détails de chaque Tour favori
+      for (final id in favoriteIds) {
+        try {
+          final tour = await _tourService.getTourDetails(id);
+          favorites.add(tour);
+        } catch (e) {
+          print('Erreur lors du chargement du tour $id: $e');
+        }
+      }
+
+      // Trier par date d'ajout en favori (les plus récents en premier)
+      favorites.sort((a, b) {
+        final aDate = DateTime.tryParse(a.createdAt ?? '') ?? DateTime(1970);
+        final bDate = DateTime.tryParse(b.createdAt ?? '') ?? DateTime(1970);
+        return bDate.compareTo(aDate);
+      });
+
       return favorites;
     } catch (e) {
       return [];
@@ -458,12 +490,13 @@ class FavoritesService {
     }
   }
 
-  /// Obtient le nombre total de favoris (POIs + Events)
+  /// Obtient le nombre total de favoris (POIs + Events + Tours)
   Future<int> getFavoritesCount() async {
     try {
       final poiIds = await _getFavoriteIds(FavoriteType.poi);
       final eventIds = await _getFavoriteIds(FavoriteType.event);
-      return poiIds.length + eventIds.length;
+      final tourIds = await _getFavoriteIds(FavoriteType.tour);
+      return poiIds.length + eventIds.length + tourIds.length;
     } catch (e) {
       return 0;
     }
@@ -474,13 +507,15 @@ class FavoritesService {
     try {
       final poiIds = await _getFavoriteIds(FavoriteType.poi);
       final eventIds = await _getFavoriteIds(FavoriteType.event);
+      final tourIds = await _getFavoriteIds(FavoriteType.tour);
       final prefs = await SharedPreferences.getInstance();
       final lastSync = prefs.getString(_lastSyncKey);
-      
+
       return {
-        'total_favorites': poiIds.length + eventIds.length,
+        'total_favorites': poiIds.length + eventIds.length + tourIds.length,
         'poi_favorites': poiIds.length,
         'event_favorites': eventIds.length,
+        'tour_favorites': tourIds.length,
         'last_sync': lastSync,
         'cache_updated': _lastCacheUpdate?.toIso8601String(),
       };
@@ -489,6 +524,7 @@ class FavoritesService {
         'total_favorites': 0,
         'poi_favorites': 0,
         'event_favorites': 0,
+        'tour_favorites': 0,
         'error': e.toString(),
       };
     }
@@ -499,15 +535,18 @@ class FavoritesService {
     try {
       final poiIds = await _getFavoriteIds(FavoriteType.poi);
       final eventIds = await _getFavoriteIds(FavoriteType.event);
-      
+      final tourIds = await _getFavoriteIds(FavoriteType.tour);
+
       return {
         'pois': poiIds,
         'events': eventIds,
+        'tours': tourIds,
       };
     } catch (e) {
       return {
         'pois': [],
         'events': [],
+        'tours': [],
       };
     }
   }
@@ -517,13 +556,16 @@ class FavoritesService {
     try {
       final poiIds = favorites['pois'] ?? [];
       final eventIds = favorites['events'] ?? [];
-      
+      final tourIds = favorites['tours'] ?? [];
+
       final validPoiIds = poiIds.where((id) => id > 0).toList();
       final validEventIds = eventIds.where((id) => id > 0).toList();
-      
+      final validTourIds = tourIds.where((id) => id > 0).toList();
+
       await _saveFavoriteIds(FavoriteType.poi, validPoiIds);
       await _saveFavoriteIds(FavoriteType.event, validEventIds);
-      
+      await _saveFavoriteIds(FavoriteType.tour, validTourIds);
+
       // Notify listeners
       _favoritesController.add(null);
 
@@ -641,6 +683,7 @@ class FavoritesService {
   void clearCache() {
     _cachedPoiIds = null;
     _cachedEventIds = null;
+    _cachedTourIds = null;
     _lastCacheUpdate = null;
   }
 }
