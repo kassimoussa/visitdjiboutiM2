@@ -150,12 +150,12 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
               Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton.icon(
+                    child: OutlinedButton.icon(
                       onPressed: () => _launchPhone(_organization!.phone),
                       icon: const Icon(Icons.phone),
                       label: Text(AppLocalizations.of(context)!.embassiesCall),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF3860F8),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3860F8), 
                         foregroundColor: Colors.white,
                       ),
                     ),

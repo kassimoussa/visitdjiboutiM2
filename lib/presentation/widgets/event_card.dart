@@ -237,7 +237,7 @@ class _EventCardState extends State<EventCard> {
               ),
             ),
           ),
-        if (event.maxParticipants != null && event.maxParticipants! > 0)
+        /* if (event.maxParticipants != null && event.maxParticipants! > 0)
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
@@ -255,7 +255,7 @@ class _EventCardState extends State<EventCard> {
                 ),
               ],
             ),
-          ),
+          ), */
       ],
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/models/reservation.dart';
+import '../../core/models/tour_reservation.dart';
 import '../../core/models/api_response.dart';
 import '../../core/services/reservation_service.dart';
+import '../../core/services/tour_service.dart';
 import '../widgets/cached_image_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -14,13 +16,21 @@ class ReservationsPage extends StatefulWidget {
 
 class _ReservationsPageState extends State<ReservationsPage> with SingleTickerProviderStateMixin {
   final ReservationService _reservationService = ReservationService();
+  final TourService _tourService = TourService();
   late TabController _tabController;
-  
+
+  // Réservations POI/Event
   List<Reservation> _allReservations = [];
   List<Reservation> _confirmedReservations = [];
   List<Reservation> _pendingReservations = [];
   List<Reservation> _cancelledReservations = [];
-  
+
+  // Réservations Tours
+  List<TourReservation> _allTourReservations = [];
+  List<TourReservation> _confirmedTourReservations = [];
+  List<TourReservation> _pendingTourReservations = [];
+  List<TourReservation> _cancelledTourReservations = [];
+
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -44,15 +54,22 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     });
 
     try {
-      print('[RESERVATIONS] Loading reservations...');
-      
-      final ApiResponse<ReservationListResponse> response = 
-          await _reservationService.getReservations();
-      
+      print('[RESERVATIONS] Loading all reservations (POI/Event + Tours)...');
+
+      // Charger les réservations POI/Event et Tours en parallèle
+      final results = await Future.wait([
+        _reservationService.getReservations(),
+        _tourService.getMyReservations(),
+      ]);
+
+      final poiEventResponse = results[0] as ApiResponse<ReservationListResponse>;
+      final tourResponse = results[1] as TourReservationListResponse;
+
       if (mounted) {
-        if (response.isSuccess && response.data != null) {
-          setState(() {
-            _allReservations = response.data!.reservations;
+        setState(() {
+          // Réservations POI/Event
+          if (poiEventResponse.isSuccess && poiEventResponse.data != null) {
+            _allReservations = poiEventResponse.data!.reservations;
             _confirmedReservations = _allReservations
                 .where((r) => r.isConfirmed)
                 .toList();
@@ -62,16 +79,30 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             _cancelledReservations = _allReservations
                 .where((r) => r.isCancelled)
                 .toList();
-            _isLoading = false;
-          });
-        } else {
-          setState(() {
-            _isLoading = false;
-            _errorMessage = response.message ?? 'Error loading reservations'; // TODO: Add translation key
-          });
-        }
+          }
+
+          // Réservations Tours
+          if (tourResponse.success && tourResponse.data.data.isNotEmpty) {
+            _allTourReservations = tourResponse.data.data;
+            _confirmedTourReservations = _allTourReservations
+                .where((r) => r.status == ReservationStatus.confirmed)
+                .toList();
+            _pendingTourReservations = _allTourReservations
+                .where((r) => r.status == ReservationStatus.pending)
+                .toList();
+            _cancelledTourReservations = _allTourReservations
+                .where((r) => r.status == ReservationStatus.cancelledByUser)
+                .toList();
+          }
+
+          _isLoading = false;
+        });
+
+        print('[RESERVATIONS] Loaded ${_allReservations.length} POI/Event reservations');
+        print('[RESERVATIONS] Loaded ${_allTourReservations.length} tour reservations');
       }
     } catch (e) {
+      print('[RESERVATIONS] Error loading: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -96,19 +127,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           tabs: [
             Tab(
               icon: const Icon(Icons.list),
-              text: AppLocalizations.of(context)!.reservationsAll(_allReservations.length),
+              text: AppLocalizations.of(context)!.reservationsAll(_allReservations.length + _allTourReservations.length),
             ),
             Tab(
               icon: const Icon(Icons.check_circle),
-              text: AppLocalizations.of(context)!.reservationsConfirmed(_confirmedReservations.length),
+              text: AppLocalizations.of(context)!.reservationsConfirmed(_confirmedReservations.length + _confirmedTourReservations.length),
             ),
             Tab(
               icon: const Icon(Icons.pending),
-              text: AppLocalizations.of(context)!.reservationsPending(_pendingReservations.length),
+              text: AppLocalizations.of(context)!.reservationsPending(_pendingReservations.length + _pendingTourReservations.length),
             ),
             Tab(
               icon: const Icon(Icons.cancel),
-              text: AppLocalizations.of(context)!.reservationsCancelled(_cancelledReservations.length),
+              text: AppLocalizations.of(context)!.reservationsCancelled(_cancelledReservations.length + _cancelledTourReservations.length),
             ),
           ],
         ),
@@ -116,10 +147,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildReservationsList(_allReservations, AppLocalizations.of(context)!.reservationsNoneAll),
-          _buildReservationsList(_confirmedReservations, AppLocalizations.of(context)!.reservationsNoneConfirmed),
-          _buildReservationsList(_pendingReservations, AppLocalizations.of(context)!.reservationsNonePending),
-          _buildReservationsList(_cancelledReservations, AppLocalizations.of(context)!.reservationsNoneCancelled),
+          _buildCombinedReservationsList(_allReservations, _allTourReservations, AppLocalizations.of(context)!.reservationsNoneAll),
+          _buildCombinedReservationsList(_confirmedReservations, _confirmedTourReservations, AppLocalizations.of(context)!.reservationsNoneConfirmed),
+          _buildCombinedReservationsList(_pendingReservations, _pendingTourReservations, AppLocalizations.of(context)!.reservationsNonePending),
+          _buildCombinedReservationsList(_cancelledReservations, _cancelledTourReservations, AppLocalizations.of(context)!.reservationsNoneCancelled),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -127,6 +158,48 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         child: const Icon(Icons.refresh),
+      ),
+    );
+  }
+
+  Widget _buildCombinedReservationsList(
+    List<Reservation> poiEventReservations,
+    List<TourReservation> tourReservations,
+    String emptyMessage,
+  ) {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFF3860F8)),
+      );
+    }
+
+    if (_errorMessage != null) {
+      return _buildErrorState();
+    }
+
+    final totalCount = poiEventReservations.length + tourReservations.length;
+
+    if (totalCount == 0) {
+      return _buildEmptyState(emptyMessage);
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadReservations,
+      color: const Color(0xFF3860F8),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: totalCount,
+        itemBuilder: (context, index) {
+          // D'abord afficher les réservations POI/Event, puis les tours
+          if (index < poiEventReservations.length) {
+            final reservation = poiEventReservations[index];
+            return _buildReservationCard(reservation);
+          } else {
+            final tourIndex = index - poiEventReservations.length;
+            final tourReservation = tourReservations[tourIndex];
+            return _buildTourReservationCard(tourReservation);
+          }
+        },
       ),
     );
   }
@@ -321,6 +394,148 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.red,
                       ),
                       child: const Text('Supprimer'),
+                    ),
+                  ],
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTourReservationCard(TourReservation reservation) {
+    final tour = reservation.tour;
+    final statusColor = reservation.status == ReservationStatus.confirmed
+        ? Colors.green
+        : reservation.status == ReservationStatus.pending
+            ? Colors.orange
+            : Colors.red;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: () => _showTourReservationDetails(reservation),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header avec statut et type
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: statusColor),
+                    ),
+                    child: Text(
+                      reservation.displayStatus,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.tour,
+                          size: 14,
+                          color: Color(0xFF3860F8),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          'Tour',
+                          style: TextStyle(
+                            color: Color(0xFF3860F8),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Nom et numéro de réservation
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tour?.title ?? 'Tour non disponible',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Réservation #${reservation.id}',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (tour?.featuredImage?.url != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedImageWidget(
+                        imageUrl: tour!.featuredImage!.url,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                ],
+              ),
+
+              const SizedBox(height: 12),
+
+              // Informations de réservation
+              if (tour?.startDate != null && tour?.endDate != null)
+                _buildInfoRow(Icons.calendar_today, 'Dates', '${tour!.startDate} - ${tour.endDate}'),
+              _buildInfoRow(Icons.people, 'Participants', '${reservation.numberOfPeople}'),
+              if (reservation.notes != null && reservation.notes!.isNotEmpty)
+                _buildInfoRow(Icons.note, 'Notes', reservation.notes!),
+
+              // Actions (similaire aux réservations POI/Event)
+              if (reservation.canCancel) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => _cancelTourReservation(reservation),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Annuler'),
                     ),
                   ],
                 ),
@@ -669,6 +884,167 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(response.message ?? 'Erreur lors de la suppression'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  // Méthodes pour les réservations de tours
+  void _showTourReservationDetails(TourReservation reservation) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Détails de la réservation',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Statut
+                _buildDetailRow('Statut', reservation.displayStatus),
+                const Divider(),
+
+                // Informations du tour
+                if (reservation.tour != null) ...[
+                  _buildDetailRow('Tour', reservation.tour!.title),
+                  if (reservation.tour!.startDate != null && reservation.tour!.endDate != null)
+                    _buildDetailRow('Dates', '${reservation.tour!.startDate} - ${reservation.tour!.endDate}'),
+                  const Divider(),
+                ],
+
+                // Informations de réservation
+                _buildDetailRow('Réservation #', '${reservation.id}'),
+                _buildDetailRow('Participants', '${reservation.numberOfPeople}'),
+                if (reservation.notes != null && reservation.notes!.isNotEmpty)
+                  _buildDetailRow('Notes', reservation.notes!),
+                const Divider(),
+
+                // Informations utilisateur
+                if (reservation.isGuest) ...[
+                  _buildDetailRow('Nom', reservation.guestName ?? 'Non spécifié'),
+                  if (reservation.guestEmail != null)
+                    _buildDetailRow('Email', reservation.guestEmail!),
+                  if (reservation.guestPhone != null)
+                    _buildDetailRow('Téléphone', reservation.guestPhone!),
+                  const Divider(),
+                ],
+
+                // Dates système
+                if (reservation.createdAt != null)
+                  _buildDetailRow('Créée le', reservation.createdAt!),
+                if (reservation.updatedAt != null)
+                  _buildDetailRow('Mise à jour', reservation.updatedAt!),
+
+                // Actions
+                if (reservation.canCancel) ...[
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _cancelTourReservation(reservation);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Annuler la réservation'),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _cancelTourReservation(TourReservation reservation) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Annuler la réservation'),
+        content: Text(
+          'Êtes-vous sûr de vouloir annuler la réservation #${reservation.id}?'
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Non'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Oui, annuler'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        final response = await _tourService.cancelReservation(reservation.id);
+
+        if (mounted) {
+          if (response.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(response.message ?? 'Réservation annulée'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            _loadReservations(); // Recharger la liste
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(response.message ?? 'Erreur lors de l\'annulation'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur: $e'),
               backgroundColor: Colors.red,
             ),
           );

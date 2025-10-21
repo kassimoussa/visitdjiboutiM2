@@ -230,7 +230,7 @@ class ReservationService {
   /// Helper pour créer une réservation POI avec validation
   Future<ApiResponse<Reservation>> reservePoi(
     Poi poi, {
-    required String date,
+    String? date,
     String? time,
     required int people,
     String? notes,
@@ -246,9 +246,12 @@ class ReservationService {
       );
     }
 
+    // Use provided date or default to today
+    final reservationDate = date ?? DateTime.now().toIso8601String().split('T')[0];
+
     return createPoiReservation(
       poiId: poi.id,
-      reservationDate: date,
+      reservationDate: reservationDate,
       reservationTime: time,
       numberOfPeople: people,
       notes: notes,
@@ -261,7 +264,7 @@ class ReservationService {
   /// Helper pour créer une réservation événement avec validation
   Future<ApiResponse<Reservation>> reserveEvent(
     Event event, {
-    required String date,
+    String? date,
     String? time,
     required int people,
     String? notes,
@@ -277,7 +280,7 @@ class ReservationService {
       );
     }
 
-    if (event.maxParticipants != null && 
+    if (event.maxParticipants != null &&
         (event.currentParticipants + people) > event.maxParticipants!) {
       return ApiResponse<Reservation>(
         success: false,
@@ -285,9 +288,12 @@ class ReservationService {
       );
     }
 
+    // Use provided date or default to event start date
+    final reservationDate = date ?? event.startDate;
+
     return createEventReservation(
       eventId: event.id,
-      reservationDate: date,
+      reservationDate: reservationDate,
       reservationTime: time,
       numberOfPeople: people,
       notes: notes,

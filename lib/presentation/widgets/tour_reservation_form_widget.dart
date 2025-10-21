@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
-import '../../core/models/poi.dart';
-import '../../core/models/event.dart';
-import '../../core/models/reservation.dart';
-import '../../core/models/api_response.dart';
-import '../../core/services/reservation_service.dart';
+import '../../core/models/tour.dart';
+import '../../core/models/tour_reservation.dart';
+import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 
-class ReservationFormWidget extends StatefulWidget {
-  final Poi? poi;
-  final Event? event;
+class TourReservationFormWidget extends StatefulWidget {
+  final Tour tour;
   final VoidCallback? onSuccess;
   final VoidCallback? onCancel;
 
-  const ReservationFormWidget({
+  const TourReservationFormWidget({
     super.key,
-    this.poi,
-    this.event,
+    required this.tour,
     this.onSuccess,
     this.onCancel,
-  }) : assert(poi != null || event != null, 'Either poi or event must be provided');
+  });
 
   @override
-  State<ReservationFormWidget> createState() => _ReservationFormWidgetState();
+  State<TourReservationFormWidget> createState() => _TourReservationFormWidgetState();
 }
 
-class _ReservationFormWidgetState extends State<ReservationFormWidget> {
+class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _reservationService = ReservationService();
+  final _tourService = TourService();
   final _authService = AnonymousAuthService();
 
   final _peopleController = TextEditingController(text: '1');
@@ -36,6 +32,13 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
   final _phoneController = TextEditingController();
 
   bool _isLoading = false;
+  bool _isAuthenticated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthStatus();
+  }
 
   @override
   void dispose() {
@@ -47,12 +50,13 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
     super.dispose();
   }
 
-  bool get _isPoi => widget.poi != null;
-  bool get _isEvent => widget.event != null;
+  void _checkAuthStatus() {
+    _isAuthenticated = _authService.isLoggedIn;
+  }
 
-  String get _title => _isPoi ? widget.poi!.name : widget.event!.title;
-  String get _location => _isPoi ? widget.poi!.displayAddress : widget.event!.displayLocation;
-  String? get _imageUrl => _isPoi ? widget.poi!.imageUrl : widget.event!.imageUrl;
+  int get _numberOfPeople => int.tryParse(_peopleController.text) ?? 1;
+  int get _maxParticipants => widget.tour.availableSpots;
+  int get _totalAmount => widget.tour.price * _numberOfPeople;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +73,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           // Header
           _buildHeader(),
           const SizedBox(height: 20),
-          
+
           // Form
           Flexible(
             child: SingleChildScrollView(
@@ -77,13 +81,17 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    _buildItemPreview(),
+                    _buildTourPreview(),
                     const SizedBox(height: 24),
                     _buildPeopleField(),
                     const SizedBox(height: 16),
-                    _buildContactFields(),
-                    const SizedBox(height: 16),
+                    if (!_isAuthenticated) ...[
+                      _buildContactFields(),
+                      const SizedBox(height: 16),
+                    ],
                     _buildNotesField(),
+                    const SizedBox(height: 16),
+                    _buildTotalSection(),
                     const SizedBox(height: 24),
                     _buildActionButtons(),
                   ],
@@ -100,9 +108,9 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          'Réserver ${_isPoi ? 'ce lieu' : 'cet événement'}',
-          style: const TextStyle(
+        const Text(
+          'Inscription au tour',
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -116,7 +124,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
     );
   }
 
-  Widget _buildItemPreview() {
+  Widget _buildTourPreview() {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -129,9 +137,9 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           // Image
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: _imageUrl?.isNotEmpty == true
+            child: widget.tour.hasImages
                 ? Image.network(
-                    _imageUrl!,
+                    widget.tour.firstImageUrl,
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
@@ -140,14 +148,14 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                 : _buildPlaceholderImage(),
           ),
           const SizedBox(width: 12),
-          
+
           // Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _title,
+                  widget.tour.title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -156,37 +164,47 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
+                if (widget.tour.displayDateRange != null) ...[
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today,
+                        size: 16,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          widget.tour.displayDateRange!,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                ],
                 Row(
                   children: [
                     Icon(
-                      Icons.location_on,
+                      Icons.people,
                       size: 16,
                       color: Colors.grey[600],
                     ),
                     const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        _location,
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 14,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    Text(
+                      '${widget.tour.availableSpots} places disponibles',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
                       ),
                     ),
                   ],
                 ),
-                if (_isEvent && widget.event!.price > 0) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    widget.event!.priceText,
-                    style: const TextStyle(
-                      color: Color(0xFF3860F8),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -203,42 +221,115 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         color: const Color(0xFF3860F8).withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Icon(
-        _isPoi ? Icons.place : Icons.event,
-        color: const Color(0xFF3860F8),
+      child: const Icon(
+        Icons.tour,
+        color: Color(0xFF3860F8),
         size: 30,
       ),
     );
   }
 
   Widget _buildPeopleField() {
-    return TextFormField(
-      controller: _peopleController,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        labelText: 'Nombre de personnes *',
-        hintText: '1',
-        prefixIcon: const Icon(Icons.people),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Nombre de participants *',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-      ),
-      validator: (value) {
-        if (value?.isEmpty == true) {
-          return 'Nombre de personnes requis';
-        }
-        final number = int.tryParse(value!);
-        if (number == null || number < 1) {
-          return 'Minimum 1 personne';
-        }
-        if (_isEvent && widget.event!.maxParticipants != null) {
-          final available = widget.event!.availableSpots ?? 0;
-          if (number > available) {
-            return 'Maximum $available places disponibles';
-          }
-        }
-        return null;
-      },
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            // Bouton moins
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                onPressed: _numberOfPeople > 1
+                    ? () {
+                        setState(() {
+                          _peopleController.text = (_numberOfPeople - 1).toString();
+                        });
+                      }
+                    : null,
+                icon: const Icon(Icons.remove),
+                color: _numberOfPeople > 1 ? const Color(0xFF3860F8) : Colors.grey,
+              ),
+            ),
+
+            // Champ de texte
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextFormField(
+                  controller: _peopleController,
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    suffix: Text(
+                      '(max: $_maxParticipants)',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value?.isEmpty == true) {
+                      return 'Nombre de personnes requis';
+                    }
+                    final number = int.tryParse(value!);
+                    if (number == null || number < 1) {
+                      return 'Minimum 1 personne';
+                    }
+                    if (number > _maxParticipants) {
+                      return 'Maximum $_maxParticipants places';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {}); // Refresh pour recalculer le total
+                  },
+                ),
+              ),
+            ),
+
+            // Bouton plus
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300]!),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                onPressed: _numberOfPeople < _maxParticipants
+                    ? () {
+                        setState(() {
+                          _peopleController.text = (_numberOfPeople + 1).toString();
+                        });
+                      }
+                    : null,
+                icon: const Icon(Icons.add),
+                color: _numberOfPeople < _maxParticipants
+                    ? const Color(0xFF3860F8)
+                    : Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -247,10 +338,10 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Informations de contact (optionnel)',
+          'Informations de contact *',
           style: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 12),
@@ -263,6 +354,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
+          validator: (value) => value?.isEmpty ?? true ? 'Nom requis' : null,
         ),
         const SizedBox(height: 12),
         TextFormField(
@@ -276,8 +368,8 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             ),
           ),
           validator: (value) {
-            if (value?.isNotEmpty == true && 
-                !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+            if (value?.isEmpty ?? true) return 'Email requis';
+            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
               return 'Email invalide';
             }
             return null;
@@ -294,6 +386,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
+          validator: (value) => value?.isEmpty ?? true ? 'Téléphone requis' : null,
         ),
       ],
     );
@@ -309,6 +402,51 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTotalSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF3860F8).withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: const Color(0xFF3860F8).withOpacity(0.3),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Total à payer',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                '$_numberOfPeople × ${widget.tour.displayPrice}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+          Text(
+            '$_totalAmount ${widget.tour.currency}',
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF3860F8),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -351,7 +489,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                     ),
                   )
                 : const Text(
-                    'Confirmer la réservation',
+                    'Confirmer l\'inscription',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
           ),
@@ -370,41 +508,24 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
     });
 
     try {
-      final numberOfPeople = int.parse(_peopleController.text);
+      print('[TOUR FORM] Submitting reservation...');
+      final response = await _tourService.createReservation(
+        tourId: widget.tour.id,
+        numberOfPeople: _numberOfPeople,
+        guestName: !_isAuthenticated ? _nameController.text : null,
+        guestEmail: !_isAuthenticated ? _emailController.text : null,
+        guestPhone: !_isAuthenticated ? _phoneController.text : null,
+        notes: _notesController.text.isNotEmpty ? _notesController.text : null,
+      );
 
-      print('[FORM] Calling reservation service...');
-      ApiResponse<Reservation> response;
-
-      if (_isPoi) {
-        print('[FORM] Making POI reservation for ${widget.poi!.name}');
-        response = await _reservationService.reservePoi(
-          widget.poi!,
-          people: numberOfPeople,
-          notes: _notesController.text.isNotEmpty ? _notesController.text : null,
-          userName: _nameController.text.isNotEmpty ? _nameController.text : null,
-          userEmail: _emailController.text.isNotEmpty ? _emailController.text : null,
-          userPhone: _phoneController.text.isNotEmpty ? _phoneController.text : null,
-        );
-      } else {
-        print('[FORM] Making Event reservation for ${widget.event!.title}');
-        response = await _reservationService.reserveEvent(
-          widget.event!,
-          people: numberOfPeople,
-          notes: _notesController.text.isNotEmpty ? _notesController.text : null,
-          userName: _nameController.text.isNotEmpty ? _nameController.text : null,
-          userEmail: _emailController.text.isNotEmpty ? _emailController.text : null,
-          userPhone: _phoneController.text.isNotEmpty ? _phoneController.text : null,
-        );
-      }
-
-      print('[FORM] Response received: success=${response.isSuccess}, message=${response.message}');
+      print('[TOUR FORM] Response received: ${response.success}');
 
       if (mounted) {
-        if (response.isSuccess) {
-          print('[FORM] Success! Showing snackbar and navigating to home');
+        if (response.success) {
+          print('[TOUR FORM] Success! Showing snackbar and navigating to home');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Réservation créée avec succès!'),
+              content: Text(response.message ?? 'Inscription confirmée avec succès!'),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
@@ -415,30 +536,29 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
 
           // Appeler le callback onSuccess si fourni
           if (widget.onSuccess != null) {
-            print('[FORM] Calling onSuccess callback');
+            print('[TOUR FORM] Calling onSuccess callback');
             widget.onSuccess!();
           }
 
           // Naviguer vers l'écran d'accueil après un court délai
           Future.delayed(const Duration(milliseconds: 300), () {
             if (mounted) {
-              print('[FORM] Navigating to home screen');
+              print('[TOUR FORM] Navigating to home screen');
               Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
             }
           });
         } else {
-          print('[FORM] Error: ${response.message}');
+          print('[TOUR FORM] Error: ${response.message}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de la réservation'),
+              content: Text(response.message ?? 'Erreur lors de l\'inscription'),
               backgroundColor: Colors.red,
             ),
           );
         }
-      } else {
-        print('[FORM] Widget not mounted, skipping UI updates');
       }
     } catch (e) {
+      print('[TOUR FORM] Exception: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

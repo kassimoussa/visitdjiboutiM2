@@ -7,6 +7,8 @@ import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../widgets/shimmer_loading.dart';
+import '../widgets/tour_reservation_form_widget.dart';
+import 'tour_operator_detail_page.dart';
 
 class TourDetailPage extends StatefulWidget {
   final Tour tour;
@@ -21,6 +23,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
   final TourService _tourService = TourService();
   final AnonymousAuthService _authService = AnonymousAuthService();
   final FavoritesService _favoritesService = FavoritesService();
+  final ScrollController _scrollController = ScrollController();
 
   Tour? _detailedTour;
   bool _isLoading = true;
@@ -28,6 +31,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
   bool _isFavorite = false;
   bool _hasActiveReservation = false;
   TourReservation? _userReservation;
+  bool _showTitle = false;
 
   @override
   void initState() {
@@ -35,6 +39,24 @@ class _TourDetailPageState extends State<TourDetailPage> {
     _loadTourDetails();
     _checkFavoriteStatus();
     _checkUserReservation();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    const imageGalleryHeight = 300.0;
+    final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
+
+    if (shouldShowTitle != _showTitle) {
+      setState(() {
+        _showTitle = shouldShowTitle;
+      });
+    }
   }
 
   Future<void> _loadTourDetails() async {
@@ -196,11 +218,14 @@ class _TourDetailPageState extends State<TourDetailPage> {
   }
 
   Widget _buildTourDetail(Tour tour) {
-    return CustomScrollView(
-      slivers: [
-        _buildSliverAppBar(tour),
-        SliverToBoxAdapter(
-          child: Padding(
+    return Stack(
+      children: [
+        CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            _buildSliverAppBar(tour),
+            SliverToBoxAdapter(
+              child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,15 +275,132 @@ class _TourDetailPageState extends State<TourDetailPage> {
           ),
         ),
       ],
+    ),
+
+        // AnimatedAppBar qui apparaît au scroll
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 200),
+          top: 0,
+          left: 0,
+          right: 0,
+          child: AnimatedOpacity(
+            opacity: _showTitle ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 200),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            tour.title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: _toggleFavorite,
+                          icon: Icon(
+                            _isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: _isFavorite ? Colors.red : Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        // Boutons flottants quand l'AppBar n'est pas visible
+        if (!_showTitle) ...[
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            left: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.4),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.4),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: _toggleFavorite,
+                icon: Icon(
+                  _isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: _isFavorite ? Colors.red : Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 
   Widget _buildSliverAppBar(Tour tour) {
     return SliverAppBar(
       expandedHeight: 300,
-      pinned: true,
-      backgroundColor: const Color(0xFF3860F8),
-      foregroundColor: Colors.white,
+      pinned: false,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      automaticallyImplyLeading: false,
       flexibleSpace: FlexibleSpaceBar(
         background: tour.featuredImage?.url != null
             ? Image.network(
@@ -274,19 +416,6 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 child: const Icon(Icons.tour, size: 64, color: Colors.grey),
               ),
       ),
-      actions: [
-        IconButton(
-          icon: Icon(
-            _isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: _isFavorite ? Colors.red : Colors.white,
-          ),
-          onPressed: _toggleFavorite,
-        ),
-        IconButton(
-          icon: const Icon(Icons.share),
-          onPressed: () => _shareTour(tour),
-        ),
-      ],
     );
   }
 
@@ -500,7 +629,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Restrictions d\'âge',
+                    'Restrictions d\'age',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const SizedBox(height: 4),
@@ -600,108 +729,119 @@ class _TourDetailPageState extends State<TourDetailPage> {
   }
 
   Widget _buildOperatorInfo(TourOperator operator) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Opérateur de tour',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                if (operator.logo?.url.isNotEmpty ?? false)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      operator.logo!.url,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.business, color: Colors.grey),
-                      ),
-                    ),
-                  )
-                else
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.business, color: Colors.grey),
-                  ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        operator.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Opérateur touristique agréé',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
+    return InkWell(
+      onTap: () {
+        print('Tapped on operator card');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TourOperatorDetailPage(operator: operator),
+          ),
+        );
+      },
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Opérateur de tour',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            if (operator.hasPhone || operator.hasEmail) ...[
+              ),
               const SizedBox(height: 12),
               Row(
                 children: [
-                  if (operator.hasPhone)
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _launchPhone(operator.displayPhone),
-                        icon: const Icon(Icons.phone),
-                        label: const Text('Appeler'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
+                  if (operator.logoUrl.isNotEmpty)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        operator.logoUrl,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.business, color: Colors.grey),
                         ),
                       ),
-                    ),
-                  if (operator.hasPhone && operator.hasEmail)
-                    const SizedBox(width: 8),
-                  if (operator.hasEmail)
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _launchEmail(operator.displayEmail),
-                        icon: const Icon(Icons.email),
-                        label: const Text('Email'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3860F8),
-                          foregroundColor: Colors.white,
-                        ),
+                    )
+                  else
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      child: const Icon(Icons.business, color: Colors.grey),
                     ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          operator.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Opérateur touristique agréé',
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
+              if (operator.hasPhone || operator.hasEmail) ...[
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    if (operator.hasPhone)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => _launchPhone(operator.displayPhone),
+                          icon: const Icon(Icons.phone),
+                          label: const Text('Appeler'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    if (operator.hasPhone && operator.hasEmail)
+                      const SizedBox(width: 8),
+                    if (operator.hasEmail)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => _launchEmail(operator.displayEmail),
+                          icon: const Icon(Icons.email),
+                          label: const Text('Email'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3860F8),
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -795,15 +935,19 @@ class _TourDetailPageState extends State<TourDetailPage> {
                     : (tour.isBookable ? () => _showDirectBookingDialog(tour) : null),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _hasActiveReservation
-                      ? const Color(0xFF009639)
-                      : const Color(0xFF3860F8),
+                      ? (_userReservation?.status == ReservationStatus.confirmed
+                          ? const Color(0xFF009639)  // Vert pour confirmé
+                          : Colors.orange)            // Orange pour en attente
+                      : const Color(0xFF3860F8),      // Bleu pour s'inscrire
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   disabledBackgroundColor: _hasActiveReservation
-                      ? const Color(0xFF009639)
+                      ? (_userReservation?.status == ReservationStatus.confirmed
+                          ? const Color(0xFF009639)
+                          : Colors.orange)
                       : Colors.grey,
                   disabledForegroundColor: Colors.white,
                 ),
@@ -811,12 +955,19 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (_hasActiveReservation) ...[
-                      const Icon(Icons.check_circle, size: 20),
+                      Icon(
+                        _userReservation?.status == ReservationStatus.confirmed
+                            ? Icons.check_circle
+                            : Icons.schedule,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                     ],
                     Text(
                       _hasActiveReservation
-                          ? 'Déjà inscrit'
+                          ? (_userReservation?.status == ReservationStatus.confirmed
+                              ? 'Inscription confirmée'
+                              : 'En attente de confirmation')
                           : (tour.isBookable ? 'S\'inscrire maintenant' : 'Places épuisées'),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -831,54 +982,23 @@ class _TourDetailPageState extends State<TourDetailPage> {
   }
 
   void _showDirectBookingDialog(Tour tour) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (context) => DirectTourBookingDialog(
-        tour: tour,
-        onBookingSuccess: (booking) {
-          _showBookingConfirmation(booking);
-          // Recharger les détails du tour pour mettre à jour les places disponibles
-          _loadTourDetails();
-          // Vérifier à nouveau l'état de réservation de l'utilisateur
-          _checkUserReservation();
-        },
-      ),
-    );
-  }
-
-  void _showBookingConfirmation(TourReservation reservation) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.green),
-            SizedBox(width: 8),
-            Text('Réservation créée'),
-          ],
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Réservation #${reservation.id}'),
-            const SizedBox(height: 8),
-            Text('Participants: ${reservation.numberOfPeople}'),
-            Text('Statut: ${reservation.displayStatus}'),
-            const SizedBox(height: 12),
-            Text(
-              'Votre réservation est en attente de confirmation par l\'opérateur.',
-              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-            ),
-          ],
+        child: TourReservationFormWidget(
+          tour: tour,
+          onSuccess: () {
+            // Recharger les détails du tour pour mettre à jour les places disponibles
+            _loadTourDetails();
+            // Vérifier à nouveau l'état de réservation de l'utilisateur
+            _checkUserReservation();
+          },
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
       ),
     );
   }
@@ -906,272 +1026,5 @@ class _TourDetailPageState extends State<TourDetailPage> {
 
   void _shareTour(Tour tour) {
     // TODO: Implémenter le partage
-  }
-}
-
-class DirectTourBookingDialog extends StatefulWidget {
-  final Tour tour;
-  final Function(TourReservation) onBookingSuccess;
-
-  const DirectTourBookingDialog({
-    super.key,
-    required this.tour,
-    required this.onBookingSuccess,
-  });
-
-  @override
-  State<DirectTourBookingDialog> createState() => _DirectTourBookingDialogState();
-}
-
-class _DirectTourBookingDialogState extends State<DirectTourBookingDialog> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _notesController = TextEditingController();
-
-  int _numberOfPeople = 1;
-  bool _isLoading = false;
-  bool _isAuthenticated = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkAuthStatus();
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _notesController.dispose();
-    super.dispose();
-  }
-
-  void _checkAuthStatus() {
-    _isAuthenticated = AnonymousAuthService().isLoggedIn;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final totalAmount = widget.tour.price * _numberOfPeople;
-    final maxParticipants = widget.tour.availableSpots;
-
-    return AlertDialog(
-      title: const Text('Inscription au tour'),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Résumé du tour
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.tour.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        if (widget.tour.displayDateRange != null)
-                          Text('Dates: ${widget.tour.displayDateRange}'),
-                        Text('${widget.tour.availableSpots} places disponibles'),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Nombre de participants
-                Text(
-                  'Nombre de participants',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: _numberOfPeople > 1
-                          ? () => setState(() => _numberOfPeople--)
-                          : null,
-                      icon: const Icon(Icons.remove),
-                    ),
-                    Text(
-                      '$_numberOfPeople',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      onPressed: _numberOfPeople < maxParticipants
-                          ? () => setState(() => _numberOfPeople++)
-                          : null,
-                      icon: const Icon(Icons.add),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '(max: $maxParticipants)',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 16),
-
-                // Informations personnelles (si non authentifié)
-                if (!_isAuthenticated) ...[
-                  Text(
-                    'Informations personnelles',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Nom complet *',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) => value?.isEmpty ?? true ? 'Nom requis' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email *',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) return 'Email requis';
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-                        return 'Email invalide';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: const InputDecoration(
-                      labelText: 'Téléphone *',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.phone,
-                    validator: (value) => value?.isEmpty ?? true ? 'Téléphone requis' : null,
-                  ),
-                  const SizedBox(height: 16),
-                ],
-
-                // Notes
-                Text(
-                  'Notes ou demandes spéciales',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _notesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Notes (optionnel)',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: 3,
-                ),
-
-                const SizedBox(height: 16),
-
-                // Total
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Total',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '$totalAmount ${widget.tour.currency}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF3860F8),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Annuler'),
-        ),
-        ElevatedButton(
-          onPressed: _isLoading ? null : _submitBooking,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF3860F8),
-            foregroundColor: Colors.white,
-          ),
-          child: _isLoading
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Text('Confirmer'),
-        ),
-      ],
-    );
-  }
-
-  Future<void> _submitBooking() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-
-    try {
-      final response = await TourService().createReservation(
-        tourId: widget.tour.id,
-        numberOfPeople: _numberOfPeople,
-        guestName: !_isAuthenticated ? _nameController.text : null,
-        guestEmail: !_isAuthenticated ? _emailController.text : null,
-        guestPhone: !_isAuthenticated ? _phoneController.text : null,
-        notes: _notesController.text.isNotEmpty
-            ? _notesController.text
-            : null,
-      );
-
-      if (mounted) {
-        Navigator.of(context).pop();
-        widget.onBookingSuccess(response.reservation);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erreur lors de la réservation: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
   }
 }

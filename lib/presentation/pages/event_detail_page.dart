@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/event.dart';
 import '../../core/models/event_registration.dart';
+import '../../core/models/reservation.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
+import '../../core/services/reservation_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
@@ -23,22 +25,26 @@ class EventDetailPage extends StatefulWidget {
 class _EventDetailPageState extends State<EventDetailPage> {
   final EventService _eventService = EventService();
   final FavoritesService _favoritesService = FavoritesService();
+  final ReservationService _reservationService = ReservationService();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _imagePageController = PageController();
   final ScrollController _scrollController = ScrollController();
-  
+
   Event? _eventDetails;
   bool _isLoading = true;
   bool _isFavorite = false;
   bool _showTitle = false;
   String? _errorMessage;
   int _currentImageIndex = 0;
+  bool _hasActiveReservation = false;
+  Reservation? _userReservation;
   
   @override
   void initState() {
     super.initState();
     _loadEventDetails();
     _checkIfFavorite();
+    _checkUserReservation();
     _scrollController.addListener(_onScroll);
   }
   
@@ -95,6 +101,59 @@ class _EventDetailPageState extends State<EventDetailPage> {
     setState(() {
       _isFavorite = isFav;
     });
+  }
+
+  Future<void> _checkUserReservation() async {
+    try {
+      // Récupérer toutes les réservations actives de l'utilisateur pour les événements
+      final response = await _reservationService.getReservations(
+        type: 'event',
+      );
+
+      if (response.success && response.data != null) {
+        // Vérifier si une réservation existe pour cet événement spécifique
+        final reservations = response.data!.reservations;
+
+        // Chercher une réservation pour cet événement avec un statut actif
+        for (var reservation in reservations) {
+          if (reservation.reservableId == widget.event.id &&
+              (reservation.status == 'confirmed' || reservation.status == 'pending')) {
+            if (mounted) {
+              setState(() {
+                _hasActiveReservation = true;
+                _userReservation = reservation;
+              });
+            }
+            return;
+          }
+        }
+
+        // Aucune réservation trouvée
+        if (mounted) {
+          setState(() {
+            _hasActiveReservation = false;
+            _userReservation = null;
+          });
+        }
+      } else {
+        // Aucune réservation
+        if (mounted) {
+          setState(() {
+            _hasActiveReservation = false;
+            _userReservation = null;
+          });
+        }
+      }
+    } catch (e) {
+      print('Erreur lors de la vérification de la réservation: $e');
+      // En cas d'erreur, on considère qu'il n'y a pas de réservation
+      if (mounted) {
+        setState(() {
+          _hasActiveReservation = false;
+          _userReservation = null;
+        });
+      }
+    }
   }
 
   Future<void> _toggleFavorite() async {
@@ -165,6 +224,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
 
   void _showRegistrationSuccess(EventRegistrationResponse registration) {
+    // Recharger les informations de réservation pour mettre à jour le bouton
+    _checkUserReservation();
+    _loadEventDetails();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -712,22 +775,54 @@ class _EventDetailPageState extends State<EventDetailPage> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: event.canRegister ? () => _showReservationForm(event) : null,
+            onPressed: _hasActiveReservation
+                ? null
+                : (event.canRegister ? () => _showReservationForm(event) : null),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF3860F8),
+              backgroundColor: _hasActiveReservation
+                  ? (_userReservation?.status == 'confirmed'
+                      ? const Color(0xFF009639)  // Vert pour confirmé
+                      : Colors.orange)            // Orange pour en attente
+                  : const Color(0xFF3860F8),      // Bleu pour s'inscrire
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               elevation: 0,
+              disabledBackgroundColor: _hasActiveReservation
+                  ? (_userReservation?.status == 'confirmed'
+                      ? const Color(0xFF009639)
+                      : Colors.orange)
+                  : Colors.grey,
+              disabledForegroundColor: Colors.white,
             ),
-            child: Text(
-              event.canRegister ? AppLocalizations.of(context)!.eventDetailReserveEvent : AppLocalizations.of(context)!.eventDetailReservationsClosed,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (_hasActiveReservation) ...[
+                  Icon(
+                    _userReservation?.status == 'confirmed'
+                        ? Icons.check_circle
+                        : Icons.schedule,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  _hasActiveReservation
+                      ? (_userReservation?.status == 'confirmed'
+                          ? 'Inscription confirmée'
+                          : 'En attente de confirmation')
+                      : (event.canRegister
+                          ? AppLocalizations.of(context)!.eventDetailReserveEvent
+                          : AppLocalizations.of(context)!.eventDetailReservationsClosed),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -893,16 +988,16 @@ class _EventDetailPageState extends State<EventDetailPage> {
           
           _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, event.formattedDateRange ?? event.startDate),
           
-          if (event.endDate?.isNotEmpty == true && event.endDate != event.startDate)
-            _buildInfoRow(Icons.schedule, AppLocalizations.of(context)!.eventDetailEndDate, event.endDate!),
+          /* if (event.endDate?.isNotEmpty == true && event.endDate != event.startDate)
+            _buildInfoRow(Icons.schedule, AppLocalizations.of(context)!.eventDetailEndDate, event.endDate!), */
           
           _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.eventDetailVenue, event.displayLocation),
           
           if (!event.isFree)
             _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.priceText),
           
-          if ((event.maxParticipants ?? 0) > 0)
-            _buildInfoRow(Icons.people, AppLocalizations.of(context)!.eventDetailParticipantsLabel, event.participantsText),
+          /* if ((event.maxParticipants ?? 0) > 0)
+            _buildInfoRow(Icons.people, AppLocalizations.of(context)!.eventDetailParticipantsLabel, event.participantsText), */
           
           if (event.categories.isNotEmpty)
             _buildInfoRow(Icons.category, AppLocalizations.of(context)!.commonCategory, event.primaryCategory),

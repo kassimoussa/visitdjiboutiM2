@@ -1,5 +1,6 @@
 import 'tour.dart';
 import 'media.dart';
+import 'poi.dart';
 
 // Parse logo media from API - adds missing id field
 Media _parseLogoMedia(Map<String, dynamic> json) {
@@ -28,6 +29,7 @@ class TourOperator {
   final Media? logo;
   final List<String>? galleryPreview;
   final List<Tour>? tours;
+  final List<Poi>? pois;
 
   const TourOperator({
     required this.id,
@@ -46,9 +48,27 @@ class TourOperator {
     this.logo,
     this.galleryPreview,
     this.tours,
+    this.pois,
   });
 
   factory TourOperator.fromJson(Map<String, dynamic> json) {
+    // Parse logo - peut être soit un objet Media, soit une simple URL string
+    Media? parsedLogo;
+    if (json['logo'] != null) {
+      if (json['logo'] is Map<String, dynamic>) {
+        // Format complet avec objet Media
+        parsedLogo = _parseLogoMedia(json['logo'] as Map<String, dynamic>);
+      } else if (json['logo'] is String) {
+        // Format simplifié avec juste l'URL (depuis /api/tours/{id})
+        final logoUrl = json['logo'] as String;
+        // Construire l'URL complète si nécessaire
+        final fullUrl = logoUrl.startsWith('http')
+            ? logoUrl
+            : 'http://91.134.241.240/$logoUrl';
+        parsedLogo = Media(id: 0, url: fullUrl, alt: '');
+      }
+    }
+
     return TourOperator(
       id: json['id'] is int ? json['id'] : int.parse(json['id'].toString()),
       name: json['name'] as String,
@@ -63,11 +83,11 @@ class TourOperator {
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
       featured: json['featured'] as bool?,
-      logo: json['logo'] != null && json['logo'] is Map<String, dynamic>
-          ? _parseLogoMedia(json['logo'] as Map<String, dynamic>)
-          : null,
+      logo: parsedLogo,
       galleryPreview: (json['gallery_preview'] as List<dynamic>?)?.map((e) => e as String).toList(),
       tours: (json['tours'] as List<dynamic>?)?.map((e) => Tour.fromJson(e as Map<String, dynamic>)).toList(),
+      pois: (json['served_pois'] as List<dynamic>?)?.map((e) => Poi.fromJson(e as Map<String, dynamic>)).toList() ??
+            (json['pois'] as List<dynamic>?)?.map((e) => Poi.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 
@@ -89,6 +109,7 @@ class TourOperator {
       'logo': logo?.toJson(),
       'gallery_preview': galleryPreview,
       'tours': tours?.map((e) => e.toJson()).toList(),
+      'pois': pois?.map((e) => e.toJson()).toList(),
     };
   }
 
