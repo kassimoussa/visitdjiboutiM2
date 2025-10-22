@@ -69,6 +69,50 @@ class TourOperator {
       }
     }
 
+    // Parse POIs - gérer le format simplifié de served_pois
+    List<Poi>? parsedPois;
+    if (json['served_pois'] != null) {
+      try {
+        print('[TOUR OPERATOR] Parsing served_pois...');
+        parsedPois = (json['served_pois'] as List<dynamic>?)?.map((e) {
+          final poiData = e as Map<String, dynamic>;
+          print('[TOUR OPERATOR] POI data: ${poiData.keys.toList()}');
+
+          // Construire l'objet featured_image au bon format
+          Map<String, dynamic>? featuredImageJson;
+          if (poiData['featured_image'] != null) {
+            final imgData = poiData['featured_image'] as Map<String, dynamic>;
+            featuredImageJson = {
+              'id': 0, // ID factice
+              'url': imgData['url'],
+              'alt': imgData['alt_text'] ?? '',
+            };
+          }
+
+          // Créer un POI avec les données minimales disponibles
+          return Poi.fromJson({
+            'id': poiData['id'],
+            'slug': poiData['slug'],
+            'name': poiData['name'],
+            'region': poiData['region'] ?? '',
+            'latitude': '0.0',  // Valeur par défaut si non fournie
+            'longitude': '0.0', // Valeur par défaut si non fournie
+            'featured_image': featuredImageJson,
+            'categories': poiData['categories'] ?? [],
+            'contacts': [],
+            'tour_operators': [],
+          });
+        }).toList();
+        print('[TOUR OPERATOR] Successfully parsed ${parsedPois?.length ?? 0} POIs');
+      } catch (e, stackTrace) {
+        print('[TOUR OPERATOR] Error parsing served_pois: $e');
+        print('[TOUR OPERATOR] Stack trace: $stackTrace');
+        parsedPois = null;
+      }
+    } else if (json['pois'] != null) {
+      parsedPois = (json['pois'] as List<dynamic>?)?.map((e) => Poi.fromJson(e as Map<String, dynamic>)).toList();
+    }
+
     return TourOperator(
       id: json['id'] is int ? json['id'] : int.parse(json['id'].toString()),
       name: json['name'] as String,
@@ -86,8 +130,7 @@ class TourOperator {
       logo: parsedLogo,
       galleryPreview: (json['gallery_preview'] as List<dynamic>?)?.map((e) => e as String).toList(),
       tours: (json['tours'] as List<dynamic>?)?.map((e) => Tour.fromJson(e as Map<String, dynamic>)).toList(),
-      pois: (json['served_pois'] as List<dynamic>?)?.map((e) => Poi.fromJson(e as Map<String, dynamic>)).toList() ??
-            (json['pois'] as List<dynamic>?)?.map((e) => Poi.fromJson(e as Map<String, dynamic>)).toList(),
+      pois: parsedPois,
     );
   }
 

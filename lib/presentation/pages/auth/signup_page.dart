@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../core/models/anonymous_user.dart';
 import '../../../core/services/anonymous_auth_service.dart';
@@ -590,61 +589,44 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _showSimpleSuccessDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        icon: const Icon(
-          Icons.check_circle,
-          color: Color(0xFF009639),
-          size: 48,
-        ),
-        title: Text(AppLocalizations.of(context)!.authSignUpSuccessTitle),
-        content: const Text(
-          'Votre compte a été créé avec succès !',
-        ),
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Compte créé avec succès ! Connexion automatique...'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
       ),
     );
-    
-    // Fermer automatiquement après 5 secondes et retourner à l'écran principal
-    Timer(const Duration(seconds: 5), () {
+
+    // Naviguer vers l'écran d'accueil après un court délai pour montrer le snackbar
+    Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
-        Navigator.of(context).pop(); // Fermer le dialogue
-        Navigator.of(context).pushReplacementNamed('/main'); // Retourner à l'écran principal
+        // L'utilisateur est déjà connecté automatiquement par le service
+        // Naviguer vers l'écran d'accueil
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
       }
     });
   }
   
   void _showSuccessDialog({bool isConversion = false}) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        icon: const Icon(
-          Icons.check_circle,
-          color: Color(0xFF009639),
-          size: 48,
-        ),
-        title: Text(isConversion ? 'Conversion réussie !' : 'Compte créé !'),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
         content: Text(
-          isConversion 
-              ? 'Votre compte a été créé avec succès. Toutes vos données ont été préservées.'
-              : 'Bienvenue sur Visit Djibouti ! Votre compte a été créé avec succès.',
+          isConversion
+              ? 'Compte créé avec succès ! Données préservées. Connexion automatique...'
+              : 'Compte créé avec succès ! Connexion automatique...',
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/main',
-                (route) => false,
-              );
-            },
-            child: const Text('Continuer'),
-          ),
-        ],
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 2),
       ),
     );
+
+    // Naviguer vers l'écran d'accueil après un court délai
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        // L'utilisateur est déjà connecté automatiquement par le service
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      }
+    });
   }
 
   void _showConversionErrorDialog(String message) {
