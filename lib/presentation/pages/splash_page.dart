@@ -141,15 +141,15 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF3860F8),
+      backgroundColor: Colors.white,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              Color(0xFF3860F8),
-              Color(0xFF1D2233),
+              Colors.white,
+              Colors.grey.shade50,
             ],
           ),
         ),
@@ -158,7 +158,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
             children: [
               // Espace flexible en haut
               const Expanded(flex: 2, child: SizedBox()),
-              
+
               // Logo et titre
               Expanded(
                 flex: 3,
@@ -172,31 +172,40 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         return Transform.scale(
                           scale: _logoAnimation.value,
                           child: Container(
-                            width: 120,
-                            height: 120,
+                            width: 140,
+                            height: 140,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(28),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 20,
+                                  color: const Color(0xFF3860F8).withValues(alpha: 0.15),
+                                  blurRadius: 30,
                                   offset: const Offset(0, 10),
+                                  spreadRadius: 0,
                                 ),
                               ],
                             ),
-                            child: const Icon(
-                              Icons.place,
-                              size: 60,
-                              color: Color(0xFF3860F8),
+                            padding: const EdgeInsets.all(24),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                'assets/images/logo_visitdjibouti.png',
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) => const Icon(
+                                  Icons.travel_explore,
+                                  color: Color(0xFF3860F8),
+                                  size: 70,
+                                ),
+                              ),
                             ),
                           ),
                         );
                       },
                     ),
-                    
-                    const SizedBox(height: 24), 
-                    
+
+                    const SizedBox(height: 32),
+
                     // Titre animé
                     FadeTransition(
                       opacity: _fadeAnimation,
@@ -207,19 +216,23 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             style: TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 1.2,
+                              color: Color(0xFF1D2233),
+                              letterSpacing: -0.5,
                             ),
                           ),
-                          SizedBox(height: 8), 
-                          Text(
-                            'Découvrez les merveilles de Djibouti',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white70,
-                              fontWeight: FontWeight.w300,
+                          SizedBox(height: 12),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 48),
+                            child: Text(
+                              'Découvrez les merveilles de Djibouti',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF6B7280),
+                                fontWeight: FontWeight.w400,
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -227,7 +240,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              
+
               // Indicateur de chargement et status
               Expanded(
                 flex: 2,
@@ -235,44 +248,57 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (!_isInitialized) ...[
-                      const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        strokeWidth: 2,
+                      SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: CircularProgressIndicator(
+                          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
+                          strokeWidth: 3,
+                        ),
                       ),
-                      const SizedBox(height: 16), 
+                      const SizedBox(height: 20),
                       FadeTransition(
                         opacity: _fadeAnimation,
                         child: Text(
-                          _currentStatus, 
+                          _currentStatus,
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: Color(0xFF6B7280),
                             fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                     ] else ...[
-                      const Icon(
-                        Icons.check_circle,
-                        color: Color(0xFF009639),
-                        size: 24,
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF009639).withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.check_circle,
+                          color: Color(0xFF009639),
+                          size: 28,
+                        ),
                       ),
-                      const SizedBox(height: 8), 
+                      const SizedBox(height: 12),
                       const Text(
                         'Prêt !',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF009639),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ],
                 ),
               ),
-              
+
               // Footer
               Padding(
-                padding: const EdgeInsets.only(bottom: 32),
+                padding: const EdgeInsets.only(bottom: 40),
                 child: FadeTransition(
                   opacity: _fadeAnimation,
                   child: Column(
@@ -282,10 +308,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 30,
-                            height: 20,
+                            width: 32,
+                            height: 22,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                color: Colors.grey.shade200,
+                                width: 1,
+                              ),
                               gradient: const LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
@@ -296,23 +326,24 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12), 
+                          const SizedBox(width: 12),
                           const Text(
                             'République de Djibouti',
                             style: TextStyle(
-                              color: Colors.white60,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
+                              color: Color(0xFF6B7280),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8), 
-                      const Text(
+                      const SizedBox(height: 12),
+                      Text(
                         'Version 1.0.0',
                         style: TextStyle(
-                          color: Colors.white38,
-                          fontSize: 10,
+                          color: Colors.grey.shade400,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],

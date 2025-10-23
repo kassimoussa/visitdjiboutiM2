@@ -132,14 +132,14 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
           _buildEmbassyList(
             embassies: _foreignEmbassies,
             isLoading: _isLoadingForeign,
-            emptyMessage: 'Aucune ambassade étrangère trouvée',
-            emptySubtitle: 'Les informations des ambassades ne sont pas encore disponibles',
+            emptyMessage: AppLocalizations.of(context)!.embassiesNoForeignFound,
+            emptySubtitle: AppLocalizations.of(context)!.embassiesNoForeignSubtitle,
           ),
           _buildEmbassyList(
             embassies: _djiboutianEmbassies,
             isLoading: _isLoadingDjibouti,
-            emptyMessage: 'Aucune ambassade djiboutienne trouvée',
-            emptySubtitle: 'Les informations des ambassades djiboutiennes ne sont pas encore disponibles',
+            emptyMessage: AppLocalizations.of(context)!.embassiesNoDjiboutianFound,
+            emptySubtitle: AppLocalizations.of(context)!.embassiesNoDjiboutianSubtitle,
           ),
         ],
       ),

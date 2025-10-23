@@ -6,6 +6,7 @@ import '../../core/models/tour_reservation.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../../core/services/favorites_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 import '../widgets/shimmer_loading.dart';
 import '../widgets/tour_reservation_form_widget.dart';
 import 'tour_operator_detail_page.dart';
@@ -209,7 +210,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadTourDetails,
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.tourRetry),
             ),
           ],
         ),
@@ -235,19 +236,19 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 _buildTourInfo(tour),
                 const SizedBox(height: 24),
                 if (tour.description != null) ...[
-                  _buildSection('Description', tour.description!),
+                  _buildSection(AppLocalizations.of(context)!.tourDescription, tour.description!),
                   const SizedBox(height: 24),
                 ],
                 /* if (tour.itinerary != null) ...[
-                  _buildSection('Itinéraire', tour.itinerary!),
+                  _buildSection(AppLocalizations.of(context)!.tourItinerary, tour.itinerary!),
                   const SizedBox(height: 24),
                 ], */
                 if (tour.highlights?.isNotEmpty ?? false) ...[
-                  _buildListSection('Points forts', tour.highlights!, Icons.star, Colors.amber),
+                  _buildListSection(AppLocalizations.of(context)!.tourHighlights, tour.highlights!, Icons.star, Colors.amber),
                   const SizedBox(height: 24),
                 ],
                 if (tour.whatToBring?.isNotEmpty ?? false) ...[
-                  _buildListSection('À apporter', tour.whatToBring!, Icons.backpack, const Color(0xFF3860F8)),
+                  _buildListSection(AppLocalizations.of(context)!.tourWhatToBring, tour.whatToBring!, Icons.backpack, const Color(0xFF3860F8)),
                   const SizedBox(height: 24),
                 ],
                 if (tour.ageRestrictions?.hasRestrictions ?? false) ...[
@@ -714,7 +715,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 child: ElevatedButton.icon(
                   onPressed: () => _openInMaps(meetingPoint.latitude!, meetingPoint.longitude!),
                   icon: const Icon(Icons.directions),
-                  label: const Text('Voir sur la carte'),
+                  label: Text(AppLocalizations.of(context)!.tourViewOnMap),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3860F8),
                     foregroundColor: Colors.white,
@@ -816,7 +817,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                         child: ElevatedButton.icon(
                           onPressed: () => _launchPhone(operator.displayPhone),
                           icon: const Icon(Icons.phone),
-                          label: const Text('Appeler'),
+                          label: Text(AppLocalizations.of(context)!.tourCall),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             foregroundColor: Colors.white,
@@ -830,7 +831,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                         child: ElevatedButton.icon(
                           onPressed: () => _launchEmail(operator.displayEmail),
                           icon: const Icon(Icons.email),
-                          label: const Text('Email'),
+                          label: Text(AppLocalizations.of(context)!.tourEmail),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF3860F8),
                             foregroundColor: Colors.white,
@@ -851,9 +852,9 @@ class _TourDetailPageState extends State<TourDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Galerie photos',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.tourPhotoGallery,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),

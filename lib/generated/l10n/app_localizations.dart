@@ -478,6 +478,78 @@ abstract class AppLocalizations {
   /// **'Politique de confidentialité'**
   String get authPrivacyPolicy;
 
+  /// No description provided for @authAcceptTerms.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'accepte les'**
+  String get authAcceptTerms;
+
+  /// No description provided for @authAcceptTermsAnd.
+  ///
+  /// In fr, this message translates to:
+  /// **'et la'**
+  String get authAcceptTermsAnd;
+
+  /// No description provided for @authCreateAccount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer mon compte'**
+  String get authCreateAccount;
+
+  /// No description provided for @authSignIn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se connecter'**
+  String get authSignIn;
+
+  /// No description provided for @authNoAccount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vous n\'avez pas de compte ?'**
+  String get authNoAccount;
+
+  /// No description provided for @authResetPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser le mot de passe'**
+  String get authResetPassword;
+
+  /// No description provided for @authResetPasswordTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié'**
+  String get authResetPasswordTitle;
+
+  /// No description provided for @authResetPasswordSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez votre email pour recevoir un lien de réinitialisation'**
+  String get authResetPasswordSubtitle;
+
+  /// No description provided for @authSendResetLink.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer le lien'**
+  String get authSendResetLink;
+
+  /// No description provided for @authResetEmailSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email de réinitialisation envoyé'**
+  String get authResetEmailSent;
+
+  /// No description provided for @authResetEmailSentMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérifiez votre boîte mail pour réinitialiser votre mot de passe'**
+  String get authResetEmailSentMessage;
+
+  /// No description provided for @authBackToLogin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour à la connexion'**
+  String get authBackToLogin;
+
   /// No description provided for @profileTitle.
   ///
   /// In fr, this message translates to:
@@ -1471,19 +1543,19 @@ abstract class AppLocalizations {
   /// No description provided for @authKeepDiscoveries.
   ///
   /// In fr, this message translates to:
-  /// **'Gardez vos découvertes !'**
+  /// **'Créez votre compte Visit Djibouti'**
   String get authKeepDiscoveries;
 
   /// No description provided for @authWelcomeToApp.
   ///
   /// In fr, this message translates to:
-  /// **'Bienvenue sur Visit Djibouti'**
+  /// **'Créez votre compte Visit Djibouti'**
   String get authWelcomeToApp;
 
   /// No description provided for @authCreateAccountDescription.
   ///
   /// In fr, this message translates to:
-  /// **'Créez votre compte pour sauvegarder vos favoris et préférences'**
+  /// **'Découvrez tout ce que Djibouti a à offrir avec votre compte personnalisé'**
   String get authCreateAccountDescription;
 
   /// No description provided for @authDataPreserved.
@@ -1725,6 +1797,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Impossible d\'ouvrir le site web'**
   String get embassiesCannotOpenWebsite;
+
+  /// No description provided for @embassiesNoForeignFound.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune ambassade étrangère trouvée'**
+  String get embassiesNoForeignFound;
+
+  /// No description provided for @embassiesNoForeignSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les informations des ambassades ne sont pas encore disponibles'**
+  String get embassiesNoForeignSubtitle;
+
+  /// No description provided for @embassiesNoDjiboutianFound.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune ambassade djiboutienne trouvée'**
+  String get embassiesNoDjiboutianFound;
+
+  /// No description provided for @embassiesNoDjiboutianSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les informations des ambassades djiboutiennes ne sont pas encore disponibles'**
+  String get embassiesNoDjiboutianSubtitle;
 
   /// No description provided for @essentialsTitle.
   ///
@@ -2482,6 +2578,60 @@ abstract class AppLocalizations {
   /// **'Cet opérateur n\'a pas encore publié de tours.'**
   String get operatorNoToursMessage;
 
+  /// No description provided for @operatorPoisServed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieux desservis'**
+  String get operatorPoisServed;
+
+  /// No description provided for @operatorNoPois.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun lieu desservi'**
+  String get operatorNoPois;
+
+  /// No description provided for @operatorNoPoisMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cet opérateur ne dessert aucun lieu pour le moment'**
+  String get operatorNoPoisMessage;
+
+  /// No description provided for @operatorTourAddedToFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour ajouté aux favoris'**
+  String get operatorTourAddedToFavorites;
+
+  /// No description provided for @operatorTourRemovedFromFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour retiré des favoris'**
+  String get operatorTourRemovedFromFavorites;
+
+  /// No description provided for @operatorPoiAddedToFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'POI ajouté aux favoris'**
+  String get operatorPoiAddedToFavorites;
+
+  /// No description provided for @operatorPoiRemovedFromFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'POI retiré des favoris'**
+  String get operatorPoiRemovedFromFavorites;
+
+  /// No description provided for @operatorViews.
+  ///
+  /// In fr, this message translates to:
+  /// **'vues'**
+  String get operatorViews;
+
+  /// No description provided for @operatorPlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu'**
+  String get operatorPlace;
+
   /// No description provided for @homeFeaturedTours.
   ///
   /// In fr, this message translates to:
@@ -2505,6 +2655,198 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'{count} places max'**
   String tourMaxParticipants(int count);
+
+  /// No description provided for @tourDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Description'**
+  String get tourDescription;
+
+  /// No description provided for @tourItinerary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Itinéraire'**
+  String get tourItinerary;
+
+  /// No description provided for @tourHighlights.
+  ///
+  /// In fr, this message translates to:
+  /// **'Points forts'**
+  String get tourHighlights;
+
+  /// No description provided for @tourWhatToBring.
+  ///
+  /// In fr, this message translates to:
+  /// **'À apporter'**
+  String get tourWhatToBring;
+
+  /// No description provided for @tourPhotoGallery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Galerie photos'**
+  String get tourPhotoGallery;
+
+  /// No description provided for @tourRetry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get tourRetry;
+
+  /// No description provided for @tourViewOnMap.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir sur la carte'**
+  String get tourViewOnMap;
+
+  /// No description provided for @tourCall.
+  ///
+  /// In fr, this message translates to:
+  /// **'Appeler'**
+  String get tourCall;
+
+  /// No description provided for @tourEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get tourEmail;
+
+  /// No description provided for @poiCannotCall.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'appeler {phone}'**
+  String poiCannotCall(String phone);
+
+  /// No description provided for @poiCallError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de l\'appel: {error}'**
+  String poiCallError(String error);
+
+  /// No description provided for @poiCannotOpenEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir l\'email'**
+  String get poiCannotOpenEmail;
+
+  /// No description provided for @poiEmailError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de l\'ouverture de l\'email: {error}'**
+  String poiEmailError(String error);
+
+  /// No description provided for @profileAnonymousExplorer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Explorateur Anonyme'**
+  String get profileAnonymousExplorer;
+
+  /// No description provided for @profileDiscoverDjibouti.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrez Djibouti sans contraintes'**
+  String get profileDiscoverDjibouti;
+
+  /// No description provided for @profileKeepDiscoveries.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gardez vos découvertes !'**
+  String get profileKeepDiscoveries;
+
+  /// No description provided for @profileCreateAccountBenefits.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créez votre compte pour sauvegarder vos favoris et accéder à des fonctionnalités exclusives.'**
+  String get profileCreateAccountBenefits;
+
+  /// No description provided for @profileFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Favoris'**
+  String get profileFavorites;
+
+  /// No description provided for @profileEvents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événements'**
+  String get profileEvents;
+
+  /// No description provided for @profileDiscoveries.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvertes'**
+  String get profileDiscoveries;
+
+  /// No description provided for @profileTimeSpent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Temps passé'**
+  String get profileTimeSpent;
+
+  /// No description provided for @profilePersonalInfoSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gérer vos données de profil'**
+  String get profilePersonalInfoSubtitle;
+
+  /// No description provided for @profileSecuritySubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe et authentification'**
+  String get profileSecuritySubtitle;
+
+  /// No description provided for @profileNotificationsSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préférences de notification'**
+  String get profileNotificationsSubtitle;
+
+  /// No description provided for @profileLogoutSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter du compte'**
+  String get profileLogoutSubtitle;
+
+  /// No description provided for @profileLogoutConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir vous déconnecter ? Vous redeviendrez un utilisateur anonyme.'**
+  String get profileLogoutConfirm;
+
+  /// No description provided for @profileSettingsSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Préférences générales'**
+  String get profileSettingsSubtitle;
+
+  /// No description provided for @profileHelp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aide'**
+  String get profileHelp;
+
+  /// No description provided for @profileHelpSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Support et FAQ'**
+  String get profileHelpSubtitle;
+
+  /// No description provided for @profileComingSoon.
+  ///
+  /// In fr, this message translates to:
+  /// **'sera bientôt disponible !'**
+  String get profileComingSoon;
+
+  /// No description provided for @profileComingSoonMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nous travaillons dur pour vous apporter cette fonctionnalité.'**
+  String get profileComingSoonMessage;
+
+  /// No description provided for @profileLanguageChanged.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue changée vers {language}'**
+  String profileLanguageChanged(String language);
 }
 
 class _AppLocalizationsDelegate

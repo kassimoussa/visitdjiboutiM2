@@ -126,8 +126,8 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
           SnackBar(
             content: Text(
               _tourFavoriteStatus[tour.id] == true
-                  ? 'Tour ajouté aux favoris'
-                  : 'Tour retiré des favoris',
+                  ? AppLocalizations.of(context)!.operatorTourAddedToFavorites
+                  : AppLocalizations.of(context)!.operatorTourRemovedFromFavorites,
             ),
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
@@ -149,8 +149,8 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
           SnackBar(
             content: Text(
               _poiFavoriteStatus[poi.id] == true
-                  ? 'POI ajouté aux favoris'
-                  : 'POI retiré des favoris',
+                  ? AppLocalizations.of(context)!.operatorPoiAddedToFavorites
+                  : AppLocalizations.of(context)!.operatorPoiRemovedFromFavorites,
             ),
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
@@ -1009,7 +1009,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${tour.viewsCount} vues',
+                            '${tour.viewsCount} ${AppLocalizations.of(context)!.operatorViews}',
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.grey[600],
@@ -1053,9 +1053,9 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 size: 20,
               ),
               const SizedBox(width: 8),
-              const Text(
-                'Lieux desservis',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.operatorPoisServed,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D2233),
@@ -1085,7 +1085,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Aucun lieu desservi',
+                    AppLocalizations.of(context)!.operatorNoPois,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey[600],
@@ -1094,7 +1094,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Cet opérateur ne dessert aucun lieu pour le moment',
+                    AppLocalizations.of(context)!.operatorNoPoisMessage,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[500],
@@ -1192,7 +1192,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    poi.name ?? 'Lieu',
+                    poi.name ?? AppLocalizations.of(context)!.operatorPlace,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

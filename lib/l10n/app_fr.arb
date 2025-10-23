@@ -99,7 +99,19 @@
   "authOrContinueWith": "Ou continuer avec",
   "authTermsAndConditions": "Conditions d'utilisation",
   "authPrivacyPolicy": "Politique de confidentialité",
-  
+  "authAcceptTerms": "J'accepte les",
+  "authAcceptTermsAnd": "et la",
+  "authCreateAccount": "Créer mon compte",
+  "authSignIn": "Se connecter",
+  "authNoAccount": "Vous n'avez pas de compte ?",
+  "authResetPassword": "Réinitialiser le mot de passe",
+  "authResetPasswordTitle": "Mot de passe oublié",
+  "authResetPasswordSubtitle": "Entrez votre email pour recevoir un lien de réinitialisation",
+  "authSendResetLink": "Envoyer le lien",
+  "authResetEmailSent": "Email de réinitialisation envoyé",
+  "authResetEmailSentMessage": "Vérifiez votre boîte mail pour réinitialiser votre mot de passe",
+  "authBackToLogin": "Retour à la connexion",
+
   "profileTitle": "Profil",
   "profileEditProfile": "Modifier le profil",
   "profileSettings": "Paramètres",
@@ -324,9 +336,9 @@
   "authErrorTitle": "Erreur",
   "authSignUpSuccessTitle": "Inscription réussie",
   "authConversionProblemTitle": "Problème de conversion",
-  "authKeepDiscoveries": "Gardez vos découvertes !",
-  "authWelcomeToApp": "Bienvenue sur Visit Djibouti",
-  "authCreateAccountDescription": "Créez votre compte pour sauvegarder vos favoris et préférences",
+  "authKeepDiscoveries": "Créez votre compte Visit Djibouti",
+  "authWelcomeToApp": "Créez votre compte Visit Djibouti",
+  "authCreateAccountDescription": "Découvrez tout ce que Djibouti a à offrir avec votre compte personnalisé",
   "authDataPreserved": "Vos données actuelles seront préservées",
   "authKeepingDataInfo": "✨ En créant votre compte, vous gardez :",
   "authCurrentFavorites": "Tous vos favoris actuels",
@@ -370,6 +382,10 @@
   "embassiesCannotOpenPhone": "Impossible d'ouvrir l'application téléphone",
   "embassiesCannotOpenEmail": "Impossible d'ouvrir l'application email",
   "embassiesCannotOpenWebsite": "Impossible d'ouvrir le site web",
+  "embassiesNoForeignFound": "Aucune ambassade étrangère trouvée",
+  "embassiesNoForeignSubtitle": "Les informations des ambassades ne sont pas encore disponibles",
+  "embassiesNoDjiboutianFound": "Aucune ambassade djiboutienne trouvée",
+  "embassiesNoDjiboutianSubtitle": "Les informations des ambassades djiboutiennes ne sont pas encore disponibles",
   
   "essentialsTitle": "Infos Essentielles",
   "essentialsUnavailableInfo": "Informations indisponibles",
@@ -571,6 +587,15 @@
   "operatorSeeAll": "Voir tout",
   "operatorNoTours": "Aucun tour disponible",
   "operatorNoToursMessage": "Cet opérateur n'a pas encore publié de tours.",
+  "operatorPoisServed": "Lieux desservis",
+  "operatorNoPois": "Aucun lieu desservi",
+  "operatorNoPoisMessage": "Cet opérateur ne dessert aucun lieu pour le moment",
+  "operatorTourAddedToFavorites": "Tour ajouté aux favoris",
+  "operatorTourRemovedFromFavorites": "Tour retiré des favoris",
+  "operatorPoiAddedToFavorites": "POI ajouté aux favoris",
+  "operatorPoiRemovedFromFavorites": "POI retiré des favoris",
+  "operatorViews": "vues",
+  "operatorPlace": "Lieu",
 
   "homeFeaturedTours": "Tours guidés",
   "homeNoFeaturedTours": "Aucun tour guidé disponible",
@@ -580,6 +605,74 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+
+  "tourDescription": "Description",
+  "tourItinerary": "Itinéraire",
+  "tourHighlights": "Points forts",
+  "tourWhatToBring": "À apporter",
+  "tourPhotoGallery": "Galerie photos",
+  "tourRetry": "Réessayer",
+  "tourViewOnMap": "Voir sur la carte",
+  "tourCall": "Appeler",
+  "tourEmail": "Email",
+
+  "poiCannotCall": "Impossible d'appeler {phone}",
+  "@poiCannotCall": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCallError": "Erreur lors de l'appel: {error}",
+  "@poiCallError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCannotOpenEmail": "Impossible d'ouvrir l'email",
+  "poiEmailError": "Erreur lors de l'ouverture de l'email: {error}",
+  "@poiEmailError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "profileAnonymousExplorer": "Explorateur Anonyme",
+  "profileDiscoverDjibouti": "Découvrez Djibouti sans contraintes",
+  "profileKeepDiscoveries": "Gardez vos découvertes !",
+  "profileCreateAccountBenefits": "Créez votre compte pour sauvegarder vos favoris et accéder à des fonctionnalités exclusives.",
+  "profileFavorites": "Favoris",
+  "profileEvents": "Événements",
+  "profileDiscoveries": "Découvertes",
+  "profileTimeSpent": "Temps passé",
+  "profilePersonalInfo": "Informations personnelles",
+  "profilePersonalInfoSubtitle": "Gérer vos données de profil",
+  "profileSecurity": "Sécurité",
+  "profileSecuritySubtitle": "Mot de passe et authentification",
+  "profileNotifications": "Notifications",
+  "profileNotificationsSubtitle": "Préférences de notification",
+  "profileLanguage": "Langue",
+  "profileLogoutSubtitle": "Se déconnecter du compte",
+  "profileLogoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ? Vous redeviendrez un utilisateur anonyme.",
+  "profileSettings": "Paramètres",
+  "profileSettingsSubtitle": "Préférences générales",
+  "profileHelp": "Aide",
+  "profileHelpSubtitle": "Support et FAQ",
+  "profileComingSoon": "sera bientôt disponible !",
+  "profileComingSoonMessage": "Nous travaillons dur pour vous apporter cette fonctionnalité.",
+  "profileLanguageChanged": "Langue changée vers {language}",
+  "@profileLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
       }
     }
   }

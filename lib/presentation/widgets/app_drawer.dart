@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vd_gem/presentation/pages/settings_page.dart';
+// import 'package:vd_gem/presentation/pages/settings_page.dart'; // Hidden temporarily
 import 'package:vd_gem/presentation/pages/about_page.dart';
 import 'package:vd_gem/presentation/pages/help_page.dart';
 import 'package:vd_gem/presentation/pages/profile_page.dart';
@@ -69,13 +69,13 @@ class _AppDrawerState extends State<AppDrawer> {
                       subtitle: LocalizationService().currentLanguageName,
                       onTap: () => _showLanguageDialog(context),
                     ),
-                    
-                    _buildMenuItem(
+
+                    /* _buildMenuItem(
                       icon: Icons.settings,
                       title: AppLocalizations.of(context)!.profileSettings,
                       onTap: () => _navigateTo(context, const SettingsPage()),
-                    ),
-                    
+                    ), */
+
                     _buildMenuItem(
                       icon: Icons.help_outline,
                       title: AppLocalizations.of(context)!.drawerHelp,
@@ -124,17 +124,26 @@ class _AppDrawerState extends State<AppDrawer> {
           // Logo/Title
           Row(
             children: [
+              // Logo de l'application
               Container(
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
-                  Icons.travel_explore,
-                  color: Colors.white,
-                  size: 24,
+                padding: const EdgeInsets.all(4),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/logo_visitdjibouti.png',
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.travel_explore,
+                      color: Color(0xFF3860F8),
+                      size: 24,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -173,73 +182,43 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   Widget _buildAuthButtons() {
-    return Column(
+    return Row(
       children: [
-        // Status anonyme
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.white.withOpacity(0.2)),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.person_outline, color: Colors.white70, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                AppLocalizations.of(context)!.drawerAnonymousUser,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                ),
+        Expanded(
+          child: OutlinedButton(
+            onPressed: () => _navigateToAuth(context, const SignUpPage()),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF3860F8),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-            ],
+              elevation: 0,
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.authRegister,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ),
-        
-        const SizedBox(height: 16),
-        
-        // Boutons d'authentification
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () => _navigateToAuth(context, const SignUpPage()),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFF3860F8),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.authRegister,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: OutlinedButton(
+            onPressed: () => _navigateToAuth(context, const LoginPage()),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
+              side: const BorderSide(color: Colors.white),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () => _navigateToAuth(context, const LoginPage()),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  side: const BorderSide(color: Colors.white),
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.authLogin,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
+            child: Text(
+              AppLocalizations.of(context)!.authLogin,
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
-          ],
+          ),
         ),
       ],
     );

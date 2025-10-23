@@ -24,7 +24,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.authLogin),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF3860F8),
+        foregroundColor: Colors.white,
         elevation: 0,
       ),
       body: SafeArea(
@@ -36,18 +37,52 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 24),
-                
+
+                // Logo
+                Center(
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        'assets/images/logo_visitdjibouti.png',
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) => const Icon(
+                          Icons.travel_explore,
+                          color: Color(0xFF3860F8),
+                          size: 60,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
                 Text(
                   AppLocalizations.of(context)!.authWelcomeBack,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1D2233),
                   ),
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 Text(
                   AppLocalizations.of(context)!.authSignInSubtitle,
                   style: TextStyle(
@@ -55,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.grey[600],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
                 
                 // Formulaire
@@ -68,11 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      // Naviguer vers forgot password
+                      Navigator.of(context).pushNamed('/forgot-password');
                     },
-                    child:  Text(
+                    child: Text(
                       AppLocalizations.of(context)!.authForgotPassword,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF3860F8),
                         fontWeight: FontWeight.w600,
                       ),
@@ -84,31 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                 
                 // Bouton de connexion
                 _buildLoginButton(),
-                
+
                 const SizedBox(height: 24),
-                
-                // Séparateur
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: Colors.grey[300])),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        AppLocalizations.of(context)!.authOr,
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ),
-                    Expanded(child: Divider(color: Colors.grey[300])),
-                  ],
-                ),
-                
-                const SizedBox(height: 24),
-                
-                // OAuth buttons
-                _buildOAuthButtons(),
-                
-                const SizedBox(height: 24),
-                
+
                 // Lien vers inscription
                 _buildSignUpLink(),
               ],
@@ -127,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'Email',
+            labelText: AppLocalizations.of(context)!.authEmail,
             prefixIcon: const Icon(Icons.email_outlined),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -138,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
               return 'L\'email est requis';
             }
             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-              return 'Email invalide';
+              return AppLocalizations.of(context)!.eventDetailInvalidEmail;
             }
             return null;
           },
@@ -151,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
           controller: _passwordController,
           obscureText: _obscurePassword,
           decoration: InputDecoration(
-            labelText: 'Mot de passe',
+            labelText: AppLocalizations.of(context)!.authPassword,
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
               onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
@@ -195,56 +208,14 @@ class _LoginPageState extends State<LoginPage> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : const Text(
-                'Se connecter',
-                style: TextStyle(
+            : Text(
+                AppLocalizations.of(context)!.authSignIn,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
       ),
-    );
-  }
-
-  Widget _buildOAuthButtons() {
-    return Column(
-      children: [
-        // Google Sign In
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: _isLoading ? null : _handleGoogleLogin,
-            icon: const Icon(Icons.login),
-            label: const Text('Continuer avec Google'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              side: BorderSide(color: Colors.grey[300]!),
-            ),
-          ),
-        ),
-        
-        const SizedBox(height: 12),
-        
-        // Facebook Sign In
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: _isLoading ? null : _handleFacebookLogin,
-            icon: const Icon(Icons.facebook, color: Color(0xFF1877F2)),
-            label: const Text('Continuer avec Facebook'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              side: BorderSide(color: Colors.grey[300]!),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -256,13 +227,13 @@ class _LoginPageState extends State<LoginPage> {
         },
         child: Text.rich(
           TextSpan(
-            text: 'Vous n\'avez pas de compte ? ',
+            text: '${AppLocalizations.of(context)!.authNoAccount} ',
             style: TextStyle(color: Colors.grey[600]),
             children: [
               TextSpan(
-                text: 'S\'inscrire',
-                style: TextStyle(
-                  color: const Color(0xFF3860F8),
+                text: AppLocalizations.of(context)!.authRegister,
+                style: const TextStyle(
+                  color: Color(0xFF3860F8),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -294,14 +265,6 @@ class _LoginPageState extends State<LoginPage> {
     } finally {
       setState(() => _isLoading = false);
     }
-  }
-
-  Future<void> _handleGoogleLogin() async {
-    _showErrorDialog('Connexion Google pas encore implémentée');
-  }
-
-  Future<void> _handleFacebookLogin() async {
-    _showErrorDialog('Connexion Facebook pas encore implémentée');
   }
 
   void _showSuccessDialog() {

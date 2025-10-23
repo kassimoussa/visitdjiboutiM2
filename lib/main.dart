@@ -4,7 +4,10 @@ import 'package:vd_gem/presentation/pages/splash_page.dart';
 import 'package:vd_gem/presentation/pages/main_navigation_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
+import 'package:vd_gem/presentation/pages/auth/forgot_password_page.dart';
 import 'package:vd_gem/presentation/pages/profile_page.dart';
+import 'package:vd_gem/presentation/pages/legal/privacy_policy_page.dart';
+import 'package:vd_gem/presentation/pages/legal/terms_conditions_page.dart';
 import 'package:vd_gem/core/api/api_client.dart';
 import 'package:vd_gem/core/services/anonymous_auth_service.dart';
 import 'package:vd_gem/core/services/localization_service.dart';
@@ -132,7 +135,10 @@ class VdGemApp extends StatelessWidget {
         '/main': (context) => const MainNavigationPage(),
         '/signup': (context) => const SignUpPage(),
         '/login': (context) => const LoginPage(),
+        '/forgot-password': (context) => const ForgotPasswordPage(),
         '/profile': (context) => const ProfilePage(),
+        '/privacy-policy': (context) => const PrivacyPolicyPage(),
+        '/terms-conditions': (context) => const TermsConditionsPage(),
       },
     );
   }

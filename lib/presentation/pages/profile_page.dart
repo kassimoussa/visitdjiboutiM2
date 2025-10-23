@@ -125,8 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.all(ResponsiveConstants.largeSpace),
             child: Column(
               children: [
-                _buildAnonymousStats(),
-                SizedBox(height: ResponsiveConstants.extraLargeSpace),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
                 _buildConversionCard(),
                 SizedBox(height: ResponsiveConstants.largeSpace),
                 _buildAnonymousActions(),
@@ -199,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildAnonymousHeader() {
     return SliverAppBar(
-      expandedHeight: 180,
+      expandedHeight: 220,
       pinned: true,
       backgroundColor: const Color(0xFF3860F8),
       foregroundColor: Colors.white,
@@ -215,28 +214,52 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          child: const SafeArea(
+          child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 40),
-                Icon(
-                  Icons.person_outline,
-                  size: 64,
-                  color: Colors.white,
+                const SizedBox(height: 40),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      'assets/images/logo_visitdjibouti.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.travel_explore,
+                        color: Color(0xFF3860F8),
+                        size: 50,
+                      ),
+                    ),
+                  ),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 16),
                 Text(
-                  'Explorateur Anonyme',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.authWelcomeToApp,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  'Découvrez Djibouti sans contraintes',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.profileDiscoverDjibouti,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white70,
                   ),
@@ -259,7 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Expanded(
             child: _buildStatCard(
-              title: 'Favoris',
+              title: AppLocalizations.of(context)!.profileFavorites,
               value: favoritesCount,
               icon: Icons.favorite,
               color: Colors.red,
@@ -269,7 +292,7 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(width: ResponsiveConstants.mediumSpace),
           Expanded(
             child: _buildStatCard(
-              title: 'Événements',
+              title: AppLocalizations.of(context)!.profileEvents,
               value: registrationsCount,
               icon: Icons.event,
               color: Colors.orange,
@@ -278,30 +301,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildAnonymousStats() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildStatCard(
-            title: 'Découvertes',
-            value: '${_authService.currentAnonymousUser?.anonymousId.length ?? 0}',
-            icon: Icons.explore,
-            color: Colors.blue,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildStatCard(
-            title: 'Temps passé',
-            value: '0j', // TODO: Calculer le temps réel
-            icon: Icons.access_time,
-            color: Colors.green,
-          ),
-        ),
-      ],
     );
   }
 
@@ -359,91 +358,87 @@ class _ProfilePageState extends State<ProfilePage> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFF3860F8).withOpacity(0.1),
-            const Color(0xFF009639).withOpacity(0.1),
-          ],
-        ),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFF3860F8).withOpacity(0.2),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.1),
+            spreadRadius: 1,
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
-          const Icon(
-            Icons.workspace_premium,
-            size: 48,
-            color: Color(0xFF3860F8),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Gardez vos découvertes !',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1D2233),
-            ),
-          ),
           const SizedBox(height: 8),
           Text(
-            'Créez votre compte pour sauvegarder vos favoris et accéder à des fonctionnalités exclusives.',
+            AppLocalizations.of(context)!.profileCreateAccountBenefits,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: Colors.grey[700],
+              height: 1.5,
             ),
           ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpPage(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3860F8),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpPage(),
                   ),
-                  child: const Text('Créer un compte'),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3860F8),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.authCreateAccount,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    side: const BorderSide(color: Color(0xFF3860F8)),
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
                   ),
-                  child: const Text(
-                    'Se connecter',
-                    style: TextStyle(color: Color(0xFF3860F8)),
-                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                side: const BorderSide(color: Color(0xFF3860F8), width: 1.5),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.authLogin,
+                style: const TextStyle(
+                  color: Color(0xFF3860F8),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
@@ -457,25 +452,25 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           _buildSectionItem(
             icon: Icons.person,
-            title: 'Informations personnelles',
-            subtitle: 'Gérer vos données de profil',
+            title: AppLocalizations.of(context)!.profilePersonalInfo,
+            subtitle: AppLocalizations.of(context)!.profilePersonalInfoSubtitle,
             onTap: () => _navigateToPersonalInfo(),
           ),
           _buildSectionItem(
             icon: Icons.security,
-            title: 'Sécurité',
-            subtitle: 'Mot de passe et authentification',
+            title: AppLocalizations.of(context)!.profileSecurity,
+            subtitle: AppLocalizations.of(context)!.profileSecuritySubtitle,
             onTap: () => _navigateToSecurity(),
           ),
           _buildSectionItem(
             icon: Icons.notifications,
-            title: 'Notifications',
-            subtitle: 'Préférences de notification',
-            onTap: () => _showComingSoonDialog('Notifications'),
+            title: AppLocalizations.of(context)!.profileNotifications,
+            subtitle: AppLocalizations.of(context)!.profileNotificationsSubtitle,
+            onTap: () => _showComingSoonDialog(AppLocalizations.of(context)!.profileNotifications),
           ),
           _buildSectionItem(
             icon: Icons.language,
-            title: 'Langue',
+            title: AppLocalizations.of(context)!.profileLanguage,
             subtitle: _localizationService.currentLanguageName,
             onTap: () => _showLanguageDialog(),
           ),
@@ -483,7 +478,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _buildSectionItem(
             icon: Icons.logout,
             title: AppLocalizations.of(context)!.authLogout,
-            subtitle: 'Se déconnecter du compte',
+            subtitle: AppLocalizations.of(context)!.profileLogoutSubtitle,
             onTap: _handleLogout,
             isDestructive: true,
           ),
@@ -498,24 +493,22 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         _buildSectionItem(
           icon: Icons.settings,
-          title: 'Paramètres',
-          subtitle: 'Préférences générales',
+          title: AppLocalizations.of(context)!.profileSettings,
+          subtitle: AppLocalizations.of(context)!.profileSettingsSubtitle,
           onTap: () {
             // Navigation vers les paramètres
           },
         ),
         _buildSectionItem(
           icon: Icons.language,
-          title: 'Langue',
-          subtitle: 'Changer la langue de l\'app',
-          onTap: () {
-            // Changement de langue
-          },
+          title: AppLocalizations.of(context)!.profileLanguage,
+          subtitle: _localizationService.currentLanguageName,
+          onTap: () => _showLanguageDialog(),
         ),
         _buildSectionItem(
           icon: Icons.help,
-          title: 'Aide',
-          subtitle: 'Support et FAQ',
+          title: AppLocalizations.of(context)!.profileHelp,
+          subtitle: AppLocalizations.of(context)!.profileHelpSubtitle,
           onTap: () {
             // Page d'aide
           },
@@ -563,14 +556,13 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.profileLogoutTitle),
-        content: const Text(
-          'Êtes-vous sûr de vouloir vous déconnecter ? '
-          'Vous redeviendrez un utilisateur anonyme.',
+        content: Text(
+          AppLocalizations.of(context)!.profileLogoutConfirm,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -671,7 +663,7 @@ class _ProfilePageState extends State<ProfilePage> {
           
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Langue changée vers $name'),
+              content: Text(AppLocalizations.of(context)!.profileLanguageChanged(name)),
               backgroundColor: const Color(0xFF009639),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -690,8 +682,8 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context) => AlertDialog(
         title: Text(feature),
         content: Text(
-          '$feature sera bientôt disponible !\n\n'
-          'Nous travaillons dur pour vous apporter cette fonctionnalité.',
+          '$feature ${AppLocalizations.of(context)!.profileComingSoon}\n\n'
+          '${AppLocalizations.of(context)!.profileComingSoonMessage}',
         ),
         actions: [
           TextButton(

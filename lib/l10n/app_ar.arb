@@ -99,7 +99,19 @@
   "authOrContinueWith": "أو متابعة مع",
   "authTermsAndConditions": "الشروط والأحكام",
   "authPrivacyPolicy": "سياسة الخصوصية",
-  
+  "authAcceptTerms": "أوافق على",
+  "authAcceptTermsAnd": "و",
+  "authCreateAccount": "إنشاء حسابي",
+  "authSignIn": "تسجيل الدخول",
+  "authNoAccount": "ليس لديك حساب؟",
+  "authResetPassword": "إعادة تعيين كلمة المرور",
+  "authResetPasswordTitle": "نسيت كلمة المرور",
+  "authResetPasswordSubtitle": "أدخل بريدك الإلكتروني لتلقي رابط إعادة التعيين",
+  "authSendResetLink": "إرسال رابط إعادة التعيين",
+  "authResetEmailSent": "تم إرسال بريد إعادة التعيين",
+  "authResetEmailSentMessage": "تحقق من صندوق البريد الخاص بك لإعادة تعيين كلمة المرور",
+  "authBackToLogin": "العودة إلى تسجيل الدخول",
+
   "profileTitle": "الملف الشخصي",
   "profileEditProfile": "تعديل الملف الشخصي",
   "profileSettings": "الإعدادات",
@@ -196,9 +208,9 @@
   "authErrorTitle": "خطأ",
   "authSignUpSuccessTitle": "نجح التسجيل",
   "authConversionProblemTitle": "مشكلة في التحويل",
-  "authKeepDiscoveries": "احتفظ باكتشافاتك!",
-  "authWelcomeToApp": "مرحباً بك في زيارة جيبوتي",
-  "authCreateAccountDescription": "أنشئ حسابك لحفظ المفضلة والإعدادات",
+  "authKeepDiscoveries": "أنشئ حسابك في زيارة جيبوتي",
+  "authWelcomeToApp": "أنشئ حسابك في زيارة جيبوتي",
+  "authCreateAccountDescription": "اكتشف كل ما تقدمه جيبوتي من خلال حسابك الشخصي",
   "authDataPreserved": "ستبقى بياناتك الحالية محفوظة",
   "authKeepingDataInfo": "✨ بإنشاء حسابك، ستحتفظ بـ:",
   "authCurrentFavorites": "جميع مفضلاتك الحالية",
@@ -242,6 +254,10 @@
   "embassiesCannotOpenPhone": "لا يمكن فتح تطبيق الهاتف",
   "embassiesCannotOpenEmail": "لا يمكن فتح تطبيق البريد الإلكتروني",
   "embassiesCannotOpenWebsite": "لا يمكن فتح الموقع الإلكتروني",
+  "embassiesNoForeignFound": "لم يتم العثور على سفارة أجنبية",
+  "embassiesNoForeignSubtitle": "معلومات السفارات ليست متاحة بعد",
+  "embassiesNoDjiboutianFound": "لم يتم العثور على سفارة جيبوتية",
+  "embassiesNoDjiboutianSubtitle": "معلومات السفارات الجيبوتية ليست متاحة بعد",
   
   "essentialsTitle": "المعلومات الأساسية",
   "essentialsUnavailableInfo": "المعلومات غير متوفرة",
@@ -449,5 +465,82 @@
   "operatorTours": "الجولات المعروضة",
   "operatorSeeAll": "عرض الكل",
   "operatorNoTours": "لا توجد جولات متاحة",
-  "operatorNoToursMessage": "لم ينشر هذا المنظم أي جولات بعد."
+  "operatorNoToursMessage": "لم ينشر هذا المنظم أي جولات بعد.",
+  "operatorPoisServed": "الأماكن المخدومة",
+  "operatorNoPois": "لا توجد أماكن مخدومة",
+  "operatorNoPoisMessage": "هذا المشغل لا يخدم أي مكان في الوقت الحالي",
+  "operatorTourAddedToFavorites": "تمت إضافة الجولة إلى المفضلة",
+  "operatorTourRemovedFromFavorites": "تمت إزالة الجولة من المفضلة",
+  "operatorPoiAddedToFavorites": "تمت إضافة المكان إلى المفضلة",
+  "operatorPoiRemovedFromFavorites": "تمت إزالة المكان من المفضلة",
+  "operatorViews": "مشاهدات",
+  "operatorPlace": "مكان",
+
+  "tourDescription": "الوصف",
+  "tourItinerary": "خط الرحلة",
+  "tourHighlights": "النقاط البارزة",
+  "tourWhatToBring": "ما يجب إحضاره",
+  "tourPhotoGallery": "معرض الصور",
+  "tourRetry": "إعادة المحاولة",
+  "tourViewOnMap": "عرض على الخريطة",
+  "tourCall": "اتصل",
+  "tourEmail": "البريد الإلكتروني",
+
+  "poiCannotCall": "لا يمكن الاتصال بـ {phone}",
+  "@poiCannotCall": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCallError": "خطأ في الاتصال: {error}",
+  "@poiCallError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCannotOpenEmail": "لا يمكن فتح البريد الإلكتروني",
+  "poiEmailError": "خطأ في فتح البريد الإلكتروني: {error}",
+  "@poiEmailError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "profileAnonymousExplorer": "مستكشف مجهول",
+  "profileDiscoverDjibouti": "اكتشف جيبوتي بدون قيود",
+  "profileKeepDiscoveries": "احتفظ باكتشافاتك!",
+  "profileCreateAccountBenefits": "أنشئ حسابك لحفظ المفضلات والوصول إلى ميزات حصرية.",
+  "profileFavorites": "المفضلات",
+  "profileEvents": "الأحداث",
+  "profileDiscoveries": "الاكتشافات",
+  "profileTimeSpent": "الوقت المستغرق",
+  "profilePersonalInfo": "المعلومات الشخصية",
+  "profilePersonalInfoSubtitle": "إدارة بيانات ملفك الشخصي",
+  "profileSecurity": "الأمان",
+  "profileSecuritySubtitle": "كلمة المرور والمصادقة",
+  "profileNotifications": "الإشعارات",
+  "profileNotificationsSubtitle": "تفضيلات الإشعارات",
+  "profileLanguage": "اللغة",
+  "profileLogoutSubtitle": "تسجيل الخروج من الحساب",
+  "profileLogoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستصبح مستخدمًا مجهولاً مرة أخرى.",
+  "profileSettings": "الإعدادات",
+  "profileSettingsSubtitle": "التفضيلات العامة",
+  "profileHelp": "المساعدة",
+  "profileHelpSubtitle": "الدعم والأسئلة الشائعة",
+  "profileComingSoon": "قريبًا!",
+  "profileComingSoonMessage": "نحن نعمل بجد لنقدم لك هذه الميزة.",
+  "profileLanguageChanged": "تم تغيير اللغة إلى {language}",
+  "@profileLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  }
 }

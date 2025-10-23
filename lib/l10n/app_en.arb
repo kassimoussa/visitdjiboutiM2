@@ -99,7 +99,19 @@
   "authOrContinueWith": "Or continue with",
   "authTermsAndConditions": "Terms and Conditions",
   "authPrivacyPolicy": "Privacy Policy",
-  
+  "authAcceptTerms": "I accept the",
+  "authAcceptTermsAnd": "and the",
+  "authCreateAccount": "Create my account",
+  "authSignIn": "Sign in",
+  "authNoAccount": "Don't have an account?",
+  "authResetPassword": "Reset password",
+  "authResetPasswordTitle": "Forgot password",
+  "authResetPasswordSubtitle": "Enter your email to receive a reset link",
+  "authSendResetLink": "Send reset link",
+  "authResetEmailSent": "Reset email sent",
+  "authResetEmailSentMessage": "Check your mailbox to reset your password",
+  "authBackToLogin": "Back to login",
+
   "profileTitle": "Profile",
   "profileEditProfile": "Edit profile",
   "profileSettings": "Settings",
@@ -324,9 +336,9 @@
   "authErrorTitle": "Error",
   "authSignUpSuccessTitle": "Registration successful",
   "authConversionProblemTitle": "Conversion problem",
-  "authKeepDiscoveries": "Keep your discoveries!",
-  "authWelcomeToApp": "Welcome to Visit Djibouti",
-  "authCreateAccountDescription": "Create your account to save your favorites and preferences",
+  "authKeepDiscoveries": "Create your Visit Djibouti account",
+  "authWelcomeToApp": "Create your Visit Djibouti account",
+  "authCreateAccountDescription": "Discover everything Djibouti has to offer with your personalized account",
   "authDataPreserved": "Your current data will be preserved",
   "authKeepingDataInfo": "✨ By creating your account, you keep:",
   "authCurrentFavorites": "All your current favorites",
@@ -370,6 +382,10 @@
   "embassiesCannotOpenPhone": "Cannot open phone application",
   "embassiesCannotOpenEmail": "Cannot open email application",
   "embassiesCannotOpenWebsite": "Cannot open website",
+  "embassiesNoForeignFound": "No foreign embassy found",
+  "embassiesNoForeignSubtitle": "Embassy information is not yet available",
+  "embassiesNoDjiboutianFound": "No Djiboutian embassy found",
+  "embassiesNoDjiboutianSubtitle": "Djiboutian embassy information is not yet available",
   
   "essentialsTitle": "Essential Info",
   "essentialsUnavailableInfo": "Information unavailable",
@@ -579,6 +595,15 @@
   "operatorSeeAll": "See All",
   "operatorNoTours": "No tours available",
   "operatorNoToursMessage": "This operator has not published any tours yet.",
+  "operatorPoisServed": "Places served",
+  "operatorNoPois": "No place served",
+  "operatorNoPoisMessage": "This operator does not serve any place at the moment",
+  "operatorTourAddedToFavorites": "Tour added to favorites",
+  "operatorTourRemovedFromFavorites": "Tour removed from favorites",
+  "operatorPoiAddedToFavorites": "POI added to favorites",
+  "operatorPoiRemovedFromFavorites": "POI removed from favorites",
+  "operatorViews": "views",
+  "operatorPlace": "Place",
 
   "homeFeaturedTours": "Guided Tours",
   "homeNoFeaturedTours": "No guided tours available",
@@ -588,6 +613,74 @@
     "placeholders": {
       "count": {
         "type": "int"
+      }
+    }
+  },
+
+  "tourDescription": "Description",
+  "tourItinerary": "Itinerary",
+  "tourHighlights": "Highlights",
+  "tourWhatToBring": "What to bring",
+  "tourPhotoGallery": "Photo gallery",
+  "tourRetry": "Retry",
+  "tourViewOnMap": "View on map",
+  "tourCall": "Call",
+  "tourEmail": "Email",
+
+  "poiCannotCall": "Cannot call {phone}",
+  "@poiCannotCall": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCallError": "Call error: {error}",
+  "@poiCallError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCannotOpenEmail": "Cannot open email",
+  "poiEmailError": "Email opening error: {error}",
+  "@poiEmailError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "profileAnonymousExplorer": "Anonymous Explorer",
+  "profileDiscoverDjibouti": "Discover Djibouti without constraints",
+  "profileKeepDiscoveries": "Keep your discoveries!",
+  "profileCreateAccountBenefits": "Create your account to save your favorites and access exclusive features.",
+  "profileFavorites": "Favorites",
+  "profileEvents": "Events",
+  "profileDiscoveries": "Discoveries",
+  "profileTimeSpent": "Time spent",
+  "profilePersonalInfo": "Personal information",
+  "profilePersonalInfoSubtitle": "Manage your profile data",
+  "profileSecurity": "Security",
+  "profileSecuritySubtitle": "Password and authentication",
+  "profileNotifications": "Notifications",
+  "profileNotificationsSubtitle": "Notification preferences",
+  "profileLanguage": "Language",
+  "profileLogoutSubtitle": "Log out of your account",
+  "profileLogoutConfirm": "Are you sure you want to log out? You will become an anonymous user again.",
+  "profileSettings": "Settings",
+  "profileSettingsSubtitle": "General preferences",
+  "profileHelp": "Help",
+  "profileHelpSubtitle": "Support and FAQ",
+  "profileComingSoon": "coming soon!",
+  "profileComingSoonMessage": "We are working hard to bring you this feature.",
+  "profileLanguageChanged": "Language changed to {language}",
+  "@profileLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
       }
     }
   }

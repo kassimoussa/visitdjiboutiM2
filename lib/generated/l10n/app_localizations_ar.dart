@@ -205,6 +205,44 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authPrivacyPolicy => 'سياسة الخصوصية';
 
   @override
+  String get authAcceptTerms => 'أوافق على';
+
+  @override
+  String get authAcceptTermsAnd => 'و';
+
+  @override
+  String get authCreateAccount => 'إنشاء حسابي';
+
+  @override
+  String get authSignIn => 'تسجيل الدخول';
+
+  @override
+  String get authNoAccount => 'ليس لديك حساب؟';
+
+  @override
+  String get authResetPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get authResetPasswordTitle => 'نسيت كلمة المرور';
+
+  @override
+  String get authResetPasswordSubtitle =>
+      'أدخل بريدك الإلكتروني لتلقي رابط إعادة التعيين';
+
+  @override
+  String get authSendResetLink => 'إرسال رابط إعادة التعيين';
+
+  @override
+  String get authResetEmailSent => 'تم إرسال بريد إعادة التعيين';
+
+  @override
+  String get authResetEmailSentMessage =>
+      'تحقق من صندوق البريد الخاص بك لإعادة تعيين كلمة المرور';
+
+  @override
+  String get authBackToLogin => 'العودة إلى تسجيل الدخول';
+
+  @override
   String get profileTitle => 'الملف الشخصي';
 
   @override
@@ -733,14 +771,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authConversionProblemTitle => 'مشكلة في التحويل';
 
   @override
-  String get authKeepDiscoveries => 'احتفظ باكتشافاتك!';
+  String get authKeepDiscoveries => 'أنشئ حسابك في زيارة جيبوتي';
 
   @override
-  String get authWelcomeToApp => 'مرحباً بك في زيارة جيبوتي';
+  String get authWelcomeToApp => 'أنشئ حسابك في زيارة جيبوتي';
 
   @override
   String get authCreateAccountDescription =>
-      'أنشئ حسابك لحفظ المفضلة والإعدادات';
+      'اكتشف كل ما تقدمه جيبوتي من خلال حسابك الشخصي';
 
   @override
   String get authDataPreserved => 'ستبقى بياناتك الحالية محفوظة';
@@ -862,6 +900,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get embassiesCannotOpenWebsite => 'لا يمكن فتح الموقع الإلكتروني';
+
+  @override
+  String get embassiesNoForeignFound => 'لم يتم العثور على سفارة أجنبية';
+
+  @override
+  String get embassiesNoForeignSubtitle => 'معلومات السفارات ليست متاحة بعد';
+
+  @override
+  String get embassiesNoDjiboutianFound => 'لم يتم العثور على سفارة جيبوتية';
+
+  @override
+  String get embassiesNoDjiboutianSubtitle =>
+      'معلومات السفارات الجيبوتية ليست متاحة بعد';
 
   @override
   String get essentialsTitle => 'المعلومات الأساسية';
@@ -1262,6 +1313,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get operatorNoToursMessage => 'لم ينشر هذا المنظم أي جولات بعد.';
 
   @override
+  String get operatorPoisServed => 'الأماكن المخدومة';
+
+  @override
+  String get operatorNoPois => 'لا توجد أماكن مخدومة';
+
+  @override
+  String get operatorNoPoisMessage =>
+      'هذا المشغل لا يخدم أي مكان في الوقت الحالي';
+
+  @override
+  String get operatorTourAddedToFavorites => 'تمت إضافة الجولة إلى المفضلة';
+
+  @override
+  String get operatorTourRemovedFromFavorites => 'تمت إزالة الجولة من المفضلة';
+
+  @override
+  String get operatorPoiAddedToFavorites => 'تمت إضافة المكان إلى المفضلة';
+
+  @override
+  String get operatorPoiRemovedFromFavorites => 'تمت إزالة المكان من المفضلة';
+
+  @override
+  String get operatorViews => 'مشاهدات';
+
+  @override
+  String get operatorPlace => 'مكان';
+
+  @override
   String get homeFeaturedTours => 'Tours guidés';
 
   @override
@@ -1273,5 +1352,111 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String tourMaxParticipants(int count) {
     return '$count places max';
+  }
+
+  @override
+  String get tourDescription => 'الوصف';
+
+  @override
+  String get tourItinerary => 'خط الرحلة';
+
+  @override
+  String get tourHighlights => 'النقاط البارزة';
+
+  @override
+  String get tourWhatToBring => 'ما يجب إحضاره';
+
+  @override
+  String get tourPhotoGallery => 'معرض الصور';
+
+  @override
+  String get tourRetry => 'إعادة المحاولة';
+
+  @override
+  String get tourViewOnMap => 'عرض على الخريطة';
+
+  @override
+  String get tourCall => 'اتصل';
+
+  @override
+  String get tourEmail => 'البريد الإلكتروني';
+
+  @override
+  String poiCannotCall(String phone) {
+    return 'لا يمكن الاتصال بـ $phone';
+  }
+
+  @override
+  String poiCallError(String error) {
+    return 'خطأ في الاتصال: $error';
+  }
+
+  @override
+  String get poiCannotOpenEmail => 'لا يمكن فتح البريد الإلكتروني';
+
+  @override
+  String poiEmailError(String error) {
+    return 'خطأ في فتح البريد الإلكتروني: $error';
+  }
+
+  @override
+  String get profileAnonymousExplorer => 'مستكشف مجهول';
+
+  @override
+  String get profileDiscoverDjibouti => 'اكتشف جيبوتي بدون قيود';
+
+  @override
+  String get profileKeepDiscoveries => 'احتفظ باكتشافاتك!';
+
+  @override
+  String get profileCreateAccountBenefits =>
+      'أنشئ حسابك لحفظ المفضلات والوصول إلى ميزات حصرية.';
+
+  @override
+  String get profileFavorites => 'المفضلات';
+
+  @override
+  String get profileEvents => 'الأحداث';
+
+  @override
+  String get profileDiscoveries => 'الاكتشافات';
+
+  @override
+  String get profileTimeSpent => 'الوقت المستغرق';
+
+  @override
+  String get profilePersonalInfoSubtitle => 'إدارة بيانات ملفك الشخصي';
+
+  @override
+  String get profileSecuritySubtitle => 'كلمة المرور والمصادقة';
+
+  @override
+  String get profileNotificationsSubtitle => 'تفضيلات الإشعارات';
+
+  @override
+  String get profileLogoutSubtitle => 'تسجيل الخروج من الحساب';
+
+  @override
+  String get profileLogoutConfirm =>
+      'هل أنت متأكد أنك تريد تسجيل الخروج؟ ستصبح مستخدمًا مجهولاً مرة أخرى.';
+
+  @override
+  String get profileSettingsSubtitle => 'التفضيلات العامة';
+
+  @override
+  String get profileHelp => 'المساعدة';
+
+  @override
+  String get profileHelpSubtitle => 'الدعم والأسئلة الشائعة';
+
+  @override
+  String get profileComingSoon => 'قريبًا!';
+
+  @override
+  String get profileComingSoonMessage => 'نحن نعمل بجد لنقدم لك هذه الميزة.';
+
+  @override
+  String profileLanguageChanged(String language) {
+    return 'تم تغيير اللغة إلى $language';
   }
 }

@@ -1206,7 +1206,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       child: ElevatedButton.icon(
                         onPressed: () => _launchOperatorPhone(operator.displayPhone ?? ''),
                         icon: const Icon(Icons.phone, size: 18),
-                        label: const Text('Appeler'),
+                        label: Text(AppLocalizations.of(context)!.tourCall),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
@@ -1224,7 +1224,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       child: ElevatedButton.icon(
                         onPressed: () => _launchOperatorEmail(operator.displayEmail ?? ''),
                         icon: const Icon(Icons.email, size: 18),
-                        label: const Text('Email'),
+                        label: Text(AppLocalizations.of(context)!.tourEmail),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,
@@ -1253,7 +1253,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Impossible d\'appeler $phone'),
+              content: Text(AppLocalizations.of(context)!.poiCannotCall(phone)),
               backgroundColor: Colors.red,
             ),
           );
@@ -1263,7 +1263,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de l\'appel: $e'),
+            content: Text(AppLocalizations.of(context)!.poiCallError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -1280,7 +1280,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Impossible d\'ouvrir l\'email'),
+              content: Text(AppLocalizations.of(context)!.poiCannotOpenEmail),
               backgroundColor: Colors.red,
             ),
           );
@@ -1290,7 +1290,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de l\'ouverture de l\'email: $e'),
+            content: Text(AppLocalizations.of(context)!.poiEmailError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );

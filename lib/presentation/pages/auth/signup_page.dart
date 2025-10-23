@@ -84,187 +84,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 _buildTermsCheckbox(),
                 
                 const SizedBox(height: 24),
-                
+
                 // Bouton d'inscription
                 _buildSignUpButton(),
-                
+
                 const SizedBox(height: 24),
-                
-                // Séparateur
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: Colors.grey[300])),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        AppLocalizations.of(context)!.authOr,
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ),
-                    Expanded(child: Divider(color: Colors.grey[300])),
-                  ],
-                ),
-                
-                const SizedBox(height: 24),
-                
-                // OAuth buttons
-                _buildOAuthButtons(),
-                
-                const SizedBox(height: 24),
-                
-                // Lien vers connexion
-                _buildLoginLink(),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildConversionHeader() {
-    final trigger = widget.conversionTrigger!;
-    
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFF3860F8).withValues(alpha: 0.1),
-            const Color(0xFF009639).withValues(alpha: 0.1),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              trigger == ConversionTrigger.afterFavorites 
-                  ? Icons.favorite 
-                  : Icons.account_circle,
-              color: const Color(0xFF3860F8),
-              size: 24,
-            ),
-          ),
-          
-          const SizedBox(width: 16),
-          
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  trigger.message,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1D2233),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  AppLocalizations.of(context)!.authDataPreserved,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildConversionBenefits() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.authKeepingDataInfo,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1D2233),
-            ),
-          ),
-          const SizedBox(height: 12),
-          
-          // Afficher les bénéfices basés sur l'état réel de l'utilisateur anonyme
-          _buildBenefitItem(Icons.favorite, AppLocalizations.of(context)!.authCurrentFavorites),
-          
-          _buildBenefitItem(Icons.settings, AppLocalizations.of(context)!.authPreferences),
-          _buildBenefitItem(Icons.history, AppLocalizations.of(context)!.authBrowsingHistory),
-          _buildBenefitItem(Icons.location_on, AppLocalizations.of(context)!.authDiscoveredPlaces),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBenefitItem(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: const Color(0xFF009639),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAPIStatusInfo() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.blue[200]!),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.info_outline,
-            size: 20,
-            color: Colors.blue[700],
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              'La conversion peut échouer temporairement. Une inscription normale sera proposée en cas d\'erreur.',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.blue[700],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -276,7 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
         TextFormField(
           controller: _nameController,
           decoration: InputDecoration(
-            labelText: 'Nom complet',
+            labelText: AppLocalizations.of(context)!.authName,
             prefixIcon: const Icon(Icons.person_outline),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -300,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'Email',
+            labelText: AppLocalizations.of(context)!.authEmail,
             prefixIcon: const Icon(Icons.email_outlined),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -311,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
               return 'L\'email est requis';
             }
             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-              return 'Email invalide';
+              return AppLocalizations.of(context)!.eventDetailInvalidEmail;
             }
             return null;
           },
@@ -324,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _passwordController,
           obscureText: _obscurePassword,
           decoration: InputDecoration(
-            labelText: 'Mot de passe',
+            labelText: AppLocalizations.of(context)!.authPassword,
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
               onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
@@ -352,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
           controller: _confirmPasswordController,
           obscureText: _obscureConfirmPassword,
           decoration: InputDecoration(
-            labelText: 'Confirmer le mot de passe',
+            labelText: AppLocalizations.of(context)!.authConfirmPassword,
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
               onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
@@ -386,30 +214,41 @@ class _SignUpPageState extends State<SignUpPage> {
           activeColor: const Color(0xFF3860F8),
         ),
         Expanded(
-          child: GestureDetector(
-            onTap: () => setState(() => _acceptTerms = !_acceptTerms),
-            child: Text.rich(
-              TextSpan(
-                text: 'J\'accepte les ',
-                style: TextStyle(color: Colors.grey[700]),
-                children: [
-                  TextSpan(
-                    text: 'conditions d\'utilisation',
-                    style: TextStyle(
-                      color: const Color(0xFF3860F8),
-                      decoration: TextDecoration.underline,
+          child: Text.rich(
+            TextSpan(
+              text: '${AppLocalizations.of(context)!.authAcceptTerms} ',
+              style: TextStyle(color: Colors.grey[700]),
+              children: [
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/terms-conditions');
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.authTermsAndConditions,
+                      style: const TextStyle(
+                        color: Color(0xFF3860F8),
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                  const TextSpan(text: ' et la '),
-                  TextSpan(
-                    text: 'politique de confidentialité',
-                    style: TextStyle(
-                      color: const Color(0xFF3860F8),
-                      decoration: TextDecoration.underline,
+                ),
+                TextSpan(text: ' ${AppLocalizations.of(context)!.authAcceptTermsAnd} '),
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/privacy-policy');
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.authPrivacyPolicy,
+                      style: const TextStyle(
+                        color: Color(0xFF3860F8),
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -441,7 +280,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               )
             : Text(
-                _authService.isAnonymousUser ? 'Sauvegarder mes découvertes' : 'Créer mon compte',
+                AppLocalizations.of(context)!.authCreateAccount,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -451,78 +290,6 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildOAuthButtons() {
-    return Column(
-      children: [
-        // Google Sign In
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: _isLoading ? null : _handleGoogleSignUp,
-            icon: Image.asset(
-              'assets/images/google_logo.png',
-              width: 20,
-              height: 20,
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.login),
-            ),
-            label: const Text('Continuer avec Google'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              side: BorderSide(color: Colors.grey[300]!),
-            ),
-          ),
-        ),
-        
-        const SizedBox(height: 12),
-        
-        // Facebook Sign In
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: _isLoading ? null : _handleFacebookSignUp,
-            icon: const Icon(Icons.facebook, color: Color(0xFF1877F2)),
-            label: const Text('Continuer avec Facebook'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              side: BorderSide(color: Colors.grey[300]!),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoginLink() {
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          // Naviguer vers la page de connexion
-          Navigator.of(context).pushReplacementNamed('/login');
-        },
-        child: Text.rich(
-          TextSpan(
-            text: 'Vous avez déjà un compte ? ',
-            style: TextStyle(color: Colors.grey[600]),
-            children: [
-              TextSpan(
-                text: 'Se connecter',
-                style: TextStyle(
-                  color: const Color(0xFF3860F8),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   Future<void> _handleSignUp() async {
     if (!_formKey.currentState!.validate()) return;
@@ -576,16 +343,6 @@ class _SignUpPageState extends State<SignUpPage> {
     } finally {
       setState(() => _isLoading = false);
     }
-  }
-
-  Future<void> _handleGoogleSignUp() async {
-    // À implémenter avec Google Sign In
-    _showErrorDialog('Connexion Google pas encore implémentée');
-  }
-
-  Future<void> _handleFacebookSignUp() async {
-    // À implémenter avec Facebook Login
-    _showErrorDialog('Connexion Facebook pas encore implémentée');
   }
 
   void _showSimpleSuccessDialog() {
@@ -653,7 +410,7 @@ class _SignUpPageState extends State<SignUpPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -664,7 +421,7 @@ class _SignUpPageState extends State<SignUpPage> {
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Inscription normale'),
+            child: Text(AppLocalizations.of(context)!.authRegister),
           ),
         ],
       ),

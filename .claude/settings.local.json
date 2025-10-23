@@ -28,7 +28,9 @@
       "Bash(nc:*)",
       "Bash(/mnt/c/flutter/bin/dart run build_runner build:*)",
       "Read(//mnt/c/flutter/bin/**)",
-      "Bash(cmd.exe /c \"C:\\flutter\\bin\\dart.bat run build_runner build --delete-conflicting-outputs\")"
+      "Bash(cmd.exe /c \"C:\\flutter\\bin\\dart.bat run build_runner build --delete-conflicting-outputs\")",
+      "Bash(pgrep -f \"flutter run\")",
+      "Bash(xargs -I {} kill -USR1 {})"
     ],
     "deny": [],
     "ask": []

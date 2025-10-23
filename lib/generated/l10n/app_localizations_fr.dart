@@ -205,6 +205,44 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authPrivacyPolicy => 'Politique de confidentialité';
 
   @override
+  String get authAcceptTerms => 'J\'accepte les';
+
+  @override
+  String get authAcceptTermsAnd => 'et la';
+
+  @override
+  String get authCreateAccount => 'Créer mon compte';
+
+  @override
+  String get authSignIn => 'Se connecter';
+
+  @override
+  String get authNoAccount => 'Vous n\'avez pas de compte ?';
+
+  @override
+  String get authResetPassword => 'Réinitialiser le mot de passe';
+
+  @override
+  String get authResetPasswordTitle => 'Mot de passe oublié';
+
+  @override
+  String get authResetPasswordSubtitle =>
+      'Entrez votre email pour recevoir un lien de réinitialisation';
+
+  @override
+  String get authSendResetLink => 'Envoyer le lien';
+
+  @override
+  String get authResetEmailSent => 'Email de réinitialisation envoyé';
+
+  @override
+  String get authResetEmailSentMessage =>
+      'Vérifiez votre boîte mail pour réinitialiser votre mot de passe';
+
+  @override
+  String get authBackToLogin => 'Retour à la connexion';
+
+  @override
   String get profileTitle => 'Profil';
 
   @override
@@ -743,14 +781,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authConversionProblemTitle => 'Problème de conversion';
 
   @override
-  String get authKeepDiscoveries => 'Gardez vos découvertes !';
+  String get authKeepDiscoveries => 'Créez votre compte Visit Djibouti';
 
   @override
-  String get authWelcomeToApp => 'Bienvenue sur Visit Djibouti';
+  String get authWelcomeToApp => 'Créez votre compte Visit Djibouti';
 
   @override
   String get authCreateAccountDescription =>
-      'Créez votre compte pour sauvegarder vos favoris et préférences';
+      'Découvrez tout ce que Djibouti a à offrir avec votre compte personnalisé';
 
   @override
   String get authDataPreserved => 'Vos données actuelles seront préservées';
@@ -875,6 +913,21 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get embassiesCannotOpenWebsite => 'Impossible d\'ouvrir le site web';
+
+  @override
+  String get embassiesNoForeignFound => 'Aucune ambassade étrangère trouvée';
+
+  @override
+  String get embassiesNoForeignSubtitle =>
+      'Les informations des ambassades ne sont pas encore disponibles';
+
+  @override
+  String get embassiesNoDjiboutianFound =>
+      'Aucune ambassade djiboutienne trouvée';
+
+  @override
+  String get embassiesNoDjiboutianSubtitle =>
+      'Les informations des ambassades djiboutiennes ne sont pas encore disponibles';
 
   @override
   String get essentialsTitle => 'Infos Essentielles';
@@ -1281,6 +1334,34 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cet opérateur n\'a pas encore publié de tours.';
 
   @override
+  String get operatorPoisServed => 'Lieux desservis';
+
+  @override
+  String get operatorNoPois => 'Aucun lieu desservi';
+
+  @override
+  String get operatorNoPoisMessage =>
+      'Cet opérateur ne dessert aucun lieu pour le moment';
+
+  @override
+  String get operatorTourAddedToFavorites => 'Tour ajouté aux favoris';
+
+  @override
+  String get operatorTourRemovedFromFavorites => 'Tour retiré des favoris';
+
+  @override
+  String get operatorPoiAddedToFavorites => 'POI ajouté aux favoris';
+
+  @override
+  String get operatorPoiRemovedFromFavorites => 'POI retiré des favoris';
+
+  @override
+  String get operatorViews => 'vues';
+
+  @override
+  String get operatorPlace => 'Lieu';
+
+  @override
   String get homeFeaturedTours => 'Tours guidés';
 
   @override
@@ -1292,5 +1373,112 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String tourMaxParticipants(int count) {
     return '$count places max';
+  }
+
+  @override
+  String get tourDescription => 'Description';
+
+  @override
+  String get tourItinerary => 'Itinéraire';
+
+  @override
+  String get tourHighlights => 'Points forts';
+
+  @override
+  String get tourWhatToBring => 'À apporter';
+
+  @override
+  String get tourPhotoGallery => 'Galerie photos';
+
+  @override
+  String get tourRetry => 'Réessayer';
+
+  @override
+  String get tourViewOnMap => 'Voir sur la carte';
+
+  @override
+  String get tourCall => 'Appeler';
+
+  @override
+  String get tourEmail => 'Email';
+
+  @override
+  String poiCannotCall(String phone) {
+    return 'Impossible d\'appeler $phone';
+  }
+
+  @override
+  String poiCallError(String error) {
+    return 'Erreur lors de l\'appel: $error';
+  }
+
+  @override
+  String get poiCannotOpenEmail => 'Impossible d\'ouvrir l\'email';
+
+  @override
+  String poiEmailError(String error) {
+    return 'Erreur lors de l\'ouverture de l\'email: $error';
+  }
+
+  @override
+  String get profileAnonymousExplorer => 'Explorateur Anonyme';
+
+  @override
+  String get profileDiscoverDjibouti => 'Découvrez Djibouti sans contraintes';
+
+  @override
+  String get profileKeepDiscoveries => 'Gardez vos découvertes !';
+
+  @override
+  String get profileCreateAccountBenefits =>
+      'Créez votre compte pour sauvegarder vos favoris et accéder à des fonctionnalités exclusives.';
+
+  @override
+  String get profileFavorites => 'Favoris';
+
+  @override
+  String get profileEvents => 'Événements';
+
+  @override
+  String get profileDiscoveries => 'Découvertes';
+
+  @override
+  String get profileTimeSpent => 'Temps passé';
+
+  @override
+  String get profilePersonalInfoSubtitle => 'Gérer vos données de profil';
+
+  @override
+  String get profileSecuritySubtitle => 'Mot de passe et authentification';
+
+  @override
+  String get profileNotificationsSubtitle => 'Préférences de notification';
+
+  @override
+  String get profileLogoutSubtitle => 'Se déconnecter du compte';
+
+  @override
+  String get profileLogoutConfirm =>
+      'Êtes-vous sûr de vouloir vous déconnecter ? Vous redeviendrez un utilisateur anonyme.';
+
+  @override
+  String get profileSettingsSubtitle => 'Préférences générales';
+
+  @override
+  String get profileHelp => 'Aide';
+
+  @override
+  String get profileHelpSubtitle => 'Support et FAQ';
+
+  @override
+  String get profileComingSoon => 'sera bientôt disponible !';
+
+  @override
+  String get profileComingSoonMessage =>
+      'Nous travaillons dur pour vous apporter cette fonctionnalité.';
+
+  @override
+  String profileLanguageChanged(String language) {
+    return 'Langue changée vers $language';
   }
 }
