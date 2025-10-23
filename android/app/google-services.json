@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "324752052195",
+    "project_id": "visit-djibouti",
+    "storage_bucket": "visit-djibouti.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324752052195:android:a04501c3b04ef2f4cf1ad6",
+        "android_client_info": {
+          "package_name": "com.example.visitdjibouti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_9tSCVDZxgO5_IhN-WuZ4FuOdxKXQ1jY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

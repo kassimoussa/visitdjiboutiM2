@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:vd_gem/presentation/pages/splash_page.dart';
 import 'package:vd_gem/presentation/pages/main_navigation_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
@@ -14,38 +16,58 @@ import 'package:vd_gem/core/services/localization_service.dart';
 import 'package:vd_gem/core/services/api_language_sync_service.dart';
 import 'package:vd_gem/core/services/preload_service.dart';
 import 'package:vd_gem/core/services/connectivity_service.dart';
+import 'package:vd_gem/core/services/fcm_service.dart';
 import 'package:vd_gem/core/utils/responsive.dart';
 import 'package:vd_gem/generated/l10n/app_localizations.dart';
+import 'package:vd_gem/firebase_options.dart';
 
 // GlobalKey pour pouvoir naviguer depuis les services
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+// Handler pour les messages Firebase en background
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await firebaseMessagingBackgroundHandler(message);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Configure Firebase Messaging background handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   // Initialize services in correct order
-  
+
   // 1. Initialize LocalizationService FIRST (to load saved language)
   await LocalizationService().initialize();
-  
+
   // 2. Initialize ApiClient AFTER localization (so it gets correct headers)
   ApiClient().init();
-  
+
   // 3. Initialize other services
   await AnonymousAuthService().initializeAnonymousUser();
-  
+
   // 4. Initialize API-UI language synchronization
   ApiLanguageSyncService().initialize();
-  
+
   // 5. Force initial language sync (should be redundant now but keep it)
   ApiClient().updateLanguageHeader();
-  
+
   // Initialize simple connectivity service
   await ConnectivityService().initialize();
-  
+
   // Initialize preloading service
   PreloadService().initialize();
-  
+
+  // Initialize FCM service
+  await FCMService().initialize();
+
   runApp(const VdGemApp());
 }
 
