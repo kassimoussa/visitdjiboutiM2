@@ -306,43 +306,46 @@ class AnonymousAuthService {
       final response = await _apiClient.dio.post(
         '/auth/convert-anonymous',
         data: requestData,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${_currentAnonymousUser!.token}',
-            ...ApiConstants.defaultHeaders,
-          },
-        ),
+        // L'intercepteur ajoute automatiquement le token d'authentification
       );
 
       final rawData = response.data as Map<String, dynamic>;
-      final bool success = rawData['success'] == true;
+      // L'API retourne "status":"success" au lieu de "success":true
+      final String? status = rawData['status'] as String?;
+      final bool success = status == 'success' || rawData['success'] == true;
       final message = rawData['message'] as String?;
-      
+
+      print('[DEBUG] Statut de conversion: $status, Success: $success');
+
       if (success) {
         // Extraire et stocker les données utilisateur depuis la réponse
         final data = rawData['data'] as Map<String, dynamic>?;
         if (data != null) {
           final userMap = data['user'] as Map<String, dynamic>?;
           final token = data['token'] as String?;
-          
+
+          print('[DEBUG] UserMap trouvé: ${userMap != null}, Token trouvé: ${token != null}');
+
           if (userMap != null && token != null) {
             final user = User.fromJson(userMap);
             _currentUser = user;
             _authToken = token;
             await _storeUserData(user, token);
+
+            print('[DEBUG] Utilisateur converti et stocké: ${user.name}, Token: ${token.substring(0, 10)}...');
           }
         }
-        
+
         // Supprimer les données anonymes locales
         await _clearAnonymousData();
-        
+
         return ApiResponse<Map<String, dynamic>>(
           success: success,
           message: message,
           data: data,
         );
       }
-      
+
       return ApiResponse<Map<String, dynamic>>(
         success: success,
         message: message ?? 'Erreur lors de la conversion',

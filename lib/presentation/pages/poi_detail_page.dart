@@ -10,6 +10,7 @@ import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'tour_operator_detail_page.dart';
+import 'poi_gallery_page.dart';
 
 class PoiDetailPage extends StatefulWidget {
   final Poi poi;
@@ -457,80 +458,93 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       );
     }
 
-    return SizedBox(
-      height: 250,
-      width: double.infinity,
-      child: Stack(
-        children: [
-          PageView.builder(
-            controller: _imagePageController,
-            physics: const BouncingScrollPhysics(),
-            onPageChanged: (index) {
-              setState(() {
-                _currentImageIndex = index;
-              });
-            },
-            itemCount: imageUrls.length,
-            itemBuilder: (context, index) {
-              return Image.network(
-                imageUrls[index],
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: const Color(0xFFE8D5A3),
-                    child: const Center(
-                      child: Icon(
-                        Icons.place,
-                        size: 80,
-                        color: Color(0xFF3860F8),
-                      ),
-                    ),
-                  );
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    color: const Color(0xFFE8D5A3),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFF3860F8),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imageUrls.asMap().entries.map((entry) {
-                final isActive = entry.key == _currentImageIndex;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _currentImageIndex = entry.key;
-                    });
-                  },
-                  child: Container(
-                    width: isActive ? 12 : 8,
-                    height: isActive ? 12 : 8,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
-                      border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
-                    ),
-                  ),
-                );
-              }).toList(),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PoiGalleryPage(
+              poiName: poi.name,
+              imageUrls: imageUrls,
             ),
           ),
-        ],
+        );
+      },
+      child: SizedBox(
+        height: 250,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            PageView.builder(
+              controller: _imagePageController,
+              physics: const BouncingScrollPhysics(),
+              onPageChanged: (index) {
+                setState(() {
+                  _currentImageIndex = index;
+                });
+              },
+              itemCount: imageUrls.length,
+              itemBuilder: (context, index) {
+                return Image.network(
+                  imageUrls[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: const Color(0xFFE8D5A3),
+                      child: const Center(
+                        child: Icon(
+                          Icons.place,
+                          size: 80,
+                          color: Color(0xFF3860F8),
+                        ),
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: const Color(0xFFE8D5A3),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF3860F8),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: imageUrls.asMap().entries.map((entry) {
+                  final isActive = entry.key == _currentImageIndex;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _currentImageIndex = entry.key;
+                      });
+                    },
+                    child: Container(
+                      width: isActive ? 12 : 8,
+                      height: isActive ? 12 : 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

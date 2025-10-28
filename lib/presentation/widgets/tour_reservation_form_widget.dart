@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../core/models/tour.dart';
-import '../../core/models/tour_reservation.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 

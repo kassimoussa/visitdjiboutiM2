@@ -546,6 +546,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonSkip => 'Passer';
 
   @override
+  String get commonAll => 'Tout';
+
+  @override
   String get commonSeeAll => 'Voir tout';
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/tour_operator_service.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/models/api_response.dart';
@@ -169,7 +170,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 1,
-                              childAspectRatio: 3.2,
+                              childAspectRatio: 2.5,
                               mainAxisSpacing: 16,
                             ),
                             itemCount: _operators.length,
@@ -224,6 +225,51 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
             padding: const EdgeInsets.all(20),
             child: Row(
               children: [
+                // Logo section
+                if (operator.logo != null && operator.logoUrl.isNotEmpty)
+                  Container(
+                    width: 70,
+                    height: 70,
+                    margin: const EdgeInsets.only(right: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.grey[200]!,
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: CachedNetworkImage(
+                        imageUrl: operator.logoUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          color: Colors.grey[100],
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          child: const Icon(
+                            Icons.business,
+                            color: Color(0xFF3860F8),
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 // Content section
                 Expanded(
                   child: Column(
@@ -263,12 +309,13 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (operator.hasPhone)
                             _buildContactChip(Icons.phone, operator.displayPhone),
                           if (operator.hasPhone && operator.hasEmail)
-                            const SizedBox(width: 8),
+                            const SizedBox(height: 6),
                           if (operator.hasEmail)
                             _buildContactChip(Icons.email, operator.displayEmail),
                         ],

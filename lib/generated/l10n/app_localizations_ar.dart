@@ -536,6 +536,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonSkip => 'تخطي';
 
   @override
+  String get commonAll => 'الكل';
+
+  @override
   String get commonSeeAll => 'عرض الكل';
 
   @override

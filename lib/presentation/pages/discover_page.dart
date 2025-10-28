@@ -338,7 +338,37 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
         ),
 
-        // Filtres supprimés - Interface simplifiée
+        // Badges de filtrage par catégorie parente
+        if (_categories.isNotEmpty)
+          Container(
+            height: 50,
+            margin: const EdgeInsets.only(bottom: 8),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: _categories.length + 1, // +1 pour "Tout"
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  // Badge "Tout" pour réinitialiser le filtre
+                  return _buildCategoryBadge(
+                    label: AppLocalizations.of(context)!.commonAll,
+                    isSelected: _selectedCategory == null,
+                    onTap: () => _onCategoryChanged(null),
+                    icon: Icons.grid_view,
+                  );
+                }
+
+                final category = _categories[index - 1];
+                return _buildCategoryBadge(
+                  label: category.name,
+                  isSelected: _selectedCategory?.id == category.id,
+                  onTap: () => _onCategoryChanged(category),
+                  icon: _getCategoryIcon(category.icon),
+                  color: category.color != null ? Color(int.parse(category.color!.replaceFirst('#', '0xFF'))) : null,
+                );
+              },
+            ),
+          ),
 
         const SizedBox(height: 8),
 
@@ -466,8 +496,101 @@ class _DiscoverPageState extends State<DiscoverPage> {
     );
   }
 
-  
+  Widget _buildCategoryBadge({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+    IconData? icon,
+    Color? color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: FilterChip(
+        label: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(
+                icon,
+                size: 18,
+                color: isSelected ? Colors.white : (color ?? const Color(0xFF3860F8)),
+              ),
+              const SizedBox(width: 6),
+            ],
+            Text(label),
+          ],
+        ),
+        selected: isSelected,
+        onSelected: (_) => onTap(),
+        backgroundColor: Colors.grey[100],
+        selectedColor: color ?? const Color(0xFF3860F8),
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.white : Colors.black87,
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          fontSize: 14,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: isSelected ? (color ?? const Color(0xFF3860F8)) : Colors.grey[300]!,
+            width: 1,
+          ),
+        ),
+      ),
+    );
+  }
 
+  IconData _getCategoryIcon(String? iconName) {
+    if (iconName == null || iconName.isEmpty) return Icons.category;
+
+    switch (iconName.toLowerCase()) {
+      case 'restaurant':
+      case 'dining':
+        return Icons.restaurant;
+      case 'hotel':
+      case 'accommodation':
+        return Icons.hotel;
+      case 'beach':
+      case 'plage':
+        return Icons.beach_access;
+      case 'mountain':
+      case 'montagne':
+        return Icons.terrain;
+      case 'museum':
+      case 'musée':
+        return Icons.museum;
+      case 'shopping':
+      case 'magasin':
+        return Icons.shopping_bag;
+      case 'park':
+      case 'parc':
+        return Icons.park;
+      case 'entertainment':
+      case 'divertissement':
+        return Icons.celebration;
+      case 'sport':
+        return Icons.sports;
+      case 'nature':
+        return Icons.nature;
+      case 'culture':
+        return Icons.palette;
+      case 'history':
+      case 'histoire':
+        return Icons.history_edu;
+      case 'adventure':
+      case 'aventure':
+        return Icons.explore;
+      case 'wildlife':
+      case 'faune':
+        return Icons.pets;
+      case 'religious':
+      case 'religieux':
+        return Icons.place;
+      default:
+        return Icons.category;
+    }
+  }
 
   @override
   void dispose() {

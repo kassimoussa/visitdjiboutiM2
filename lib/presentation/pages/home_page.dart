@@ -137,19 +137,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _startAutoScroll() {
+    // Auto-scroll désactivé temporairement - Mode manuel uniquement
     _timer?.cancel();
-    if (_featuredPois.length > 1) {
-      _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-        if (_poisPageController != null && _poisPageController!.hasClients) {
-          _currentPage++;
-          _poisPageController!.animateToPage(
-            _currentPage,
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.easeInOut,
-          );
-        }
-      });
-    }
+    // if (_featuredPois.length > 1) {
+    //   _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+    //     if (_poisPageController != null && _poisPageController!.hasClients) {
+    //       _currentPage++;
+    //       _poisPageController!.animateToPage(
+    //         _currentPage,
+    //         duration: const Duration(milliseconds: 800),
+    //         curve: Curves.easeInOut,
+    //       );
+    //     }
+    //   });
+    // }
   }
 
   Future<void> _loadUpcomingEvents() async {

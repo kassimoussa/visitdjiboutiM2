@@ -31,8 +31,8 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
   List<Tour> _operatorTours = [];
   List<Poi> _operatorPois = [];
   bool _isLoadingTours = true;
-  Map<int, bool> _tourFavoriteStatus = {};
-  Map<int, bool> _poiFavoriteStatus = {};
+  final Map<int, bool> _tourFavoriteStatus = {};
+  final Map<int, bool> _poiFavoriteStatus = {};
   bool _showTitle = false;
 
   TourOperator get operator => _operatorWithTours ?? widget.operator;

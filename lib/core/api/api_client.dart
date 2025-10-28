@@ -145,4 +145,32 @@ class ApiClient {
       options: options,
     );
   }
+
+  /// Envoyer le token FCM au backend
+  Future<bool> sendFCMToken(String fcmToken, String pushProvider) async {
+    try {
+      print('[API] Envoi du token FCM au backend...');
+
+      final response = await post(
+        ApiConstants.deviceUpdate,
+        data: {
+          'push_token': fcmToken,
+          'push_provider': pushProvider,
+          'notification_permission': true,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('[API] Token FCM envoyé avec succès');
+        print('[API] Réponse: ${response.data}');
+        return true;
+      } else {
+        print('[API] Erreur lors de l\'envoi du token: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('[API] Exception lors de l\'envoi du token FCM: $e');
+      return false;
+    }
+  }
 }

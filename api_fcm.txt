@@ -1,0 +1,47 @@
+ POST /api/device/update
+
+  Détails:
+
+  - Authentification: Requise (Sanctum guard)
+  - Fichier: /app/Http/Controllers/Api/DeviceController.php:18
+  - Route: Définie dans /routes/api.php:191
+
+  Paramètres pour FCM:
+
+  {
+    "push_token": "le_token_fcm_de_firebase",
+    "push_provider": "fcm",  // ou "apns" pour iOS
+    "notification_permission": true
+  }
+
+  Validation:
+
+  - push_token: nullable|string|max:500
+  - push_provider: nullable|string|in:fcm,apns
+
+  Stockage dans la BDD:
+
+  - Table: app_users
+  - Colonnes: push_token (varchar 500) et push_provider (string)
+
+  Exemple d'utilisation:
+
+  curl -X POST http://localhost/api/device/update \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer {user_token}" \
+    -d '{
+      "push_token": "dGhpc19pc19hX3Rlc3RfdG9rZW4...",
+      "push_provider": "fcm",
+      "notification_permission": true
+    }'
+
+  Réponse:
+
+  {
+    "success": true,
+    "message": "Device information updated successfully",
+    "data": {
+      "device_info_updated_at": "2025-01-26T10:30:00.000000Z",
+      "session_count": 5
+    }
+  }

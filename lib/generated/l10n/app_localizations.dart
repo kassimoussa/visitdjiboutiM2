@@ -1120,6 +1120,12 @@ abstract class AppLocalizations {
   /// **'Passer'**
   String get commonSkip;
 
+  /// No description provided for @commonAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout'**
+  String get commonAll;
+
   /// No description provided for @commonSeeAll.
   ///
   /// In fr, this message translates to:

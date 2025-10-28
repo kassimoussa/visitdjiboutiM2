@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import '../api/api_client.dart';
 
 /// Service pour gérer les notifications Firebase Cloud Messaging (FCM)
 class FCMService {
@@ -128,10 +129,9 @@ class FCMService {
       _fcmToken = await _firebaseMessaging.getToken();
       print('[FCM] Token obtenu: $_fcmToken');
 
-      // Sauvegarder le token localement
+      // Sauvegarder le token localement et l'envoyer au backend
       if (_fcmToken != null) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('fcm_token', _fcmToken!);
+        await _saveToken(_fcmToken!);
       }
 
       // Écouter les changements de token
@@ -151,10 +151,17 @@ class FCMService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('fcm_token', token);
 
-      // TODO: Envoyer le token au backend
-      // await ApiClient().sendFCMToken(token);
+      // Envoyer le token au backend
+      final pushProvider = Platform.isIOS ? 'apns' : 'fcm';
+      final success = await ApiClient().sendFCMToken(token, pushProvider);
 
-      print('[FCM] Token sauvegardé');
+      if (success) {
+        print('[FCM] Token envoyé au backend avec succès');
+      } else {
+        print('[FCM] Échec de l\'envoi du token au backend');
+      }
+
+      print('[FCM] Token sauvegardé localement');
     } catch (e) {
       print('[FCM] Erreur lors de la sauvegarde du token: $e');
     }

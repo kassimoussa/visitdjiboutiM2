@@ -30,7 +30,14 @@
       "Read(//mnt/c/flutter/bin/**)",
       "Bash(cmd.exe /c \"C:\\flutter\\bin\\dart.bat run build_runner build --delete-conflicting-outputs\")",
       "Bash(pgrep -f \"flutter run\")",
-      "Bash(xargs -I {} kill -USR1 {})"
+      "Bash(xargs -I {} kill -USR1 {})",
+      "Bash(keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android)",
+      "Bash(./gradlew signingReport)",
+      "Read(//Users/ctd-dsi-kassim/.android/**)",
+      "Bash(keytool -list -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android)",
+      "Bash(pod install)",
+      "Bash(export LANG=en_US.UTF-8)",
+      "Bash(xcodebuild:*)"
     ],
     "deny": [],
     "ask": []
