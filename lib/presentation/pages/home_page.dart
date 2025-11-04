@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/tour_service.dart';
+import '../../core/services/activity_service.dart';
 import '../../core/services/cache_service.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/simple_tour.dart';
+import '../../core/models/simple_activity.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
 import '../widgets/simple_tour_card.dart';
+import '../widgets/simple_activity_card.dart';
 import '../../core/models/event.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/event_list_response.dart';
@@ -20,6 +23,7 @@ import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 import 'tour_operators_page.dart';
 import 'tours_page.dart';
+import 'activities_page.dart';
 import 'essentials_page.dart';
 import 'embassies_page.dart';
 
@@ -35,15 +39,18 @@ class _HomePageState extends State<HomePage> {
   final PoiService _poiService = PoiService();
   final EventService _eventService = EventService();
   final TourService _tourService = TourService();
+  final ActivityService _activityService = ActivityService();
   final CacheService _cacheService = CacheService();
   final LocalizationService _localizationService = LocalizationService();
 
   List<Poi> _featuredPois = [];
   List<Event> _upcomingEvents = [];
   List<SimpleTour> _featuredTours = [];
+  List<SimpleActivity> _featuredActivities = [];
   bool _isLoadingPois = true;
   bool _isLoadingEvents = true;
   bool _isLoadingTours = true;
+  bool _isLoadingActivities = true;
 
   PageController? _poisPageController;
   PageController? _eventsPageController;
@@ -63,6 +70,7 @@ class _HomePageState extends State<HomePage> {
       _loadFeaturedPois();
       _loadUpcomingEvents();
       _loadFeaturedTours();
+      _loadFeaturedActivities();
     });
   }
 
@@ -189,6 +197,21 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       if (mounted) setState(() => _isLoadingTours = false);
+    }
+  }
+
+  Future<void> _loadFeaturedActivities() async {
+    try {
+      final activities = await _activityService.getFeaturedActivities(limit: 5);
+
+      if (mounted) {
+        setState(() {
+          _featuredActivities = activities;
+          _isLoadingActivities = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingActivities = false);
     }
   }
 
@@ -320,6 +343,18 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 12),
             _buildFeaturedToursCarousel(),
+
+            const SizedBox(height: 24),
+
+            _buildSectionHeader(
+              title: 'Activités populaires',
+              onSeeAll: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ActivitiesPage(showFeaturedOnly: true)),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildFeaturedActivitiesCarousel(),
 
             const SizedBox(height: 24),
 
@@ -515,6 +550,49 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: SimpleTourCard(tour: tour),
+                      ),
+                    );
+                  },
+                ),
+    );
+  }
+
+  Widget _buildFeaturedActivitiesCarousel() {
+    PageController activitiesPageController = PageController(viewportFraction: 0.85);
+
+    return SizedBox(
+      height: 340.h,
+      child: _isLoadingActivities
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
+          : _featuredActivities.isEmpty
+              ? Center(
+                  child: Text(
+                    'Aucune activité disponible',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                  ),
+                )
+              : PageView.builder(
+                  controller: activitiesPageController,
+                  itemCount: _featuredActivities.length,
+                  itemBuilder: (context, index) {
+                    final activity = _featuredActivities[index];
+                    return AnimatedBuilder(
+                      animation: activitiesPageController,
+                      builder: (context, child) {
+                        double scale = 1.0;
+                        if (activitiesPageController.position.haveDimensions) {
+                          double page = activitiesPageController.page ?? 0.0;
+                          double difference = (page - index).abs();
+                          scale = max(0.85, 1.0 - difference * 0.15);
+                        }
+                        return Transform.scale(
+                          scale: scale,
+                          child: child,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: SimpleActivityCard(activity: activity),
                       ),
                     );
                   },

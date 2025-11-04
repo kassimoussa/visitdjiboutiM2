@@ -60,7 +60,17 @@ class ApiConstants {
   static String tourReservationById(int reservationId) => '/tour-reservations/$reservationId';
   static String tourReservationUpdate(int reservationId) => '/tour-reservations/$reservationId';
   static String tourReservationCancel(int reservationId) => '/tour-reservations/$reservationId/cancel';
-  
+
+  // Activities endpoints
+  static const String activities = '/activities';
+  static const String activitiesNearby = '/activities/nearby';
+  static String activityById(dynamic id) => '/activities/$id';
+  static String activityRegister(int activityId) => '/activities/$activityId/register';
+
+  // Activity registrations endpoints
+  static const String activityRegistrations = '/activity-registrations';
+  static String activityRegistrationCancel(int registrationId) => '/activity-registrations/$registrationId';
+
   // Default headers
   static Map<String, String> get defaultHeaders => {
     'Content-Type': 'application/json',
