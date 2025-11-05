@@ -2,12 +2,13 @@
 
 ## Table des Matières
 1. [Vue d'ensemble](#vue-densemble)
-2. [Activités](#activités)
-3. [Avis (Reviews)](#avis-reviews)
-4. [Commentaires](#commentaires)
-5. [Modèles de Données](#modèles-de-données)
-6. [Cas d'Usage UI/UX](#cas-dusage-uiux)
-7. [Gestion des Erreurs](#gestion-des-erreurs)
+2. [Régions](#régions)
+3. [Activités](#activités)
+4. [Avis (Reviews)](#avis-reviews)
+5. [Commentaires](#commentaires)
+6. [Modèles de Données](#modèles-de-données)
+7. [Cas d'Usage UI/UX](#cas-dusage-uiux)
+8. [Gestion des Erreurs](#gestion-des-erreurs)
 
 ---
 
@@ -25,6 +26,301 @@
 - ✅ Système de votes/likes avec protection double vote
 - ✅ Commentaires imbriqués (réponses)
 - ✅ Pagination standard (15-50 items)
+
+---
+
+## Régions
+
+### 📋 Concept
+Les régions permettent de filtrer et d'explorer tout le contenu touristique (POIs, Events, Activities) par zone géographique de Djibouti. Le système supporte 6 régions officielles.
+
+### 🔗 Endpoints API
+
+#### 1. Liste des Régions avec Compteurs
+```http
+GET /api/regions
+```
+
+**Description:** Retourne la liste de toutes les régions avec le nombre de POIs, événements et activités par région.
+
+**Headers:**
+- `Accept-Language: fr` (optionnel, défaut: fr)
+
+**Exemple Requête:**
+```bash
+curl -X GET "https://api.example.com/api/regions" \
+  -H "Accept-Language: fr"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "name": "Djibouti",
+      "pois_count": 25,
+      "events_count": 12,
+      "activities_count": 8,
+      "total_count": 45
+    },
+    {
+      "name": "Ali Sabieh",
+      "pois_count": 8,
+      "events_count": 3,
+      "activities_count": 2,
+      "total_count": 13
+    },
+    {
+      "name": "Dikhil",
+      "pois_count": 10,
+      "events_count": 5,
+      "activities_count": 4,
+      "total_count": 19
+    },
+    {
+      "name": "Tadjourah",
+      "pois_count": 15,
+      "events_count": 7,
+      "activities_count": 6,
+      "total_count": 28
+    },
+    {
+      "name": "Obock",
+      "pois_count": 6,
+      "events_count": 2,
+      "activities_count": 3,
+      "total_count": 11
+    },
+    {
+      "name": "Arta",
+      "pois_count": 4,
+      "events_count": 1,
+      "activities_count": 2,
+      "total_count": 7
+    }
+  ]
+}
+```
+
+**Cas d'usage:**
+- Page de sélection de région
+- Menu de filtrage par région
+- Carte interactive avec compteurs
+
+---
+
+#### 2. Contenu d'une Région Spécifique
+```http
+GET /api/regions/{region}
+```
+
+**Description:** Retourne tous les POIs, événements et activités publiés pour une région donnée avec leurs traductions.
+
+**Paramètres URL:**
+| Paramètre | Type | Requis | Valeurs Possibles |
+|-----------|------|--------|-------------------|
+| `region` | string | ✅ | `Djibouti`, `Ali Sabieh`, `Dikhil`, `Tadjourah`, `Obock`, `Arta` |
+
+**Headers:**
+- `Accept-Language: fr` (optionnel, défaut: fr)
+
+**Exemple Requête:**
+```bash
+curl -X GET "https://api.example.com/api/regions/Djibouti" \
+  -H "Accept-Language: fr"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "region": "Djibouti",
+    "summary": {
+      "pois_count": 25,
+      "events_count": 12,
+      "activities_count": 8,
+      "total_count": 45
+    },
+    "pois": [
+      {
+        "id": 1,
+        "slug": "lac-assal",
+        "name": "Lac Assal",
+        "short_description": "Le point le plus bas d'Afrique...",
+        "description": "Description complète...",
+        "address": "Route de Tadjourah",
+        "region": "Djibouti",
+        "latitude": 11.6586,
+        "longitude": 42.4086,
+        "is_featured": true,
+        "featured_image": {
+          "id": 10,
+          "url": "https://api.example.com/storage/media/images/lac-assal.jpg"
+        },
+        "categories": [
+          {
+            "id": 1,
+            "name": "Nature"
+          },
+          {
+            "id": 5,
+            "name": "Sites Naturels"
+          }
+        ]
+      }
+      // ... autres POIs
+    ],
+    "events": [
+      {
+        "id": 5,
+        "slug": "festival-des-nomades",
+        "title": "Festival des Nomades",
+        "short_description": "Célébration de la culture nomade...",
+        "description": "Description complète...",
+        "location": "Place Mahmoud Harbi",
+        "region": "Djibouti",
+        "latitude": 11.5889,
+        "longitude": 43.1456,
+        "start_date": "2025-03-15",
+        "end_date": "2025-03-17",
+        "start_time": "09:00",
+        "end_time": "22:00",
+        "price": 0,
+        "is_featured": true,
+        "featured_image": {
+          "id": 25,
+          "url": "https://api.example.com/storage/media/images/festival.jpg"
+        },
+        "categories": [
+          {
+            "id": 8,
+            "name": "Culture"
+          }
+        ]
+      }
+      // ... autres Events
+    ],
+    "activities": [
+      {
+        "id": 3,
+        "slug": "plongee-day-forest",
+        "title": "Plongée à Day Forest",
+        "short_description": "Découvrez les fonds marins exceptionnels...",
+        "description": "Description complète...",
+        "location_address": "Port de Djibouti",
+        "region": "Djibouti",
+        "latitude": 11.5889,
+        "longitude": 43.1456,
+        "price": 15000.00,
+        "currency": "DJF",
+        "difficulty_level": "moderate",
+        "duration_hours": 3,
+        "duration_minutes": 30,
+        "is_featured": true,
+        "featured_image": {
+          "id": 42,
+          "url": "https://api.example.com/storage/media/images/plongee.jpg"
+        },
+        "tour_operator": {
+          "id": 1,
+          "name": "Djibouti Adventures"
+        }
+      }
+      // ... autres Activities
+    ]
+  }
+}
+```
+
+**Erreur - Région Invalide (400):**
+```json
+{
+  "success": false,
+  "message": "Invalid region. Valid regions are: Djibouti, Ali Sabieh, Dikhil, Tadjourah, Obock, Arta"
+}
+```
+
+**Cas d'usage:**
+- Page de découverte par région
+- Exploration géographique
+- Planification d'itinéraire par zone
+
+---
+
+#### 3. Statistiques par Région
+```http
+GET /api/regions/statistics
+```
+
+**Description:** Retourne les statistiques de toutes les régions triées par contenu total décroissant. Utile pour dashboards et analytics.
+
+**Headers:**
+- `Accept-Language: fr` (optionnel)
+
+**Exemple Requête:**
+```bash
+curl -X GET "https://api.example.com/api/regions/statistics" \
+  -H "Accept-Language: fr"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "region": "Djibouti",
+      "pois_count": 25,
+      "events_count": 12,
+      "activities_count": 8,
+      "total_count": 45
+    },
+    {
+      "region": "Tadjourah",
+      "pois_count": 15,
+      "events_count": 7,
+      "activities_count": 6,
+      "total_count": 28
+    },
+    {
+      "region": "Dikhil",
+      "pois_count": 10,
+      "events_count": 5,
+      "activities_count": 4,
+      "total_count": 19
+    },
+    {
+      "region": "Ali Sabieh",
+      "pois_count": 8,
+      "events_count": 3,
+      "activities_count": 2,
+      "total_count": 13
+    },
+    {
+      "region": "Obock",
+      "pois_count": 6,
+      "events_count": 2,
+      "activities_count": 3,
+      "total_count": 11
+    },
+    {
+      "region": "Arta",
+      "pois_count": 4,
+      "events_count": 1,
+      "activities_count": 2,
+      "total_count": 7
+    }
+  ]
+}
+```
+
+**Cas d'usage:**
+- Écran d'accueil: "Top 3 régions à explorer"
+- Dashboard analytics
+- Graphiques de distribution du contenu
+- Recommandations de régions populaires
 
 ---
 
@@ -929,7 +1225,195 @@ const CommentableTypes = {
 
 ## Cas d'Usage UI/UX
 
-### 1. Page Liste des Activités
+### 1. Exploration par Région
+
+**Page Sélection de Région:**
+
+Écran permettant de choisir une région pour explorer son contenu touristique.
+
+```
+┌─────────────────────────────────────┐
+│  Explorez Djibouti par région       │
+│                                     │
+│  ┌───────────────────────────────┐ │
+│  │ 🗺️ Djibouti                   │ │
+│  │ 25 POIs • 12 événements       │ │
+│  │ 8 activités                   │ │
+│  │                            👉 │ │
+│  └───────────────────────────────┘ │
+│                                     │
+│  ┌───────────────────────────────┐ │
+│  │ 🗺️ Tadjourah                  │ │
+│  │ 15 POIs • 7 événements        │ │
+│  │ 6 activités                   │ │
+│  │                            👉 │ │
+│  └───────────────────────────────┘ │
+│                                     │
+│  ┌───────────────────────────────┐ │
+│  │ 🗺️ Dikhil                     │ │
+│  │ 10 POIs • 5 événements        │ │
+│  │ 4 activités                   │ │
+│  │                            👉 │ │
+│  └───────────────────────────────┘ │
+│                                     │
+│  [Voir toutes les régions...]     │
+└─────────────────────────────────────┘
+```
+
+**Page Contenu d'une Région:**
+
+Affichage de tout le contenu touristique pour la région sélectionnée.
+
+```
+┌─────────────────────────────────────┐
+│ ← Djibouti                          │
+│                                     │
+│ 📊 45 sites et activités            │
+│ 25 POIs • 12 événements • 8 activités│
+│                                     │
+│ ┌─────────────────────────────────┐ │
+│ │ 📌 Points d'Intérêt (25)        │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ┌──────────────────┐                │
+│ │ [Image]          │ Lac Assal      │
+│ │                  │ Le point le... │
+│ └──────────────────┘ ⭐ 4.8 (156)   │
+│                                     │
+│ ┌──────────────────┐                │
+│ │ [Image]          │ Forêt du Day   │
+│ │                  │ Oasis de...    │
+│ └──────────────────┘ ⭐ 4.5 (89)    │
+│                                     │
+│ [Voir tous les POIs...]             │
+│                                     │
+│ ┌─────────────────────────────────┐ │
+│ │ 🎉 Événements (12)              │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ┌──────────────────┐                │
+│ │ [Image]          │ Festival       │
+│ │                  │ 15-17 mars     │
+│ └──────────────────┘ Gratuit        │
+│                                     │
+│ [Voir tous les événements...]       │
+│                                     │
+│ ┌─────────────────────────────────┐ │
+│ │ 🏃 Activités (8)                │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ┌──────────────────┐                │
+│ │ [Image]          │ Plongée        │
+│ │                  │ 15,000 DJF     │
+│ └──────────────────┘ 3 places       │
+│                                     │
+│ [Voir toutes les activités...]      │
+└─────────────────────────────────────┘
+```
+
+**Carte Interactive avec Régions:**
+
+Carte de Djibouti avec zones cliquables et indicateurs.
+
+```
+┌─────────────────────────────────────┐
+│  🗺️ Carte des Régions               │
+│                                     │
+│     ┌──────────────────────┐        │
+│     │   Obock (11)         │        │
+│     └──────────────────────┘        │
+│                                     │
+│  ┌──────────┐  ┌──────────────┐    │
+│  │Tadjourah │  │  Djibouti    │    │
+│  │  (28)    │  │    (45) ★    │    │
+│  └──────────┘  └──────────────┘    │
+│                                     │
+│     ┌──────────┐  ┌──────────┐     │
+│     │ Dikhil   │  │Ali Sabieh│     │
+│     │  (19)    │  │   (13)   │     │
+│     └──────────┘  └──────────┘     │
+│          ┌──────┐                   │
+│          │ Arta │                   │
+│          │  (7) │                   │
+│          └──────┘                   │
+│                                     │
+│ Légende: (nombre total de contenus)│
+│ ★ Région la plus populaire          │
+└─────────────────────────────────────┘
+```
+
+**Dashboard Analytics (Statistiques):**
+
+Écran d'accueil avec recommandations basées sur les statistiques.
+
+```
+┌─────────────────────────────────────┐
+│  Top Régions à Explorer 🌟          │
+│                                     │
+│  1️⃣ Djibouti                        │
+│  ████████████████████ 45 sites     │
+│  La capitale et ses environs        │
+│  [Explorer →]                       │
+│                                     │
+│  2️⃣ Tadjourah                       │
+│  ████████████ 28 sites             │
+│  Plages et sites historiques        │
+│  [Explorer →]                       │
+│                                     │
+│  3️⃣ Dikhil                          │
+│  ████████ 19 sites                 │
+│  Lac Assal et déserts               │
+│  [Explorer →]                       │
+│                                     │
+│  [Voir toutes les régions]          │
+│                                     │
+│  📊 Distribution du Contenu         │
+│  ┌─────────────────────────────┐   │
+│  │ Djibouti  ████████████ 37%  │   │
+│  │ Tadjourah ████████ 23%      │   │
+│  │ Dikhil    █████ 16%         │   │
+│  │ Ali Sabieh ███ 11%          │   │
+│  │ Obock     ██ 9%             │   │
+│  │ Arta      █ 4%              │   │
+│  └─────────────────────────────┘   │
+└─────────────────────────────────────┘
+```
+
+**Filtre par Région (dans listes POIs/Events/Activities):**
+
+Menu déroulant ou chips de filtrage.
+
+```
+┌─────────────────────────────────────┐
+│  Filtrer par région                 │
+│                                     │
+│  [Toutes les régions ▼]             │
+│  ┌─────────────────────────────┐   │
+│  │ ✓ Toutes (123)              │   │
+│  │   Djibouti (45)             │   │
+│  │   Tadjourah (28)            │   │
+│  │   Dikhil (19)               │   │
+│  │   Ali Sabieh (13)           │   │
+│  │   Obock (11)                │   │
+│  │   Arta (7)                  │   │
+│  └─────────────────────────────┘   │
+└─────────────────────────────────────┘
+```
+
+**Ou en format Chips:**
+
+```
+┌─────────────────────────────────────┐
+│  Régions:                           │
+│  [Toutes] [Djibouti] [Tadjourah]    │
+│  [Dikhil] [Ali Sabieh] [Obock]      │
+│  [Arta]                             │
+└─────────────────────────────────────┘
+```
+
+---
+
+### 2. Page Liste des Activités
 
 **Éléments UI:**
 - 🔍 Barre de recherche
@@ -1255,6 +1739,15 @@ const retryRequest = async (requestFn, maxRetries = 3) => {
 
 ## Checklist Implémentation
 
+### Phase 0: Régions 🗺️
+- [ ] Page de sélection de région
+- [ ] Page contenu par région
+- [ ] Carte interactive des régions
+- [ ] Dashboard statistiques
+- [ ] Filtres par région dans POIs/Events/Activities
+- [ ] Cache des données régionales
+- [ ] Tests unitaires
+
 ### Phase 1: Activités ✅
 - [ ] Liste des activités avec filtres
 - [ ] Détails d'une activité
@@ -1334,6 +1827,8 @@ export const PAGINATION = {
 };
 
 export const CACHE_TTL = {
+  REGIONS: 86400000,        // 24 heures (données statiques)
+  REGION_CONTENT: 3600000,  // 1 heure
   ACTIVITIES: 3600000,      // 1 heure
   ACTIVITY_DETAIL: 1800000, // 30 minutes
   REVIEWS: 1800000,         // 30 minutes
@@ -1349,7 +1844,8 @@ Pour toute question technique:
 
 ---
 
-**Document Version**: 1.0
-**Date**: 30 Janvier 2025
+**Document Version**: 1.1
+**Date**: 4 Novembre 2025
+**Dernière Mise à Jour**: Ajout de la section Régions (3 endpoints + UI/UX)
 **Auteur**: Système Backend Visit Djibouti
 **Status**: ✅ Prêt pour implémentation

@@ -40,8 +40,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   }
 
   void _onScroll() {
-    const imageGalleryHeight = 250.0;
-    final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
+    // L'AppBar apparaît quand le titre atteint le haut de l'écran
+    // 250 (galerie) + 16 (padding) + ~40 (tags) + 16 (spacing) + ~30 (début titre) ≈ 320-330px
+    const titleThreshold = 320.0;
+    final shouldShowTitle = _scrollController.offset > titleThreshold;
 
     if (shouldShowTitle != _showTitle) {
       setState(() {
