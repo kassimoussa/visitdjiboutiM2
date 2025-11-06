@@ -37,7 +37,9 @@
       "Bash(keytool -list -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android)",
       "Bash(pod install)",
       "Bash(export LANG=en_US.UTF-8)",
-      "Bash(xcodebuild:*)"
+      "Bash(xcodebuild:*)",
+      "Bash(pkill:*)",
+      "Bash(adb install:*)"
     ],
     "deny": [],
     "ask": []

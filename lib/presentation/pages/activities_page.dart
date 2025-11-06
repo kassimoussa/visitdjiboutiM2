@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
-import '../../generated/l10n/app_localizations.dart';
 import '../widgets/simple_activity_card.dart';
 import '../../core/models/simple_activity.dart';
 

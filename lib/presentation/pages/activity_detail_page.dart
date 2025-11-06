@@ -41,8 +41,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   void _onScroll() {
     // L'AppBar apparaît quand le titre atteint le haut de l'écran
-    // 250 (galerie) + 16 (padding) + ~40 (tags) + 16 (spacing) + ~30 (début titre) ≈ 320-330px
-    const titleThreshold = 320.0;
+    // 50% de l'écran (galerie) - 30 (translate) + 32 (padding vertical) + ~40 (début titre)
+    final screenHeight = MediaQuery.of(context).size.height;
+    final titleThreshold = (screenHeight * 0.5) - 30 + 32 + 40; // Image - overlap + padding top + espace pour titre
     final shouldShowTitle = _scrollController.offset > titleThreshold;
 
     if (shouldShowTitle != _showTitle) {
@@ -142,19 +143,65 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildImageGallery(),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                _buildMainInfo(),
+                  // Image gallery plus grande (70% de l'écran)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: _buildImageGallery(),
+                  ),
+
+                  // Card blanc arrondi qui chevauche l'image
+                  Transform.translate(
+                    offset: const Offset(0, -30), // Remonte de 30px sur l'image
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Titre
+                            Text(
+                              _activity!.title,
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w600,
+                                height: 1.3,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+
+                            // Ligne horizontale
+                            Divider(
+                              color: Colors.grey[300],
+                              thickness: 1,
+                            ),
+                            const SizedBox(height: 20),
+
+                            // Description
+                            if ((_activity!.description != null && _activity!.description!.trim().isNotEmpty) ||
+                                (_activity!.shortDescription != null && _activity!.shortDescription!.trim().isNotEmpty))
+                              Text(
+                                _activity!.description?.trim().isNotEmpty == true
+                                    ? _activity!.description!
+                                    : _activity!.shortDescription!,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[700],
+                                  height: 1.6,
+                                ),
+                              ),
+                            const SizedBox(height: 24),
+
+                // Conteneur d'informations principales (style c3.png)
+                _buildInfoContainer(),
                 const SizedBox(height: 24),
-                if ((_activity!.description != null && _activity!.description!.trim().isNotEmpty) ||
-                    (_activity!.shortDescription != null && _activity!.shortDescription!.trim().isNotEmpty)) ...[
-                  _buildDescription(),
-                  const SizedBox(height: 24),
-                ],
+
                 if (_activity!.includes != null && _activity!.includes!.isNotEmpty) ...[
                   _buildInclusions(),
                   const SizedBox(height: 24),
@@ -181,12 +228,6 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   _buildWeatherWarning(),
                   const SizedBox(height: 24),
                 ],
-                if (_activity!.location != null &&
-                    _activity!.location!.address != null &&
-                    _activity!.location!.address!.trim().isNotEmpty) ...[
-                  _buildLocation(),
-                  const SizedBox(height: 24),
-                ],
                 if (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty) ...[
                   _buildMeetingPoint(),
                   const SizedBox(height: 24),
@@ -204,7 +245,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   const SizedBox(height: 24),
                 ],
                 const SizedBox(height: 100), // Espace pour le bottom bar
-                      ],
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -305,7 +348,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: 250,
+        height: double.infinity,
         color: Colors.grey[300],
         child: const Center(
           child: Icon(
@@ -330,7 +373,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         );
       },
       child: SizedBox(
-        height: 250,
+        height: double.infinity,
         width: double.infinity,
         child: Stack(
           children: [
@@ -403,142 +446,6 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     );
   }
 
-  Widget _buildImagePlaceholder() {
-    return Container(
-      color: Colors.grey[300],
-      child: const Center(
-        child: Icon(Icons.kayaking, size: 80, color: Color(0xFF3860F8)),
-      ),
-    );
-  }
-
-  Widget _buildMainInfo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Tags
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            _buildTag(
-              '${_activity!.difficulty.icon} ${_activity!.displayDifficulty}',
-              const Color(0xFF3860F8),
-            ),
-            if (_activity!.region != null)
-              _buildTag(
-                '📍 ${_activity!.region!}',
-                Colors.orange,
-              ),
-            if (_activity!.isFeatured)
-              _buildTag('⭐ Vedette', Colors.amber),
-          ],
-        ),
-
-        const SizedBox(height: 16),
-
-        // Titre
-        Text(
-          _activity!.title,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        // Prix et durée
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              _activity!.displayPrice,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF3860F8),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.access_time, size: 16),
-                  const SizedBox(width: 4),
-                  Text(_activity!.displayDuration),
-                ],
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            const Icon(Icons.visibility, size: 16, color: Colors.grey),
-            const SizedBox(width: 4),
-            Text(
-              '${_activity!.viewsCount} vues',
-              style: TextStyle(color: Colors.grey[600], fontSize: 14),
-            ),
-            if (_activity!.hasAvailableSpots) ...[
-              const SizedBox(width: 16),
-              const Icon(Icons.event_seat, size: 16, color: Colors.green),
-              const SizedBox(width: 4),
-              Text(
-                '${_activity!.availableSpots} places disponibles',
-                style: TextStyle(color: Colors.grey[600], fontSize: 14),
-              ),
-            ],
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTag(String text, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDescription() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Description',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          _activity!.description ?? _activity!.shortDescription ?? '',
-          style: const TextStyle(fontSize: 16, height: 1.5),
-        ),
-      ],
-    );
-  }
 
   Widget _buildInclusions() {
     return Column(
@@ -695,36 +602,246 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     );
   }
 
-  Widget _buildLocation() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
+  Widget _buildInfoContainer() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2C5F7C), // Bleu foncé comme c3.png
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Prix et durée
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              const Text(
+                'Details',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          // Total Price
+          Text(
+            'Total Price',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.white.withOpacity(0.8),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _activity!.displayPrice,
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Duration
+          Row(
+            children: [
+              const Icon(Icons.access_time, color: Colors.white, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                _activity!.displayDuration,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+
+          // Difficulty
+          Row(
+            children: [
+              const Icon(Icons.trending_up, color: Colors.white, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                _activity!.displayDifficulty,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+
+          // Location si disponible
+          if (_activity!.location != null &&
+              _activity!.location!.address != null &&
+              _activity!.location!.address!.trim().isNotEmpty) ...[
+            const SizedBox(height: 32),
+            Row(
               children: [
-                Icon(Icons.place, color: Color(0xFF3860F8)),
-                SizedBox(width: 8),
-                Text(
-                  'Lieu de rendez-vous',
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'Location',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            if (_activity!.location!.address != null)
-              Text(
-                _activity!.location!.address!,
-                style: const TextStyle(fontSize: 16),
+            const SizedBox(height: 16),
+            Text(
+              _activity!.location!.address!,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                height: 1.5,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.white,
               ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  // Ouvrir navigation
+                },
+                icon: const Icon(Icons.directions, color: Colors.white),
+                label: const Text(
+                  'Getting there',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.white, width: 2),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+            ),
           ],
-        ),
+
+          // Section Links si website disponible
+          if (_activity!.tourOperator?.website != null &&
+              _activity!.tourOperator!.website!.trim().isNotEmpty) ...[
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.language,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'Links',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Website
+            GestureDetector(
+              onTap: () {
+                // Ouvrir le website
+              },
+              child: const Row(
+                children: [
+                  Icon(Icons.public, color: Colors.white, size: 20),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Visit the website',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Contact
+            if (_activity!.tourOperator!.firstPhone != null) ...[
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: () {
+                  // Appeler
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.phone, color: Colors.white, size: 20),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Call',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ],
       ),
     );
   }
@@ -938,49 +1055,6 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildMediaGallery(List<String> media) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Galerie photos',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 120,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: media.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.only(right: 12),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    media[index],
-                    width: 160,
-                    height: 120,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 160,
-                      height: 120,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.image, color: Colors.grey),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 
