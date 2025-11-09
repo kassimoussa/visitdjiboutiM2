@@ -49,36 +49,38 @@ class _EventCardState extends State<EventCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildImageSection(event),
-            Padding(
-              padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          event.title ?? 'Événement inconnu',
-                          style: TextStyle(
-                            fontSize: ResponsiveConstants.body1,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1D2233),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace * 0.9),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            event.title ?? 'Événement inconnu',
+                            style: TextStyle(
+                              fontSize: ResponsiveConstants.body1,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1D2233),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      SizedBox(width: ResponsiveConstants.smallSpace),
-                      _buildFavoriteButton(event),
-                    ],
-                  ),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
-                  _buildEventInfo(event),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
-                  _buildEventFooter(event),
-                ],
+                        SizedBox(width: ResponsiveConstants.smallSpace),
+                        _buildFavoriteButton(event),
+                      ],
+                    ),
+                    SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
+                    _buildEventInfo(event),
+                    SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
+                    _buildEventFooter(event),
+                  ],
+                ),
               ),
             ),
           ],

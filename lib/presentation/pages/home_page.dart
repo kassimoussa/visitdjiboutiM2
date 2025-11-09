@@ -379,45 +379,70 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            if (subtitle != null)
+        // Utiliser Expanded pour éviter le débordement
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                  fontStyle: FontStyle.italic,
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-          ],
+              if (subtitle != null)
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
+          ),
         ),
-        Row(
-          children: [
-            if (onSeeAll != null)
-              TextButton(
-                onPressed: onSeeAll,
-                child: Text(
-                  AppLocalizations.of(context)!.commonSeeAll,
-                  style: const TextStyle(color: Color(0xFF3860F8)),
+        // Utiliser SizedBox pour fixer la largeur des actions
+        SizedBox(
+          width: onSeeAll != null && onShuffle != null ? 140 : 80,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (onSeeAll != null)
+                TextButton(
+                  onPressed: onSeeAll,
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    minimumSize: const Size(60, 36),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.commonSeeAll,
+                    style: const TextStyle(
+                      color: Color(0xFF3860F8),
+                      fontSize: 13,
+                    ),
+                  ),
                 ),
-              ),
-            if (onShuffle != null)
-              IconButton(
-                onPressed: onShuffle,
-                icon: const Icon(Icons.refresh),
-                tooltip: AppLocalizations.of(context)!.homeShufflePois,
-                color: const Color(0xFF3860F8),
-              ),
-          ],
+              if (onShuffle != null)
+                IconButton(
+                  onPressed: onShuffle,
+                  icon: const Icon(Icons.refresh),
+                  tooltip: AppLocalizations.of(context)!.homeShufflePois,
+                  color: const Color(0xFF3860F8),
+                  padding: const EdgeInsets.all(8),
+                  constraints: const BoxConstraints(
+                    minWidth: 40,
+                    minHeight: 40,
+                  ),
+                ),
+            ],
+          ),
         ),
       ],
     );
@@ -425,7 +450,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildFeaturedPoisCarousel(bool isSmallScreen) {
     return SizedBox(
-      height: 320.h,
+      height: 350.h,
       child: _isLoadingPois
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _featuredPois.isEmpty
@@ -475,7 +500,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildUpcomingEventsCarousel() {
     return SizedBox(
-      height: 340.h,
+      height: 350.h,
       child: _isLoadingEvents
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _upcomingEvents.isEmpty
@@ -561,7 +586,7 @@ class _HomePageState extends State<HomePage> {
     PageController activitiesPageController = PageController(viewportFraction: 0.85);
 
     return SizedBox(
-      height: 340.h,
+      height: 350.h,
       child: _isLoadingActivities
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _featuredActivities.isEmpty

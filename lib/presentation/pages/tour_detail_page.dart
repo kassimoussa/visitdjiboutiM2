@@ -10,6 +10,7 @@ import '../../generated/l10n/app_localizations.dart';
 import '../widgets/shimmer_loading.dart';
 import '../widgets/tour_reservation_form_widget.dart';
 import 'tour_operator_detail_page.dart';
+import 'tour_gallery_page.dart';
 
 class TourDetailPage extends StatefulWidget {
   final Tour tour;
@@ -25,6 +26,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
   final AnonymousAuthService _authService = AnonymousAuthService();
   final FavoritesService _favoritesService = FavoritesService();
   final ScrollController _scrollController = ScrollController();
+  final PageController _imagePageController = PageController();
+  int _currentImageIndex = 0;
 
   Tour? _detailedTour;
   bool _isLoading = true;
@@ -46,11 +49,12 @@ class _TourDetailPageState extends State<TourDetailPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _imagePageController.dispose();
     super.dispose();
   }
 
   void _onScroll() {
-    const imageGalleryHeight = 300.0;
+    const imageGalleryHeight = 350.0;
     final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
 
     if (shouldShowTitle != _showTitle) {
@@ -224,59 +228,78 @@ class _TourDetailPageState extends State<TourDetailPage> {
         CustomScrollView(
           controller: _scrollController,
           slivers: [
-            _buildSliverAppBar(tour),
             SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTourHeader(tour),
-                const SizedBox(height: 24),
-                _buildTourInfo(tour),
-                const SizedBox(height: 24),
-                if (tour.description != null) ...[
-                  _buildSection(AppLocalizations.of(context)!.tourDescription, tour.description!),
-                  const SizedBox(height: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildImageGallery(tour),
+                  Transform.translate(
+                    offset: const Offset(0, -30),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTourHeader(tour),
+                          const SizedBox(height: 24),
+                          if (tour.description != null) ...[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                              child: _buildDescriptionSection(tour),
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: _buildTourInfo(tour),
+                          ),
+                          const SizedBox(height: 24),
+                          if (tour.highlights?.isNotEmpty ?? false) ...[
+                            _buildHighlightsSection(tour.highlights!),
+                            const SizedBox(height: 24),
+                          ],
+                          if (tour.whatToBring?.isNotEmpty ?? false) ...[
+                            _buildWhatToBringSection(tour.whatToBring!),
+                            const SizedBox(height: 24),
+                          ],
+                          if (tour.ageRestrictions?.hasRestrictions ?? false) ...[
+                            _buildAgeRestrictions(tour.ageRestrictions!),
+                            const SizedBox(height: 24),
+                          ],
+                          if (tour.weatherDependent) ...[
+                            _buildWeatherWarning(),
+                            const SizedBox(height: 24),
+                          ],
+                          if (tour.meetingPoint != null) ...[
+                            _buildMeetingPoint(tour),
+                            const SizedBox(height: 24),
+                          ],
+                          if (tour.tourOperator != null) ...[
+                            _buildOperatorInfo(tour.tourOperator!),
+                            const SizedBox(height: 24),
+                          ],
+                          if (tour.media?.isNotEmpty ?? false) ...[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                              child: _buildMediaGallery(tour.media!.map((m) => m.url).toList()),
+                            ),
+                            const SizedBox(height: 100),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
-                /* if (tour.itinerary != null) ...[
-                  _buildSection(AppLocalizations.of(context)!.tourItinerary, tour.itinerary!),
-                  const SizedBox(height: 24),
-                ], */
-                if (tour.highlights?.isNotEmpty ?? false) ...[
-                  _buildListSection(AppLocalizations.of(context)!.tourHighlights, tour.highlights!, Icons.star, Colors.amber),
-                  const SizedBox(height: 24),
-                ],
-                if (tour.whatToBring?.isNotEmpty ?? false) ...[
-                  _buildListSection(AppLocalizations.of(context)!.tourWhatToBring, tour.whatToBring!, Icons.backpack, const Color(0xFF3860F8)),
-                  const SizedBox(height: 24),
-                ],
-                if (tour.ageRestrictions?.hasRestrictions ?? false) ...[
-                  _buildAgeRestrictions(tour.ageRestrictions!),
-                  const SizedBox(height: 24),
-                ],
-                if (tour.weatherDependent) ...[
-                  _buildWeatherWarning(),
-                  const SizedBox(height: 24),
-                ],
-                if (tour.meetingPoint != null) ...[
-                  _buildMeetingPoint(tour),
-                  const SizedBox(height: 24),
-                ],
-                if (tour.tourOperator != null) ...[
-                  _buildOperatorInfo(tour.tourOperator!),
-                  const SizedBox(height: 24),
-                ],
-                if (tour.media?.isNotEmpty ?? false) ...[
-                  _buildMediaGallery(tour.media!.map((m) => m.url).toList()),
-                  const SizedBox(height: 100), // Espace pour le bottom bar
-                ],
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
 
         // AnimatedAppBar qui apparaît au scroll
         AnimatedPositioned(
@@ -395,170 +418,187 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  Widget _buildSliverAppBar(Tour tour) {
-    return SliverAppBar(
-      expandedHeight: 300,
-      pinned: false,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      flexibleSpace: FlexibleSpaceBar(
-        background: tour.featuredImage?.url != null
-            ? Image.network(
-                tour.featuredImage!.url,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.tour, size: 64, color: Colors.grey),
-                ),
-              )
-            : Container(
-                color: Colors.grey[300],
-                child: const Icon(Icons.tour, size: 64, color: Colors.grey),
+  List<String> _getImageUrls(Tour tour) {
+    final List<String> urls = [];
+    if (tour.featuredImage != null) {
+      urls.add(tour.featuredImage!.url);
+    }
+    if (tour.media != null) {
+      for (final media in tour.media!) {
+        if (media.url != tour.featuredImage?.url) {
+          urls.add(media.url);
+        }
+      }
+    }
+    return urls;
+  }
+
+  Widget _buildImageGallery(Tour tour) {
+    final imageUrls = _getImageUrls(tour);
+    final hasImages = imageUrls.isNotEmpty;
+
+    if (!hasImages) {
+      return Container(
+        height: 350,
+        color: const Color(0xFFE8D5A3),
+        child: const Center(
+          child: Icon(
+            Icons.tour,
+            size: 80,
+            color: Color(0xFF3860F8),
+          ),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TourGalleryPage(
+              tourName: tour.title,
+              imageUrls: imageUrls,
+            ),
+          ),
+        );
+      },
+      child: SizedBox(
+        height: 350,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            PageView.builder(
+              controller: _imagePageController,
+              physics: const BouncingScrollPhysics(),
+              onPageChanged: (index) {
+                setState(() {
+                  _currentImageIndex = index;
+                });
+              },
+              itemCount: imageUrls.length,
+              itemBuilder: (context, index) {
+                return Image.network(
+                  imageUrls[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: const Color(0xFFE8D5A3),
+                      child: const Center(
+                        child: Icon(
+                          Icons.tour,
+                          size: 80,
+                          color: Color(0xFF3860F8),
+                        ),
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: const Color(0xFFE8D5A3),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF3860F8),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: imageUrls.asMap().entries.map((entry) {
+                  final isActive = entry.key == _currentImageIndex;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _currentImageIndex = entry.key;
+                      });
+                    },
+                    child: Container(
+                      width: isActive ? 12 : 8,
+                      height: isActive ? 12 : 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildTourHeader(Tour tour) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Tags
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            _buildTag('${tour.type.icon} ${tour.displayType}', const Color(0xFF3860F8)),
-            _buildTag('${tour.difficulty.icon} ${tour.displayDifficulty}', Colors.orange),
-            if (tour.isFeatured)
-              _buildTag('⭐ Vedette', Colors.amber),
-          ],
-        ),
-
-        const SizedBox(height: 16),
-
-        // Titre
-        Text(
-          tour.title,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        // Prix et durée
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              tour.displayPrice,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF3860F8),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.access_time, size: 16),
-                  const SizedBox(width: 4),
-                  Text(tour.displayDuration),
-                ],
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            const Icon(Icons.visibility, size: 16, color: Colors.grey),
-            const SizedBox(width: 4),
-            Text(
-              '${tour.viewsCount} vues',
-              style: TextStyle(color: Colors.grey[600], fontSize: 14),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTag(String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
+      padding: const EdgeInsets.all(24),
       child: Text(
-        text,
-        style: TextStyle(
-          color: color,
+        tour.title,
+        style: const TextStyle(
+          fontSize: 28,
           fontWeight: FontWeight.bold,
-          fontSize: 12,
+          height: 1.2,
         ),
       ),
     );
   }
 
-  Widget _buildTourInfo(Tour tour) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            if (tour.displayDateRange != null)
-              _buildInfoRow(
-                Icons.calendar_today,
-                'Dates',
-                tour.displayDateRange!,
-              ),
-            _buildInfoRow(
-              Icons.event_seat,
-              'Places disponibles',
-              '${tour.availableSpots} places',
-            ), 
-            /* _buildInfoRow(
-              Icons.language,
-              'Langues',
-              'Français, Anglais',
-            ), */
-          ],
+  Widget _buildDescriptionSection(Tour tour) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.grey[200]!,
         ),
       ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: Colors.grey[600]),
-          const SizedBox(width: 12),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.info_outline,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                AppLocalizations.of(context)!.tourDescription,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(color: Colors.grey[600]),
-              textAlign: TextAlign.end,
+          const SizedBox(height: 16),
+          Text(
+            tour.description ?? '',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[700],
+              height: 1.5,
             ),
           ),
         ],
@@ -566,107 +606,341 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  Widget _buildSection(String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+  Widget _buildTourInfo(Tour tour) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          content,
-          style: const TextStyle(fontSize: 16, height: 1.5),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildListSection(String title, List<String> items, IconData icon, Color color) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        ...items.map((item) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Icon(icon, color: color, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(item, style: const TextStyle(fontSize: 16)),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.calendar_today,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text(
+                'Informations pratiques',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
-        )),
-      ],
+          const SizedBox(height: 16),
+          if (tour.displayDateRange != null)
+            _buildInfoRowItem(
+              Icons.event,
+              'Dates',
+              tour.displayDateRange!,
+            ),
+          if (tour.displayDateRange != null) const SizedBox(height: 12),
+          _buildInfoRowItem(
+            Icons.access_time,
+            'Durée',
+            tour.displayDuration,
+          ),
+          const SizedBox(height: 12),
+          _buildInfoRowItem(
+            Icons.event_seat,
+            'Places disponibles',
+            '${tour.availableSpots} places',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRowItem(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: Colors.grey[600],
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHighlightsSection(List<String> highlights) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                AppLocalizations.of(context)!.tourHighlights,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...highlights.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.check_circle, color: Colors.amber, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWhatToBringSection(List<String> items) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.backpack,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                AppLocalizations.of(context)!.tourWhatToBring,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...items.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.circle, color: const Color(0xFF3860F8), size: 8),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )),
+        ],
+      ),
     );
   }
 
   Widget _buildAgeRestrictions(AgeRestrictions restrictions) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            const Icon(Icons.person, color: Color(0xFF3860F8)),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Restrictions d\'age',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(restrictions.text, style: const TextStyle(fontSize: 14)),
-                ],
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
               ),
+              const SizedBox(width: 12),
+              const Text(
+                'Restrictions d\'âge',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            restrictions.text,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[700],
+              height: 1.5,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildWeatherWarning() {
-    return Card(
-      elevation: 2,
-      color: Colors.orange[50],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Icon(Icons.wb_sunny, color: Colors.orange[700]),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'Ce tour est dépendant des conditions météorologiques',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.orange[900],
-                  fontWeight: FontWeight.w500,
-                ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3CD),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.orange[200]!,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.wb_sunny,
+              color: Colors.orange[700],
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'Ce tour est dépendant des conditions météorologiques',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.orange[900],
+                height: 1.5,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -674,20 +948,135 @@ class _TourDetailPageState extends State<TourDetailPage> {
   Widget _buildMeetingPoint(Tour tour) {
     final meetingPoint = tour.meetingPoint!;
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.place,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text(
+                'Point de rendez-vous',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          if (meetingPoint.description != null)
+            Text(
+              meetingPoint.description!,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[700],
+                height: 1.5,
+              ),
+            ),
+          if (meetingPoint.address != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              meetingPoint.address!,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+          if (meetingPoint.hasCoordinates) ...[
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _openInMaps(meetingPoint.latitude!, meetingPoint.longitude!),
+                icon: const Icon(Icons.directions),
+                label: Text(AppLocalizations.of(context)!.tourViewOnMap),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF3860F8),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOperatorInfo(TourOperator operator) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TourOperatorDetailPage(operator: operator),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.place, color: Color(0xFF3860F8)),
-                SizedBox(width: 8),
-                Text(
-                  'Point de rendez-vous',
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF3860F8).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.business,
+                    color: Color(0xFF3860F8),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'Opérateur de tour',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -695,32 +1084,115 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            if (meetingPoint.description != null)
-              Text(
-                meetingPoint.description!,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-            if (meetingPoint.address != null) ...[
-              const SizedBox(height: 4),
-              Text(
-                meetingPoint.address!,
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              ),
-            ],
-            if (meetingPoint.hasCoordinates) ...[
-              const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () => _openInMaps(meetingPoint.latitude!, meetingPoint.longitude!),
-                  icon: const Icon(Icons.directions),
-                  label: Text(AppLocalizations.of(context)!.tourViewOnMap),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3860F8),
-                    foregroundColor: Colors.white,
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                if (operator.logoUrl.isNotEmpty)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      operator.logoUrl,
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.business,
+                          color: Color(0xFF3860F8),
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.business,
+                      color: Color(0xFF3860F8),
+                      size: 30,
+                    ),
+                  ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        operator.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Opérateur touristique agréé',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Colors.grey[400],
+                ),
+              ],
+            ),
+            if (operator.hasPhone || operator.hasEmail) ...[
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  if (operator.hasPhone)
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => _launchPhone(operator.displayPhone),
+                        icon: const Icon(Icons.phone, size: 18),
+                        label: Text(AppLocalizations.of(context)!.tourCall),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (operator.hasPhone && operator.hasEmail)
+                    const SizedBox(width: 8),
+                  if (operator.hasEmail)
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => _launchEmail(operator.displayEmail),
+                        icon: const Icon(Icons.email, size: 18),
+                        label: Text(AppLocalizations.of(context)!.tourEmail),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF3860F8),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ],
           ],
@@ -729,165 +1201,72 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  Widget _buildOperatorInfo(TourOperator operator) {
-    return InkWell(
-      onTap: () {
-        print('Tapped on operator card');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TourOperatorDetailPage(operator: operator),
-          ),
-        );
-      },
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildMediaGallery(List<String> media) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              const Text(
-                'Opérateur de tour',
-                style: TextStyle(
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.photo_library,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                AppLocalizations.of(context)!.tourPhotoGallery,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  if (operator.logoUrl.isNotEmpty)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        operator.logoUrl,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.business, color: Colors.grey),
-                        ),
-                      ),
-                    )
-                  else
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.business, color: Colors.grey),
-                    ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          operator.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Opérateur touristique agréé',
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              if (operator.hasPhone || operator.hasEmail) ...[
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    if (operator.hasPhone)
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => _launchPhone(operator.displayPhone),
-                          icon: const Icon(Icons.phone),
-                          label: Text(AppLocalizations.of(context)!.tourCall),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.white,
-                          ),
-                        ),
-                      ),
-                    if (operator.hasPhone && operator.hasEmail)
-                      const SizedBox(width: 8),
-                    if (operator.hasEmail)
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => _launchEmail(operator.displayEmail),
-                          icon: const Icon(Icons.email),
-                          label: Text(AppLocalizations.of(context)!.tourEmail),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3860F8),
-                            foregroundColor: Colors.white,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ],
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMediaGallery(List<String> media) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocalizations.of(context)!.tourPhotoGallery,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 120,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: media.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.only(right: 12),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    media[index],
-                    width: 160,
-                    height: 120,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: media.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      media[index],
                       width: 160,
                       height: 120,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.image, color: Colors.grey),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: 160,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE8D5A3),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.image,
+                          color: Color(0xFF3860F8),
+                          size: 40,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

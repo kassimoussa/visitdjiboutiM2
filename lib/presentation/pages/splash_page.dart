@@ -143,6 +143,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -154,29 +156,38 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              // Espace flexible en haut
-              const Expanded(flex: 2, child: SizedBox()),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Adapter le layout selon la hauteur disponible
+              final isSmallScreen = constraints.maxHeight < 600;
 
-              // Logo et titre
-              Expanded(
-                flex: 3,
-                child: Column(
+              return Column(
+                children: [
+                  // Espace flexible en haut
+                  Flexible(flex: isSmallScreen ? 1 : 2, child: const SizedBox()),
+
+                  // Logo et titre
+                  Flexible(
+                    flex: isSmallScreen ? 2 : 3,
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Logo animé
                     AnimatedBuilder(
                       animation: _logoAnimation,
                       builder: (context, child) {
+                        final logoSize = isSmallScreen ? 100.0 : 140.0;
+                        final logoPadding = isSmallScreen ? 16.0 : 24.0;
+                        final iconSize = isSmallScreen ? 50.0 : 70.0;
+
                         return Transform.scale(
                           scale: _logoAnimation.value,
                           child: Container(
-                            width: 140,
-                            height: 140,
+                            width: logoSize,
+                            height: logoSize,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(28),
+                              borderRadius: BorderRadius.circular(isSmallScreen ? 20 : 28),
                               boxShadow: [
                                 BoxShadow(
                                   color: const Color(0xFF3860F8).withValues(alpha: 0.15),
@@ -186,16 +197,16 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
-                            padding: const EdgeInsets.all(24),
+                            padding: EdgeInsets.all(logoPadding),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.asset(
                                 'assets/images/logo_visitdjibouti.png',
                                 fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) => const Icon(
+                                errorBuilder: (context, error, stackTrace) => Icon(
                                   Icons.travel_explore,
-                                  color: Color(0xFF3860F8),
-                                  size: 70,
+                                  color: const Color(0xFF3860F8),
+                                  size: iconSize,
                                 ),
                               ),
                             ),
@@ -204,34 +215,36 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       },
                     ),
 
-                    const SizedBox(height: 32),
+                    SizedBox(height: isSmallScreen ? 16 : 32),
 
                     // Titre animé
                     FadeTransition(
                       opacity: _fadeAnimation,
-                      child: const Column(
+                      child: Column(
                         children: [
                           Text(
                             'Visit Djibouti',
                             style: TextStyle(
-                              fontSize: 32,
+                              fontSize: isSmallScreen ? 26 : 32,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF1D2233),
+                              color: const Color(0xFF1D2233),
                               letterSpacing: -0.5,
                             ),
                           ),
-                          SizedBox(height: 12),
+                          SizedBox(height: isSmallScreen ? 8 : 12),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 48),
+                            padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 24 : 48),
                             child: Text(
                               'Découvrez les merveilles de Djibouti',
                               style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF6B7280),
+                                fontSize: isSmallScreen ? 14 : 16,
+                                color: const Color(0xFF6B7280),
                                 fontWeight: FontWeight.w400,
                                 height: 1.5,
                               ),
                               textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -241,116 +254,120 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 ),
               ),
 
-              // Indicateur de chargement et status
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (!_isInitialized) ...[
-                      SizedBox(
-                        width: 32,
-                        height: 32,
-                        child: CircularProgressIndicator(
-                          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
-                          strokeWidth: 3,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: Text(
-                          _currentStatus,
-                          style: const TextStyle(
-                            color: Color(0xFF6B7280),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ] else ...[
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF009639).withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.check_circle,
-                          color: Color(0xFF009639),
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Prêt !',
-                        style: TextStyle(
-                          color: Color(0xFF009639),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-
-              // Footer
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40),
-                child: FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: Column(
-                    children: [
-                      // Drapeaux ou éléments visuels Djibouti
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
+                  // Indicateur de chargement et status
+                  Flexible(
+                    flex: isSmallScreen ? 1 : 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (!_isInitialized) ...[
+                          SizedBox(
                             width: 32,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: Colors.grey.shade200,
-                                width: 1,
-                              ),
-                              gradient: const LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color(0xFF0072CE), // Bleu drapeau
-                                  Color(0xFF009639), // Vert drapeau
-                                ],
+                            height: 32,
+                            child: CircularProgressIndicator(
+                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
+                              strokeWidth: 3,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          FadeTransition(
+                            opacity: _fadeAnimation,
+                            child: Text(
+                              _currentStatus,
+                              style: const TextStyle(
+                                color: Color(0xFF6B7280),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                        ] else ...[
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF009639).withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.check_circle,
+                              color: Color(0xFF009639),
+                              size: 28,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
                           const Text(
-                            'République de Djibouti',
+                            'Prêt !',
                             style: TextStyle(
-                              color: Color(0xFF6B7280),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF009639),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+
+                  // Footer
+                  Padding(
+                    padding: EdgeInsets.only(bottom: isSmallScreen ? 20 : 40),
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Drapeaux ou éléments visuels Djibouti
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 32,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: Colors.grey.shade200,
+                                    width: 1,
+                                  ),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFF0072CE), // Bleu drapeau
+                                      Color(0xFF009639), // Vert drapeau
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'République de Djibouti',
+                                style: TextStyle(
+                                  color: Color(0xFF6B7280),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Version 1.0.0',
+                            style: TextStyle(
+                              color: Colors.grey.shade400,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Version 1.0.0',
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ),
       ),

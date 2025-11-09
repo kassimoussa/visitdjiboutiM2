@@ -40,11 +40,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   }
 
   void _onScroll() {
-    // L'AppBar apparaît quand le titre atteint le haut de l'écran
-    // 50% de l'écran (galerie) - 30 (translate) + 32 (padding vertical) + ~40 (début titre)
-    final screenHeight = MediaQuery.of(context).size.height;
-    final titleThreshold = (screenHeight * 0.5) - 30 + 32 + 40; // Image - overlap + padding top + espace pour titre
-    final shouldShowTitle = _scrollController.offset > titleThreshold;
+    const imageGalleryHeight = 350.0;
+    final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
 
     if (shouldShowTitle != _showTitle) {
       setState(() {
@@ -81,9 +78,6 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           : _errorMessage != null
               ? _buildErrorState()
               : _buildActivityDetail(),
-      bottomNavigationBar: !_isLoading && _errorMessage == null && _activity != null
-          ? _buildRegistrationButton()
-          : null,
     );
   }
 
@@ -143,11 +137,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Image gallery plus grande (70% de l'écran)
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: _buildImageGallery(),
-                  ),
+                  _buildImageGallery(),
 
                   // Card blanc arrondi qui chevauche l'image
                   Transform.translate(
@@ -160,93 +150,158 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           topRight: Radius.circular(30),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Titre
-                            Text(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Titre
+                          Container(
+                            padding: const EdgeInsets.all(24),
+                            child: Text(
                               _activity!.title,
                               style: const TextStyle(
                                 fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                height: 1.3,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
                               ),
                             ),
-                            const SizedBox(height: 20),
+                          ),
 
-                            // Ligne horizontale
-                            Divider(
-                              color: Colors.grey[300],
-                              thickness: 1,
-                            ),
-                            const SizedBox(height: 20),
-
-                            // Description
-                            if ((_activity!.description != null && _activity!.description!.trim().isNotEmpty) ||
-                                (_activity!.shortDescription != null && _activity!.shortDescription!.trim().isNotEmpty))
-                              Text(
-                                _activity!.description?.trim().isNotEmpty == true
-                                    ? _activity!.description!
-                                    : _activity!.shortDescription!,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[700],
-                                  height: 1.6,
+                          // Description
+                          if ((_activity!.description != null && _activity!.description!.trim().isNotEmpty) ||
+                              (_activity!.shortDescription != null && _activity!.shortDescription!.trim().isNotEmpty))
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 24),
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[50],
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Colors.grey[200]!,
                                 ),
                               ),
-                            const SizedBox(height: 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(
+                                          Icons.info_outline,
+                                          color: Color(0xFF3860F8),
+                                          size: 20,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      const Text(
+                                        'Description',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    _activity!.description?.trim().isNotEmpty == true
+                                        ? _activity!.description!
+                                        : _activity!.shortDescription!,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[700],
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
 
-                // Conteneur d'informations principales (style c3.png)
-                _buildInfoContainer(),
-                const SizedBox(height: 24),
+                          // Infos pratiques dans un conteneur blanc avec ombre
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF3860F8).withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Icon(
+                                        Icons.calendar_today,
+                                        color: Color(0xFF3860F8),
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    const Text(
+                                      'Informations pratiques',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                _buildDetailsSection(),
+                                const SizedBox(height: 16),
+                                _buildPracticalInfoGrid(),
+                              ],
+                            ),
+                          ),
 
-                if (_activity!.includes != null && _activity!.includes!.isNotEmpty) ...[
-                  _buildInclusions(),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.whatToBring != null && _activity!.whatToBring!.trim().isNotEmpty) ...[
-                  _buildWhatToBring(),
-                  const SizedBox(height: 24),
-                ],
-                if ((_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ||
-                    (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty)) ...[
-                  _buildEquipment(),
-                  const SizedBox(height: 24),
-                ],
-                if ((_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ||
-                    (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty)) ...[
-                  _buildRequirements(),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.ageRestrictions?.hasRestrictions ?? false) ...[
-                  _buildAgeRestrictions(_activity!.ageRestrictions!),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.weatherDependent) ...[
-                  _buildWeatherWarning(),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty) ...[
-                  _buildMeetingPoint(),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.additionalInfo != null && _activity!.additionalInfo!.trim().isNotEmpty) ...[
-                  _buildAdditionalInfo(),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.tourOperator != null) ...[
-                  _buildOperatorInfo(_activity!.tourOperator!),
-                  const SizedBox(height: 24),
-                ],
-                if (_activity!.cancellationPolicy != null && _activity!.cancellationPolicy!.trim().isNotEmpty) ...[
-                  _buildCancellationPolicy(),
-                  const SizedBox(height: 24),
-                ],
-                const SizedBox(height: 100), // Espace pour le bottom bar
+                          // Opérateur dans un conteneur séparé (comme poi_detail)
+                          if (_activity!.tourOperator != null) ...[
+                            const SizedBox(height: 16),
+                            _buildOperatorCard(_activity!.tourOperator!),
                           ],
-                        ),
+
+                          // Bouton d'inscription
+                          const SizedBox(height: 24),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 24),
+                            child: ElevatedButton(
+                              onPressed: _showRegistrationForm,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF3860F8),
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: const Text(
+                                'S\'inscrire maintenant',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 32),
+                        ],
                       ),
                     ),
                   ),
@@ -348,8 +403,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: double.infinity,
-        color: Colors.grey[300],
+        height: 350,
+        color: const Color(0xFFE8D5A3),
         child: const Center(
           child: Icon(
             Icons.kayaking,
@@ -373,7 +428,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         );
       },
       child: SizedBox(
-        height: double.infinity,
+        height: 350,
         width: double.infinity,
         child: Stack(
           children: [
@@ -392,7 +447,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
-                      color: Colors.grey[300],
+                      color: const Color(0xFFE8D5A3),
                       child: const Center(
                         child: Icon(
                           Icons.kayaking,
@@ -405,7 +460,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Container(
-                      color: Colors.grey[300],
+                      color: const Color(0xFFE8D5A3),
                       child: const Center(
                         child: CircularProgressIndicator(
                           color: Color(0xFF3860F8),
@@ -420,21 +475,28 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             // Indicateurs de page
             if (imageUrls.length > 1)
               Positioned(
-                bottom: 20,
+                bottom: 40,
                 left: 0,
                 right: 0,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: imageUrls.asMap().entries.map((entry) {
                     final isActive = entry.key == _currentImageIndex;
-                    return Container(
-                      width: isActive ? 12 : 8,
-                      height: isActive ? 12 : 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
-                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _currentImageIndex = entry.key;
+                        });
+                      },
+                      child: Container(
+                        width: isActive ? 12 : 8,
+                        height: isActive ? 12 : 8,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                          border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                        ),
                       ),
                     );
                   }).toList(),
@@ -606,233 +668,540 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF2C5F7C), // Bleu foncé comme c3.png
-        borderRadius: BorderRadius.circular(16),
+        color: const Color(0xFF3860F8).withValues(alpha: 0.04),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Prix et durée
-          Row(
+          // Section Details (Prix, Durée, Difficulté)
+          _buildDetailsSection(),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: Divider(height: 1, color: Colors.grey.withValues(alpha: 0.2)),
+          ),
+
+          // Informations pratiques
+          _buildPracticalInfoGrid(),
+
+          if (_buildHasAdditionalSections()) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Divider(height: 1, color: Colors.grey.withValues(alpha: 0.2)),
+            ),
+            _buildAdditionalSections(),
+          ],
+        ],
+      ),
+    );
+  }
+
+  bool _buildHasAdditionalSections() {
+    return (_activity!.ageRestrictions?.hasRestrictions ?? false) ||
+        _activity!.weatherDependent ||
+        (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty) ||
+        (_activity!.additionalInfo != null && _activity!.additionalInfo!.trim().isNotEmpty);
+  }
+
+  Widget _buildPracticalInfoGrid() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Location
+        if (_activity!.location != null &&
+            _activity!.location!.address != null &&
+            _activity!.location!.address!.trim().isNotEmpty)
+          _buildLocationSection(),
+
+        // Includes
+        if (_activity!.includes != null && _activity!.includes!.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          _buildIncludesSection(),
+        ],
+
+        // What to Bring
+        if (_activity!.whatToBring != null && _activity!.whatToBring!.trim().isNotEmpty) ...[
+          const SizedBox(height: 20),
+          _buildWhatToBringSection(),
+        ],
+
+        // Equipment
+        if ((_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ||
+            (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty)) ...[
+          const SizedBox(height: 20),
+          _buildEquipmentSection(),
+        ],
+
+        // Requirements
+        if ((_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ||
+            (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty)) ...[
+          const SizedBox(height: 20),
+          _buildRequirementsSection(),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildAdditionalSections() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Age Restrictions
+        if (_activity!.ageRestrictions?.hasRestrictions ?? false)
+          _buildAgeRestrictionsSection(),
+
+        // Weather Warning
+        if (_activity!.weatherDependent) ...[
+          if (_activity!.ageRestrictions?.hasRestrictions ?? false) const SizedBox(height: 16),
+          _buildWeatherWarningSection(),
+        ],
+
+        // Meeting Point
+        if (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty) ...[
+          if ((_activity!.ageRestrictions?.hasRestrictions ?? false) || _activity!.weatherDependent) const SizedBox(height: 16),
+          _buildMeetingPointSection(),
+        ],
+
+        // Additional Info
+        if (_activity!.additionalInfo != null && _activity!.additionalInfo!.trim().isNotEmpty) ...[
+          if ((_activity!.ageRestrictions?.hasRestrictions ?? false) || _activity!.weatherDependent ||
+              (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty))
+            const SizedBox(height: 16),
+          _buildAdditionalInfoSection(),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildDetailsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildInfoRow(
+          Icons.attach_money,
+          'Prix',
+          _activity!.displayPrice,
+        ),
+        const SizedBox(height: 12),
+        _buildInfoRow(
+          Icons.access_time,
+          'Durée',
+          _activity!.displayDuration,
+        ),
+        const SizedBox(height: 12),
+        _buildInfoRow(
+          Icons.trending_up,
+          'Difficulté',
+          _activity!.displayDifficulty,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: Colors.grey[600],
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationSection() {
+    return _buildInfoRow(
+      Icons.location_on,
+      'Localisation',
+      _activity!.location!.address!,
+    );
+  }
+
+  Widget _buildIncludesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Inclus',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        ..._activity!.includes!.map((item) => Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.info_outline,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              const Text(
-                'Details',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              const Icon(Icons.check_circle, color: Color(0xFF009639), size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  item,
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 ),
               ),
             ],
           ),
+        )).toList(),
+      ],
+    );
+  }
 
-          const SizedBox(height: 20),
+  Widget _buildWhatToBringSection() {
+    return _buildInfoRow(
+      Icons.backpack,
+      'À apporter',
+      _activity!.whatToBring!,
+    );
+  }
 
-          // Total Price
-          Text(
-            'Total Price',
+  Widget _buildEquipmentSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Équipement',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        if (_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ...[
+          Text('Fourni :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          const SizedBox(height: 6),
+          ..._activity!.equipmentProvided!.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.check, color: Color(0xFF009639), size: 16),
+                const SizedBox(width: 8),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+              ],
+            ),
+          )),
+          if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty)
+            const SizedBox(height: 10),
+        ],
+        if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty) ...[
+          Text('À apporter :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          const SizedBox(height: 6),
+          ..._activity!.equipmentRequired!.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.backpack, color: Colors.orange, size: 16),
+                const SizedBox(width: 8),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+              ],
+            ),
+          )),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildRequirementsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Prérequis',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        if (_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ...[
+          Text('Condition physique :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          const SizedBox(height: 6),
+          ..._activity!.physicalRequirements!.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.fitness_center, size: 16, color: Color(0xFF3860F8)),
+                const SizedBox(width: 8),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+              ],
+            ),
+          )),
+          if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty)
+            const SizedBox(height: 10),
+        ],
+        if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty) ...[
+          Text('Certifications :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          const SizedBox(height: 6),
+          ..._activity!.certificationsRequired!.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.verified_user, size: 16, color: Colors.orange),
+                const SizedBox(width: 8),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+              ],
+            ),
+          )),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildAgeRestrictionsSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.blue[100]!,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF3860F8).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.person,
+              color: Color(0xFF3860F8),
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Restrictions d\'âge',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _activity!.ageRestrictions!.text,
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherWarningSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3CD),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.orange[200]!,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.wb_sunny,
+              color: Colors.orange[700],
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'Cette activité est dépendante des conditions météorologiques',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.orange[900],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMeetingPointSection() {
+    return _buildInfoRow(
+      Icons.place,
+      'Point de rendez-vous',
+      _activity!.meetingPointDescription!,
+    );
+  }
+
+  Widget _buildAdditionalInfoSection() {
+    return _buildInfoRow(
+      Icons.info_outline,
+      'Informations supplémentaires',
+      _activity!.additionalInfo!,
+    );
+  }
+
+  Widget _buildOperatorCard(TourOperator operator) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Organisé par',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.8),
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            _activity!.displayPrice,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // Duration
-          Row(
-            children: [
-              const Icon(Icons.access_time, color: Colors.white, size: 20),
-              const SizedBox(width: 12),
-              Text(
-                _activity!.displayDuration,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-
           const SizedBox(height: 16),
-
-          // Difficulty
           Row(
             children: [
-              const Icon(Icons.trending_up, color: Colors.white, size: 20),
-              const SizedBox(width: 12),
-              Text(
-                _activity!.displayDifficulty,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
+              // Logo de l'opérateur
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.grey[300]!,
+                    width: 1,
+                  ),
                 ),
+                child: operator.logoUrl.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(11),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Image.network(
+                            operator.logoUrl,
+                            fit: BoxFit.contain,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                  strokeWidth: 2,
+                                  color: const Color(0xFF3860F8),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) => Center(
+                              child: Icon(
+                                Icons.business,
+                                color: Colors.grey[400],
+                                size: 40,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: Icon(
+                          Icons.business,
+                          color: Colors.grey[400],
+                          size: 40,
+                        ),
+                      ),
               ),
-            ],
-          ),
-
-          // Location si disponible
-          if (_activity!.location != null &&
-              _activity!.location!.address != null &&
-              _activity!.location!.address!.trim().isNotEmpty) ...[
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.location_on,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Location',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _activity!.location!.address!,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                height: 1.5,
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  // Ouvrir navigation
-                },
-                icon: const Icon(Icons.directions, color: Colors.white),
-                label: const Text(
-                  'Getting there',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.white, width: 2),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-            ),
-          ],
-
-          // Section Links si website disponible
-          if (_activity!.tourOperator?.website != null &&
-              _activity!.tourOperator!.website!.trim().isNotEmpty) ...[
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.language,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Links',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Website
-            GestureDetector(
-              onTap: () {
-                // Ouvrir le website
-              },
-              child: const Row(
-                children: [
-                  Icon(Icons.public, color: Colors.white, size: 20),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Visit the website',
-                      style: TextStyle(
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      operator.name,
+                      style: const TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            // Contact
-            if (_activity!.tourOperator!.firstPhone != null) ...[
-              const SizedBox(height: 12),
-              GestureDetector(
-                onTap: () {
-                  // Appeler
-                },
-                child: const Row(
-                  children: [
-                    Icon(Icons.phone, color: Colors.white, size: 20),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Call',
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF009639).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'Opérateur agréé',
                         style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF009639),
                         ),
                       ),
                     ),
@@ -840,9 +1209,71 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 ),
               ),
             ],
-          ],
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCancellationPolicySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Politique d\'annulation',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+          ),
+          child: Text(
+            _activity!.cancellationPolicy!,
+            style: const TextStyle(fontSize: 16, color: Colors.white, height: 1.5),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLinksSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.language,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Links',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

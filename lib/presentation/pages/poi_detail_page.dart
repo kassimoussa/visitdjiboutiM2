@@ -42,9 +42,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
   }
   
   void _onScroll() {
-    const imageGalleryHeight = 250.0;
+    const imageGalleryHeight = 350.0;
     final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
-    
+
     if (shouldShowTitle != _showTitle) {
       setState(() {
         _showTitle = shouldShowTitle;
@@ -268,27 +268,44 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildImageGallery(poi),
-                    _buildHeader(poi),
-                    if (poi.description?.isNotEmpty == true)
-                      _buildDescriptionSection(poi)
-                    else if (poi.shortDescription?.isNotEmpty == true)
-                      _buildShortDescriptionSection(poi)
-                    else
-                      _buildNoDescriptionPlaceholder(poi),
-                    _buildLocationSection(poi),
-                    _buildPracticalInfoSection(poi),
-                    _buildCategoriesSection(poi),
-                    if (poi.tips?.isNotEmpty == true)
-                      _buildTipsSection(poi),
-                    if (poi.hasContacts)
-                      _buildContactSection(poi),
-                    if (poi.hasTourOperators)
-                      _buildTourOperatorsSection(poi),
-                    const SizedBox(height: 24),
-                    if (poi.allowReservations)
-                      _buildReservationSection(poi),
-                    _buildShareSection(poi),
-                    const SizedBox(height: 32),
+                    Transform.translate(
+                      offset: const Offset(0, -30),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildHeader(poi),
+                            if (poi.description?.isNotEmpty == true)
+                              _buildDescriptionSection(poi)
+                            else if (poi.shortDescription?.isNotEmpty == true)
+                              _buildShortDescriptionSection(poi)
+                            else
+                              _buildNoDescriptionPlaceholder(poi),
+                            _buildLocationSection(poi),
+                            _buildPracticalInfoSection(poi),
+                            _buildCategoriesSection(poi),
+                            if (poi.tips?.isNotEmpty == true)
+                              _buildTipsSection(poi),
+                            if (poi.hasContacts)
+                              _buildContactSection(poi),
+                            if (poi.hasTourOperators)
+                              _buildTourOperatorsSection(poi),
+                            const SizedBox(height: 24),
+                            if (poi.allowReservations)
+                              _buildReservationSection(poi),
+                            _buildShareSection(poi),
+                            const SizedBox(height: 32),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -446,7 +463,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: 250,
+        height: 350,
         color: const Color(0xFFE8D5A3),
         child: const Center(
           child: Icon(
@@ -471,7 +488,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         );
       },
       child: SizedBox(
-        height: 250,
+        height: 350,
         width: double.infinity,
         child: Stack(
           children: [
@@ -516,7 +533,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ),
 
             Positioned(
-              bottom: 20,
+              bottom: 40,
               left: 0,
               right: 0,
               child: Row(
@@ -1504,11 +1521,13 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
                 ),
               ),
               const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],

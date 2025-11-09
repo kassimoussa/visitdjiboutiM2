@@ -84,7 +84,7 @@ class _PoiCardState extends State<PoiCard> {
             ),
             Flexible(
               child: Padding(
-                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
+                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace * 0.75),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,113 +94,24 @@ class _PoiCardState extends State<PoiCard> {
                     children: [
                       Expanded(
                         child: Text(
-                          poi.name ?? 'Lieu inconnu',
+                          poi.name,
                           style: TextStyle(
-                            fontSize: ResponsiveConstants.subtitle2,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
+                            color: const Color(0xFF1D2233),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      FutureBuilder<bool>(
-                        future: _favoritesService.isPoiFavorite(poi.id),
-                        builder: (context, snapshot) {
-                          final isFavorite = snapshot.data ?? false;
-                          return IconButton(
-                            onPressed: () async {
-                              try {
-                                final success = await _favoritesService.togglePoiFavorite(poi.id);
-                                if (success && mounted) {
-                                  setState(() {});
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        isFavorite
-                                          ? '${poi.name ?? 'Ce lieu'} retiré des favoris'
-                                          : '${poi.name ?? 'Ce lieu'} ajouté aux favoris',
-                                      ),
-                                      duration: const Duration(seconds: 2),
-                                    ),
-                                  );
-                                }
-                              } catch (e) {
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(AppLocalizations.of(context)!.commonErrorFavorites),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            icon: Icon(
-                              isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorite ? Colors.red : Colors.grey[600],
-                            ),
-                          );
-                        },
-                      ),
+                      SizedBox(width: ResponsiveConstants.smallSpace),
+                      _buildFavoriteButton(poi),
                     ],
                   ),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
-                  Flexible(
-                    child: Wrap(
-                      spacing: ResponsiveConstants.smallSpace,
-                      runSpacing: ResponsiveConstants.smallSpace,
-                      children: [
-                      if (poi.categories.isNotEmpty)
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: ResponsiveConstants.smallSpace,
-                            vertical: ResponsiveConstants.tinySpace,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF009639).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
-                          ),
-                          child: Text(
-                            poi.primaryCategory,
-                            style: TextStyle(
-                              color: Color(0xFF009639),
-                              fontSize: ResponsiveConstants.caption,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: ResponsiveConstants.smallSpace,
-                          vertical: ResponsiveConstants.tinySpace,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0072CE).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              size: ResponsiveConstants.caption,
-                              color: Color(0xFF0072CE),
-                            ),
-                            SizedBox(width: ResponsiveConstants.tinySpace),
-                            Text(
-                              poi.region ?? 'Inconnue',
-                              style: TextStyle(
-                                color: Color(0xFF0072CE),
-                                fontSize: ResponsiveConstants.caption,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    ),
-                  ),
+                  SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
+                  _buildPoiInfo(),
+                  SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
+                  _buildPoiFooter(),
                 ],
                 ),
               ),
@@ -209,5 +120,118 @@ class _PoiCardState extends State<PoiCard> {
         ),
       ),
     );
+  }
+
+  Widget _buildPoiInfo() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.poi.region.isNotEmpty)
+          Row(
+            children: [
+              Icon(Icons.location_on_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
+              SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
+              Expanded(
+                child: Text(
+                  widget.poi.region,
+                  style: TextStyle(
+                    fontSize: ResponsiveConstants.caption + 1.sp,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _buildPoiFooter() {
+    return Wrap(
+      spacing: ResponsiveConstants.smallSpace,
+      runSpacing: ResponsiveConstants.smallSpace,
+      children: [
+        if (widget.poi.categories.isNotEmpty)
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveConstants.smallSpace,
+              vertical: ResponsiveConstants.tinySpace,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFF009639).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+            ),
+            child: Text(
+              widget.poi.primaryCategory,
+              style: TextStyle(
+                color: const Color(0xFF009639),
+                fontSize: ResponsiveConstants.caption,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildFavoriteButton(Poi poi) {
+    return FutureBuilder<bool>(
+      future: _favoritesService.isPoiFavorite(poi.id),
+      builder: (context, snapshot) {
+        final isFavorite = snapshot.data ?? false;
+        return Container(
+          width: 32.w,
+          height: 32.h,
+          decoration: BoxDecoration(
+            color: isFavorite ? Colors.red.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+          ),
+          child: IconButton(
+            onPressed: () => _toggleFavorite(poi),
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.grey[600],
+              size: ResponsiveConstants.smallIcon,
+            ),
+            padding: EdgeInsets.zero,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _toggleFavorite(Poi poi) async {
+    try {
+      final success = await _favoritesService.togglePoiFavorite(poi.id);
+      if (!mounted) return;
+
+      if (success) {
+        setState(() {});
+        final isFavorite = await _favoritesService.isPoiFavorite(poi.id);
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isFavorite
+                  ? AppLocalizations.of(context)!.favoritesAddedToFavorites
+                  : AppLocalizations.of(context)!.favoritesRemovedFromFavorites,
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.commonError),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

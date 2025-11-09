@@ -31,27 +31,29 @@ class SimpleActivityCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildImageSection(context),
-            Padding(
-              padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    activity.title,
-                    style: TextStyle(
-                      fontSize: ResponsiveConstants.body1,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1D2233),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace * 0.9),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      activity.title,
+                      style: TextStyle(
+                        fontSize: ResponsiveConstants.body1,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF1D2233),
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
-                  _buildActivityInfo(),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
-                  _buildActivityFooter(context),
-                ],
+                    SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
+                    _buildActivityInfo(),
+                    SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
+                    _buildActivityFooter(context),
+                  ],
+                ),
               ),
             ),
           ],
