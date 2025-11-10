@@ -28,13 +28,14 @@ class LocalizationService extends ChangeNotifier {
 
   Locale get currentLocale => _currentLocale;
   String get currentLanguageCode => _currentLocale.languageCode;
-  String get currentLanguageName => languageNames[currentLanguageCode] ?? 'Français';
+  String get currentLanguageName =>
+      languageNames[currentLanguageCode] ?? 'Français';
 
   /// Initialise la localisation au démarrage de l'app
   Future<void> initialize() async {
     try {
       final savedLanguage = await _getSavedLanguage();
-      
+
       if (savedLanguage != null) {
         // Utiliser la langue sauvegardée
         _currentLocale = _getLocaleFromCode(savedLanguage);
@@ -47,18 +48,17 @@ class LocalizationService extends ChangeNotifier {
           // Fallback vers le français (langue principale de Djibouti)
           _currentLocale = supportedLocales.first;
         }
-        
+
         // Sauvegarder le choix initial
         await _saveLanguage(_currentLocale.languageCode);
       }
-      
+
       // Mettre à jour le header API à l'initialisation
       _updateApiLanguage();
-      
+
       print('🌍 [INIT] Langue initialisée: ${_currentLocale.languageCode}');
       print('📡 [INIT] Header API: ${getApiLanguageHeader()}');
       notifyListeners();
-      
     } catch (e) {
       print('Erreur lors de l\'initialisation de la localisation: $e');
       _currentLocale = supportedLocales.first; // Fallback vers français
@@ -76,23 +76,28 @@ class LocalizationService extends ChangeNotifier {
       if (newLocale.languageCode != _currentLocale.languageCode) {
         _currentLocale = newLocale;
         await _saveLanguage(languageCode);
-        
-        // Mettre à jour le header API automatiquement
+
+        // Mettre à jour le header API AVANT de notifier l'UI
         _updateApiLanguage();
-        
-        // NOTIFIER IMMÉDIATEMENT L'UI POUR LE CHANGEMENT DE LANGUE
+
+        // Notifier l'UI pour reconstruire les widgets
         notifyListeners();
-        
+
         print('🔄 [LANGUAGE CHANGE] Changement vers: $languageCode');
         print('📱 [LANGUAGE CHANGE] Header API: ${getApiLanguageHeader()}');
         print('🧹 [LANGUAGE CHANGE] Vidage de TOUS les caches...');
-        
+
         // VIDER TOUS LES CACHES COMPLÈTEMENT EN ARRIÈRE-PLAN
-        _cacheService.clearAllCaches().then((_) {
-          print('✅ [LANGUAGE CHANGE] Caches vidés - Contenus seront rechargés dans la nouvelle langue');
-        }).catchError((e) {
-          print('❌ [LANGUAGE CHANGE] Erreur lors du vidage des caches: $e');
-        });
+        _cacheService
+            .clearAllCaches()
+            .then((_) {
+              print(
+                '✅ [LANGUAGE CHANGE] Caches vidés - Contenus seront rechargés dans la nouvelle langue',
+              );
+            })
+            .catchError((e) {
+              print('❌ [LANGUAGE CHANGE] Erreur lors du vidage des caches: $e');
+            });
       }
     } catch (e) {
       print('Erreur lors du changement de langue: $e');
@@ -125,10 +130,11 @@ class LocalizationService extends ChangeNotifier {
     }
   }
 
-
   /// Vérifie si une langue est supportée
   bool _isLanguageSupported(String languageCode) {
-    return supportedLocales.any((locale) => locale.languageCode == languageCode);
+    return supportedLocales.any(
+      (locale) => locale.languageCode == languageCode,
+    );
   }
 
   /// Convertit un code langue en Locale
@@ -163,8 +169,8 @@ class LocalizationService extends ChangeNotifier {
   /// Obtient la direction du texte (LTR/RTL)
   TextDirection getTextDirection() {
     // L'arabe est RTL (Right-to-Left)
-    return _currentLocale.languageCode == 'ar' 
-        ? TextDirection.rtl 
+    return _currentLocale.languageCode == 'ar'
+        ? TextDirection.rtl
         : TextDirection.ltr;
   }
 
@@ -173,31 +179,43 @@ class LocalizationService extends ChangeNotifier {
 
   /// Obtient toutes les langues disponibles
   List<Map<String, String>> getAvailableLanguages() {
-    return supportedLocales.map((locale) => {
-      'code': locale.languageCode,
-      'name': languageNames[locale.languageCode] ?? locale.languageCode,
-      'nativeName': _getNativeName(locale.languageCode),
-      'flag': _getFlagEmoji(locale.languageCode),
-    }).toList();
+    return supportedLocales
+        .map(
+          (locale) => {
+            'code': locale.languageCode,
+            'name': languageNames[locale.languageCode] ?? locale.languageCode,
+            'nativeName': _getNativeName(locale.languageCode),
+            'flag': _getFlagEmoji(locale.languageCode),
+          },
+        )
+        .toList();
   }
 
   /// Obtient le nom natif de la langue
   String _getNativeName(String languageCode) {
     switch (languageCode) {
-      case 'fr': return 'Français';
-      case 'en': return 'English';
-      case 'ar': return 'العربية';
-      default: return languageCode;
+      case 'fr':
+        return 'Français';
+      case 'en':
+        return 'English';
+      case 'ar':
+        return 'العربية';
+      default:
+        return languageCode;
     }
   }
 
   /// Obtient l'emoji drapeau pour la langue
   String _getFlagEmoji(String languageCode) {
     switch (languageCode) {
-      case 'fr': return '🇫🇷';
-      case 'en': return '🇬🇧';
-      case 'ar': return '🇸🇦';
-      default: return '🌐';
+      case 'fr':
+        return '🇫🇷';
+      case 'en':
+        return '🇬🇧';
+      case 'ar':
+        return '🇸🇦';
+      default:
+        return '🌐';
     }
   }
 
@@ -227,5 +245,4 @@ class LocalizationService extends ChangeNotifier {
       'device_language': _deviceInfoService.getDeviceLanguage(),
     };
   }
-
 }

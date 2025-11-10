@@ -78,6 +78,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           : _errorMessage != null
               ? _buildErrorState()
               : _buildActivityDetail(),
+      bottomNavigationBar: !_isLoading && _errorMessage == null
+          ? _buildRegistrationButton()
+          : null,
     );
   }
 
@@ -279,7 +282,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
                           // Bouton d'inscription
                           const SizedBox(height: 24),
-                          Container(
+                          /* Container(
                             margin: const EdgeInsets.symmetric(horizontal: 24),
                             child: ElevatedButton(
                               onPressed: _showRegistrationForm,
@@ -301,6 +304,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                             ),
                           ),
                           const SizedBox(height: 32),
+                          // Padding pour le bottom bar
+                          const SizedBox(height: 100), */
                         ],
                       ),
                     ),
@@ -393,6 +398,14 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               ),
             ),
           ),
+
+        // Bottom bar avec prix et bouton d'inscription
+        /* Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: _buildRegistrationButton(),
+        ), */
       ],
     );
   }
@@ -876,7 +889,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               ),
             ],
           ),
-        )).toList(),
+        )),
       ],
     );
   }
@@ -1497,29 +1510,58 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
           ),
         ],
       ),
       child: SafeArea(
-        child: ElevatedButton(
-          onPressed: _showRegistrationForm,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF3860F8),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'À partir de',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  ),
+                  Text(
+                    _activity!.displayPrice,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF3860F8),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          child: const Text(
-            'S\'inscrire à cette activité',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 2,
+              child: ElevatedButton(
+                //onPressed: _activity!.hasAvailableSpots ? _showRegistrationForm : null,
+                onPressed: _showRegistrationForm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF3860F8),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  disabledBackgroundColor: Colors.grey,
+                  disabledForegroundColor: Colors.white,
+                ),
+                child: Text(
+                  //_activity!.hasAvailableSpots ? 'S\'inscrire maintenant' : 'Places épuisées',
+                  'S\'inscrire maintenant',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -39,7 +39,8 @@
       "Bash(export LANG=en_US.UTF-8)",
       "Bash(xcodebuild:*)",
       "Bash(pkill:*)",
-      "Bash(adb install:*)"
+      "Bash(adb install:*)",
+      "Bash(awk:*)"
     ],
     "deny": [],
     "ask": []

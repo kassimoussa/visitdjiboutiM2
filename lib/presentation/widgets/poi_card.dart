@@ -71,7 +71,7 @@ class _PoiCardState extends State<PoiCard> {
                         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
                       ),
                       child: Text(
-                        'Populaire',
+                        AppLocalizations.of(context)!.featuredBadge,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: ResponsiveConstants.caption,

@@ -1,0 +1,547 @@
+{
+  "@@locale": "ar",
+  
+  "appTitle": "زيارة جيبوتي",
+  "@appTitle": {
+    "description": "عنوان التطبيق"
+  },
+  
+  "appDescription": "اكتشف عجائب جيبوتي",
+  "@appDescription": {
+    "description": "وصف التطبيق"
+  },
+
+  "featuredBadge": "متميز",
+  "@featuredBadge": {
+    "description": "شارة للعناصر المميزة"
+  },
+
+  "navigationHome": "الرئيسية",
+  "navigationDiscover": "اكتشف",
+  "navigationEvents": "الفعاليات",
+  "navigationMap": "الخريطة",
+  "navigationFavorites": "المفضلة",
+  
+  "homeWelcomeMessage": "مرحباً بكم في جيبوتي",
+  "homeFeaturedPois": "أماكن للاكتشاف",
+  "homeUpcomingEvents": "الفعاليات القادمة",
+  "homeExploreMore": "استكشف المزيد",
+  "homeDiscoverByRegion": "اكتشف حسب المنطقة",
+  "homeDiscoverByRegionSubtitle": "انقر للاستكشاف",
+  "homeEssentials": "الأساسيات",
+  "homeDiscover": "اكتشف",
+  
+  "discoverTitle": "اكتشف جيبوتي",
+  "discoverCategories": "الفئات",
+  "discoverAllPois": "جميع الأماكن",
+  "discoverSearchHint": "ابحث عن مكان...",
+  "discoverNearbyPois": "الأماكن القريبة",
+  "discoverNoResults": "لم يتم العثور على نتائج",
+  
+  "eventsTitle": "الفعاليات",
+  "eventsUpcoming": "قادمة",
+  "eventsOngoing": "جارية", 
+  "eventsPast": "منتهية",
+  "eventsRegister": "سجل",
+  "eventsRegistered": "مسجل",
+  "eventsSoldOut": "مكتمل",
+  "eventsEnded": "منتهية",
+  "eventsFree": "مجاني",
+  "eventsPrice": "{price} فرنك جيبوتي",
+  "@eventsPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "eventsParticipants": "{count} مشارك",
+  "@eventsParticipants": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "favoritesTitle": "مفضلاتي",
+  "favoritesEmpty": "لا توجد مفضلات",
+  "favoritesEmptyDescription": "استكشف جيبوتي وأضف أماكنك\\nالمفضلة إلى مجموعتك",
+  "favoritesAddedToFavorites": "تمت الإضافة إلى المفضلة",
+  "favoritesRemovedFromFavorites": "تم الحذف من المفضلة",
+  "favoritesPoisTab": "الأماكن",
+  "favoritesEventsTab": "الفعاليات",
+  "favoritesAllTab": "الكل",
+  "favoritesSortRecent": "الأحدث",
+  "favoritesSortAlphabetical": "أبجدياً",
+  "favoritesSortRating": "التقييم",
+  
+  "mapTitle": "الخريطة",
+  "mapMyLocation": "موقعي",
+  "mapSearchLocation": "ابحث عن موقع...",
+  "mapRouteTo": "الطريق إلى",
+  "mapDistance": "{distance} كم",
+  "@mapDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "authLogin": "تسجيل الدخول",
+  "authRegister": "إنشاء حساب",
+  "authLogout": "تسجيل الخروج",
+  "authEmail": "البريد الإلكتروني",
+  "authPassword": "كلمة المرور",
+  "authConfirmPassword": "تأكيد كلمة المرور",
+  "authName": "الاسم الكامل",
+  "authForgotPassword": "نسيت كلمة المرور؟",
+  "authDontHaveAccount": "ليس لديك حساب؟",
+  "authAlreadyHaveAccount": "لديك حساب بالفعل؟",
+  "authSignInWithGoogle": "متابعة مع جوجل",
+  "authSignInWithFacebook": "متابعة مع فيسبوك",
+  "authOrContinueWith": "أو متابعة مع",
+  "authTermsAndConditions": "الشروط والأحكام",
+  "authPrivacyPolicy": "سياسة الخصوصية",
+  "authAcceptTerms": "أوافق على",
+  "authAcceptTermsAnd": "و",
+  "authCreateAccount": "إنشاء حسابي",
+  "authSignIn": "تسجيل الدخول",
+  "authNoAccount": "ليس لديك حساب؟",
+  "authResetPassword": "إعادة تعيين كلمة المرور",
+  "authResetPasswordTitle": "نسيت كلمة المرور",
+  "authResetPasswordSubtitle": "أدخل بريدك الإلكتروني لتلقي رابط إعادة التعيين",
+  "authSendResetLink": "إرسال رابط إعادة التعيين",
+  "authResetEmailSent": "تم إرسال بريد إعادة التعيين",
+  "authResetEmailSentMessage": "تحقق من صندوق البريد الخاص بك لإعادة تعيين كلمة المرور",
+  "authBackToLogin": "العودة إلى تسجيل الدخول",
+
+  "profileTitle": "الملف الشخصي",
+  "profileEditProfile": "تعديل الملف الشخصي",
+  "profileSettings": "الإعدادات",
+  "profileLanguage": "اللغة",
+  "profileNotifications": "الإشعارات",
+  "profileAboutApp": "حول التطبيق",
+  "profileContactSupport": "الدعم",
+  
+  "conversionAfterFavoritesTitle": "احفظ اكتشافاتك!",
+  "conversionAfterFavoritesDescription": "أنشئ حسابك لمزامنة مفضلاتك عبر جميع أجهزتك",
+  "conversionAfterFavoritesButton": "احفظ مفضلاتي",
+  "conversionBeforeReservationTitle": "أكمل تسجيلك", 
+  "conversionBeforeReservationDescription": "مطلوب حساب لإنهاء حجز الفعالية",
+  "conversionBeforeReservationButton": "إنشاء حساب",
+  "conversionBeforeExportTitle": "استلم برنامجك بالبريد الإلكتروني",
+  "conversionBeforeExportDescription": "أنشئ حسابك لتلقي برنامجك المخصص بالبريد الإلكتروني", 
+  "conversionBeforeExportButton": "استلم بالبريد الإلكتروني",
+  "conversionAfterWeekUsageTitle": "أنشئ ملفك الشخصي للمسافر",
+  "conversionAfterWeekUsageDescription": "بعد أسبوع من الاستكشاف، أنشئ ملفك الشخصي لتجربة مخصصة",
+  "conversionAfterWeekUsageButton": "أنشئ ملفي الشخصي",
+  "conversionBenefits": "مع الحساب، يمكنك:",
+  "conversionBenefitSync": "مزامنة مفضلاتك عبر جميع أجهزتك",
+  "conversionBenefitNotifications": "تلقي إشعارات لأماكنك المفضلة", 
+  "conversionBenefitItineraries": "إنشاء برامج مخصصة",
+  "conversionBenefitReservations": "إدارة جميع حجوزاتك في مكان واحد",
+  "conversionBenefitHistory": "الوصول إلى تاريخ حجوزاتك",
+  "conversionBenefitEmail": "تلقي برامجك بالبريد الإلكتروني",
+  "conversionBenefitShare": "شارك اكتشافاتك مع الأصدقاء",
+  "conversionBenefitRecommendations": "احصل على توصيات مخصصة",
+  "conversionBenefitOffers": "الوصول إلى عروض حصرية",
+  "conversionBenefitCommunity": "انضم إلى مجتمع المسافرين",
+  "conversionLaterButton": "لاحقاً",
+  "conversionContinueWithoutAccount": "متابعة بدون حساب",
+  "conversionNotNowButton": "ليس الآن",
+  "conversionMaybeLaterButton": "ربما لاحقاً",
+  "conversionCancelButton": "إلغاء",
+
+  "drawerGuest": "ضيف",
+  "drawerViewProfile": "عرض ملفي الشخصي ←",
+  "drawerProfile": "الملف الشخصي",
+  "drawerSettingsSection": "الإعدادات",
+  "drawerTestApi": "اختبار API",
+  "drawerTestApiSubtitle": "اختبار النقاط النهائية",
+  "drawerSettings": "الإعدادات",
+  "drawerLanguage": "اللغة",
+  "drawerNotifications": "الإشعارات",
+  "drawerHelpSection": "المساعدة والدعم",
+  "drawerHelp": "المساعدة",
+  "drawerFeedback": "التعليقات",
+  "drawerAbout": "حول",
+  "drawerUsefulLinks": "روابط مفيدة",
+  "drawerTourismOffice": "مكتب السياحة",
+  "drawerEmbassies": "السفارات",
+  "drawerEmergencyNumbers": "أرقام الطوارئ",
+  "drawerVersion": "الإصدار 1.0.0",
+  "drawerChooseLanguage": "اختر اللغة",
+  "drawerLanguageChanged": "تم تغيير اللغة إلى {language}",
+  "@drawerLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "drawerSendFeedback": "إرسال تعليق",
+  "drawerFeedbackHint": "شارك تجربتك مع زيارة جيبوتي...",
+  "drawerFeedbackThanks": "شكراً لك على تعليقك!",
+  "drawerPolice": "🚨 الشرطة: 17",
+  "drawerFire": "🚒 الإطفاء: 18",
+  "drawerSamu": "🏥 الإسعاف: 351351",
+  "drawerMedical": "🚑 الطوارئ الطبية: 35 35 35",
+  "drawerInfo": "📞 الاستعلامات: 12",
+  "drawerTourismOfficeSnackbar": "فتح موقع مكتب السياحة",
+  
+  "commonLoading": "جارٍ التحميل...",
+  "commonError": "خطأ",
+  "commonRetry": "إعادة المحاولة",
+  "commonCancel": "إلغاء",
+  "commonConfirm": "تأكيد",
+  "commonSave": "حفظ",
+  "commonDelete": "حذف",
+  "commonEdit": "تعديل",
+  "commonShare": "مشاركة",
+  "commonClose": "إغلاق",
+  "commonNext": "التالي",
+  "commonPrevious": "السابق",
+  "commonDone": "تم",
+  "commonSkip": "تخطي",
+  "commonAll": "الكل",
+  "commonSeeAll": "عرض الكل",
+  "commonShowMore": "عرض المزيد",
+  "commonShowLess": "عرض أقل",
+  "commonSend": "إرسال",
+  
+  "authSuccessTitle": "نجح تسجيل الدخول!",
+  "authErrorTitle": "خطأ",
+  "authSignUpSuccessTitle": "نجح التسجيل",
+  "authConversionProblemTitle": "مشكلة في التحويل",
+  "authKeepDiscoveries": "أنشئ حسابك في زيارة جيبوتي",
+  "authWelcomeToApp": "أنشئ حسابك في زيارة جيبوتي",
+  "authCreateAccountDescription": "اكتشف كل ما تقدمه جيبوتي من خلال حسابك الشخصي",
+  "authDataPreserved": "ستبقى بياناتك الحالية محفوظة",
+  "authKeepingDataInfo": "✨ بإنشاء حسابك، ستحتفظ بـ:",
+  "authCurrentFavorites": "جميع مفضلاتك الحالية",
+  "authPreferences": "إعداداتك",
+  "authBrowsingHistory": "سجل تصفحك",
+  "authDiscoveredPlaces": "أماكنك المكتشفة",
+  
+  "aboutPageDescription": "زيارة جيبوتي هو التطبيق الرسمي للسياحة الجيبوتية. اكتشف المواقع الاستثنائية والفعاليات الثقافية والتجارب الفريدة التي يقدمها بلدنا. من المناظر البركانية إلى قيعان البحر البكر، مروراً بتراثنا الثقافي الغني، استكشف جيبوتي كما لم تفعل من قبل.",
+  "aboutPointsOfInterest": "نقاط الاهتمام",
+  "aboutEvents": "الفعاليات",
+  "aboutTourismOffice": "مكتب السياحة الجيبوتي",
+  "aboutTourismOfficeSubtitle": "منظمة الترويج السياحي الرسمية",
+  "aboutMinistry": "وزارة التجارة والسياحة",
+  "aboutMinistrySubtitle": "جمهورية جيبوتي",
+  "aboutHotelsAssociation": "جمعية الفنادق",
+  "aboutHotelsAssociationSubtitle": "القطاع السياحي الخاص",
+  
+  "helpHowCanWeHelp": "كيف يمكننا مساعدتك؟",
+  "helpSearchPlaceholder": "البحث في المساعدة...",
+  "helpContactUs": "اتصل بنا",
+  "helpLiveChat": "دردشة مباشرة",
+  "helpConnectingToChat": "الاتصال بالدردشة...",
+  "helpStartChat": "بدء الدردشة",
+  "helpSubject": "الموضوع",
+  "helpMessage": "رسالتك",
+  "helpEmailOptional": "بريدك الإلكتروني (اختياري)",
+  "helpProblemTitle": "عنوان المشكلة",
+  "helpMessageSentSuccess": "تم إرسال الرسالة بنجاح!",
+  "helpHowToUseMap": "كيفية استخدام الخريطة",
+  "helpBookEvent": "حجز فعالية",
+  "helpManageFavorites": "إدارة المفضلات",
+  "helpDescribeProblem": "صف المشكلة التي واجهتها...",
+  "helpDuration3Min": "3 دقائق",
+  "helpDuration2Min": "دقيقتان",
+  "helpDuration1Min": "دقيقة واحدة",
+  
+  "embassiesTitle": "السفارات",
+  "embassiesCall": "اتصال",
+  "embassiesEmail": "بريد إلكتروني",
+  "embassiesWebsite": "الموقع الإلكتروني",
+  "embassiesCannotOpenPhone": "لا يمكن فتح تطبيق الهاتف",
+  "embassiesCannotOpenEmail": "لا يمكن فتح تطبيق البريد الإلكتروني",
+  "embassiesCannotOpenWebsite": "لا يمكن فتح الموقع الإلكتروني",
+  "embassiesNoForeignFound": "لم يتم العثور على سفارة أجنبية",
+  "embassiesNoForeignSubtitle": "معلومات السفارات ليست متاحة بعد",
+  "embassiesNoDjiboutianFound": "لم يتم العثور على سفارة جيبوتية",
+  "embassiesNoDjiboutianSubtitle": "معلومات السفارات الجيبوتية ليست متاحة بعد",
+  
+  "essentialsTitle": "المعلومات الأساسية",
+  "essentialsUnavailableInfo": "المعلومات غير متوفرة",
+  "essentialsNoLinksAvailable": "لا توجد روابط متاحة",
+  
+  "eventDetailErrorLoading": "خطأ في تحميل التفاصيل",
+  "eventDetailRegistrationConfirmed": "تم تأكيد التسجيل!",
+  "eventDetailReservationNumber": "رقم الحجز: {number}",
+  "@eventDetailReservationNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailParticipantsCount": "المشاركون: {count}",
+  "@eventDetailParticipantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailSpecialRequirements": "المتطلبات الخاصة: {requirements}",
+  "@eventDetailSpecialRequirements": {
+    "placeholders": {
+      "requirements": {
+        "type": "String"
+      }
+    }
+  },
+  "eventDetailParticipantsLabel": "عدد المشاركين",
+  "eventDetailFullNameLabel": "الاسم الكامل",
+  "eventDetailEmailLabel": "البريد الإلكتروني",
+  "eventDetailPhoneLabel": "الهاتف",
+  "eventDetailSpecialRequirementsLabel": "المتطلبات الخاصة (اختياري)",
+  "eventDetailSpecialRequirementsHint": "الحساسيات، احتياجات إمكانية الوصول، إلخ.",
+  "commonOk": "موافق",
+  "commonConnectionError": "خطأ في الاتصال",
+  "commonNoNavigationApp": "لم يتم العثور على تطبيق ملاحة",
+  "commonUnknownPlace": "مكان غير معروف",
+  "commonUnknown": "غير معروف",
+  "commonDescription": "الوصف",
+  "commonOverview": "نظرة عامة",
+  "commonDiscoverPlace": "اكتشف هذا المكان الفريد في",
+  "commonExploreOnSite": "استكشف ميزاته من خلال الزيارة شخصياً.",
+  "commonLocation": "الموقع",
+  "commonAddress": "العنوان",
+  "commonPracticalInfo": "معلومات عملية",
+  "commonOpeningHours": "ساعات العمل",
+  "commonEntryPrice": "سعر الدخول",
+  "commonWebsite": "الموقع الإلكتروني",
+  "commonReservationsAccepted": "يتم قبول الحجوزات",
+  "commonCategories": "الفئات",
+  "commonCategory": "فئة",
+  "commonVisitorTips": "نصائح للزائرين",
+  "commonContact": "اتصال",
+  "commonReservePlace": "احجز هذا المكان",
+  "commonSharePlace": "شارك هذا المكان",
+  "commonSharedFrom": "مشارك من Visit Djibouti",
+  "commonCopiedToClipboard": "تم نسخ المعلومات إلى الحافظة!",
+  "commonPhone": "الهاتف",
+  "commonEmail": "البريد الإلكتروني",
+  "commonCopy": "نسخ",
+  "commonEvent": "حدث",
+  "commonUnknownEvent": "حدث غير معروف",
+  "commonInformations": "المعلومات",
+  "commonDate": "التاريخ", 
+  "commonFieldRequired": "هذا الحقل مطلوب",
+  "eventDetailRegistrationNumber": "رقم التسجيل",
+  "eventDetailParticipants": "المشاركين",
+  "eventDetailSpecialRequirements": "المتطلبات الخاصة",
+  "eventDetailEventEnded": "انتهى هذا الحدث",
+  "eventDetailEventFull": "الحدث مكتمل",
+  "eventDetailParticipantsLabel": "مشاركين",
+  "eventDetailSpotsRemaining": "أماكن متبقية",
+  "eventDetailReserveEvent": "احجز لهذا الحدث",
+  "eventDetailReservationsClosed": "الحجوزات مغلقة",
+  "eventDetailDetailsUnavailable": "قد تكون بعض التفاصيل غير متاحة",
+  "eventDetailPopular": "شائع",
+  "eventDetailFree": "مجاني",
+  "eventDetailEndDate": "تاريخ الانتهاء",
+  "eventDetailVenue": "المكان",
+  "eventDetailPrice": "السعر",
+  "eventDetailRegistration": "التسجيل",
+  "eventDetailInvalidNumber": "رقم غير صحيح",
+  "eventDetailMaxParticipants": "الحد الأقصى",
+  "eventDetailContactInfo": "معلومات الاتصال",
+  "eventDetailFullName": "الاسم الكامل",
+  "eventDetailSpecialRequirementsOptional": "المتطلبات الخاصة (اختياري)",
+  "eventDetailInvalidEmail": "بريد إلكتروني غير صحيح",
+  "eventDetailTotalToPay": "المجموع المطلوب دفعه",
+  "eventDetailConfirmRegistration": "تأكيد التسجيل",
+  
+  "reservationsAll": "الكل ({count})",
+  "@reservationsAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsConfirmed": "مؤكدة ({count})",
+  "@reservationsConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsPending": "قيد الانتظار ({count})",
+  "@reservationsPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsCancelled": "ملغاة ({count})",
+  "@reservationsCancelled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reservationsNoneAll": "لا توجد حجوزات",
+  "reservationsNoneConfirmed": "لا توجد حجوزات مؤكدة",
+  "reservationsNonePending": "لا توجد حجوزات قيد الانتظار",
+  "reservationsNoneCancelled": "لا توجد حجوزات ملغاة",
+  "reservationsCancelTitle": "إلغاء الحجز",
+  "reservationsDeleteTitle": "حذف الحجز",
+  
+  "tourOperatorsNoneFound": "لم يتم العثور على منظمي رحلات",
+  
+  "offlineLoadingSettings": "تحميل الإعدادات...",
+  "offlineConnectionStatus": "حالة الاتصال",
+  "offlineClearCacheTitle": "مسح ذاكرة التخزين المؤقت",
+  
+  "profileUser": "مستخدم",
+  "profileLogoutTitle": "تسجيل الخروج",
+  "profileEditTooltip": "تعديل",
+  "profileSecurity": "الأمان",
+  
+  "apiTestTitle": "اختبار API للمواقع",
+  
+  "discoverClearFilters": "مسح المرشحات",
+  
+  "mapSearchHint": "البحث في الخريطة...",
+  
+  "categoryFilterClear": "مسح",
+  
+  "offlineIndicatorConnectionRestored": "تم استعادة الاتصال!",
+  "offlineIndicatorOfflineMode": "وضع عدم الاتصال",
+  "offlineIndicatorOfflineModeTitle": "وضع عدم الاتصال",
+  
+  "reservationFormDateLabel": "التاريخ *",
+  "reservationFormDatePlaceholder": "اختر تاريخاً",
+  "reservationFormTimeLabel": "الوقت",
+  "reservationFormTimePlaceholder": "ساعة:دقيقة",
+  "reservationFormParticipantsLabel": "عدد الأشخاص *",
+  "reservationFormParticipantsPlaceholder": "1",
+  "reservationFormNotesLabel": "ملاحظات أو طلبات خاصة",
+  "reservationFormNotesPlaceholder": "حساسية الطعام، احتياجات خاصة...",
+  "reservationFormPleaseSelectDate": "يرجى اختيار تاريخ",
+  "reservationFormUnexpectedError": "خطأ غير متوقع: {error}",
+  "@reservationFormUnexpectedError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "tourOperatorDetailsSnackbar": "تفاصيل {name}",
+  "@tourOperatorDetailsSnackbar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tourOperatorCallButton": "اتصال",
+  "tourOperatorWebsiteButton": "الموقع الإلكتروني",
+  
+  "languageFrench": "Français",
+  "languageEnglish": "English",
+  "languageArabic": "العربية",
+  
+  "eventDetailRegistrationError": "خطأ في التسجيل",
+  "commonUnexpectedError": "حدث خطأ غير متوقع",
+
+  "operatorFeatured": "مميز",
+  "operatorLabel": "منظم الرحلات السياحية",
+  "operatorAddress": "العنوان",
+  "operatorDescription": "الوصف",
+  "operatorContact": "جهة الاتصال",
+  "operatorPhone": "الهاتف",
+  "operatorEmail": "البريد الإلكتروني",
+  "operatorWebsite": "الموقع الإلكتروني",
+  "operatorCall": "اتصل",
+  "operatorTours": "الجولات المعروضة",
+  "operatorSeeAll": "عرض الكل",
+  "operatorNoTours": "لا توجد جولات متاحة",
+  "operatorNoToursMessage": "لم ينشر هذا المنظم أي جولات بعد.",
+  "operatorPoisServed": "الأماكن المخدومة",
+  "operatorNoPois": "لا توجد أماكن مخدومة",
+  "operatorNoPoisMessage": "هذا المشغل لا يخدم أي مكان في الوقت الحالي",
+  "operatorTourAddedToFavorites": "تمت إضافة الجولة إلى المفضلة",
+  "operatorTourRemovedFromFavorites": "تمت إزالة الجولة من المفضلة",
+  "operatorPoiAddedToFavorites": "تمت إضافة المكان إلى المفضلة",
+  "operatorPoiRemovedFromFavorites": "تمت إزالة المكان من المفضلة",
+  "operatorViews": "مشاهدات",
+  "operatorPlace": "مكان",
+
+  "tourDescription": "الوصف",
+  "tourItinerary": "خط الرحلة",
+  "tourHighlights": "النقاط البارزة",
+  "tourWhatToBring": "ما يجب إحضاره",
+  "tourPhotoGallery": "معرض الصور",
+  "tourRetry": "إعادة المحاولة",
+  "tourViewOnMap": "عرض على الخريطة",
+  "tourCall": "اتصل",
+  "tourEmail": "البريد الإلكتروني",
+
+  "poiCannotCall": "لا يمكن الاتصال بـ {phone}",
+  "@poiCannotCall": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCallError": "خطأ في الاتصال: {error}",
+  "@poiCallError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "poiCannotOpenEmail": "لا يمكن فتح البريد الإلكتروني",
+  "poiEmailError": "خطأ في فتح البريد الإلكتروني: {error}",
+  "@poiEmailError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "profileAnonymousExplorer": "مستكشف مجهول",
+  "profileDiscoverDjibouti": "اكتشف جيبوتي بدون قيود",
+  "profileKeepDiscoveries": "احتفظ باكتشافاتك!",
+  "profileCreateAccountBenefits": "أنشئ حسابك لحفظ المفضلات والوصول إلى ميزات حصرية.",
+  "profileFavorites": "المفضلات",
+  "profileEvents": "الأحداث",
+  "profileDiscoveries": "الاكتشافات",
+  "profileTimeSpent": "الوقت المستغرق",
+  "profilePersonalInfo": "المعلومات الشخصية",
+  "profilePersonalInfoSubtitle": "إدارة بيانات ملفك الشخصي",
+  "profileSecurity": "الأمان",
+  "profileSecuritySubtitle": "كلمة المرور والمصادقة",
+  "profileNotificationsSubtitle": "تفضيلات الإشعارات",
+  "profileLogoutSubtitle": "تسجيل الخروج من الحساب",
+  "profileLogoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستصبح مستخدمًا مجهولاً مرة أخرى.",
+  "profileSettingsSubtitle": "التفضيلات العامة",
+  "profileHelp": "المساعدة",
+  "profileHelpSubtitle": "الدعم والأسئلة الشائعة",
+  "profileComingSoon": "قريبًا!",
+  "profileComingSoonMessage": "نحن نعمل بجد لنقدم لك هذه الميزة.",
+  "profileLanguageChanged": "تم تغيير اللغة إلى {language}",
+  "@profileLanguageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  }
+}

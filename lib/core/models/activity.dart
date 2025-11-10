@@ -291,7 +291,8 @@ class Activity {
   bool get hasLocation => location?.hasCoordinates ?? false;
   bool get hasImages => (gallery?.isNotEmpty ?? false) || featuredImage != null;
   String get firstImageUrl => featuredImage?.url ?? gallery?.first.url ?? '';
-  bool get hasAvailableSpots => (participants?.availableSpots ?? 0) > 0;
+  // Si available_spots est null, il n'y a pas de limite de places
+  bool get hasAvailableSpots => participants?.availableSpots == null || (participants?.availableSpots ?? 0) > 0;
   int get availableSpots => participants?.availableSpots ?? 0;
   String? get displayRegion => region;
   double? get latitude => location?.latitude;
