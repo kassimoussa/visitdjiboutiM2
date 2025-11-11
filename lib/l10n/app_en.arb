@@ -1,7 +1,448 @@
 {
   "@@locale": "en",
+
   "appTitle": "Visit Djibouti",
   "@appTitle": {
     "description": "Application title"
-  }
+  },
+
+  "appDescription": "Discover the beauty of Djibouti",
+  "@appDescription": {
+    "description": "Application description"
+  },
+
+  "authAcceptTerms": "I accept the",
+  "authAcceptTermsAnd": "and",
+  "authBackToLogin": "Back to login",
+  "authConfirmPassword": "Confirm password",
+  "authConversionProblemTitle": "Conversion problem",
+  "authCreateAccount": "Create account",
+  "authCreateAccountDescription": "Join us to discover Djibouti",
+  "authEmail": "Email",
+  "authErrorTitle": "Error",
+  "authForgotPassword": "Forgot password?",
+  "authKeepDiscoveries": "Keep my discoveries",
+  "authLogin": "Login",
+  "authLogout": "Logout",
+  "authName": "Name",
+  "authNoAccount": "Don't have an account yet?",
+  "authPassword": "Password",
+  "authPrivacyPolicy": "Privacy Policy",
+  "authRegister": "Register",
+  "authResetEmailSent": "Email sent",
+  "authResetEmailSentMessage": "A reset link has been sent to your email",
+  "authResetPassword": "Reset password",
+  "authResetPasswordSubtitle": "Enter your email to receive a link",
+  "authResetPasswordTitle": "Forgot password",
+  "authSendResetLink": "Send reset link",
+  "authSignIn": "Sign in",
+  "authSignInSubtitle": "Sign in to continue",
+  "authSuccessTitle": "Success",
+  "authTermsAndConditions": "Terms and Conditions",
+  "authWelcomeBack": "Welcome back",
+  "authWelcomeToApp": "Welcome to Visit Djibouti",
+
+  "categoryFilterClear": "Clear filters",
+
+  "commonAddress": "Address",
+  "commonAll": "All",
+  "commonCancel": "Cancel",
+  "commonCategories": "Categories",
+  "commonCategory": "Category",
+  "commonConnectionError": "Connection error",
+  "commonContact": "Contact",
+  "commonCoordinates": "Coordinates",
+  "commonCopiedToClipboard": "Copied to clipboard",
+  "commonCopy": "Copy",
+  "commonDate": "Date",
+  "commonDescription": "Description",
+  "commonDiscoverPlace": "Discover this place",
+  "commonEmail": "Email",
+  "commonEntryPrice": "Entry price",
+  "commonError": "Error",
+  "commonErrorFavorites": "Error managing favorites",
+  "commonErrorLoading": "Loading error",
+  "commonErrorUnexpected": "Unexpected error",
+  "commonEvent": "Event",
+  "commonFieldRequired": "This field is required",
+  "commonExploreOnSite": "Explore on site",
+  "commonInformations": "Information",
+  "commonLoading": "Loading...",
+  "commonLocation": "Location",
+  "commonNext": "Next",
+  "commonNoNavigationApp": "No navigation app available",
+  "commonOk": "OK",
+  "commonOpeningHours": "Opening hours",
+  "commonOverview": "Overview",
+  "commonPhone": "Phone",
+  "commonPracticalInfo": "Practical information",
+  "commonReservationsAccepted": "Reservations accepted",
+  "commonReservePlace": "Reserve",
+  "commonRetry": "Retry",
+  "commonSeeAll": "See all",
+  "commonSharedFrom": "Shared from Visit Djibouti",
+  "commonSharePlace": "Share this place",
+  "commonUnexpectedError": "Unexpected error",
+  "commonUnknown": "Unknown",
+  "commonUnknownEvent": "Unknown event",
+  "commonUnknownPlace": "Unknown place",
+  "commonVisitorTips": "Visitor tips",
+  "commonWebsite": "Website",
+
+  "discoverSearchHint": "Search places...",
+  "discoverTitle": "Discover",
+
+  "drawerAbout": "About",
+  "drawerChooseLanguage": "Choose language",
+  "drawerConnected": "Connected",
+  "drawerGuest": "Guest",
+  "drawerHelp": "Help",
+  "drawerLanguage": "Language",
+  "drawerLogoutMessage": "Do you really want to logout?",
+  "drawerLogoutSuccess": "Logout successful",
+  "drawerNotifications": "Notifications",
+  "drawerOfflineMode": "Offline mode",
+  "drawerReservations": "My reservations",
+  "drawerReservationsSubtitle": "Manage your reservations",
+  "drawerSettings": "Settings",
+  "drawerVersion": "Version",
+
+  "embassiesCall": "Call",
+  "embassiesCannotOpenEmail": "Cannot open email",
+  "embassiesCannotOpenPhone": "Cannot open phone",
+  "embassiesCannotOpenWebsite": "Cannot open website",
+  "embassiesEmail": "Email",
+  "embassiesNoDjiboutianFound": "No Djiboutian embassy found",
+  "embassiesNoDjiboutianSubtitle": "Information not available",
+  "embassiesNoForeignFound": "No foreign embassy found",
+  "embassiesNoForeignSubtitle": "Information not available",
+  "embassiesTitle": "Embassies",
+  "embassiesWebsite": "Website",
+
+  "essentialsNoLinksAvailable": "No links available",
+  "essentialsTitle": "Essential information",
+  "essentialsUnavailableInfo": "Information not available",
+
+  "eventDetailDetailsUnavailable": "Details not available",
+  "eventDetailEndDate": "End date",
+  "eventDetailEventEnded": "Event ended",
+  "eventDetailEventFull": "Event full",
+  "eventDetailFree": "Free",
+  "eventDetailInvalidEmail": "Invalid email",
+  "eventDetailParticipants": "Participants",
+  "eventDetailParticipantsLabel": "participants",
+  "eventDetailPopular": "Popular",
+  "eventDetailPrice": "Price",
+  "eventDetailRegistration": "Registration",
+  "eventDetailRegistrationConfirmed": "Registration confirmed",
+  "eventDetailRegistrationError": "Registration error",
+  "eventDetailRegistrationNumber": "Registration number",
+  "eventDetailReservationsClosed": "Registrations closed",
+  "eventDetailReserveEvent": "Register for event",
+  "eventDetailSpecialRequirements": "Special requirements",
+  "eventDetailSpotsRemaining": "spots remaining",
+  "eventDetailVenue": "Venue",
+  "eventDetailConfirmRegistration": "Confirm registration",
+  "eventDetailContactInfo": "Contact information",
+  "eventDetailEmailLabel": "Email",
+  "eventDetailFullName": "Full name",
+  "eventDetailInvalidNumber": "Invalid number",
+  "eventDetailMaxParticipants": "maximum participants",
+  "eventDetailParticipantsCount": "Number of participants",
+  "eventDetailPhoneLabel": "Phone",
+  "eventDetailSpecialRequirementsHint": "Allergies, special needs, etc.",
+  "eventDetailSpecialRequirementsLabel": "Special requirements (optional)",
+  "eventDetailTotalToPay": "Total to pay",
+
+  "eventsAddedToFavorites": "{eventName} added to favorites",
+  "@eventsAddedToFavorites": {
+    "description": "Message when an event is added to favorites",
+    "placeholders": {
+      "eventName": {
+        "type": "String",
+        "example": "Music Festival"
+      }
+    }
+  },
+
+  "eventsAll": "All",
+  "eventsClearFilters": "Clear filters",
+  "eventsFree": "Free",
+  "eventsNoEventsFound": "No events found",
+  "eventsOngoing": "Ongoing",
+  "eventsPast": "Past",
+  "eventsPopular": "Popular events",
+
+  "eventsRemovedFromFavorites": "{eventName} removed from favorites",
+  "@eventsRemovedFromFavorites": {
+    "description": "Message when an event is removed from favorites",
+    "placeholders": {
+      "eventName": {
+        "type": "String",
+        "example": "Music Festival"
+      }
+    }
+  },
+
+  "eventsSearchHint": "Search events...",
+  "eventsSoldOut": "Sold out",
+  "eventsTitle": "Events",
+  "eventsUpcoming": "Upcoming",
+
+  "favoritesAddedToFavorites": "Added to favorites",
+  "favoritesAllTab": "All",
+  "favoritesEmpty": "No favorites",
+  "favoritesEmptyDescription": "You don't have any favorites yet. Explore and add your favorite places!",
+  "favoritesEventsTab": "Events",
+  "favoritesPoisTab": "Places",
+  "favoritesRemovedFromFavorites": "Removed from favorites",
+  "favoritesSortAlphabetical": "Alphabetical",
+  "favoritesSortRating": "Rating",
+  "favoritesSortRecent": "Recent",
+  "favoritesTitle": "Favorites",
+
+  "featuredBadge": "Featured",
+
+  "homeDiscover": "Discover",
+  "homeDiscoverByRegion": "Discover by region",
+  "homeDiscoverByRegionSubtitle": "Explore Djibouti's 6 regions",
+  "homeEmbassies": "Embassies",
+  "homeEmbassiesSubtitle": "Embassy contacts",
+  "homeEssentialInfo": "Essential info",
+  "homeEssentialInfoSubtitle": "Useful information",
+  "homeEssentials": "Essentials",
+  "homeFeaturedPois": "Featured places",
+  "homeFeaturedTours": "Featured tours",
+  "homeNoFeaturedPois": "No featured places",
+  "homeNoFeaturedTours": "No featured tours",
+  "homeNoUpcomingEvents": "No upcoming events",
+  "homeShufflePois": "Shuffle",
+  "homeTourOperators": "Tour operators",
+  "homeTourOperatorsSubtitle": "Certified operators",
+  "homeUpcomingEvents": "Upcoming events",
+
+  "languageArabic": "العربية",
+  "languageEnglish": "English",
+  "languageFrench": "Français",
+
+  "mapError": "Map error: {error}",
+  "@mapError": {
+    "description": "Map error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "mapErrorLoadingPois": "Error loading places: {error}",
+  "@mapErrorLoadingPois": {
+    "description": "Error loading POIs message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "mapTitle": "Map",
+  "mapUnknownPlace": "Unknown place",
+
+  "navigationHome": "Home",
+  "navigationDiscover": "Discover",
+  "navigationEvents": "Events",
+  "navigationMap": "Map",
+  "navigationFavorites": "Favorites",
+
+  "operatorAddress": "Address",
+  "operatorCall": "Call",
+  "operatorContact": "Contact",
+  "operatorDescription": "Description",
+  "operatorEmail": "Email",
+  "operatorFeatured": "Featured",
+  "operatorLabel": "Operator",
+  "operatorNoPois": "No places",
+  "operatorNoPoisMessage": "This operator doesn't have any places yet",
+  "operatorNoTours": "No tours",
+  "operatorNoToursMessage": "This operator doesn't have any tours yet",
+  "operatorPhone": "Phone",
+  "operatorPlace": "place",
+  "operatorPoiAddedToFavorites": "Place added to favorites",
+  "operatorPoiRemovedFromFavorites": "Place removed from favorites",
+  "operatorPoisServed": "Places served",
+  "operatorSeeAll": "See all",
+  "operatorTourAddedToFavorites": "Tour added to favorites",
+  "operatorTourRemovedFromFavorites": "Tour removed from favorites",
+  "operatorTours": "Tours",
+  "operatorViews": "views",
+  "operatorWebsite": "Website",
+
+  "poiCallError": "Call error: {error}",
+  "@poiCallError": {
+    "description": "Call error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "poiCannotCall": "Cannot call {phone}",
+  "@poiCannotCall": {
+    "description": "Cannot make call message",
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+
+  "poiCannotOpenEmail": "Cannot open email",
+
+  "poiEmailError": "Email error: {error}",
+  "@poiEmailError": {
+    "description": "Email error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "profileAboutApp": "About the app",
+  "profileComingSoon": "Coming soon",
+  "profileComingSoonMessage": "This feature will be available soon",
+  "profileCreateAccountBenefits": "Create an account to enjoy all benefits",
+  "profileDiscoverDjibouti": "Discover Djibouti",
+  "profileEditTooltip": "Edit profile",
+  "profileEvents": "Events",
+  "profileFavorites": "Favorites",
+  "profileHelp": "Help",
+  "profileHelpSubtitle": "Need assistance?",
+  "profileLanguage": "Language",
+
+  "profileLanguageChanged": "Language changed to {language}",
+  "@profileLanguageChanged": {
+    "description": "Language changed confirmation",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+
+  "profileLogoutConfirm": "Confirm logout",
+  "profileLogoutSubtitle": "Logout from your account",
+  "profileLogoutTitle": "Logout",
+  "profileNotifications": "Notifications",
+  "profileNotificationsSubtitle": "Manage notifications",
+  "profilePersonalInfo": "Personal information",
+  "profilePersonalInfoSubtitle": "Manage your information",
+  "profileSecurity": "Security",
+  "profileSecuritySubtitle": "Security settings",
+  "profileSettings": "Settings",
+  "profileSettingsSubtitle": "Manage your preferences",
+  "profileTitle": "Profile",
+  "profileUser": "User",
+
+  "reservationsAll": "All ({count})",
+  "@reservationsAll": {
+    "description": "All reservations tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "reservationsCancelled": "Cancelled ({count})",
+  "@reservationsCancelled": {
+    "description": "Cancelled reservations tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "reservationsCancelTitle": "Cancel reservation",
+
+  "reservationsConfirmed": "Confirmed ({count})",
+  "@reservationsConfirmed": {
+    "description": "Confirmed reservations tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "reservationsDeleteTitle": "Delete reservation",
+  "reservationsNoneAll": "No reservations",
+  "reservationsNoneCancelled": "No cancelled reservations",
+  "reservationsNoneConfirmed": "No confirmed reservations",
+  "reservationsNonePending": "No pending reservations",
+
+  "reservationsPending": "Pending ({count})",
+  "@reservationsPending": {
+    "description": "Pending reservations tab",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "settingsActions": "Actions",
+  "settingsBackupData": "Backup data",
+  "settingsBackupDataSubtitle": "Automatic backup",
+  "settingsDarkMode": "Dark mode",
+  "settingsDarkModeActivated": "Dark mode activated",
+  "settingsDarkModeDeactivated": "Dark mode deactivated",
+  "settingsDarkModeSubtitle": "App appearance",
+  "settingsDataStorage": "Data storage",
+  "settingsDefaultZoom": "Default zoom",
+  "settingsDefaultZoomSubtitle": "Map zoom level",
+  "settingsEventReminders": "Event reminders",
+  "settingsEventRemindersSubtitle": "Receive reminders",
+  "settingsGeneral": "General",
+
+  "settingsImageCache": "{size} cached",
+  "@settingsImageCache": {
+    "description": "Image cache size",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+
+  "settingsLocation": "Location",
+  "settingsLocationServices": "Location services",
+  "settingsLocationServicesSubtitle": "Enable location",
+  "settingsManageCache": "Manage cache",
+  "settingsNewPois": "New places",
+  "settingsNewPoisSubtitle": "New places notifications",
+  "settingsOfflineMaps": "Offline maps",
+  "settingsOfflineMapsSubtitle": "Download maps",
+  "settingsOfflineModeSubtitle": "Manage offline data",
+  "settingsPreferredRegion": "Preferred region",
+  "settingsPrivacy": "Privacy",
+  "settingsPrivacySubtitle": "Manage privacy",
+  "settingsPushNotifications": "Push notifications",
+  "settingsPushNotificationsSubtitle": "Enable notifications",
+  "settingsResetSettings": "Reset settings",
+  "settingsResetSettingsSubtitle": "Restore default settings",
+  "settingsSecurityPrivacy": "Security and privacy",
+  "settingsTermsSubtitle": "Terms of use",
+
+  "tourCall": "Call",
+  "tourDescription": "Description",
+  "tourEmail": "Email",
+  "tourFeatured": "Featured",
+  "tourHighlights": "Highlights",
+  "tourPhotoGallery": "Photo gallery",
+  "tourRetry": "Retry",
+  "tourViewOnMap": "View on map",
+  "tourWhatToBring": "What to bring"
 }

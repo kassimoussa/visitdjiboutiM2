@@ -284,13 +284,13 @@ class _TourDetailPageState extends State<TourDetailPage> {
                             _buildOperatorInfo(tour.tourOperator!),
                             const SizedBox(height: 24),
                           ],
-                          if (tour.media?.isNotEmpty ?? false) ...[
+                          /* if (tour.media?.isNotEmpty ?? false) ...[
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24),
                               child: _buildMediaGallery(tour.media!.map((m) => m.url).toList()),
                             ),
                             const SizedBox(height: 100),
-                          ],
+                          ], */
                         ],
                       ),
                     ),

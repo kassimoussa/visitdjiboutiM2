@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../core/models/reservation.dart';
 import '../../core/models/tour_reservation.dart';
+import '../../core/models/activity_registration.dart';
 import '../../core/models/api_response.dart';
 import '../../core/services/reservation_service.dart';
 import '../../core/services/tour_service.dart';
+import '../../core/services/activity_service.dart';
 import '../widgets/cached_image_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -17,6 +19,7 @@ class ReservationsPage extends StatefulWidget {
 class _ReservationsPageState extends State<ReservationsPage> with SingleTickerProviderStateMixin {
   final ReservationService _reservationService = ReservationService();
   final TourService _tourService = TourService();
+  final ActivityService _activityService = ActivityService();
   late TabController _tabController;
 
   // Réservations POI/Event
@@ -30,6 +33,12 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
   List<TourReservation> _confirmedTourReservations = [];
   List<TourReservation> _pendingTourReservations = [];
   List<TourReservation> _cancelledTourReservations = [];
+
+  // Inscriptions Activités
+  List<ActivityRegistration> _allActivityRegistrations = [];
+  List<ActivityRegistration> _confirmedActivityRegistrations = [];
+  List<ActivityRegistration> _pendingActivityRegistrations = [];
+  List<ActivityRegistration> _cancelledActivityRegistrations = [];
 
   bool _isLoading = true;
   String? _errorMessage;
@@ -54,16 +63,18 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     });
 
     try {
-      print('[RESERVATIONS] Loading all reservations (POI/Event + Tours)...');
+      print('[RESERVATIONS] Loading all reservations (POI/Event + Tours + Activities)...');
 
-      // Charger les réservations POI/Event et Tours en parallèle
+      // Charger les réservations POI/Event, Tours et Activités en parallèle
       final results = await Future.wait([
         _reservationService.getReservations(),
         _tourService.getMyReservations(),
+        _activityService.getMyRegistrations(),
       ]);
 
       final poiEventResponse = results[0] as ApiResponse<ReservationListResponse>;
       final tourResponse = results[1] as TourReservationListResponse;
+      final activityResponse = results[2] as ActivityRegistrationListResponse;
 
       if (mounted) {
         setState(() {
@@ -95,11 +106,26 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 .toList();
           }
 
+          // Inscriptions Activités
+          if (activityResponse.success && activityResponse.data.isNotEmpty) {
+            _allActivityRegistrations = activityResponse.data;
+            _confirmedActivityRegistrations = _allActivityRegistrations
+                .where((r) => r.status == RegistrationStatus.confirmed)
+                .toList();
+            _pendingActivityRegistrations = _allActivityRegistrations
+                .where((r) => r.status == RegistrationStatus.pending)
+                .toList();
+            _cancelledActivityRegistrations = _allActivityRegistrations
+                .where((r) => r.status == RegistrationStatus.cancelledByUser || r.status == RegistrationStatus.cancelledByOperator)
+                .toList();
+          }
+
           _isLoading = false;
         });
 
         print('[RESERVATIONS] Loaded ${_allReservations.length} POI/Event reservations');
         print('[RESERVATIONS] Loaded ${_allTourReservations.length} tour reservations');
+        print('[RESERVATIONS] Loaded ${_allActivityRegistrations.length} activity registrations');
       }
     } catch (e) {
       print('[RESERVATIONS] Error loading: $e');
@@ -127,19 +153,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           tabs: [
             Tab(
               icon: const Icon(Icons.list),
-              text: AppLocalizations.of(context)!.reservationsAll(_allReservations.length + _allTourReservations.length),
+              text: AppLocalizations.of(context)!.reservationsAll(_allReservations.length + _allTourReservations.length + _allActivityRegistrations.length),
             ),
             Tab(
               icon: const Icon(Icons.check_circle),
-              text: AppLocalizations.of(context)!.reservationsConfirmed(_confirmedReservations.length + _confirmedTourReservations.length),
+              text: AppLocalizations.of(context)!.reservationsConfirmed(_confirmedReservations.length + _confirmedTourReservations.length + _confirmedActivityRegistrations.length),
             ),
             Tab(
               icon: const Icon(Icons.pending),
-              text: AppLocalizations.of(context)!.reservationsPending(_pendingReservations.length + _pendingTourReservations.length),
+              text: AppLocalizations.of(context)!.reservationsPending(_pendingReservations.length + _pendingTourReservations.length + _pendingActivityRegistrations.length),
             ),
             Tab(
               icon: const Icon(Icons.cancel),
-              text: AppLocalizations.of(context)!.reservationsCancelled(_cancelledReservations.length + _cancelledTourReservations.length),
+              text: AppLocalizations.of(context)!.reservationsCancelled(_cancelledReservations.length + _cancelledTourReservations.length + _cancelledActivityRegistrations.length),
             ),
           ],
         ),
@@ -147,10 +173,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildCombinedReservationsList(_allReservations, _allTourReservations, AppLocalizations.of(context)!.reservationsNoneAll),
-          _buildCombinedReservationsList(_confirmedReservations, _confirmedTourReservations, AppLocalizations.of(context)!.reservationsNoneConfirmed),
-          _buildCombinedReservationsList(_pendingReservations, _pendingTourReservations, AppLocalizations.of(context)!.reservationsNonePending),
-          _buildCombinedReservationsList(_cancelledReservations, _cancelledTourReservations, AppLocalizations.of(context)!.reservationsNoneCancelled),
+          _buildCombinedReservationsList(_allReservations, _allTourReservations, _allActivityRegistrations, AppLocalizations.of(context)!.reservationsNoneAll),
+          _buildCombinedReservationsList(_confirmedReservations, _confirmedTourReservations, _confirmedActivityRegistrations, AppLocalizations.of(context)!.reservationsNoneConfirmed),
+          _buildCombinedReservationsList(_pendingReservations, _pendingTourReservations, _pendingActivityRegistrations, AppLocalizations.of(context)!.reservationsNonePending),
+          _buildCombinedReservationsList(_cancelledReservations, _cancelledTourReservations, _cancelledActivityRegistrations, AppLocalizations.of(context)!.reservationsNoneCancelled),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -165,6 +191,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
   Widget _buildCombinedReservationsList(
     List<Reservation> poiEventReservations,
     List<TourReservation> tourReservations,
+    List<ActivityRegistration> activityRegistrations,
     String emptyMessage,
   ) {
     if (_isLoading) {
@@ -177,7 +204,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       return _buildErrorState();
     }
 
-    final totalCount = poiEventReservations.length + tourReservations.length;
+    final totalCount = poiEventReservations.length + tourReservations.length + activityRegistrations.length;
 
     if (totalCount == 0) {
       return _buildEmptyState(emptyMessage);
@@ -190,14 +217,18 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         padding: const EdgeInsets.all(16),
         itemCount: totalCount,
         itemBuilder: (context, index) {
-          // D'abord afficher les réservations POI/Event, puis les tours
+          // D'abord afficher les réservations POI/Event, puis les tours, puis les activités
           if (index < poiEventReservations.length) {
             final reservation = poiEventReservations[index];
             return _buildReservationCard(reservation);
-          } else {
+          } else if (index < poiEventReservations.length + tourReservations.length) {
             final tourIndex = index - poiEventReservations.length;
             final tourReservation = tourReservations[tourIndex];
             return _buildTourReservationCard(tourReservation);
+          } else {
+            final activityIndex = index - poiEventReservations.length - tourReservations.length;
+            final activityRegistration = activityRegistrations[activityIndex];
+            return _buildActivityRegistrationCard(activityRegistration);
           }
         },
       ),
@@ -532,6 +563,169 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   children: [
                     TextButton(
                       onPressed: () => _cancelTourReservation(reservation),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Annuler'),
+                    ),
+                  ],
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActivityRegistrationCard(ActivityRegistration registration) {
+    final statusColor = registration.status == RegistrationStatus.confirmed
+        ? Colors.green
+        : registration.status == RegistrationStatus.pending
+            ? Colors.orange
+            : Colors.red;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: () => _showActivityRegistrationDetails(registration),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header avec statut et type
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: statusColor),
+                    ),
+                    child: Text(
+                      registration.displayStatus,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.hiking,
+                          size: 14,
+                          color: Color(0xFF3860F8),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          'Activité',
+                          style: TextStyle(
+                            color: Color(0xFF3860F8),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Nom et numéro d'inscription
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          registration.activity?.title ?? 'Activité',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Inscription #${registration.id}',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (registration.activity?.featuredImage?.url != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedImageWidget(
+                        imageUrl: registration.activity!.featuredImage!.url,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                ],
+              ),
+
+              const SizedBox(height: 12),
+
+              // Informations d'inscription
+              if (registration.preferredDate != null)
+                _buildInfoRow(Icons.calendar_today, 'Date préférée', registration.preferredDate!),
+              _buildInfoRow(Icons.people, 'Participants', '${registration.numberOfPeople}'),
+              if (registration.specialRequirements != null && registration.specialRequirements!.isNotEmpty)
+                _buildInfoRow(Icons.note, 'Exigences', registration.specialRequirements!),
+
+              // Prix
+              if (registration.totalPrice > 0) ...[
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Total:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      registration.displayPrice,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF3860F8),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+
+              // Actions
+              if (registration.canCancel) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => _cancelActivityRegistration(registration),
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
@@ -1035,6 +1229,180 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(response.message ?? 'Erreur lors de l\'annulation'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  // Méthodes pour les inscriptions aux activités
+  void _showActivityRegistrationDetails(ActivityRegistration registration) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Détails de l\'inscription',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Statut
+                _buildDetailRow('Statut', registration.displayStatus),
+                _buildDetailRow('Paiement', registration.displayPaymentStatus),
+                const Divider(),
+
+                // Informations de l'activité
+                if (registration.activity != null) ...[
+                  _buildDetailRow('Activité', registration.activity!.title),
+                  const Divider(),
+                ],
+
+                // Informations d'inscription
+                _buildDetailRow('Inscription #', '${registration.id}'),
+                _buildDetailRow('Participants', '${registration.numberOfPeople}'),
+                if (registration.preferredDate != null)
+                  _buildDetailRow('Date préférée', registration.preferredDate!),
+                if (registration.specialRequirements != null && registration.specialRequirements!.isNotEmpty)
+                  _buildDetailRow('Exigences', registration.specialRequirements!),
+                if (registration.medicalConditions != null && registration.medicalConditions!.isNotEmpty)
+                  _buildDetailRow('Conditions médicales', registration.medicalConditions!),
+                const Divider(),
+
+                // Prix
+                _buildDetailRow('Prix total', registration.displayPrice),
+                const Divider(),
+
+                // Informations utilisateur (si invité)
+                if (registration.isGuest) ...[
+                  _buildDetailRow('Nom', registration.displayName),
+                  if (registration.guestEmail != null)
+                    _buildDetailRow('Email', registration.guestEmail!),
+                  if (registration.guestPhone != null)
+                    _buildDetailRow('Téléphone', registration.guestPhone!),
+                  const Divider(),
+                ],
+
+                // Dates système
+                if (registration.createdAt != null)
+                  _buildDetailRow('Créée le', registration.createdAt!),
+                if (registration.updatedAt != null)
+                  _buildDetailRow('Mise à jour', registration.updatedAt!),
+                if (registration.confirmedAt != null)
+                  _buildDetailRow('Confirmée le', registration.confirmedAt!),
+                if (registration.cancelledAt != null)
+                  _buildDetailRow('Annulée le', registration.cancelledAt!),
+
+                // Actions
+                if (registration.canCancel) ...[
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _cancelActivityRegistration(registration);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Annuler l\'inscription'),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _cancelActivityRegistration(ActivityRegistration registration) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Annuler l\'inscription'),
+        content: Text(
+          'Êtes-vous sûr de vouloir annuler l\'inscription #${registration.id}?'
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Non'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Oui, annuler'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        final success = await _activityService.cancelRegistration(
+          registrationId: registration.id,
+        );
+
+        if (mounted) {
+          if (success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Inscription annulée'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            _loadReservations(); // Recharger la liste
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Erreur lors de l\'annulation'),
                 backgroundColor: Colors.red,
               ),
             );

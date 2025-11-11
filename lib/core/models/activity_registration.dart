@@ -39,7 +39,7 @@ class ActivityRegistration {
 
   // Statut de paiement
   @JsonKey(name: 'payment_status')
-  final PaymentStatus paymentStatus;
+  final PaymentStatus? paymentStatus;
   @JsonKey(name: 'payment_status_label')
   final String? paymentStatusLabel;
 
@@ -47,7 +47,7 @@ class ActivityRegistration {
   @JsonKey(name: 'total_price')
   final double totalPrice;
 
-  // Activité (relation optionnelle)
+  // Activité (relation optionnelle) - Removed from JSON in fromJson factory
   @JsonKey(includeFromJson: false, includeToJson: false)
   final Activity? activity;
 
@@ -80,7 +80,7 @@ class ActivityRegistration {
     this.medicalConditions,
     required this.status,
     this.statusLabel,
-    required this.paymentStatus,
+    this.paymentStatus,
     this.paymentStatusLabel,
     required this.totalPrice,
     this.activity,
@@ -92,8 +92,12 @@ class ActivityRegistration {
     this.updatedAt,
   });
 
-  factory ActivityRegistration.fromJson(Map<String, dynamic> json) =>
-      _$ActivityRegistrationFromJson(json);
+  factory ActivityRegistration.fromJson(Map<String, dynamic> json) {
+    // Remove the activity field to prevent parsing errors
+    final cleanJson = Map<String, dynamic>.from(json);
+    cleanJson.remove('activity');
+    return _$ActivityRegistrationFromJson(cleanJson);
+  }
   Map<String, dynamic> toJson() => _$ActivityRegistrationToJson(this);
 
   // Getters utiles
@@ -102,7 +106,7 @@ class ActivityRegistration {
   bool get canCancel => status == RegistrationStatus.pending ||
       status == RegistrationStatus.confirmed;
   String get displayStatus => statusLabel ?? status.label;
-  String get displayPaymentStatus => paymentStatusLabel ?? paymentStatus.label;
+  String get displayPaymentStatus => paymentStatusLabel ?? paymentStatus?.label ?? 'Inconnu';
   String get displayName => guestName ?? 'Utilisateur authentifié';
   String get displayEmail => guestEmail ?? '';
   String get displayPrice => '${totalPrice.toInt()} DJF';

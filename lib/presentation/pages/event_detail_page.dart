@@ -49,9 +49,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
   
   void _onScroll() {
-    const imageGalleryHeight = 250.0;
+    const imageGalleryHeight = 350.0;
     final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
-    
+
     if (shouldShowTitle != _showTitle) {
       setState(() {
         _showTitle = shouldShowTitle;
@@ -321,10 +321,27 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildImageGallery(event),
-                    _buildHeader(event),
-                    _buildContent(event),
-                    _buildRegistrationSection(event),
-                    const SizedBox(height: 32),
+                    Transform.translate(
+                      offset: const Offset(0, -30),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildHeader(event),
+                            _buildContent(event),
+                            _buildRegistrationSection(event),
+                            const SizedBox(height: 32),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -452,7 +469,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: 250,
+        height: 350,
         color: const Color(0xFFE8D5A3),
         child: const Center(
           child: Icon(
@@ -465,7 +482,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
     }
 
     return SizedBox(
-      height: 250,
+      height: 350,
       width: double.infinity,
       child: Stack(
         children: [
@@ -509,28 +526,34 @@ class _EventDetailPageState extends State<EventDetailPage> {
             },
           ),
           
-          if (imageUrls.length > 1)
-            Positioned(
-              bottom: 16,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(imageUrls.length, (index) {
-                  return Container(
-                    width: 8,
-                    height: 8,
+          Positioned(
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imageUrls.asMap().entries.map((entry) {
+                final isActive = entry.key == _currentImageIndex;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _currentImageIndex = entry.key;
+                    });
+                  },
+                  child: Container(
+                    width: isActive ? 12 : 8,
+                    height: isActive ? 12 : 8,
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _currentImageIndex == index
-                          ? Colors.white
-                          : Colors.white.withOpacity(0.5),
+                      color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                      border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
                     ),
-                  );
-                }),
-              ),
+                  ),
+                );
+              }).toList(),
             ),
+          ),
         ],
       ),
     );
