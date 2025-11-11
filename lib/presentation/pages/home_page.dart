@@ -8,11 +8,11 @@ import '../../core/services/activity_service.dart';
 import '../../core/services/cache_service.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/models/poi.dart';
-import '../../core/models/simple_tour.dart';
+import '../../core/models/tour.dart';
 import '../../core/models/simple_activity.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
-import '../widgets/simple_tour_card.dart';
+import '../widgets/tour_card.dart';
 import '../widgets/simple_activity_card.dart';
 import '../../core/models/event.dart';
 import '../../core/models/poi_list_response.dart';
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Poi> _featuredPois = [];
   List<Event> _upcomingEvents = [];
-  List<SimpleTour> _featuredTours = [];
+  List<Tour> _featuredTours = [];
   List<SimpleActivity> _featuredActivities = [];
   bool _isLoadingPois = true;
   bool _isLoadingEvents = true;
@@ -187,11 +187,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadFeaturedTours() async {
     try {
-      final tours = await _tourService.getFeaturedTours(limit: 5);
+      final response = await _tourService.getFeaturedTours(limit: 5);
 
       if (mounted) {
         setState(() {
-          _featuredTours = tours;
+          _featuredTours = response.data.tours;
           _isLoadingTours = false;
         });
       }
@@ -290,11 +290,11 @@ class _HomePageState extends State<HomePage> {
     });
 
     try {
-      final tours = await _tourService.getFeaturedTours(limit: 5);
+      final response = await _tourService.getFeaturedTours(limit: 5);
 
       if (mounted) {
         setState(() {
-          _featuredTours = tours;
+          _featuredTours = response.data.tours;
           _isLoadingTours = false;
         });
         print('[HOME PAGE] Tours rechargés: ${_featuredTours.length} items (langue: ${_localizationService.currentLanguageCode})');
@@ -574,7 +574,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: SimpleTourCard(tour: tour),
+                        child: TourCard(tour: tour),
                       ),
                     );
                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../core/models/reservation.dart';
 import '../../core/models/tour_reservation.dart';
 import '../../core/models/activity_registration.dart';
@@ -56,6 +57,18 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     super.dispose();
   }
 
+  String _formatDate(String? dateString) {
+    if (dateString == null || dateString.isEmpty) {
+      return 'N/A';
+    }
+    try {
+      final dateTime = DateTime.parse(dateString);
+      return DateFormat('dd/MM/yyyy').format(dateTime);
+    } catch (e) {
+      return dateString; // Retourne la date originale si le parsing échoue
+    }
+  }
+
   Future<void> _loadReservations() async {
     setState(() {
       _isLoading = true;
@@ -78,6 +91,11 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
       if (mounted) {
         setState(() {
+          // Clear lists before repopulating
+          _allReservations = [];
+          _allTourReservations = [];
+          _allActivityRegistrations = [];
+
           // Réservations POI/Event
           if (poiEventResponse.isSuccess && poiEventResponse.data != null) {
             _allReservations = poiEventResponse.data!.reservations;
@@ -570,6 +588,20 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                   ],
                 ),
+              ] else if (reservation.status == ReservationStatus.cancelledByUser) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => _deleteTourReservationPermanently(reservation),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Supprimer'),
+                    ),
+                  ],
+                ),
               ],
             ],
           ),
@@ -725,11 +757,25 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () => _cancelActivityRegistration(registration),
+                      onPressed: () => _deleteActivityRegistration(registration, isCancel: true),
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
                       child: const Text('Annuler'),
+                    ),
+                  ],
+                ),
+              ] else if (registration.status == RegistrationStatus.cancelledByUser || registration.status == RegistrationStatus.cancelledByOperator) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => _deleteActivityRegistration(registration),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Supprimer'),
                     ),
                   ],
                 ),
@@ -1138,7 +1184,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 ],
 
                 // Informations de réservation
-                _buildDetailRow('Réservation #', '${reservation.id}'),
+                /* _buildDetailRow('Réservation #', '${reservation.id}'), */
                 _buildDetailRow('Participants', '${reservation.numberOfPeople}'),
                 if (reservation.notes != null && reservation.notes!.isNotEmpty)
                   _buildDetailRow('Notes', reservation.notes!),
@@ -1156,9 +1202,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Dates système
                 if (reservation.createdAt != null)
-                  _buildDetailRow('Créée le', reservation.createdAt!),
+                  _buildDetailRow('Créée le', _formatDate(reservation.createdAt)),
                 if (reservation.updatedAt != null)
-                  _buildDetailRow('Mise à jour', reservation.updatedAt!),
+                  _buildDetailRow('Mise à jour', _formatDate(reservation.updatedAt)),
 
                 // Actions
                 if (reservation.canCancel) ...[
@@ -1176,6 +1222,23 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       child: const Text('Annuler la réservation'),
+                    ),
+                  ),
+                ] else if (reservation.status == ReservationStatus.cancelledByUser) ...[
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _deleteTourReservationPermanently(reservation);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Supprimer la réservation'),
                     ),
                   ),
                 ],
@@ -1247,6 +1310,68 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     }
   }
 
+  Future<void> _deleteTourReservationPermanently(TourReservation reservation) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Supprimer la réservation'),
+        content: Text(
+          'Êtes-vous sûr de vouloir supprimer définitivement la réservation #${reservation.id}? Cette action est irréversible.'
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Non'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Oui, supprimer'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        final success = await _tourService.deleteReservationPermanently(
+          reservationId: reservation.id,
+        );
+
+        if (mounted) {
+          if (success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Réservation supprimée'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            _loadReservations(); // Recharger la liste
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Erreur lors de la suppression'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   // Méthodes pour les inscriptions aux activités
   void _showActivityRegistrationDetails(ActivityRegistration registration) {
     showModalBottomSheet(
@@ -1288,7 +1413,6 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Statut
                 _buildDetailRow('Statut', registration.displayStatus),
-                _buildDetailRow('Paiement', registration.displayPaymentStatus),
                 const Divider(),
 
                 // Informations de l'activité
@@ -1298,10 +1422,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 ],
 
                 // Informations d'inscription
-                _buildDetailRow('Inscription #', '${registration.id}'),
                 _buildDetailRow('Participants', '${registration.numberOfPeople}'),
                 if (registration.preferredDate != null)
-                  _buildDetailRow('Date préférée', registration.preferredDate!),
+                  _buildDetailRow('Date préférée', _formatDate(registration.preferredDate)),
                 if (registration.specialRequirements != null && registration.specialRequirements!.isNotEmpty)
                   _buildDetailRow('Exigences', registration.specialRequirements!),
                 if (registration.medicalConditions != null && registration.medicalConditions!.isNotEmpty)
@@ -1314,7 +1437,6 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Informations utilisateur (si invité)
                 if (registration.isGuest) ...[
-                  _buildDetailRow('Nom', registration.displayName),
                   if (registration.guestEmail != null)
                     _buildDetailRow('Email', registration.guestEmail!),
                   if (registration.guestPhone != null)
@@ -1324,13 +1446,13 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Dates système
                 if (registration.createdAt != null)
-                  _buildDetailRow('Créée le', registration.createdAt!),
+                  _buildDetailRow('Créée le', _formatDate(registration.createdAt)),
                 if (registration.updatedAt != null)
-                  _buildDetailRow('Mise à jour', registration.updatedAt!),
+                  _buildDetailRow('Mise à jour', _formatDate(registration.updatedAt)),
                 if (registration.confirmedAt != null)
-                  _buildDetailRow('Confirmée le', registration.confirmedAt!),
+                  _buildDetailRow('Confirmée le', _formatDate(registration.confirmedAt)),
                 if (registration.cancelledAt != null)
-                  _buildDetailRow('Annulée le', registration.cancelledAt!),
+                  _buildDetailRow('Annulée le', _formatDate(registration.cancelledAt)),
 
                 // Actions
                 if (registration.canCancel) ...[
@@ -1340,7 +1462,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                        _cancelActivityRegistration(registration);
+                        _deleteActivityRegistration(registration, isCancel: true);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
@@ -1348,6 +1470,23 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       child: const Text('Annuler l\'inscription'),
+                    ),
+                  ),
+                ] else if (registration.status == RegistrationStatus.cancelledByUser || registration.status == RegistrationStatus.cancelledByOperator) ...[
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _deleteActivityRegistration(registration);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text('Supprimer l\'inscription'),
                     ),
                   ),
                 ],
@@ -1359,14 +1498,18 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     );
   }
 
-  Future<void> _cancelActivityRegistration(ActivityRegistration registration) async {
+  Future<void> _deleteActivityRegistration(ActivityRegistration registration, {bool isCancel = false}) async {
+    final title = isCancel ? 'Annuler l\'inscription' : 'Supprimer l\'inscription';
+    final content = isCancel
+        ? 'Êtes-vous sûr de vouloir annuler cette inscription ? Son statut passera à "Annulé".'
+        : 'Êtes-vous sûr de vouloir supprimer définitivement l\'inscription #${registration.id}? Cette action est irréversible.';
+    final confirmText = isCancel ? 'Oui, annuler' : 'Oui, supprimer';
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Annuler l\'inscription'),
-        content: Text(
-          'Êtes-vous sûr de vouloir annuler l\'inscription #${registration.id}?'
-        ),
+        title: Text(title),
+        content: Text(content),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -1378,7 +1521,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, annuler'),
+            child: Text(confirmText),
           ),
         ],
       ),
@@ -1386,23 +1529,30 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
     if (confirmed == true) {
       try {
-        final success = await _activityService.cancelRegistration(
-          registrationId: registration.id,
-        );
+        bool success;
+        if (isCancel) {
+          success = await _activityService.cancelRegistration(
+            registrationId: registration.id,
+          );
+        } else {
+          success = await _activityService.deleteRegistrationPermanently(
+            registrationId: registration.id,
+          );
+        }
 
         if (mounted) {
           if (success) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Inscription annulée'),
+              SnackBar(
+                content: Text(isCancel ? 'Inscription annulée' : 'Inscription supprimée'),
                 backgroundColor: Colors.green,
               ),
             );
             _loadReservations(); // Recharger la liste
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Erreur lors de l\'annulation'),
+              SnackBar(
+                content: Text(isCancel ? 'Erreur lors de l\'annulation' : 'Erreur lors de la suppression'),
                 backgroundColor: Colors.red,
               ),
             );

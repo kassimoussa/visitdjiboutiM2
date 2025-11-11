@@ -296,7 +296,7 @@ class ActivityService {
     }
 
     try {
-      final response = await _apiClient.delete(
+      final response = await _apiClient.patch(
         ApiConstants.activityRegistrationCancel(registrationId),
         data: body,
       );
@@ -311,6 +311,31 @@ class ActivityService {
       }
     } catch (e) {
       print('[ACTIVITY SERVICE] Erreur annulation: $e');
+      rethrow;
+    }
+  }
+
+  /// Supprimer une inscription définitivement
+  Future<bool> deleteRegistrationPermanently({
+    required int registrationId,
+  }) async {
+    print('[ACTIVITY SERVICE] Suppression définitive inscription: $registrationId');
+
+    try {
+      final response = await _apiClient.delete(
+        ApiConstants.activityRegistrationDelete(registrationId),
+      );
+
+      print('[ACTIVITY SERVICE] Statut suppression définitive: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        print('[ACTIVITY SERVICE] Inscription supprimée définitivement avec succès');
+        return true;
+      } else {
+        throw Exception('Erreur lors de la suppression définitive');
+      }
+    } catch (e) {
+      print('[ACTIVITY SERVICE] Erreur suppression définitive: $e');
       rethrow;
     }
   }

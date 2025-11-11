@@ -699,7 +699,7 @@ curl -X GET "https://api.example.com/api/activity-registrations?status=confirmed
 
 #### 6. Annuler une Inscription (Authentifié)
 ```http
-DELETE /api/activity-registrations/{registration_id}
+PATCH /api/activity-registrations/{registration_id}/cancel
 Authorization: Bearer {token}
 ```
 
@@ -710,7 +710,7 @@ Authorization: Bearer {token}
 
 **Exemple Requête:**
 ```bash
-curl -X DELETE "https://api.example.com/api/activity-registrations/42" \
+curl -X PATCH "https://api.example.com/api/activity-registrations/42/cancel" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -729,6 +729,204 @@ curl -X DELETE "https://api.example.com/api/activity-registrations/42" \
 **Erreurs Possibles:**
 - `403` - Inscription appartient à un autre utilisateur
 - `400` - Inscription ne peut pas être annulée (déjà terminée ou annulée)
+
+#### 7. Supprimer une Inscription Annulée (Authentifié)
+```http
+DELETE /api/activity-registrations/{registration_id}
+Authorization: Bearer {token}
+```
+
+**Description:** Supprime définitivement une inscription qui a déjà été annulée. Cette action est irréversible.
+
+**Exemple Requête:**
+```bash
+curl -X DELETE "https://api.example.com/api/activity-registrations/42" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "message": "Inscription supprimée définitivement"
+}
+```
+
+**Erreurs Possibles:**
+- `403` - Inscription appartient à un autre utilisateur
+- `400` - Seules les inscriptions annulées peuvent être supprimées
+
+---
+
+## Tours Guidés
+
+### 📋 Concept
+Les tours guidés sont des circuits touristiques organisés par les opérateurs. Contrairement aux activités ponctuelles, les tours sont des expériences multi-étapes avec itinéraires définis.
+
+### 🔗 Endpoints API
+
+#### 1. Réserver un Tour (Authentifié ou Invité)
+```http
+POST /api/tours/{tour_id}/reserve
+```
+
+**Headers:**
+- `Authorization: Bearer {token}` (si authentifié)
+- `Accept-Language: fr` (optionnel)
+
+**Body Parameters:**
+| Paramètre | Type | Requis | Description |
+|-----------|------|--------|-------------|
+| `number_of_people` | integer | ✅ | Nombre de participants (1-20) |
+| `notes` | string | ❌ | Notes ou demandes spéciales (max: 1000 chars) |
+| `guest_name` | string | 🟡 | Nom (requis si invité) |
+| `guest_email` | email | 🟡 | Email (requis si invité) |
+| `guest_phone` | string | ❌ | Téléphone (optionnel pour invités) |
+
+**Exemple Requête (Authentifié):**
+```bash
+curl -X POST "https://api.example.com/api/tours/5/reserve" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Accept-Language: fr" \
+  -d '{
+    "number_of_people": 3,
+    "notes": "Intéressés par la faune locale"
+  }'
+```
+
+**Réponse Succès (201):**
+```json
+{
+  "success": true,
+  "message": "Tour reservation request sent successfully. It is pending confirmation from the operator.",
+  "reservation": {
+    "id": 15,
+    "tour_id": 5,
+    "number_of_people": 3,
+    "status": "pending",
+    "notes": "Intéressés par la faune locale",
+    "created_at": "2025-01-30T16:30:00+00:00"
+  }
+}
+```
+
+**Erreurs Possibles:**
+- `422` - Pas assez de places disponibles
+- `422` - Données de validation invalides
+
+#### 2. Mes Réservations de Tours (Authentifié)
+```http
+GET /api/tour-reservations
+Authorization: Bearer {token}
+```
+
+**Exemple Requête:**
+```bash
+curl -X GET "https://api.example.com/api/tour-reservations" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Accept-Language: fr"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 15,
+      "tour": {
+        "id": 5,
+        "title": "Circuit des Sept Lacs",
+        "price": 25000.00,
+        "currency": "DJF",
+        "featured_image": { /* ... */ }
+      },
+      "number_of_people": 3,
+      "status": "pending",
+      "notes": "Intéressés par la faune locale",
+      "created_at": "2025-01-30T16:30:00+00:00"
+    }
+  ]
+}
+```
+
+#### 3. Détails d'une Réservation (Authentifié)
+```http
+GET /api/tour-reservations/{reservation_id}
+Authorization: Bearer {token}
+```
+
+#### 4. Modifier une Réservation (Authentifié)
+```http
+PATCH /api/tour-reservations/{reservation_id}
+Authorization: Bearer {token}
+```
+
+**Body Parameters:**
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| `number_of_people` | integer | Nouveau nombre de participants |
+| `notes` | string | Notes mises à jour |
+
+**Note:** Seules les réservations avec statut `pending` ou `confirmed` peuvent être modifiées.
+
+#### 5. Annuler une Réservation (Authentifié)
+```http
+PATCH /api/tour-reservations/{reservation_id}/cancel
+Authorization: Bearer {token}
+```
+
+**Exemple Requête:**
+```bash
+curl -X PATCH "https://api.example.com/api/tour-reservations/15/cancel" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "message": "Tour reservation successfully cancelled.",
+  "reservation": {
+    "id": 15,
+    "status": "cancelled_by_user",
+    "updated_at": "2025-01-31T10:15:00+00:00"
+  }
+}
+```
+
+**Erreurs Possibles:**
+- `403` - Réservation appartient à un autre utilisateur
+- `400` - Réservation ne peut pas être annulée (déjà terminée ou annulée)
+
+**Note:** L'annulation décrémente automatiquement le nombre de participants actuels du tour.
+
+#### 6. Supprimer une Réservation Annulée (Authentifié)
+```http
+DELETE /api/tour-reservations/{reservation_id}
+Authorization: Bearer {token}
+```
+
+**Description:** Supprime définitivement une réservation qui a déjà été annulée. Cette action est irréversible et sert à nettoyer l'historique.
+
+**Exemple Requête:**
+```bash
+curl -X DELETE "https://api.example.com/api/tour-reservations/15" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**Réponse Succès (200):**
+```json
+{
+  "success": true,
+  "message": "Tour reservation permanently deleted."
+}
+```
+
+**Erreurs Possibles:**
+- `403` - Réservation appartient à un autre utilisateur
+- `400` - Seules les réservations annulées peuvent être supprimées (statut: `cancelled_by_user` ou `cancelled_by_operator`)
 
 ---
 
@@ -1844,8 +2042,30 @@ Pour toute question technique:
 
 ---
 
-**Document Version**: 1.1
-**Date**: 4 Novembre 2025
-**Dernière Mise à Jour**: Ajout de la section Régions (3 endpoints + UI/UX)
+**Document Version**: 1.2
+**Date**: 30 Janvier 2025
+**Dernière Mise à Jour**:
+- Ajout de la section Tours Guidés (6 endpoints complets)
+- Séparation des endpoints d'annulation (PATCH) et de suppression (DELETE) pour les réservations
+- Mise à jour des endpoints d'activités: PATCH pour cancel, DELETE pour suppression définitive
+- Documentation complète du workflow de gestion des réservations (cancel → delete)
+
 **Auteur**: Système Backend Visit Djibouti
 **Status**: ✅ Prêt pour implémentation
+
+---
+
+## Changelog
+
+### Version 1.2 (30 Janvier 2025)
+- ✅ Ajout section complète "Tours Guidés" avec 6 endpoints
+- ✅ Séparation annulation/suppression pour tours: `PATCH /cancel` + `DELETE /`
+- ✅ Séparation annulation/suppression pour activités: `PATCH /cancel` + `DELETE /`
+- ✅ Documentation du système de gestion d'historique des réservations
+- ✅ Clarification des statuts requis pour suppression définitive
+
+### Version 1.1 (4 Novembre 2025)
+- Ajout de la section Régions (3 endpoints + UI/UX)
+
+### Version 1.0
+- Version initiale avec Activités, Avis et Commentaires

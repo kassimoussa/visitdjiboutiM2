@@ -268,7 +268,7 @@ class _TourCardState extends State<TourCard> {
             ),
           ),
         ),
-        if (tour.maxParticipants != null && tour.maxParticipants! > 0)
+        /* if (tour.maxParticipants != null && tour.maxParticipants! > 0)
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
@@ -286,7 +286,7 @@ class _TourCardState extends State<TourCard> {
                 ),
               ],
             ),
-          ),
+          ), */
       ],
     );
   }

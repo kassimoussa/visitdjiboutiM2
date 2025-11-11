@@ -114,12 +114,12 @@ class TourService {
         // Debug: afficher les données reçues
         print('[TOUR SERVICE] Tour data keys: ${tourData.keys.toList()}');
         print('[TOUR SERVICE] featured_image: ${tourData['featured_image']}');
-        print('[TOUR SERVICE] tour_operator: ${tourData['tour_operator']}');
-        print('[TOUR SERVICE] meeting_point: ${tourData['meeting_point']}');
-        print('[TOUR SERVICE] duration: ${tourData['duration']}');
-        print('[TOUR SERVICE] media: ${tourData['media']}');
-        print('[TOUR SERVICE] upcoming_schedules: ${tourData['upcoming_schedules']}');
-        print('[TOUR SERVICE] age_restrictions: ${tourData['age_restrictions']}');
+        print('[ TOUR SERVICE] tour_operator: ${tourData['tour_operator']}');
+        print('[ TOUR SERVICE] meeting_point: ${tourData['meeting_point']}');
+        print('[ TOUR SERVICE] duration: ${tourData['duration']}');
+        print('[ TOUR SERVICE] media: ${tourData['media']}');
+        print('[ TOUR SERVICE] upcoming_schedules: ${tourData['upcoming_schedules']}');
+        print('[ TOUR SERVICE] age_restrictions: ${tourData['age_restrictions']}');
 
         try {
           final tour = Tour.fromJson(tourData);
@@ -135,9 +135,25 @@ class TourService {
       }
     } catch (e) {
       print('[TOUR SERVICE] Erreur lors du chargement des détails: $e');
-      print('[TOUR SERVICE] Type erreur: ${e.runtimeType}');
+      print('[ TOUR SERVICE] Type erreur: ${e.runtimeType}');
       rethrow;
     }
+  }
+
+  /// Récupérer les tours mis en avant (featured)
+  Future<TourListResponse> getFeaturedTours({
+    int limit = 10,
+    int page = 1,
+  }) async {
+    print('[TOUR SERVICE] Récupération tours featured (limit: $limit)');
+
+    return getTours(
+      featured: true,
+      perPage: limit,
+      page: page,
+      sortBy: 'created_at',
+      sortOrder: 'desc',
+    );
   }
 
   /// Créer une réservation pour un tour
@@ -179,17 +195,17 @@ class TourService {
       );
 
       print('[TOUR SERVICE] Statut réservation: ${response.statusCode}');
-      print('[TOUR SERVICE] Réponse réservation: ${response.data}');
+      print('[ TOUR SERVICE] Réponse réservation: ${response.data}');
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         final reservationResponse = TourReservationResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Réservation créée: ID ${reservationResponse.reservation.id}');
+        print('[ TOUR SERVICE] Réservation créée: ID ${reservationResponse.reservation.id}');
         return reservationResponse;
       } else {
         throw Exception('Erreur lors de la réservation: ${response.statusCode}');
       }
     } catch (e) {
-      print('[TOUR SERVICE] Erreur réservation: $e');
+      print('[ TOUR SERVICE] Erreur réservation: $e');
       rethrow;
     }
   }
@@ -200,7 +216,7 @@ class TourService {
     int page = 1,
     int perPage = 20,
   }) async {
-    print('[TOUR SERVICE] Récupération mes réservations tours');
+    print('[ TOUR SERVICE] Récupération mes réservations tours');
 
     final queryParameters = <String, dynamic>{
       'page': page,
@@ -217,42 +233,43 @@ class TourService {
         queryParameters: queryParameters,
       );
 
-      print('[TOUR SERVICE] Statut mes réservations: ${response.statusCode}');
+      print('[ TOUR SERVICE] Statut mes réservations: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final reservationListResponse = TourReservationListResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Réservations chargées: ${reservationListResponse.data.data.length}');
+        print('[ TOUR SERVICE] Réservations chargées: ${reservationListResponse.data.data.length}');
         return reservationListResponse;
-      } else {
+      }
+      else {
         throw Exception('Erreur lors du chargement des réservations: ${response.statusCode}');
       }
     } catch (e) {
-      print('[TOUR SERVICE] Erreur mes réservations: $e');
+      print('[ TOUR SERVICE] Erreur mes réservations: $e');
       rethrow;
     }
   }
 
   /// Récupérer les détails d'une réservation
   Future<TourReservation> getReservationDetails(int reservationId) async {
-    print('[TOUR SERVICE] Récupération détails réservation: $reservationId');
+    print('[ TOUR SERVICE] Récupération détails réservation: $reservationId');
 
     try {
       final response = await _apiClient.get(
         ApiConstants.tourReservationById(reservationId),
       );
 
-      print('[TOUR SERVICE] Statut détails réservation: ${response.statusCode}');
+      print('[ TOUR SERVICE] Statut détails réservation: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final data = response.data['data'] as Map<String, dynamic>;
         final reservation = TourReservation.fromJson(data);
-        print('[TOUR SERVICE] Détails réservation chargés: ID ${reservation.id}');
+        print('[ TOUR SERVICE] Détails réservation chargés: ID ${reservation.id}');
         return reservation;
       } else {
         throw Exception('Réservation non trouvée: ${response.statusCode}');
       }
     } catch (e) {
-      print('[TOUR SERVICE] Erreur détails réservation: $e');
+      print('[ TOUR SERVICE] Erreur détails réservation: $e');
       rethrow;
     }
   }
@@ -263,7 +280,7 @@ class TourService {
     int? numberOfPeople,
     String? notes,
   }) async {
-    print('[TOUR SERVICE] Modification réservation: $reservationId');
+    print('[ TOUR SERVICE] Modification réservation: $reservationId');
 
     final requestData = <String, dynamic>{};
 
@@ -274,7 +291,7 @@ class TourService {
       requestData['notes'] = notes;
     }
 
-    print('[TOUR SERVICE] Données modification: $requestData');
+    print('[ TOUR SERVICE] Données modification: $requestData');
 
     try {
       final response = await _apiClient.patch(
@@ -282,106 +299,68 @@ class TourService {
         data: requestData,
       );
 
-      print('[TOUR SERVICE] Statut modification: ${response.statusCode}');
+      print('[ TOUR SERVICE] Statut modification: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final reservationResponse = TourReservationResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Réservation modifiée avec succès');
+        print('[ TOUR SERVICE] Réservation modifiée avec succès');
         return reservationResponse;
       } else {
         throw Exception('Erreur lors de la modification: ${response.statusCode}');
       }
     } catch (e) {
-      print('[TOUR SERVICE] Erreur modification: $e');
+      print('[ TOUR SERVICE] Erreur modification: $e');
       rethrow;
     }
   }
 
   /// Annuler une réservation
   Future<TourReservationResponse> cancelReservation(int reservationId) async {
-    print('[TOUR SERVICE] Annulation réservation: $reservationId');
+    print('[ TOUR SERVICE] Annulation réservation: $reservationId');
 
     try {
       final response = await _apiClient.patch(
         ApiConstants.tourReservationCancel(reservationId),
       );
 
-      print('[TOUR SERVICE] Statut annulation: ${response.statusCode}');
+      print('[ TOUR SERVICE] Statut annulation: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final reservationResponse = TourReservationResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Réservation annulée avec succès');
+        print('[ TOUR SERVICE] Réservation annulée avec succès');
         return reservationResponse;
       } else {
-        throw Exception('Erreur lors de l\'annulation: ${response.statusCode}');
+        throw Exception('Erreur lors de l\annulation: ${response.statusCode}');
       }
     } catch (e) {
-      print('[TOUR SERVICE] Erreur annulation: $e');
+      print('[ TOUR SERVICE] Erreur annulation: $e');
       rethrow;
     }
   }
 
-  Future<List<SimpleTour>> getFeaturedTours({int limit = 5}) async {
-    print('[TOUR SERVICE] Récupération tours vedettes');
+  /// Supprimer une réservation définitivement
+  Future<bool> deleteReservationPermanently({
+    required int reservationId,
+  }) async {
+    print('[ TOUR SERVICE] Suppression définitive réservation: $reservationId');
 
     try {
-      final response = await _apiClient.get(
-        ApiConstants.tours,
-        queryParameters: {
-          'sort_by': 'created_at',
-          'sort_order': 'desc',
-          'per_page': limit,
-          'page': 1,
-        },
+      final response = await _apiClient.delete(
+        ApiConstants.tourReservationById(reservationId),
       );
 
-      print('[TOUR SERVICE] Statut réponse: ${response.statusCode}');
+      print('[ TOUR SERVICE] Statut suppression définitive: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final tourListResponse = SimpleTourListResponse.fromJson(response.data);
-        print('[TOUR SERVICE] Tours parsés avec succès: ${tourListResponse.data.tours.length} tours');
-        return tourListResponse.data.tours;
-      } else {
-        throw Exception('Erreur lors du chargement des tours: ${response.statusCode}');
+        print('[ TOUR SERVICE] Réservation supprimée définitivement avec succès');
+        return true;
+      }
+      else {
+        throw Exception('Erreur lors de la suppression définitive');
       }
     } catch (e) {
-      print('[TOUR SERVICE] Erreur tours vedettes: $e');
-      return [];
-    }
-  }
-
-  Future<List<Tour>> getToursByOperator(int operatorId, {int limit = 10}) async {
-    print('[TOUR SERVICE] Récupération tours opérateur: $operatorId');
-
-    try {
-      final response = await getTours(
-        operatorId: operatorId,
-        perPage: limit,
-      );
-
-      print('[TOUR SERVICE] Réponse reçue - success: ${response.success}');
-      print('[TOUR SERVICE] Nombre de tours: ${response.data.tours.length}');
-
-      return response.data.tours;
-    } catch (e) {
-      print('[TOUR SERVICE] Erreur tours opérateur: $e');
-      return [];
-    }
-  }
-
-  Future<List<Tour>> searchTours(String query) async {
-    print('[TOUR SERVICE] Recherche tours: $query');
-
-    try {
-      final response = await getTours(
-        search: query,
-        perPage: 50,
-      );
-
-      return response.data.tours;
-    } catch (e) {
-      print('[TOUR SERVICE] Erreur recherche tours: $e');
-      return [];
+      print('[ TOUR SERVICE] Erreur suppression définitive: $e');
+      rethrow;
     }
   }
 }

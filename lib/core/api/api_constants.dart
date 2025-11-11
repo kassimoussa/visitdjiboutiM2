@@ -69,7 +69,8 @@ class ApiConstants {
 
   // Activity registrations endpoints
   static const String activityRegistrations = '/activity-registrations';
-  static String activityRegistrationCancel(int registrationId) => '/activity-registrations/$registrationId';
+  static String activityRegistrationCancel(int registrationId) => '/activity-registrations/$registrationId/cancel';
+  static String activityRegistrationDelete(int registrationId) => '/activity-registrations/$registrationId';
 
   // Default headers
   static Map<String, String> get defaultHeaders => {

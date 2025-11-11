@@ -93,9 +93,24 @@ class ActivityRegistration {
   });
 
   factory ActivityRegistration.fromJson(Map<String, dynamic> json) {
-    // Remove the activity field to prevent parsing errors
     final cleanJson = Map<String, dynamic>.from(json);
+
+    // Extract activity_id from the nested activity object if it exists
+    if (cleanJson.containsKey('activity') && cleanJson['activity'] is Map) {
+      final activityData = cleanJson['activity'] as Map<String, dynamic>;
+      if (activityData.containsKey('id')) {
+        cleanJson['activity_id'] = activityData['id'];
+      }
+    }
+    
+    // Remove the activity field to prevent parsing errors
     cleanJson.remove('activity');
+
+    // Add a default for activity_id if it's still missing, to be safe
+    if (!cleanJson.containsKey('activity_id')) {
+      cleanJson['activity_id'] = 0; // Or handle as an error
+    }
+    
     return _$ActivityRegistrationFromJson(cleanJson);
   }
   Map<String, dynamic> toJson() => _$ActivityRegistrationToJson(this);
