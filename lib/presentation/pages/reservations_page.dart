@@ -91,11 +91,6 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
       if (mounted) {
         setState(() {
-          // Clear lists before repopulating
-          _allReservations = [];
-          _allTourReservations = [];
-          _allActivityRegistrations = [];
-
           // Réservations POI/Event
           if (poiEventResponse.isSuccess && poiEventResponse.data != null) {
             _allReservations = poiEventResponse.data!.reservations;
@@ -1184,7 +1179,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 ],
 
                 // Informations de réservation
-                /* _buildDetailRow('Réservation #', '${reservation.id}'), */
+                _buildDetailRow('Réservation #', '${reservation.id}'),
                 _buildDetailRow('Participants', '${reservation.numberOfPeople}'),
                 if (reservation.notes != null && reservation.notes!.isNotEmpty)
                   _buildDetailRow('Notes', reservation.notes!),
@@ -1202,9 +1197,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Dates système
                 if (reservation.createdAt != null)
-                  _buildDetailRow('Créée le', _formatDate(reservation.createdAt)),
+                  _buildDetailRow('Créée le', reservation.createdAt!),
                 if (reservation.updatedAt != null)
-                  _buildDetailRow('Mise à jour', _formatDate(reservation.updatedAt)),
+                  _buildDetailRow('Mise à jour', reservation.updatedAt!),
 
                 // Actions
                 if (reservation.canCancel) ...[

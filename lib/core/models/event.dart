@@ -11,10 +11,12 @@ class Event {
   @JsonKey(fromJson: _parseInt)
   final int id;
   final String? slug;
+  @JsonKey(defaultValue: '')
   final String title;
-  @JsonKey(name: 'short_description')
+  @JsonKey(name: 'short_description', defaultValue: '')
   final String shortDescription;
   final String? description;
+  @JsonKey(defaultValue: '')
   final String location;
   @JsonKey(name: 'location_details')
   final String? locationDetails;
@@ -24,7 +26,7 @@ class Event {
   final String? program;
   @JsonKey(name: 'additional_info')
   final String? additionalInfo;
-  @JsonKey(name: 'start_date')
+  @JsonKey(name: 'start_date', defaultValue: '')
   final String startDate;
   @JsonKey(name: 'end_date')
   final String? endDate;
@@ -136,7 +138,7 @@ class Event {
 
   String get primaryCategory => categories.isNotEmpty ? categories.first.name : 'Événement';
   String get imageUrl => featuredImage?.imageUrl ?? '';
-  String get displayLocation => fullLocation ?? location;
+  String get displayLocation => fullLocation ?? location ?? '';
   bool get hasMedia => media != null && media!.isNotEmpty;
   // Note: Use getPriceText(context) instead for localized text
   String get priceText => isFree ? 'Gratuit' : '${price.toStringAsFixed(0)} DJF';

@@ -19,7 +19,7 @@ Activity _$ActivityFromJson(Map<String, dynamic> json) => Activity(
   currency: json['currency'] as String? ?? 'DJF',
   difficulty: _difficultyFromJson(json['difficulty_level']),
   difficultyLabel: json['difficulty_label'] as String?,
-  duration: _durationFromJson(json['duration'] as Map<String, dynamic>),
+  duration: _durationFromJson(json['duration']),
   region: json['region'] as String?,
   location: _locationFromJson(json['location']),
   participants: _participantsFromJson(json['participants']),

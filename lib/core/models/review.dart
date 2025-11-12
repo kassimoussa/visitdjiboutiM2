@@ -6,15 +6,15 @@ part 'review.g.dart';
 @JsonSerializable()
 class Review {
   final int id;
-  @JsonKey(name: 'poi_id')
-  final int poiId;
+  @JsonKey(name: 'poi_id', includeIfNull: false)
+  final int? poiId;
   final ReviewAuthor author;
   final int rating; // 1-5 étoiles
   final String? title;
   final String? comment;
-  @JsonKey(name: 'helpful_count')
+  @JsonKey(name: 'helpful_count', defaultValue: 0)
   final int? helpfulCount;
-  @JsonKey(name: 'is_helpful')
+  @JsonKey(name: 'is_helpful', defaultValue: false)
   final bool isHelpful;
   @JsonKey(name: 'operator_response')
   final OperatorResponse? operatorResponse;
@@ -25,12 +25,12 @@ class Review {
 
   Review({
     required this.id,
-    required this.poiId,
+    this.poiId,
     required this.author,
     required this.rating,
     this.title,
     this.comment,
-    required this.helpfulCount,
+    this.helpfulCount,
     required this.isHelpful,
     this.operatorResponse,
     required this.createdAt,

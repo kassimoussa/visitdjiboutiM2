@@ -628,9 +628,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Utile (${review.helpfulCount})',
+                        'Utile${(review.helpfulCount ?? 0) > 0 ? ' (${review.helpfulCount})' : ''}',
                         style: TextStyle(
                           fontSize: 12,
+                          fontWeight: review.isHelpful ? FontWeight.w600 : FontWeight.normal,
                           color: review.isHelpful
                               ? const Color(0xFF3860F8)
                               : Colors.grey[600],

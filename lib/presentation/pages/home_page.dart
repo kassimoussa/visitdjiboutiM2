@@ -18,7 +18,7 @@ import '../../core/models/event.dart';
 import '../../core/models/poi_list_response.dart';
 import '../../core/models/event_list_response.dart';
 import '../../core/models/api_response.dart';
-import 'region_page.dart';
+import 'region_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 import 'tour_operators_page.dart';
@@ -656,10 +656,8 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RegionPage(
+              builder: (context) => RegionDetailPage(
                 regionName: title,
-                regionEmoji: emoji,
-                regionColor: color,
               ),
             ),
           );

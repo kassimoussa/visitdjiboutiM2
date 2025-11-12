@@ -8,8 +8,8 @@ part of 'category.dart';
 
 Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
   id: Category._parseId(json['id']),
-  name: json['name'] as String,
-  slug: json['slug'] as String,
+  name: json['name'] as String? ?? '',
+  slug: json['slug'] as String? ?? '',
   description: json['description'] as String?,
   color: json['color'] as String?,
   icon: json['icon'] as String?,

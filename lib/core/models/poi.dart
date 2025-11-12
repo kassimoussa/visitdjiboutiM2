@@ -11,11 +11,13 @@ class Poi {
   @JsonKey(fromJson: _parseInt)
   final int id;
   final String? slug;
+  @JsonKey(defaultValue: '')
   final String name;
   @JsonKey(name: 'short_description')
   final String? shortDescription;
   final String? description;
   final String? address;
+  @JsonKey(defaultValue: '')
   final String region;
   @JsonKey(name: 'full_address')
   final String? fullAddress;

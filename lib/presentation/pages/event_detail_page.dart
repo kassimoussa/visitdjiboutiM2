@@ -9,6 +9,7 @@ import '../../core/services/reservation_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
+import '../widgets/contact_operator_button.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'event_gallery_page.dart';
 
@@ -403,6 +404,25 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             ),
                           ),
                         ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: ContactOperatorButton(
+                            resourceType: 'event',
+                            resourceId: event.id,
+                            operatorName: event.organizer,
+                            iconColor: Colors.black87,
+                            onMessageSent: () {
+                              // Recharger la page après l'envoi du message
+                              setState(() {
+                                _loadEventDetails();
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.1),

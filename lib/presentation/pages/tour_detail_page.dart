@@ -9,6 +9,7 @@ import '../../core/services/favorites_service.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../widgets/shimmer_loading.dart';
 import '../widgets/tour_reservation_form_widget.dart';
+import '../widgets/contact_operator_button.dart';
 import 'tour_operator_detail_page.dart';
 import 'tour_gallery_page.dart';
 
@@ -360,6 +361,25 @@ class _TourDetailPageState extends State<TourDetailPage> {
                           color: Colors.black.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
+                        child: ContactOperatorButton(
+                          resourceType: 'tour',
+                          resourceId: tour.id,
+                          operatorName: tour.tourOperator?.name,
+                          iconColor: Colors.black87,
+                          onMessageSent: () {
+                            // Recharger la page après l'envoi du message
+                            setState(() {
+                              _loadTourDetails();
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
                         child: IconButton(
                           onPressed: _toggleFavorite,
                           icon: Icon(
@@ -671,7 +691,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
     );
   }
 
-  Widget _buildInfoRowItem(IconData icon, String label, String value) {
+  Widget _buildInfoRowItem(IconData icon, String label, String? value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
       child: Row(
@@ -697,7 +717,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  value,
+                  value ?? '',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[700],

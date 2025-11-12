@@ -6,7 +6,9 @@ part 'category.g.dart';
 class Category {
   @JsonKey(fromJson: _parseId)
   final int id;
+  @JsonKey(defaultValue: '')
   final String name;
+  @JsonKey(defaultValue: '')
   final String slug;
   final String? description;
   final String? color;

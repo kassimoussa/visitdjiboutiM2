@@ -9,6 +9,7 @@ import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
 import '../widgets/reviews_section.dart';
+import '../widgets/contact_operator_button.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'tour_operator_detail_page.dart';
 import 'poi_gallery_page.dart';
@@ -380,6 +381,27 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             color: Colors.black.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
+                          child: ContactOperatorButton(
+                            resourceType: 'poi',
+                            resourceId: poi.id,
+                            operatorName: poi.tourOperators?.isNotEmpty == true
+                                ? poi.tourOperators!.first.name
+                                : null,
+                            iconColor: Colors.black87,
+                            onMessageSent: () {
+                              // Recharger la page après l'envoi du message
+                              setState(() {
+                                _loadPoiDetails();
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
                           child: IconButton(
                             onPressed: () {
                               setState(() {
@@ -388,8 +410,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    _isFavorite 
-                                        ? 'Ajouté aux favoris' 
+                                    _isFavorite
+                                        ? 'Ajouté aux favoris'
                                         : 'Retiré des favoris'
                                   ),
                                   duration: const Duration(seconds: 2),

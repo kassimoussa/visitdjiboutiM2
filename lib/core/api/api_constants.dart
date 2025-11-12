@@ -80,6 +80,17 @@ class ApiConstants {
   static String poiReviewVoteHelpful(int poiId, int reviewId) => '/pois/$poiId/reviews/$reviewId/vote-helpful';
   static const String myReviews = '/reviews/my-reviews';
 
+  // Comments endpoints (for administration/operators - not displayed in app)
+  static const String comments = '/comments';
+  static String commentById(int commentId) => '/comments/$commentId';
+  static String commentLike(int commentId) => '/comments/$commentId/like';
+  static const String myComments = '/comments/my-comments';
+
+  // Regions endpoints
+  static const String regions = '/regions';
+  static String regionByName(String regionName) => '/regions/$regionName';
+  static const String regionStatistics = '/regions/statistics';
+
   // Default headers
   static Map<String, String> get defaultHeaders => {
     'Content-Type': 'application/json',

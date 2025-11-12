@@ -63,7 +63,11 @@ TourOperator? _tourOperatorFromJson(dynamic operator) {
 }
 
 // Parse duration
-ActivityDuration _durationFromJson(Map<String, dynamic> json) {
+ActivityDuration _durationFromJson(dynamic value) {
+  if (value == null) {
+    return ActivityDuration(hours: null, minutes: null, formatted: '');
+  }
+  final json = value as Map<String, dynamic>;
   final hours = (json['hours'] as num?)?.toInt();
   final minutes = (json['minutes'] as num?)?.toInt();
   final formatted = json['formatted'] as String?;

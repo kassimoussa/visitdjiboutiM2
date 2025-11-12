@@ -298,7 +298,9 @@ Complete review and rating system for Points of Interest:
 - Automatic refresh after create/edit/delete operations
 
 **Known Issues Fixed:**
-- `helpfulCount` is nullable (`int?`) to handle new reviews with no votes
+- `helpfulCount` is nullable (`int?`) with default value 0 to handle new reviews with no votes
+- `poiId` is optional in Review model (not returned by API in review lists)
+- Better display of helpful count: only shows number when > 0
 - Button wrapped in `Flexible` to prevent BoxConstraints errors
 - Mounted checks for async operations to prevent state updates after disposal
 

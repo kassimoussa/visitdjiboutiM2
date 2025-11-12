@@ -3,6 +3,7 @@ import '../../core/models/activity.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/activity_registration_form_widget.dart';
+import '../widgets/contact_operator_button.dart';
 import 'activity_gallery_page.dart';
 
 class ActivityDetailPage extends StatefulWidget {
@@ -370,7 +371,24 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 48), // Espace pour symétrie
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: ContactOperatorButton(
+                          resourceType: 'activity',
+                          resourceId: _activity!.id,
+                          operatorName: _activity!.tourOperator?.name,
+                          iconColor: Colors.black87,
+                          onMessageSent: () {
+                            // Recharger la page après l'envoi du message
+                            setState(() {
+                              _loadActivityDetails();
+                            });
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),

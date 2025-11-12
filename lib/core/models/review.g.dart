@@ -8,13 +8,13 @@ part of 'review.dart';
 
 Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
   id: (json['id'] as num).toInt(),
-  poiId: (json['poi_id'] as num).toInt(),
+  poiId: (json['poi_id'] as num?)?.toInt(),
   author: ReviewAuthor.fromJson(json['author'] as Map<String, dynamic>),
   rating: (json['rating'] as num).toInt(),
   title: json['title'] as String?,
   comment: json['comment'] as String?,
-  helpfulCount: (json['helpful_count'] as num).toInt(),
-  isHelpful: json['is_helpful'] as bool,
+  helpfulCount: (json['helpful_count'] as num?)?.toInt() ?? 0,
+  isHelpful: json['is_helpful'] as bool? ?? false,
   operatorResponse: json['operator_response'] == null
       ? null
       : OperatorResponse.fromJson(
@@ -26,7 +26,7 @@ Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
 
 Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
   'id': instance.id,
-  'poi_id': instance.poiId,
+  'poi_id': ?instance.poiId,
   'author': instance.author,
   'rating': instance.rating,
   'title': instance.title,
