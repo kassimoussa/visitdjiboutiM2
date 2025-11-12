@@ -72,6 +72,14 @@ class ApiConstants {
   static String activityRegistrationCancel(int registrationId) => '/activity-registrations/$registrationId/cancel';
   static String activityRegistrationDelete(int registrationId) => '/activity-registrations/$registrationId';
 
+  // Reviews endpoints (POI only)
+  static String poiReviews(int poiId) => '/pois/$poiId/reviews';
+  static String poiReviewCreate(int poiId) => '/pois/$poiId/reviews';
+  static String poiReviewUpdate(int poiId, int reviewId) => '/pois/$poiId/reviews/$reviewId';
+  static String poiReviewDelete(int poiId, int reviewId) => '/pois/$poiId/reviews/$reviewId';
+  static String poiReviewVoteHelpful(int poiId, int reviewId) => '/pois/$poiId/reviews/$reviewId/vote-helpful';
+  static const String myReviews = '/reviews/my-reviews';
+
   // Default headers
   static Map<String, String> get defaultHeaders => {
     'Content-Type': 'application/json',

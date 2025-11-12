@@ -57,6 +57,7 @@ The app follows a layered architecture pattern:
 - `EventService` - Events and registrations
 - `FavoritesService` - User favorites management
 - `AnonymousAuthService` - Anonymous authentication flow
+- `ReviewService` - Review and rating system for POIs
 
 ### Navigation Architecture
 **Main Structure**: `MainNavigationPage` with bottom navigation using `IndexedStack`
@@ -76,7 +77,11 @@ All models use `json_annotation` for serialization:
 - `Event` - Tourism events with registration capabilities
 - `Category` - Content categorization
 - `AnonymousUser` - User data for anonymous authentication
-- Response wrappers (`ApiResponse`, `PoiListResponse`, etc.)
+- `Review` - User reviews with ratings, comments, and statistics
+- `ReviewAuthor` - Review author information with verification status
+- `ReviewStatistics` - Aggregated review data with rating distribution
+- `OperatorResponse` - Operator responses to reviews
+- Response wrappers (`ApiResponse`, `PoiListResponse`, `ReviewListResponse`, etc.)
 
 ### Localization
 **Supported Languages**: French (default), English, Arabic
@@ -88,17 +93,17 @@ All models use `json_annotation` for serialization:
 ## Key Features
 
 **Implemented**:
-- Tourism content (POIs, events, categories) with fake data
+- Tourism content (POIs, events, categories) connected to live API
 - Progressive anonymous user onboarding
 - Multilingual support (French, English, Arabic)
 - Event registration system
 - Favorites management
+- Review and rating system for POIs
 - Modern Material Design 3 UI
 
 **In Development**:
-- Live API integration
-- Google Maps integration
-- Offline caching capabilities
+- Google Maps integration with POI markers
+- Activity system (similar to events)
 
 ## API Endpoints
 
@@ -106,7 +111,10 @@ Backend organized in categories (see `ApiConstants`):
 - **Authentication**: `/auth/*` - register, login, logout, profile
 - **POIs**: `/pois/*` - listing, nearby, by category, details
 - **Events**: `/events/*` - listing, details, registration
+- **Activities**: `/activities/*` - listing, details, registration
 - **Favorites**: `/favorites/*` - POIs/events, toggle, stats
+- **Reviews**: `/pois/{id}/reviews` - CRUD operations, vote helpful, statistics
+- **Reservations**: `/reservations` - create, cancel, delete (by confirmation number)
 - **Organization**: `/organization`, `/external-links`
 - **Additional**: embassies, tour operators, app settings
 
@@ -160,12 +168,13 @@ Backend organized in categories (see `ApiConstants`):
 - Anonymous user authentication system with automatic token management
 - Complete API client setup with Dio interceptors for auth and logging
 - Full data model layer with JSON serialization
-- Service layer for POIs, events, favorites, and localization
+- Service layer for POIs, events, favorites, reviews, and localization
 - 5-tab navigation with IndexedStack preservation
 - Modern Material Design 3 UI with Djibouti theming
 - Multilingual support (French, English, Arabic)
 - Comprehensive reservation system with creation, cancellation, and deletion
 - Complete offline mode with intelligent caching and synchronization
+- Review and rating system for POIs with statistics and voting
 
 ### 🚀 Next Steps
 1. ~~Connect live API endpoints~~ ✅ **DONE** - All endpoints connected and functional
@@ -234,9 +243,64 @@ Full-featured reservation management:
 
 **API Integration:**
 - `POST /api/reservations` - Create new reservations
-- `PATCH /api/reservations/{confirmation_number}/cancel` - Cancel reservations  
+- `PATCH /api/reservations/{confirmation_number}/cancel` - Cancel reservations
 - `DELETE /api/reservations/{confirmation_number}` - Delete cancelled reservations
 - `GET /api/reservations` - List user reservations with filtering
+
+### Review System (POIs Only)
+Complete review and rating system for Points of Interest:
+
+**Core Features:**
+- 1-5 star rating system (required)
+- Optional title (max 100 characters)
+- Optional comment (max 1000 characters)
+- Review statistics with rating distribution
+- "Helpful" voting system
+- Operator responses to reviews
+- Review author verification badges
+
+**Data Models:**
+- `Review` - Complete review with rating, title, comment, helpful count
+- `ReviewAuthor` - Author info with verified status and "is_me" flag
+- `ReviewStatistics` - Average rating, total count, distribution by stars
+- `OperatorResponse` - Responses from POI operators
+- `ReviewListResponse` - Paginated list with meta and statistics
+- `ReviewResponse` - Single review response wrapper
+
+**UI Components:**
+- `ReviewsSection` - Main widget displaying reviews list, statistics, and filters
+- `ReviewFormWidget` - Modal bottom sheet for creating/editing reviews
+- Empty state with call-to-action for first review
+- Star rating visualization (gold #FFB800)
+- Pagination support with "Load More" button
+- Rating filter buttons (All, 5⭐, 4⭐, etc.)
+
+**Service Layer (`ReviewService`):**
+- `getPoiReviews()` - Fetch reviews with pagination, sorting, and filtering
+- `createReview()` - Create new review (rating required, title/comment optional)
+- `updateReview()` - Edit existing review
+- `deleteReview()` - Delete user's own review
+- `voteHelpful()` - Vote review as helpful (once per user)
+- `getMyReviews()` - Get current user's reviews across all POIs
+
+**API Endpoints:**
+- `GET /pois/{id}/reviews` - List reviews with stats (params: sort_by, sort_order, rating, page, per_page)
+- `POST /pois/{id}/reviews` - Create review
+- `PUT /pois/{id}/reviews/{review_id}` - Update review
+- `DELETE /pois/{id}/reviews/{review_id}` - Delete review
+- `POST /pois/{id}/reviews/{review_id}/vote-helpful` - Vote helpful
+- `GET /reviews/my-reviews` - Get user's reviews
+
+**Integration:**
+- Reviews section integrated into `PoiDetailPage` below reservation section
+- Only logged-in users can write reviews (anonymous users see login prompt)
+- Real-time statistics update after review submission
+- Automatic refresh after create/edit/delete operations
+
+**Known Issues Fixed:**
+- `helpfulCount` is nullable (`int?`) to handle new reviews with no votes
+- Button wrapped in `Flexible` to prevent BoxConstraints errors
+- Mounted checks for async operations to prevent state updates after disposal
 
 ### Code Generation
 Models use `json_serializable` - run `dart run build_runner build` after model changes.

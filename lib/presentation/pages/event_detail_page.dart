@@ -6,9 +6,11 @@ import '../../core/models/reservation.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/reservation_service.dart';
+import '../../core/services/anonymous_auth_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
+import 'event_gallery_page.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Event event;
@@ -481,80 +483,93 @@ class _EventDetailPageState extends State<EventDetailPage> {
       );
     }
 
-    return SizedBox(
-      height: 350,
-      width: double.infinity,
-      child: Stack(
-        children: [
-          PageView.builder(
-            controller: _imagePageController,
-            physics: const BouncingScrollPhysics(),
-            onPageChanged: (index) {
-              setState(() {
-                _currentImageIndex = index;
-              });
-            },
-            itemCount: imageUrls.length,
-            itemBuilder: (context, index) {
-              return Image.network(
-                imageUrls[index],
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: const Color(0xFFE8D5A3),
-                    child: const Center(
-                      child: Icon(
-                        Icons.event,
-                        size: 80,
-                        color: Color(0xFF3860F8),
-                      ),
-                    ),
-                  );
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    color: const Color(0xFFE8D5A3),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFF3860F8),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imageUrls.asMap().entries.map((entry) {
-                final isActive = entry.key == _currentImageIndex;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _currentImageIndex = entry.key;
-                    });
-                  },
-                  child: Container(
-                    width: isActive ? 12 : 8,
-                    height: isActive ? 12 : 8,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
-                      border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
-                    ),
-                  ),
-                );
-              }).toList(),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventGalleryPage(
+              eventName: event.title ?? AppLocalizations.of(context)!.commonUnknownEvent,
+              imageUrls: imageUrls,
             ),
           ),
-        ],
+        );
+      },
+      child: SizedBox(
+        height: 350,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            PageView.builder(
+              controller: _imagePageController,
+              physics: const BouncingScrollPhysics(),
+              onPageChanged: (index) {
+                setState(() {
+                  _currentImageIndex = index;
+                });
+              },
+              itemCount: imageUrls.length,
+              itemBuilder: (context, index) {
+                return Image.network(
+                  imageUrls[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: const Color(0xFFE8D5A3),
+                      child: const Center(
+                        child: Icon(
+                          Icons.event,
+                          size: 80,
+                          color: Color(0xFF3860F8),
+                        ),
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: const Color(0xFFE8D5A3),
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF3860F8),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: imageUrls.asMap().entries.map((entry) {
+                  final isActive = entry.key == _currentImageIndex;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _currentImageIndex = entry.key;
+                      });
+                    },
+                    child: Container(
+                      width: isActive ? 12 : 8,
+                      height: isActive ? 12 : 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -894,19 +909,44 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ),
         ),
         
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.grey[200]!,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                AppLocalizations.of(context)!.commonDescription,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.info_outline,
+                      color: Color(0xFF3860F8),
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    AppLocalizations.of(context)!.commonDescription,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Text(
                 (event.description?.isNotEmpty ?? false) ? event.description! : (event.shortDescription ?? ''),
                 style: TextStyle(
@@ -995,35 +1035,65 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
 
   Widget _buildInfoSection(Event event) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.commonInformations,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.info,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context)!.commonInformations,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
-          
+
           _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, event.formattedDateRange ?? event.startDate),
-          
-          /* if (event.endDate?.isNotEmpty == true && event.endDate != event.startDate)
-            _buildInfoRow(Icons.schedule, AppLocalizations.of(context)!.eventDetailEndDate, event.endDate!), */
-          
+          const SizedBox(height: 12),
+
           _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.eventDetailVenue, event.displayLocation),
-          
-          if (!event.isFree)
+
+          if (!event.isFree) ...[
+            const SizedBox(height: 12),
             _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.priceText),
-          
-          /* if ((event.maxParticipants ?? 0) > 0)
-            _buildInfoRow(Icons.people, AppLocalizations.of(context)!.eventDetailParticipantsLabel, event.participantsText), */
-          
-          if (event.categories.isNotEmpty)
+          ],
+
+          if (event.categories.isNotEmpty) ...[
+            const SizedBox(height: 12),
             _buildInfoRow(Icons.category, AppLocalizations.of(context)!.commonCategory, event.primaryCategory),
+          ],
         ],
       ),
     );
@@ -1031,11 +1101,15 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: const Color(0xFF3860F8)),
+          Icon(
+            icon,
+            size: 18,
+            color: Colors.grey[600],
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1043,18 +1117,19 @@ class _EventDetailPageState extends State<EventDetailPage> {
               children: [
                 Text(
                   label,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                    height: 1.4,
                   ),
                 ),
               ],
@@ -1066,57 +1141,161 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
 
   Widget _buildLocationSection(Event event) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            AppLocalizations.of(context)!.commonLocation,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          height: 200,
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.map,
+                  color: Color(0xFF3860F8),
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context)!.commonLocation,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(event.latitude!, event.longitude!),
-                zoom: 15,
-              ),
-              markers: {
-                Marker(
-                  markerId: MarkerId('event_${event.id}'),
-                  position: LatLng(event.latitude!, event.longitude!),
-                  infoWindow: InfoWindow(
-                    title: event.title ?? 'Événement',
-                    snippet: event.displayLocation,
-                  ),
+          const SizedBox(height: 16),
+          Container(
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: const Color(0xFF3860F8).withOpacity(0.1),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(event.latitude!, event.longitude!),
+                  zoom: 13.0,
                 ),
-              },
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
-              mapToolbarEnabled: false,
+                markers: {
+                  Marker(
+                    markerId: MarkerId('event_${event.id}'),
+                    position: LatLng(event.latitude!, event.longitude!),
+                    infoWindow: InfoWindow(
+                      title: event.title ?? 'Événement',
+                      snippet: event.displayLocation,
+                    ),
+                  ),
+                },
+                zoomControlsEnabled: false,
+                myLocationButtonEnabled: false,
+                mapToolbarEnabled: false,
+                scrollGesturesEnabled: true,
+                zoomGesturesEnabled: true,
+                rotateGesturesEnabled: false,
+                tiltGesturesEnabled: false,
+                compassEnabled: false,
+              ),
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.location_on,
+                size: 18,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Adresse',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      event.displayLocation,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (event.latitude != null && event.longitude != null) ...[
+            const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.my_location,
+                  size: 18,
+                  color: Colors.grey[600],
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.commonCoordinates,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${event.latitude!.toStringAsFixed(4)}, ${event.longitude!.toStringAsFixed(4)}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[700],
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 
@@ -1138,15 +1317,18 @@ class _RegistrationBottomSheet extends StatefulWidget {
 class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final EventService _eventService = EventService();
-  
+  final AnonymousAuthService _authService = AnonymousAuthService();
+
   final TextEditingController _participantsController = TextEditingController(text: '1');
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _requirementsController = TextEditingController();
-  
+
   bool _isLoading = false;
-  final bool _requiresGuestInfo = true;
+
+  // Afficher les champs invité seulement si l'utilisateur n'est PAS connecté (donc anonyme)
+  bool get _requiresGuestInfo => !_authService.isLoggedIn;
   
   @override
   Widget build(BuildContext context) {

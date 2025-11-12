@@ -243,6 +243,11 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
   }
 
   Widget _buildContactFields() {
+    // Ne pas afficher les champs de contact si l'utilisateur est connecté
+    if (_authService.isLoggedIn) {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -276,7 +281,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             ),
           ),
           validator: (value) {
-            if (value?.isNotEmpty == true && 
+            if (value?.isNotEmpty == true &&
                 !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
               return 'Email invalide';
             }

@@ -8,6 +8,7 @@ import '../../core/services/poi_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
+import '../widgets/reviews_section.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'tour_operator_detail_page.dart';
 import 'poi_gallery_page.dart';
@@ -300,6 +301,15 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             const SizedBox(height: 24),
                             if (poi.allowReservations)
                               _buildReservationSection(poi),
+
+                            // Section Avis
+                            const SizedBox(height: 32),
+                            ReviewsSection(
+                              poiId: poi.id,
+                              poiName: poi.name,
+                            ),
+
+                            const SizedBox(height: 32),
                             _buildShareSection(poi),
                             const SizedBox(height: 32),
                           ],
