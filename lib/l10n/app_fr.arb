@@ -453,5 +453,140 @@
   "tourPhotoGallery": "Galerie photos",
   "tourRetry": "Réessayer",
   "tourViewOnMap": "Voir sur la carte",
-  "tourWhatToBring": "Quoi apporter"
+  "tourWhatToBring": "Quoi apporter",
+  "homeRegionDjibouti": "Djibouti",
+  "homeRegionTadjourah": "Tadjourah",
+  "homeRegionAliSabieh": "Ali Sabieh",
+  "homeRegionDikhil": "Dikhil",
+  "homeRegionObock": "Obock",
+  "homeRegionArta": "Arta",
+  "activityDetailErrorLoading": "Erreur lors du chargement: {error}",
+  "activityDetailTitle": "Activité",
+  "activityDetailRetry": "Réessayer",
+  "activityDetailDescription": "Description",
+  "activityDetailPracticalInfo": "Informations pratiques",
+  "activityDetailWhatIsIncluded": "Ce qui est inclus",
+  "activityDetailWhatToBring": "À apporter",
+  "activityDetailEquipment": "Équipement",
+  "activityDetailProvided": "Fourni",
+  "activityDetailRequired": "Requis",
+  "activityDetailPrerequisites": "Prérequis",
+  "activityDetailPhysicalCondition": "Condition physique",
+  "activityDetailRequiredCertifications": "Certifications requises",
+  "activityDetailPrice": "Prix",
+  "activityDetailDuration": "Durée",
+  "activityDetailDifficulty": "Difficulté",
+  "activityDetailLocation": "Localisation",
+  "activityDetailIncluded": "Inclus",
+  "activityDetailProvidedWithColon": "Fourni :",
+  "activityDetailRequiredWithColon": "À apporter :",
+  "activityDetailPhysicalConditionWithColon": "Condition physique :",
+  "activityDetailCertificationsWithColon": "Certifications :",
+  "activityDetailAgeRestrictions": "Restrictions d'âge",
+  "activityDetailWeatherDependent": "Cette activité est dépendante des conditions météorologiques",
+  "activityDetailMeetingPoint": "Point de rendez-vous",
+  "activityDetailAdditionalInfo": "Informations supplémentaires",
+  "activityDetailOrganizedBy": "Organisé par",
+  "activityDetailCertifiedOperator": "Opérateur agréé",
+  "activityDetailCancellationPolicy": "Politique d'annulation",
+  "activityDetailLinks": "Links",
+  "activityDetailFrom": "À partir de",
+  "activityDetailBookNow": "S'inscrire maintenant",
+  "activityDetailSoldOut": "Places épuisées",
+  "activityDetailRegistrationSuccess": "Inscription enregistrée avec succès !",
+  "activityRegistrationError": "Erreur: {error}",
+  "@activityRegistrationError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "activityRegistrationTitle": "Inscription",
+  "activityRegistrationNumberOfParticipants": "Nombre de participants",
+  "activityRegistrationTotal": "Total: {totalPrice} DJF",
+  "@activityRegistrationTotal": {
+    "placeholders": {
+      "totalPrice": {
+        "type": "String"
+      }
+    }
+  },
+  "activityRegistrationPreferredDate": "Date préférée (optionnel)",
+  "activityRegistrationSelectDate": "Sélectionner une date",
+  "activityRegistrationYourInformation": "Vos informations",
+  "activityRegistrationFullName": "Nom complet *",
+  "activityRegistrationEnterYourName": "Veuillez entrer votre nom",
+  "activityRegistrationEmail": "Email *",
+  "activityRegistrationEnterYourEmail": "Veuillez entrer votre email",
+  "activityRegistrationInvalidEmail": "Email invalide",
+  "activityRegistrationPhoneOptional": "Téléphone (optionnel)",
+  "activityRegistrationSpecialRequirementsOptional": "Exigences spéciales (optionnel)",
+  "activityRegistrationDietAllergiesEtc": "Régime alimentaire, allergies, etc.",
+  "activityRegistrationMedicalConditionsOptional": "Conditions médicales (optionnel)",
+  "activityRegistrationImportantSafetyInfo": "Informations importantes pour votre sécurité",
+  "activityRegistrationConfirmRegistration": "Confirmer l'inscription",
+  "tourErrorLoading": "Erreur lors du chargement: {error}",
+  "@tourErrorLoading": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "tourAddedToFavorites": "Tour ajouté aux favoris",
+  "tourRemovedFromFavorites": "Tour retiré des favoris",
+  "tourPracticalInfo": "Informations pratiques",
+  "tourDates": "Dates",
+  "tourDuration": "Durée",
+  "tourAvailableSpots": "Places disponibles",
+  "tourSpots": "{spots} places",
+  "@tourSpots": {
+    "placeholders": {
+      "spots": {}
+    }
+  },
+  "tourAgeRestrictions": "Restrictions d'âge",
+  "tourWeatherDependent": "Ce tour est dépendant des conditions météorologiques",
+  "tourMeetingPoint": "Point de rendez-vous",
+  "tourOrganizedBy": "Organisé par",
+  "tourOperatorCertified": "Opérateur agréé",
+  "tourCannotOpenLink": "Impossible d'ouvrir le lien",
+  "tourOperatorTour": "Opérateur de tour",
+  "tourOperatorCertifiedTour": "Opérateur touristique agréé",
+  "tourFrom": "À partir de",
+  "tourRegistrationConfirmed": "Inscription confirmée",
+  "tourPendingConfirmation": "En attente de confirmation",
+  "tourRegisterNow": "S'inscrire maintenant",
+  "tourSpotsSoldOut": "Places épuisées",
+  "tourShareTodo": "TODO: Implémenter le partage",
+  "tourRegistrationTitle": "Inscription au tour",
+  "tourRegistrationNumberOfParticipants": "Nombre de participants *",
+  "tourRegistrationMinParticipants": "Minimum 1 personne",
+  "tourRegistrationMaxParticipants": "Maximum {maxParticipants} places",
+  "@tourRegistrationMaxParticipants": {
+    "placeholders": {
+      "maxParticipants": {
+        "type": "String"
+      }
+    }
+  },
+  "tourRegistrationContactInfo": "Informations de contact *",
+  "tourRegistrationFullName": "Nom complet",
+  "tourRegistrationNameRequired": "Nom requis",
+  "tourRegistrationEmail": "Email",
+  "tourRegistrationEmailRequired": "Email requis",
+  "tourRegistrationInvalidEmail": "Email invalide",
+  "tourRegistrationPhone": "Téléphone",
+  "tourRegistrationPhoneRequired": "Téléphone requis",
+  "tourRegistrationNotes": "Notes ou demandes spéciales",
+  "tourRegistrationNotesHint": "Allergies alimentaires, besoins spéciaux...",
+  "tourRegistrationTotalToPay": "Total à payer",
+  "tourRegistrationAvailableSpots": "{availableSpots} places disponibles",
+  "@tourRegistrationAvailableSpots": {
+    "placeholders": {
+      "availableSpots": {
+        "type": "String"
+      }
+    }
+  },
+  "tourRegistrationConfirm": "Confirmer l'inscription",
+  "tourRegistrationSuccessMessage": "Inscription confirmée avec succès!",
+  "tourRegistrationErrorMessage": "Erreur lors de l'inscription"
 }

@@ -5,6 +5,7 @@ import '../../core/services/activity_service.dart';
 import '../widgets/activity_registration_form_widget.dart';
 import '../widgets/contact_operator_button.dart';
 import 'activity_gallery_page.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class ActivityDetailPage extends StatefulWidget {
   final int activityId;
@@ -65,7 +66,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'Erreur lors du chargement: $e';
+        _errorMessage = AppLocalizations.of(context)!.activityDetailErrorLoading(e.toString());
         _isLoading = false;
       });
     }
@@ -88,7 +89,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Widget _buildErrorState() {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activité'),
+        title: Text(AppLocalizations.of(context)!.activityDetailTitle),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
       ),
@@ -106,7 +107,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _loadActivityDetails,
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.activityDetailRetry),
             ),
           ],
         ),
@@ -201,8 +202,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                         ),
                                       ),
                                       const SizedBox(width: 12),
-                                      const Text(
-                                        'Description',
+                                      Text(
+                                        AppLocalizations.of(context)!.activityDetailDescription,
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
@@ -258,8 +259,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                       ),
                                     ),
                                     const SizedBox(width: 12),
-                                    const Text(
-                                      'Informations pratiques',
+                                    Text(
+                                      AppLocalizations.of(context)!.activityDetailPracticalInfo,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -544,9 +545,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Ce qui est inclus',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.activityDetailWhatIsIncluded,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -573,9 +574,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'À apporter',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.activityDetailWhatToBring,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -593,18 +594,18 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Équipement',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.activityDetailEquipment,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         if (_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ...[
-          const Text(
-            'Fourni',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF009639)),
+          Text(
+            AppLocalizations.of(context)!.activityDetailProvided,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF009639)),
           ),
           const SizedBox(height: 8),
           ..._activity!.equipmentProvided!.map((item) => Padding(
@@ -621,9 +622,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           const SizedBox(height: 12),
         ],
         if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty) ...[
-          const Text(
-            'À apporter',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.orange),
+          Text(
+            AppLocalizations.of(context)!.activityDetailRequired,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.orange),
           ),
           const SizedBox(height: 8),
           ..._activity!.equipmentRequired!.map((item) => Padding(
@@ -646,18 +647,18 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Prérequis',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.activityDetailPrerequisites,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         if (_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ...[
-          const Text(
-            'Condition physique',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          Text(
+            AppLocalizations.of(context)!.activityDetailPhysicalCondition,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           ..._activity!.physicalRequirements!.map((item) => Padding(
@@ -674,9 +675,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           const SizedBox(height: 12),
         ],
         if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty) ...[
-          const Text(
-            'Certifications requises',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          Text(
+            AppLocalizations.of(context)!.activityDetailRequiredCertifications,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           ..._activity!.certificationsRequired!.map((item) => Padding(
@@ -811,19 +812,19 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         _buildInfoRow(
           Icons.attach_money,
-          'Prix',
+          AppLocalizations.of(context)!.activityDetailPrice,
           _activity!.displayPrice,
         ),
         const SizedBox(height: 12),
         _buildInfoRow(
           Icons.access_time,
-          'Durée',
+          AppLocalizations.of(context)!.activityDetailDuration,
           _activity!.displayDuration,
         ),
         const SizedBox(height: 12),
         _buildInfoRow(
           Icons.trending_up,
-          'Difficulté',
+          AppLocalizations.of(context)!.activityDetailDifficulty,
           _activity!.displayDifficulty,
         ),
       ],
@@ -874,7 +875,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Widget _buildLocationSection() {
     return _buildInfoRow(
       Icons.location_on,
-      'Localisation',
+      AppLocalizations.of(context)!.activityDetailLocation,
       _activity!.location!.address!,
     );
   }
@@ -883,8 +884,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Inclus',
+        Text(
+          AppLocalizations.of(context)!.activityDetailIncluded,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -915,7 +916,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Widget _buildWhatToBringSection() {
     return _buildInfoRow(
       Icons.backpack,
-      'À apporter',
+      AppLocalizations.of(context)!.activityDetailWhatToBring,
       _activity!.whatToBring!,
     );
   }
@@ -924,8 +925,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Équipement',
+        Text(
+          AppLocalizations.of(context)!.activityDetailEquipment,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -934,7 +935,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         ),
         const SizedBox(height: 8),
         if (_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ...[
-          Text('Fourni :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          Text(AppLocalizations.of(context)!.activityDetailProvidedWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
           const SizedBox(height: 6),
           ..._activity!.equipmentProvided!.map((item) => Padding(
             padding: const EdgeInsets.only(bottom: 4),
@@ -951,7 +952,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             const SizedBox(height: 10),
         ],
         if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty) ...[
-          Text('À apporter :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          Text(AppLocalizations.of(context)!.activityDetailRequiredWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
           const SizedBox(height: 6),
           ..._activity!.equipmentRequired!.map((item) => Padding(
             padding: const EdgeInsets.only(bottom: 4),
@@ -973,8 +974,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Prérequis',
+        Text(
+          AppLocalizations.of(context)!.activityDetailPrerequisites,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -983,7 +984,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         ),
         const SizedBox(height: 8),
         if (_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ...[
-          Text('Condition physique :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          Text(AppLocalizations.of(context)!.activityDetailPhysicalConditionWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
           const SizedBox(height: 6),
           ..._activity!.physicalRequirements!.map((item) => Padding(
             padding: const EdgeInsets.only(bottom: 4),
@@ -1000,7 +1001,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             const SizedBox(height: 10),
         ],
         if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty) ...[
-          Text('Certifications :', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          Text(AppLocalizations.of(context)!.activityDetailCertificationsWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
           const SizedBox(height: 6),
           ..._activity!.certificationsRequired!.map((item) => Padding(
             padding: const EdgeInsets.only(bottom: 4),
@@ -1048,8 +1049,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Restrictions d\'âge',
+                Text(
+                  AppLocalizations.of(context)!.activityDetailAgeRestrictions,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -1096,7 +1097,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Cette activité est dépendante des conditions météorologiques',
+              AppLocalizations.of(context)!.activityDetailWeatherDependent,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.orange[900],
@@ -1111,7 +1112,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Widget _buildMeetingPointSection() {
     return _buildInfoRow(
       Icons.place,
-      'Point de rendez-vous',
+      AppLocalizations.of(context)!.activityDetailMeetingPoint,
       _activity!.meetingPointDescription!,
     );
   }
@@ -1119,7 +1120,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Widget _buildAdditionalInfoSection() {
     return _buildInfoRow(
       Icons.info_outline,
-      'Informations supplémentaires',
+      AppLocalizations.of(context)!.activityDetailAdditionalInfo,
       _activity!.additionalInfo!,
     );
   }
@@ -1142,8 +1143,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Organisé par',
+          Text(
+            AppLocalizations.of(context)!.activityDetailOrganizedBy,
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -1227,8 +1228,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         color: const Color(0xFF009639).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Text(
-                        'Opérateur agréé',
+                      child: Text(
+                        AppLocalizations.of(context)!.activityDetailCertifiedOperator,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -1250,9 +1251,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Politique d\'annulation',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.activityDetailCancellationPolicy,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -1294,8 +1295,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               ),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'Links',
+            Text(
+              AppLocalizations.of(context)!.activityDetailLinks,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -1317,13 +1318,13 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
                 Icon(Icons.location_on, color: Color(0xFF3860F8)),
                 SizedBox(width: 8),
                 Text(
-                  'Point de rendez-vous',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.activityDetailMeetingPoint,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1341,33 +1342,15 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     );
   }
 
-  Widget _buildAdditionalInfo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Informations supplémentaires',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          _activity!.additionalInfo!,
-          style: const TextStyle(fontSize: 16, height: 1.5),
-        ),
-      ],
-    );
-  }
+
 
   Widget _buildCancellationPolicy() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Politique d\'annulation',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.activityDetailCancellationPolicy,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -1389,34 +1372,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     );
   }
 
-  Widget _buildAgeRestrictions(ActivityAgeRestrictions restrictions) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            const Icon(Icons.person, color: Color(0xFF3860F8)),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Restrictions d\'âge',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(restrictions.text, style: const TextStyle(fontSize: 14)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildWeatherWarning() {
     return Card(
@@ -1445,80 +1401,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     );
   }
 
-  Widget _buildOperatorInfo(TourOperator operator) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Opérateur touristique',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                if (operator.logoUrl.isNotEmpty)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      operator.logoUrl,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.business, color: Colors.grey),
-                      ),
-                    ),
-                  )
-                else
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.business, color: Colors.grey),
-                  ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        operator.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Opérateur touristique agréé',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildRegistrationButton() {
     return Container(
@@ -1542,7 +1425,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'À partir de',
+                    AppLocalizations.of(context)!.activityDetailFrom,
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                   Text(
@@ -1573,8 +1456,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   disabledForegroundColor: Colors.white,
                 ),
                 child: Text(
-                  //_activity!.hasAvailableSpots ? 'S\'inscrire maintenant' : 'Places épuisées',
-                  'S\'inscrire maintenant',
+                  //_activity!.hasAvailableSpots ? AppLocalizations.of(context)!.activityDetailBookNow : AppLocalizations.of(context)!.activityDetailSoldOut,
+                  AppLocalizations.of(context)!.activityDetailBookNow,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -1594,8 +1477,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         activity: _activity!,
         onRegistrationSuccess: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Inscription enregistrée avec succès !'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.activityDetailRegistrationSuccess),
               backgroundColor: Color(0xFF009639),
             ),
           );

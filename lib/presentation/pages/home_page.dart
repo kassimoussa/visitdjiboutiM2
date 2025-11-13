@@ -347,7 +347,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 24),
 
             _buildSectionHeader(
-              title: 'Activités populaires',
+              title: AppLocalizations.of(context)!.homePopularActivities,
               onSeeAll: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ActivitiesPage(showFeaturedOnly: true)),
@@ -592,7 +592,7 @@ class _HomePageState extends State<HomePage> {
           : _featuredActivities.isEmpty
               ? Center(
                   child: Text(
-                    'Aucune activité disponible',
+                    AppLocalizations.of(context)!.homeNoActivities,
                     style: TextStyle(color: Colors.grey[600], fontSize: 14),
                   ),
                 )
@@ -634,12 +634,12 @@ class _HomePageState extends State<HomePage> {
       crossAxisSpacing: isSmallScreen ? 8 : 12,
       childAspectRatio: isSmallScreen ? 2.5 : 1.5,
       children: [
-        _buildRegionCard('Djibouti', '🏙️', const Color(0xFF3860F8)),
-        _buildRegionCard('Tadjourah', '🏔️', const Color(0xFF009639)),
-        _buildRegionCard('Ali Sabieh', '🌄', const Color(0xFF0072CE)),
-        _buildRegionCard('Dikhil', '🏜️', const Color(0xFFE8D5A3)),
-        _buildRegionCard('Obock', '⛵', const Color(0xFF006B96)),
-        _buildRegionCard('Arta', '🌿', const Color(0xFF10B981)),
+        _buildRegionCard(AppLocalizations.of(context)!.homeRegionDjibouti, '🏙️', const Color(0xFF3860F8)),
+        _buildRegionCard(AppLocalizations.of(context)!.homeRegionTadjourah, '🏔️', const Color(0xFF009639)),
+        _buildRegionCard(AppLocalizations.of(context)!.homeRegionAliSabieh, '🌄', const Color(0xFF0072CE)),
+        _buildRegionCard(AppLocalizations.of(context)!.homeRegionDikhil, '🏜️', const Color(0xFFE8D5A3)),
+        _buildRegionCard(AppLocalizations.of(context)!.homeRegionObock, '⛵', const Color(0xFF006B96)),
+        _buildRegionCard(AppLocalizations.of(context)!.homeRegionArta, '🌿', const Color(0xFF10B981)),
       ],
     );
   }

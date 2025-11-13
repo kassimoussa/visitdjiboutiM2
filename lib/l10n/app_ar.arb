@@ -453,5 +453,140 @@
   "tourPhotoGallery": "معرض الصور",
   "tourRetry": "إعادة المحاولة",
   "tourViewOnMap": "عرض على الخريطة",
-  "tourWhatToBring": "ماذا تحضر"
+  "tourWhatToBring": "ماذا تحضر",
+  "homeRegionDjibouti": "جيبوتي",
+  "homeRegionTadjourah": "تاجورة",
+  "homeRegionAliSabieh": "علي صبيح",
+  "homeRegionDikhil": "دخيل",
+  "homeRegionObock": "أوبوك",
+  "homeRegionArta": "عرتا",
+  "activityDetailErrorLoading": "خطأ في التحميل: {error}",
+  "activityDetailTitle": "النشاط",
+  "activityDetailRetry": "إعادة المحاولة",
+  "activityDetailDescription": "الوصف",
+  "activityDetailPracticalInfo": "معلومات عملية",
+  "activityDetailWhatIsIncluded": "ما هو متضمن",
+  "activityDetailWhatToBring": "ما يجب إحضاره",
+  "activityDetailEquipment": "المعدات",
+  "activityDetailProvided": "مقدمة",
+  "activityDetailRequired": "مطلوبة",
+  "activityDetailPrerequisites": "المتطلبات",
+  "activityDetailPhysicalCondition": "الحالة البدنية",
+  "activityDetailRequiredCertifications": "الشهادات المطلوبة",
+  "activityDetailPrice": "السعر",
+  "activityDetailDuration": "المدة",
+  "activityDetailDifficulty": "الصعوبة",
+  "activityDetailLocation": "الموقع",
+  "activityDetailIncluded": "متضمن",
+  "activityDetailProvidedWithColon": "مقدمة:",
+  "activityDetailRequiredWithColon": "لإحضار:",
+  "activityDetailPhysicalConditionWithColon": "الحالة البدنية:",
+  "activityDetailCertificationsWithColon": "الشهادات:",
+  "activityDetailAgeRestrictions": "قيود العمر",
+  "activityDetailWeatherDependent": "هذا النشاط يعتمد على الطقس",
+  "activityDetailMeetingPoint": "نقطة الالتقاء",
+  "activityDetailAdditionalInfo": "معلومات إضافية",
+  "activityDetailOrganizedBy": "منظم بواسطة",
+  "activityDetailCertifiedOperator": "مشغل معتمد",
+  "activityDetailCancellationPolicy": "سياسة الإلغاء",
+  "activityDetailLinks": "روابط",
+  "activityDetailFrom": "ابتداءً من",
+  "activityDetailBookNow": "احجز الآن",
+  "activityDetailSoldOut": "نفدت الأماكن",
+  "activityDetailRegistrationSuccess": "تم التسجيل بنجاح!",
+  "activityRegistrationError": "خطأ: {error}",
+  "@activityRegistrationError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "activityRegistrationTitle": "التسجيل",
+  "activityRegistrationNumberOfParticipants": "عدد المشاركين",
+  "activityRegistrationTotal": "الإجمالي: {totalPrice} فرنك جيبوتي",
+  "@activityRegistrationTotal": {
+    "placeholders": {
+      "totalPrice": {
+        "type": "String"
+      }
+    }
+  },
+  "activityRegistrationPreferredDate": "التاريخ المفضل (اختياري)",
+  "activityRegistrationSelectDate": "اختر تاريخًا",
+  "activityRegistrationYourInformation": "معلوماتك",
+  "activityRegistrationFullName": "الاسم الكامل *",
+  "activityRegistrationEnterYourName": "الرجاء إدخال اسمك",
+  "activityRegistrationEmail": "البريد الإلكتروني *",
+  "activityRegistrationEnterYourEmail": "الرجاء إدخال بريدك الإلكتروني",
+  "activityRegistrationInvalidEmail": "بريد إلكتروني غير صالح",
+  "activityRegistrationPhoneOptional": "الهاتف (اختياري)",
+  "activityRegistrationSpecialRequirementsOptional": "متطلبات خاصة (اختياري)",
+  "activityRegistrationDietAllergiesEtc": "النظام الغذائي، الحساسية، إلخ.",
+  "activityRegistrationMedicalConditionsOptional": "الحالات الطبية (اختياري)",
+  "activityRegistrationImportantSafetyInfo": "معلومات مهمة لسلامتك",
+  "activityRegistrationConfirmRegistration": "تأكيد التسجيل",
+  "tourErrorLoading": "خطأ في التحميل: {error}",
+  "@tourErrorLoading": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "tourAddedToFavorites": "تمت إضافة الجولة إلى المفضلة",
+  "tourRemovedFromFavorites": "تمت إزالة الجولة من المفضلة",
+  "tourPracticalInfo": "معلومات عملية",
+  "tourDates": "التواريخ",
+  "tourDuration": "المدة",
+  "tourAvailableSpots": "الأماكن المتاحة",
+  "tourSpots": "{spots} أماكن",
+  "@tourSpots": {
+    "placeholders": {
+      "spots": {}
+    }
+  },
+  "tourAgeRestrictions": "قيود العمر",
+  "tourWeatherDependent": "هذه الجولة تعتمد على الطقس",
+  "tourMeetingPoint": "نقطة الالتقاء",
+  "tourOrganizedBy": "منظم بواسطة",
+  "tourOperatorCertified": "مشغل معتمد",
+  "tourCannotOpenLink": "لا يمكن فتح الرابط",
+  "tourOperatorTour": "منظم جولات",
+  "tourOperatorCertifiedTour": "منظم جولات معتمد",
+  "tourFrom": "ابتداءً من",
+  "tourRegistrationConfirmed": "تم تأكيد التسجيل",
+  "tourPendingConfirmation": "بانتظار التأكيد",
+  "tourRegisterNow": "سجل الآن",
+  "tourSpotsSoldOut": "نفدت الأماكن",
+  "tourShareTodo": "TODO: تنفيذ المشاركة",
+  "tourRegistrationTitle": "تسجيل الجولة",
+  "tourRegistrationNumberOfParticipants": "عدد المشاركين *",
+  "tourRegistrationMinParticipants": "الحد الأدنى شخص واحد",
+  "tourRegistrationMaxParticipants": "الحد الأقصى {maxParticipants} أماكن",
+  "@tourRegistrationMaxParticipants": {
+    "placeholders": {
+      "maxParticipants": {
+        "type": "String"
+      }
+    }
+  },
+  "tourRegistrationContactInfo": "معلومات الاتصال *",
+  "tourRegistrationFullName": "الاسم الكامل",
+  "tourRegistrationNameRequired": "الاسم مطلوب",
+  "tourRegistrationEmail": "البريد الإلكتروني",
+  "tourRegistrationEmailRequired": "البريد الإلكتروني مطلوب",
+  "tourRegistrationInvalidEmail": "بريد إلكتروني غير صالح",
+  "tourRegistrationPhone": "الهاتف",
+  "tourRegistrationPhoneRequired": "الهاتف مطلوب",
+  "tourRegistrationNotes": "ملاحظات أو طلبات خاصة",
+  "tourRegistrationNotesHint": "حساسية الطعام، احتياجات خاصة...",
+  "tourRegistrationTotalToPay": "المبلغ الإجمالي للدفع",
+  "tourRegistrationAvailableSpots": "{availableSpots} أماكن متاحة",
+  "@tourRegistrationAvailableSpots": {
+    "placeholders": {
+      "availableSpots": {
+        "type": "String"
+      }
+    }
+  },
+  "tourRegistrationConfirm": "تأكيد التسجيل",
+  "tourRegistrationSuccessMessage": "تم تأكيد التسجيل بنجاح!",
+  "tourRegistrationErrorMessage": "خطأ أثناء التسجيل"
 }

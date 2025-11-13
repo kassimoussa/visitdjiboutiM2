@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/models/tour.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class TourReservationFormWidget extends StatefulWidget {
   final Tour tour;
@@ -107,9 +108,9 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'Inscription au tour',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.tourRegistrationTitle,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -196,7 +197,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '${widget.tour.availableSpots} places disponibles',
+                      AppLocalizations.of(context)!.tourRegistrationAvailableSpots(widget.tour.availableSpots.toString()),
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 14,
@@ -232,9 +233,9 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Nombre de participants *',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.tourRegistrationNumberOfParticipants,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -288,14 +289,14 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                   ),
                   validator: (value) {
                     if (value?.isEmpty == true) {
-                      return 'Nombre de personnes requis';
+                      return AppLocalizations.of(context)!.commonFieldRequired;
                     }
                     final number = int.tryParse(value!);
                     if (number == null || number < 1) {
-                      return 'Minimum 1 personne';
+                      return AppLocalizations.of(context)!.tourRegistrationMinParticipants;
                     }
                     if (number > _maxParticipants) {
-                      return 'Maximum $_maxParticipants places';
+                      return AppLocalizations.of(context)!.tourRegistrationMaxParticipants(_maxParticipants.toString());
                     }
                     return null;
                   },
@@ -336,9 +337,9 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Informations de contact *',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.tourRegistrationContactInfo,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -347,29 +348,29 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         TextFormField(
           controller: _nameController,
           decoration: InputDecoration(
-            labelText: 'Nom complet',
+            labelText: AppLocalizations.of(context)!.tourRegistrationFullName,
             prefixIcon: const Icon(Icons.person),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          validator: (value) => value?.isEmpty ?? true ? 'Nom requis' : null,
+          validator: (value) => value?.isEmpty ?? true ? AppLocalizations.of(context)!.tourRegistrationNameRequired : null,
         ),
         const SizedBox(height: 12),
         TextFormField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'Email',
+            labelText: AppLocalizations.of(context)!.tourRegistrationEmail,
             prefixIcon: const Icon(Icons.email),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           validator: (value) {
-            if (value?.isEmpty ?? true) return 'Email requis';
+            if (value?.isEmpty ?? true) return AppLocalizations.of(context)!.tourRegistrationEmailRequired;
             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-              return 'Email invalide';
+              return AppLocalizations.of(context)!.tourRegistrationInvalidEmail;
             }
             return null;
           },
@@ -379,13 +380,13 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           controller: _phoneController,
           keyboardType: TextInputType.phone,
           decoration: InputDecoration(
-            labelText: 'Téléphone',
+            labelText: AppLocalizations.of(context)!.tourRegistrationPhone,
             prefixIcon: const Icon(Icons.phone),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-          ),
-          validator: (value) => value?.isEmpty ?? true ? 'Téléphone requis' : null,
+            ),
+          validator: (value) => value?.isEmpty ?? true ? AppLocalizations.of(context)!.tourRegistrationPhoneRequired : null,
         ),
       ],
     );
@@ -396,8 +397,8 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
       controller: _notesController,
       maxLines: 3,
       decoration: InputDecoration(
-        labelText: 'Notes ou demandes spéciales',
-        hintText: 'Allergies alimentaires, besoins spéciaux...',
+        labelText: AppLocalizations.of(context)!.tourRegistrationNotes,
+        hintText: AppLocalizations.of(context)!.tourRegistrationNotesHint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -421,9 +422,9 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Total à payer',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.tourRegistrationTotalToPay,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -462,7 +463,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
         ),
         const SizedBox(width: 12),
@@ -487,9 +488,9 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   )
-                : const Text(
-                    'Confirmer l\'inscription',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                : Text(
+                    AppLocalizations.of(context)!.tourRegistrationConfirm,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
           ),
         ),
@@ -524,7 +525,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           print('[TOUR FORM] Success! Showing snackbar and navigating to home');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Inscription confirmée avec succès!'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.tourRegistrationSuccessMessage),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
@@ -550,7 +551,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           print('[TOUR FORM] Error: ${response.message}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de l\'inscription'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.tourRegistrationErrorMessage),
               backgroundColor: Colors.red,
             ),
           );
@@ -561,7 +562,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur inattendue: $e'),
+            content: Text('${AppLocalizations.of(context)!.commonUnexpectedError}: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -573,5 +574,5 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         });
       }
     }
-  }
+}
 }

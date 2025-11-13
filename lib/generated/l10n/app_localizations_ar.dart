@@ -922,4 +922,319 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tourWhatToBring => 'ماذا تحضر';
+
+  @override
+  String get homeRegionDjibouti => 'جيبوتي';
+
+  @override
+  String get homeRegionTadjourah => 'تاجورة';
+
+  @override
+  String get homeRegionAliSabieh => 'علي صبيح';
+
+  @override
+  String get homeRegionDikhil => 'دخيل';
+
+  @override
+  String get homeRegionObock => 'أوبوك';
+
+  @override
+  String get homeRegionArta => 'عرتا';
+
+  @override
+  String activityDetailErrorLoading(Object error) {
+    return 'خطأ في التحميل: $error';
+  }
+
+  @override
+  String get activityDetailTitle => 'النشاط';
+
+  @override
+  String get activityDetailRetry => 'إعادة المحاولة';
+
+  @override
+  String get activityDetailDescription => 'الوصف';
+
+  @override
+  String get activityDetailPracticalInfo => 'معلومات عملية';
+
+  @override
+  String get activityDetailWhatIsIncluded => 'ما هو متضمن';
+
+  @override
+  String get activityDetailWhatToBring => 'ما يجب إحضاره';
+
+  @override
+  String get activityDetailEquipment => 'المعدات';
+
+  @override
+  String get activityDetailProvided => 'مقدمة';
+
+  @override
+  String get activityDetailRequired => 'مطلوبة';
+
+  @override
+  String get activityDetailPrerequisites => 'المتطلبات';
+
+  @override
+  String get activityDetailPhysicalCondition => 'الحالة البدنية';
+
+  @override
+  String get activityDetailRequiredCertifications => 'الشهادات المطلوبة';
+
+  @override
+  String get activityDetailPrice => 'السعر';
+
+  @override
+  String get activityDetailDuration => 'المدة';
+
+  @override
+  String get activityDetailDifficulty => 'الصعوبة';
+
+  @override
+  String get activityDetailLocation => 'الموقع';
+
+  @override
+  String get activityDetailIncluded => 'متضمن';
+
+  @override
+  String get activityDetailProvidedWithColon => 'مقدمة:';
+
+  @override
+  String get activityDetailRequiredWithColon => 'لإحضار:';
+
+  @override
+  String get activityDetailPhysicalConditionWithColon => 'الحالة البدنية:';
+
+  @override
+  String get activityDetailCertificationsWithColon => 'الشهادات:';
+
+  @override
+  String get activityDetailAgeRestrictions => 'قيود العمر';
+
+  @override
+  String get activityDetailWeatherDependent => 'هذا النشاط يعتمد على الطقس';
+
+  @override
+  String get activityDetailMeetingPoint => 'نقطة الالتقاء';
+
+  @override
+  String get activityDetailAdditionalInfo => 'معلومات إضافية';
+
+  @override
+  String get activityDetailOrganizedBy => 'منظم بواسطة';
+
+  @override
+  String get activityDetailCertifiedOperator => 'مشغل معتمد';
+
+  @override
+  String get activityDetailCancellationPolicy => 'سياسة الإلغاء';
+
+  @override
+  String get activityDetailLinks => 'روابط';
+
+  @override
+  String get activityDetailFrom => 'ابتداءً من';
+
+  @override
+  String get activityDetailBookNow => 'احجز الآن';
+
+  @override
+  String get activityDetailSoldOut => 'نفدت الأماكن';
+
+  @override
+  String get activityDetailRegistrationSuccess => 'تم التسجيل بنجاح!';
+
+  @override
+  String activityRegistrationError(Object error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get activityRegistrationTitle => 'التسجيل';
+
+  @override
+  String get activityRegistrationNumberOfParticipants => 'عدد المشاركين';
+
+  @override
+  String activityRegistrationTotal(String totalPrice) {
+    return 'الإجمالي: $totalPrice فرنك جيبوتي';
+  }
+
+  @override
+  String get activityRegistrationPreferredDate => 'التاريخ المفضل (اختياري)';
+
+  @override
+  String get activityRegistrationSelectDate => 'اختر تاريخًا';
+
+  @override
+  String get activityRegistrationYourInformation => 'معلوماتك';
+
+  @override
+  String get activityRegistrationFullName => 'الاسم الكامل *';
+
+  @override
+  String get activityRegistrationEnterYourName => 'الرجاء إدخال اسمك';
+
+  @override
+  String get activityRegistrationEmail => 'البريد الإلكتروني *';
+
+  @override
+  String get activityRegistrationEnterYourEmail =>
+      'الرجاء إدخال بريدك الإلكتروني';
+
+  @override
+  String get activityRegistrationInvalidEmail => 'بريد إلكتروني غير صالح';
+
+  @override
+  String get activityRegistrationPhoneOptional => 'الهاتف (اختياري)';
+
+  @override
+  String get activityRegistrationSpecialRequirementsOptional =>
+      'متطلبات خاصة (اختياري)';
+
+  @override
+  String get activityRegistrationDietAllergiesEtc =>
+      'النظام الغذائي، الحساسية، إلخ.';
+
+  @override
+  String get activityRegistrationMedicalConditionsOptional =>
+      'الحالات الطبية (اختياري)';
+
+  @override
+  String get activityRegistrationImportantSafetyInfo => 'معلومات مهمة لسلامتك';
+
+  @override
+  String get activityRegistrationConfirmRegistration => 'تأكيد التسجيل';
+
+  @override
+  String tourErrorLoading(Object error) {
+    return 'خطأ في التحميل: $error';
+  }
+
+  @override
+  String get tourAddedToFavorites => 'تمت إضافة الجولة إلى المفضلة';
+
+  @override
+  String get tourRemovedFromFavorites => 'تمت إزالة الجولة من المفضلة';
+
+  @override
+  String get tourPracticalInfo => 'معلومات عملية';
+
+  @override
+  String get tourDates => 'التواريخ';
+
+  @override
+  String get tourDuration => 'المدة';
+
+  @override
+  String get tourAvailableSpots => 'الأماكن المتاحة';
+
+  @override
+  String tourSpots(Object spots) {
+    return '$spots أماكن';
+  }
+
+  @override
+  String get tourAgeRestrictions => 'قيود العمر';
+
+  @override
+  String get tourWeatherDependent => 'هذه الجولة تعتمد على الطقس';
+
+  @override
+  String get tourMeetingPoint => 'نقطة الالتقاء';
+
+  @override
+  String get tourOrganizedBy => 'منظم بواسطة';
+
+  @override
+  String get tourOperatorCertified => 'مشغل معتمد';
+
+  @override
+  String get tourCannotOpenLink => 'لا يمكن فتح الرابط';
+
+  @override
+  String get tourOperatorTour => 'منظم جولات';
+
+  @override
+  String get tourOperatorCertifiedTour => 'منظم جولات معتمد';
+
+  @override
+  String get tourFrom => 'ابتداءً من';
+
+  @override
+  String get tourRegistrationConfirmed => 'تم تأكيد التسجيل';
+
+  @override
+  String get tourPendingConfirmation => 'بانتظار التأكيد';
+
+  @override
+  String get tourRegisterNow => 'سجل الآن';
+
+  @override
+  String get tourSpotsSoldOut => 'نفدت الأماكن';
+
+  @override
+  String get tourShareTodo => 'TODO: تنفيذ المشاركة';
+
+  @override
+  String get tourRegistrationTitle => 'تسجيل الجولة';
+
+  @override
+  String get tourRegistrationNumberOfParticipants => 'عدد المشاركين *';
+
+  @override
+  String get tourRegistrationMinParticipants => 'الحد الأدنى شخص واحد';
+
+  @override
+  String tourRegistrationMaxParticipants(String maxParticipants) {
+    return 'الحد الأقصى $maxParticipants أماكن';
+  }
+
+  @override
+  String get tourRegistrationContactInfo => 'معلومات الاتصال *';
+
+  @override
+  String get tourRegistrationFullName => 'الاسم الكامل';
+
+  @override
+  String get tourRegistrationNameRequired => 'الاسم مطلوب';
+
+  @override
+  String get tourRegistrationEmail => 'البريد الإلكتروني';
+
+  @override
+  String get tourRegistrationEmailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get tourRegistrationInvalidEmail => 'بريد إلكتروني غير صالح';
+
+  @override
+  String get tourRegistrationPhone => 'الهاتف';
+
+  @override
+  String get tourRegistrationPhoneRequired => 'الهاتف مطلوب';
+
+  @override
+  String get tourRegistrationNotes => 'ملاحظات أو طلبات خاصة';
+
+  @override
+  String get tourRegistrationNotesHint => 'حساسية الطعام، احتياجات خاصة...';
+
+  @override
+  String get tourRegistrationTotalToPay => 'المبلغ الإجمالي للدفع';
+
+  @override
+  String tourRegistrationAvailableSpots(String availableSpots) {
+    return '$availableSpots أماكن متاحة';
+  }
+
+  @override
+  String get tourRegistrationConfirm => 'تأكيد التسجيل';
+
+  @override
+  String get tourRegistrationSuccessMessage => 'تم تأكيد التسجيل بنجاح!';
+
+  @override
+  String get tourRegistrationErrorMessage => 'خطأ أثناء التسجيل';
 }

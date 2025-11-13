@@ -1869,6 +1869,600 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Quoi apporter'**
   String get tourWhatToBring;
+
+  /// No description provided for @homeRegionDjibouti.
+  ///
+  /// In fr, this message translates to:
+  /// **'Djibouti'**
+  String get homeRegionDjibouti;
+
+  /// No description provided for @homeRegionTadjourah.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tadjourah'**
+  String get homeRegionTadjourah;
+
+  /// No description provided for @homeRegionAliSabieh.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ali Sabieh'**
+  String get homeRegionAliSabieh;
+
+  /// No description provided for @homeRegionDikhil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dikhil'**
+  String get homeRegionDikhil;
+
+  /// No description provided for @homeRegionObock.
+  ///
+  /// In fr, this message translates to:
+  /// **'Obock'**
+  String get homeRegionObock;
+
+  /// No description provided for @homeRegionArta.
+  ///
+  /// In fr, this message translates to:
+  /// **'Arta'**
+  String get homeRegionArta;
+
+  /// No description provided for @activityDetailErrorLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors du chargement: {error}'**
+  String activityDetailErrorLoading(Object error);
+
+  /// No description provided for @activityDetailTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activité'**
+  String get activityDetailTitle;
+
+  /// No description provided for @activityDetailRetry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get activityDetailRetry;
+
+  /// No description provided for @activityDetailDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Description'**
+  String get activityDetailDescription;
+
+  /// No description provided for @activityDetailPracticalInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations pratiques'**
+  String get activityDetailPracticalInfo;
+
+  /// No description provided for @activityDetailWhatIsIncluded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce qui est inclus'**
+  String get activityDetailWhatIsIncluded;
+
+  /// No description provided for @activityDetailWhatToBring.
+  ///
+  /// In fr, this message translates to:
+  /// **'À apporter'**
+  String get activityDetailWhatToBring;
+
+  /// No description provided for @activityDetailEquipment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Équipement'**
+  String get activityDetailEquipment;
+
+  /// No description provided for @activityDetailProvided.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fourni'**
+  String get activityDetailProvided;
+
+  /// No description provided for @activityDetailRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Requis'**
+  String get activityDetailRequired;
+
+  /// No description provided for @activityDetailPrerequisites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prérequis'**
+  String get activityDetailPrerequisites;
+
+  /// No description provided for @activityDetailPhysicalCondition.
+  ///
+  /// In fr, this message translates to:
+  /// **'Condition physique'**
+  String get activityDetailPhysicalCondition;
+
+  /// No description provided for @activityDetailRequiredCertifications.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certifications requises'**
+  String get activityDetailRequiredCertifications;
+
+  /// No description provided for @activityDetailPrice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prix'**
+  String get activityDetailPrice;
+
+  /// No description provided for @activityDetailDuration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Durée'**
+  String get activityDetailDuration;
+
+  /// No description provided for @activityDetailDifficulty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Difficulté'**
+  String get activityDetailDifficulty;
+
+  /// No description provided for @activityDetailLocation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Localisation'**
+  String get activityDetailLocation;
+
+  /// No description provided for @activityDetailIncluded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inclus'**
+  String get activityDetailIncluded;
+
+  /// No description provided for @activityDetailProvidedWithColon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fourni :'**
+  String get activityDetailProvidedWithColon;
+
+  /// No description provided for @activityDetailRequiredWithColon.
+  ///
+  /// In fr, this message translates to:
+  /// **'À apporter :'**
+  String get activityDetailRequiredWithColon;
+
+  /// No description provided for @activityDetailPhysicalConditionWithColon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Condition physique :'**
+  String get activityDetailPhysicalConditionWithColon;
+
+  /// No description provided for @activityDetailCertificationsWithColon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Certifications :'**
+  String get activityDetailCertificationsWithColon;
+
+  /// No description provided for @activityDetailAgeRestrictions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Restrictions d\'âge'**
+  String get activityDetailAgeRestrictions;
+
+  /// No description provided for @activityDetailWeatherDependent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette activité est dépendante des conditions météorologiques'**
+  String get activityDetailWeatherDependent;
+
+  /// No description provided for @activityDetailMeetingPoint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Point de rendez-vous'**
+  String get activityDetailMeetingPoint;
+
+  /// No description provided for @activityDetailAdditionalInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations supplémentaires'**
+  String get activityDetailAdditionalInfo;
+
+  /// No description provided for @activityDetailOrganizedBy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Organisé par'**
+  String get activityDetailOrganizedBy;
+
+  /// No description provided for @activityDetailCertifiedOperator.
+  ///
+  /// In fr, this message translates to:
+  /// **'Opérateur agréé'**
+  String get activityDetailCertifiedOperator;
+
+  /// No description provided for @activityDetailCancellationPolicy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Politique d\'annulation'**
+  String get activityDetailCancellationPolicy;
+
+  /// No description provided for @activityDetailLinks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Links'**
+  String get activityDetailLinks;
+
+  /// No description provided for @activityDetailFrom.
+  ///
+  /// In fr, this message translates to:
+  /// **'À partir de'**
+  String get activityDetailFrom;
+
+  /// No description provided for @activityDetailBookNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'inscrire maintenant'**
+  String get activityDetailBookNow;
+
+  /// No description provided for @activityDetailSoldOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Places épuisées'**
+  String get activityDetailSoldOut;
+
+  /// No description provided for @activityDetailRegistrationSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription enregistrée avec succès !'**
+  String get activityDetailRegistrationSuccess;
+
+  /// No description provided for @activityRegistrationError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur: {error}'**
+  String activityRegistrationError(Object error);
+
+  /// No description provided for @activityRegistrationTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription'**
+  String get activityRegistrationTitle;
+
+  /// No description provided for @activityRegistrationNumberOfParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre de participants'**
+  String get activityRegistrationNumberOfParticipants;
+
+  /// No description provided for @activityRegistrationTotal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Total: {totalPrice} DJF'**
+  String activityRegistrationTotal(String totalPrice);
+
+  /// No description provided for @activityRegistrationPreferredDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date préférée (optionnel)'**
+  String get activityRegistrationPreferredDate;
+
+  /// No description provided for @activityRegistrationSelectDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sélectionner une date'**
+  String get activityRegistrationSelectDate;
+
+  /// No description provided for @activityRegistrationYourInformation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vos informations'**
+  String get activityRegistrationYourInformation;
+
+  /// No description provided for @activityRegistrationFullName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom complet *'**
+  String get activityRegistrationFullName;
+
+  /// No description provided for @activityRegistrationEnterYourName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Veuillez entrer votre nom'**
+  String get activityRegistrationEnterYourName;
+
+  /// No description provided for @activityRegistrationEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email *'**
+  String get activityRegistrationEmail;
+
+  /// No description provided for @activityRegistrationEnterYourEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Veuillez entrer votre email'**
+  String get activityRegistrationEnterYourEmail;
+
+  /// No description provided for @activityRegistrationInvalidEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email invalide'**
+  String get activityRegistrationInvalidEmail;
+
+  /// No description provided for @activityRegistrationPhoneOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone (optionnel)'**
+  String get activityRegistrationPhoneOptional;
+
+  /// No description provided for @activityRegistrationSpecialRequirementsOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exigences spéciales (optionnel)'**
+  String get activityRegistrationSpecialRequirementsOptional;
+
+  /// No description provided for @activityRegistrationDietAllergiesEtc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régime alimentaire, allergies, etc.'**
+  String get activityRegistrationDietAllergiesEtc;
+
+  /// No description provided for @activityRegistrationMedicalConditionsOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Conditions médicales (optionnel)'**
+  String get activityRegistrationMedicalConditionsOptional;
+
+  /// No description provided for @activityRegistrationImportantSafetyInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations importantes pour votre sécurité'**
+  String get activityRegistrationImportantSafetyInfo;
+
+  /// No description provided for @activityRegistrationConfirmRegistration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer l\'inscription'**
+  String get activityRegistrationConfirmRegistration;
+
+  /// No description provided for @tourErrorLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors du chargement: {error}'**
+  String tourErrorLoading(Object error);
+
+  /// No description provided for @tourAddedToFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour ajouté aux favoris'**
+  String get tourAddedToFavorites;
+
+  /// No description provided for @tourRemovedFromFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour retiré des favoris'**
+  String get tourRemovedFromFavorites;
+
+  /// No description provided for @tourPracticalInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations pratiques'**
+  String get tourPracticalInfo;
+
+  /// No description provided for @tourDates.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dates'**
+  String get tourDates;
+
+  /// No description provided for @tourDuration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Durée'**
+  String get tourDuration;
+
+  /// No description provided for @tourAvailableSpots.
+  ///
+  /// In fr, this message translates to:
+  /// **'Places disponibles'**
+  String get tourAvailableSpots;
+
+  /// No description provided for @tourSpots.
+  ///
+  /// In fr, this message translates to:
+  /// **'{spots} places'**
+  String tourSpots(Object spots);
+
+  /// No description provided for @tourAgeRestrictions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Restrictions d\'âge'**
+  String get tourAgeRestrictions;
+
+  /// No description provided for @tourWeatherDependent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce tour est dépendant des conditions météorologiques'**
+  String get tourWeatherDependent;
+
+  /// No description provided for @tourMeetingPoint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Point de rendez-vous'**
+  String get tourMeetingPoint;
+
+  /// No description provided for @tourOrganizedBy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Organisé par'**
+  String get tourOrganizedBy;
+
+  /// No description provided for @tourOperatorCertified.
+  ///
+  /// In fr, this message translates to:
+  /// **'Opérateur agréé'**
+  String get tourOperatorCertified;
+
+  /// No description provided for @tourCannotOpenLink.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir le lien'**
+  String get tourCannotOpenLink;
+
+  /// No description provided for @tourOperatorTour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Opérateur de tour'**
+  String get tourOperatorTour;
+
+  /// No description provided for @tourOperatorCertifiedTour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Opérateur touristique agréé'**
+  String get tourOperatorCertifiedTour;
+
+  /// No description provided for @tourFrom.
+  ///
+  /// In fr, this message translates to:
+  /// **'À partir de'**
+  String get tourFrom;
+
+  /// No description provided for @tourRegistrationConfirmed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription confirmée'**
+  String get tourRegistrationConfirmed;
+
+  /// No description provided for @tourPendingConfirmation.
+  ///
+  /// In fr, this message translates to:
+  /// **'En attente de confirmation'**
+  String get tourPendingConfirmation;
+
+  /// No description provided for @tourRegisterNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'inscrire maintenant'**
+  String get tourRegisterNow;
+
+  /// No description provided for @tourSpotsSoldOut.
+  ///
+  /// In fr, this message translates to:
+  /// **'Places épuisées'**
+  String get tourSpotsSoldOut;
+
+  /// No description provided for @tourShareTodo.
+  ///
+  /// In fr, this message translates to:
+  /// **'TODO: Implémenter le partage'**
+  String get tourShareTodo;
+
+  /// No description provided for @tourRegistrationTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription au tour'**
+  String get tourRegistrationTitle;
+
+  /// No description provided for @tourRegistrationNumberOfParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nombre de participants *'**
+  String get tourRegistrationNumberOfParticipants;
+
+  /// No description provided for @tourRegistrationMinParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Minimum 1 personne'**
+  String get tourRegistrationMinParticipants;
+
+  /// No description provided for @tourRegistrationMaxParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maximum {maxParticipants} places'**
+  String tourRegistrationMaxParticipants(String maxParticipants);
+
+  /// No description provided for @tourRegistrationContactInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de contact *'**
+  String get tourRegistrationContactInfo;
+
+  /// No description provided for @tourRegistrationFullName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom complet'**
+  String get tourRegistrationFullName;
+
+  /// No description provided for @tourRegistrationNameRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom requis'**
+  String get tourRegistrationNameRequired;
+
+  /// No description provided for @tourRegistrationEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get tourRegistrationEmail;
+
+  /// No description provided for @tourRegistrationEmailRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email requis'**
+  String get tourRegistrationEmailRequired;
+
+  /// No description provided for @tourRegistrationInvalidEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email invalide'**
+  String get tourRegistrationInvalidEmail;
+
+  /// No description provided for @tourRegistrationPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get tourRegistrationPhone;
+
+  /// No description provided for @tourRegistrationPhoneRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone requis'**
+  String get tourRegistrationPhoneRequired;
+
+  /// No description provided for @tourRegistrationNotes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Notes ou demandes spéciales'**
+  String get tourRegistrationNotes;
+
+  /// No description provided for @tourRegistrationNotesHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Allergies alimentaires, besoins spéciaux...'**
+  String get tourRegistrationNotesHint;
+
+  /// No description provided for @tourRegistrationTotalToPay.
+  ///
+  /// In fr, this message translates to:
+  /// **'Total à payer'**
+  String get tourRegistrationTotalToPay;
+
+  /// No description provided for @tourRegistrationAvailableSpots.
+  ///
+  /// In fr, this message translates to:
+  /// **'{availableSpots} places disponibles'**
+  String tourRegistrationAvailableSpots(String availableSpots);
+
+  /// No description provided for @tourRegistrationConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer l\'inscription'**
+  String get tourRegistrationConfirm;
+
+  /// No description provided for @tourRegistrationSuccessMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription confirmée avec succès!'**
+  String get tourRegistrationSuccessMessage;
+
+  /// No description provided for @tourRegistrationErrorMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de l\'inscription'**
+  String get tourRegistrationErrorMessage;
 }
 
 class _AppLocalizationsDelegate

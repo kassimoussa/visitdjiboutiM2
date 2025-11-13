@@ -160,7 +160,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonErrorFavorites => 'Error managing favorites';
 
   @override
-  String get commonErrorLoading => 'Loading error';
+  String get commonErrorLoading => 'Erreur de chargement';
 
   @override
   String get commonErrorUnexpected => 'Unexpected error';
@@ -925,4 +925,321 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tourWhatToBring => 'What to bring';
+
+  @override
+  String get homeRegionDjibouti => 'Djibouti';
+
+  @override
+  String get homeRegionTadjourah => 'Tadjourah';
+
+  @override
+  String get homeRegionAliSabieh => 'Ali Sabieh';
+
+  @override
+  String get homeRegionDikhil => 'Dikhil';
+
+  @override
+  String get homeRegionObock => 'Obock';
+
+  @override
+  String get homeRegionArta => 'Arta';
+
+  @override
+  String activityDetailErrorLoading(Object error) {
+    return 'Error loading: $error';
+  }
+
+  @override
+  String get activityDetailTitle => 'Activity';
+
+  @override
+  String get activityDetailRetry => 'Retry';
+
+  @override
+  String get activityDetailDescription => 'Description';
+
+  @override
+  String get activityDetailPracticalInfo => 'Practical Information';
+
+  @override
+  String get activityDetailWhatIsIncluded => 'What is included';
+
+  @override
+  String get activityDetailWhatToBring => 'What to bring';
+
+  @override
+  String get activityDetailEquipment => 'Equipment';
+
+  @override
+  String get activityDetailProvided => 'Provided';
+
+  @override
+  String get activityDetailRequired => 'Required';
+
+  @override
+  String get activityDetailPrerequisites => 'Prerequisites';
+
+  @override
+  String get activityDetailPhysicalCondition => 'Physical condition';
+
+  @override
+  String get activityDetailRequiredCertifications => 'Required certifications';
+
+  @override
+  String get activityDetailPrice => 'Price';
+
+  @override
+  String get activityDetailDuration => 'Duration';
+
+  @override
+  String get activityDetailDifficulty => 'Difficulty';
+
+  @override
+  String get activityDetailLocation => 'Location';
+
+  @override
+  String get activityDetailIncluded => 'Included';
+
+  @override
+  String get activityDetailProvidedWithColon => 'Provided:';
+
+  @override
+  String get activityDetailRequiredWithColon => 'To bring:';
+
+  @override
+  String get activityDetailPhysicalConditionWithColon => 'Physical condition:';
+
+  @override
+  String get activityDetailCertificationsWithColon => 'Certifications:';
+
+  @override
+  String get activityDetailAgeRestrictions => 'Age restrictions';
+
+  @override
+  String get activityDetailWeatherDependent =>
+      'This activity is weather dependent';
+
+  @override
+  String get activityDetailMeetingPoint => 'Meeting point';
+
+  @override
+  String get activityDetailAdditionalInfo => 'Additional information';
+
+  @override
+  String get activityDetailOrganizedBy => 'Organized by';
+
+  @override
+  String get activityDetailCertifiedOperator => 'Certified operator';
+
+  @override
+  String get activityDetailCancellationPolicy => 'Cancellation policy';
+
+  @override
+  String get activityDetailLinks => 'Links';
+
+  @override
+  String get activityDetailFrom => 'From';
+
+  @override
+  String get activityDetailBookNow => 'Book now';
+
+  @override
+  String get activityDetailSoldOut => 'Sold out';
+
+  @override
+  String get activityDetailRegistrationSuccess => 'Registration successful!';
+
+  @override
+  String activityRegistrationError(Object error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get activityRegistrationTitle => 'Registration';
+
+  @override
+  String get activityRegistrationNumberOfParticipants =>
+      'Number of participants';
+
+  @override
+  String activityRegistrationTotal(String totalPrice) {
+    return 'Total: $totalPrice DJF';
+  }
+
+  @override
+  String get activityRegistrationPreferredDate => 'Preferred date (optional)';
+
+  @override
+  String get activityRegistrationSelectDate => 'Select a date';
+
+  @override
+  String get activityRegistrationYourInformation => 'Your information';
+
+  @override
+  String get activityRegistrationFullName => 'Full name *';
+
+  @override
+  String get activityRegistrationEnterYourName => 'Please enter your name';
+
+  @override
+  String get activityRegistrationEmail => 'Email *';
+
+  @override
+  String get activityRegistrationEnterYourEmail => 'Please enter your email';
+
+  @override
+  String get activityRegistrationInvalidEmail => 'Invalid email';
+
+  @override
+  String get activityRegistrationPhoneOptional => 'Phone (optional)';
+
+  @override
+  String get activityRegistrationSpecialRequirementsOptional =>
+      'Special requirements (optional)';
+
+  @override
+  String get activityRegistrationDietAllergiesEtc => 'Diet, allergies, etc.';
+
+  @override
+  String get activityRegistrationMedicalConditionsOptional =>
+      'Medical conditions (optional)';
+
+  @override
+  String get activityRegistrationImportantSafetyInfo =>
+      'Important information for your safety';
+
+  @override
+  String get activityRegistrationConfirmRegistration => 'Confirm registration';
+
+  @override
+  String tourErrorLoading(Object error) {
+    return 'Error loading: $error';
+  }
+
+  @override
+  String get tourAddedToFavorites => 'Tour added to favorites';
+
+  @override
+  String get tourRemovedFromFavorites => 'Tour removed from favorites';
+
+  @override
+  String get tourPracticalInfo => 'Practical Information';
+
+  @override
+  String get tourDates => 'Dates';
+
+  @override
+  String get tourDuration => 'Duration';
+
+  @override
+  String get tourAvailableSpots => 'Available spots';
+
+  @override
+  String tourSpots(Object spots) {
+    return '$spots spots';
+  }
+
+  @override
+  String get tourAgeRestrictions => 'Age restrictions';
+
+  @override
+  String get tourWeatherDependent => 'This tour is weather dependent';
+
+  @override
+  String get tourMeetingPoint => 'Meeting point';
+
+  @override
+  String get tourOrganizedBy => 'Organized by';
+
+  @override
+  String get tourOperatorCertified => 'Certified operator';
+
+  @override
+  String get tourCannotOpenLink => 'Cannot open link';
+
+  @override
+  String get tourOperatorTour => 'Tour operator';
+
+  @override
+  String get tourOperatorCertifiedTour => 'Certified tour operator';
+
+  @override
+  String get tourFrom => 'From';
+
+  @override
+  String get tourRegistrationConfirmed => 'Registration confirmed';
+
+  @override
+  String get tourPendingConfirmation => 'Pending confirmation';
+
+  @override
+  String get tourRegisterNow => 'Register now';
+
+  @override
+  String get tourSpotsSoldOut => 'Spots sold out';
+
+  @override
+  String get tourShareTodo => 'TODO: Implement sharing';
+
+  @override
+  String get tourRegistrationTitle => 'Tour Registration';
+
+  @override
+  String get tourRegistrationNumberOfParticipants => 'Number of participants *';
+
+  @override
+  String get tourRegistrationMinParticipants => 'Minimum 1 person';
+
+  @override
+  String tourRegistrationMaxParticipants(String maxParticipants) {
+    return 'Maximum $maxParticipants spots';
+  }
+
+  @override
+  String get tourRegistrationContactInfo => 'Contact Information *';
+
+  @override
+  String get tourRegistrationFullName => 'Full name';
+
+  @override
+  String get tourRegistrationNameRequired => 'Name required';
+
+  @override
+  String get tourRegistrationEmail => 'Email';
+
+  @override
+  String get tourRegistrationEmailRequired => 'Email required';
+
+  @override
+  String get tourRegistrationInvalidEmail => 'Invalid email';
+
+  @override
+  String get tourRegistrationPhone => 'Phone';
+
+  @override
+  String get tourRegistrationPhoneRequired => 'Phone required';
+
+  @override
+  String get tourRegistrationNotes => 'Notes or special requests';
+
+  @override
+  String get tourRegistrationNotesHint => 'Food allergies, special needs...';
+
+  @override
+  String get tourRegistrationTotalToPay => 'Total to pay';
+
+  @override
+  String tourRegistrationAvailableSpots(String availableSpots) {
+    return '$availableSpots spots available';
+  }
+
+  @override
+  String get tourRegistrationConfirm => 'Confirm registration';
+
+  @override
+  String get tourRegistrationSuccessMessage =>
+      'Registration confirmed successfully!';
+
+  @override
+  String get tourRegistrationErrorMessage => 'Error during registration';
 }

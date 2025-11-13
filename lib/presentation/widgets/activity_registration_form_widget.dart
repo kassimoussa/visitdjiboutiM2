@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class ActivityRegistrationFormWidget extends StatefulWidget {
   final Activity activity;
@@ -95,7 +96,7 @@ class _ActivityRegistrationFormWidgetState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: $e'),
+            content: Text(AppLocalizations.of(context)!.activityRegistrationError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -131,8 +132,8 @@ class _ActivityRegistrationFormWidgetState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Inscription',
+                    Text(
+                      AppLocalizations.of(context)!.activityRegistrationTitle,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -155,8 +156,8 @@ class _ActivityRegistrationFormWidgetState
                 const SizedBox(height: 24),
 
                 // Nombre de participants
-                const Text(
-                  'Nombre de participants',
+                Text(
+                  AppLocalizations.of(context)!.activityRegistrationNumberOfParticipants,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -195,7 +196,7 @@ class _ActivityRegistrationFormWidgetState
                     ),
                     const Spacer(),
                     Text(
-                      'Total: ${_numberOfPeople * widget.activity.price} DJF',
+                      AppLocalizations.of(context)!.activityRegistrationTotal((_numberOfPeople * widget.activity.price).toString()),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -207,8 +208,8 @@ class _ActivityRegistrationFormWidgetState
                 const SizedBox(height: 20),
 
                 // Date préférée
-                const Text(
-                  'Date préférée (optionnel)',
+                Text(
+                  AppLocalizations.of(context)!.activityRegistrationPreferredDate,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -230,7 +231,7 @@ class _ActivityRegistrationFormWidgetState
                         Text(
                           _preferredDate != null
                               ? '${_preferredDate!.day}/${_preferredDate!.month}/${_preferredDate!.year}'
-                              : 'Sélectionner une date',
+                              : AppLocalizations.of(context)!.activityRegistrationSelectDate,
                           style: TextStyle(
                             fontSize: 16,
                             color: _preferredDate != null
@@ -246,8 +247,8 @@ class _ActivityRegistrationFormWidgetState
 
                 // Champs invité
                 if (_isGuestMode) ...[
-                  const Text(
-                    'Vos informations',
+                  Text(
+                    AppLocalizations.of(context)!.activityRegistrationYourInformation,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -257,14 +258,14 @@ class _ActivityRegistrationFormWidgetState
                   TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
-                      labelText: 'Nom complet *',
+                      labelText: AppLocalizations.of(context)!.activityRegistrationFullName,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre nom';
+                        return AppLocalizations.of(context)!.activityRegistrationEnterYourName;
                       }
                       return null;
                     },
@@ -274,17 +275,17 @@ class _ActivityRegistrationFormWidgetState
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      labelText: 'Email *',
+                      labelText: AppLocalizations.of(context)!.activityRegistrationEmail,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre email';
+                        return AppLocalizations.of(context)!.activityRegistrationEnterYourEmail;
                       }
                       if (!value.contains('@')) {
-                        return 'Email invalide';
+                        return AppLocalizations.of(context)!.activityRegistrationInvalidEmail;
                       }
                       return null;
                     },
@@ -294,7 +295,7 @@ class _ActivityRegistrationFormWidgetState
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      labelText: 'Téléphone (optionnel)',
+                      labelText: AppLocalizations.of(context)!.activityRegistrationPhoneOptional,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -304,8 +305,8 @@ class _ActivityRegistrationFormWidgetState
                 ],
 
                 // Exigences spéciales
-                const Text(
-                  'Exigences spéciales (optionnel)',
+                Text(
+                  AppLocalizations.of(context)!.activityRegistrationSpecialRequirementsOptional,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -316,7 +317,7 @@ class _ActivityRegistrationFormWidgetState
                   controller: _specialRequirementsController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: 'Régime alimentaire, allergies, etc.',
+                    hintText: AppLocalizations.of(context)!.activityRegistrationDietAllergiesEtc,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -325,8 +326,8 @@ class _ActivityRegistrationFormWidgetState
                 const SizedBox(height: 20),
 
                 // Conditions médicales
-                const Text(
-                  'Conditions médicales (optionnel)',
+                Text(
+                  AppLocalizations.of(context)!.activityRegistrationMedicalConditionsOptional,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -337,7 +338,7 @@ class _ActivityRegistrationFormWidgetState
                   controller: _medicalConditionsController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: 'Informations importantes pour votre sécurité',
+                    hintText: AppLocalizations.of(context)!.activityRegistrationImportantSafetyInfo,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -366,15 +367,11 @@ class _ActivityRegistrationFormWidgetState
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text(
-                            'Confirmer l\'inscription',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
+                        : Text(
+                          AppLocalizations.of(context)!.activityRegistrationConfirmRegistration,
+                          style: TextStyle(color: Colors.white),
                   ),
+                ),
                 ),
                 const SizedBox(height: 16),
               ],

@@ -79,7 +79,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'Erreur lors du chargement: $e';
+        _errorMessage = AppLocalizations.of(context)!.tourErrorLoading(e.toString());
         _isLoading = false;
       });
     }
@@ -157,8 +157,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
           SnackBar(
             content: Text(
               _isFavorite
-                  ? 'Tour ajouté aux favoris'
-                  : 'Tour retiré des favoris',
+                  ? AppLocalizations.of(context)!.tourAddedToFavorites
+                  : AppLocalizations.of(context)!.tourRemovedFromFavorites,
             ),
             duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
@@ -658,8 +658,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Informations pratiques',
+              Text(
+                AppLocalizations.of(context)!.tourPracticalInfo,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -671,20 +671,20 @@ class _TourDetailPageState extends State<TourDetailPage> {
           if (tour.displayDateRange != null)
             _buildInfoRowItem(
               Icons.event,
-              'Dates',
+              AppLocalizations.of(context)!.tourDates,
               tour.displayDateRange!,
             ),
           if (tour.displayDateRange != null) const SizedBox(height: 12),
           _buildInfoRowItem(
             Icons.access_time,
-            'Durée',
+            AppLocalizations.of(context)!.tourDuration,
             tour.displayDuration,
           ),
           const SizedBox(height: 12),
           _buildInfoRowItem(
             Icons.event_seat,
-            'Places disponibles',
-            '${tour.availableSpots} places',
+            AppLocalizations.of(context)!.tourAvailableSpots,
+            AppLocalizations.of(context)!.tourSpots(tour.availableSpots.toString()),
           ),
         ],
       ),
@@ -901,8 +901,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Restrictions d\'âge',
+              Text(
+                AppLocalizations.of(context)!.tourAgeRestrictions,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -952,7 +952,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Ce tour est dépendant des conditions météorologiques',
+              AppLocalizations.of(context)!.tourWeatherDependent,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.orange[900],
@@ -1000,8 +1000,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text(
-                'Point de rendez-vous',
+              Text(
+                AppLocalizations.of(context)!.tourMeetingPoint,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -1071,8 +1071,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Organisé par',
+          Text(
+            AppLocalizations.of(context)!.tourOrganizedBy,
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -1156,16 +1156,15 @@ class _TourDetailPageState extends State<TourDetailPage> {
                         color: const Color(0xFF009639).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Text(
-                        'Opérateur agréé',
+                      child: Text(
+                        AppLocalizations.of(context)!.tourOperatorCertified,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF009639),
                         ),
                       ),
-                    ),
-                  ],
+                 ) ],
                 ),
               ),
             ],
@@ -1184,8 +1183,8 @@ class _TourDetailPageState extends State<TourDetailPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Impossible d\'ouvrir le lien'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.tourCannotOpenLink),
             backgroundColor: Colors.red,
           ),
         );
@@ -1193,173 +1192,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
     }
   }
 
-  Widget _oldBuildOperatorInfo_UNUSED(TourOperator operator) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TourOperatorDetailPage(operator: operator),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 24),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF3860F8).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.business,
-                    color: Color(0xFF3860F8),
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Opérateur de tour',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                if (operator.logoUrl.isNotEmpty)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      operator.logoUrl,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3860F8).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.business,
-                          color: Color(0xFF3860F8),
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  )
-                else
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.business,
-                      color: Color(0xFF3860F8),
-                      size: 30,
-                    ),
-                  ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        operator.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Opérateur touristique agréé',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: Colors.grey[400],
-                ),
-              ],
-            ),
-            if (operator.hasPhone || operator.hasEmail) ...[
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  if (operator.hasPhone)
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _launchPhone(operator.displayPhone),
-                        icon: const Icon(Icons.phone, size: 18),
-                        label: Text(AppLocalizations.of(context)!.tourCall),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  if (operator.hasPhone && operator.hasEmail)
-                    const SizedBox(width: 8),
-                  if (operator.hasEmail)
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _launchEmail(operator.displayEmail),
-                        icon: const Icon(Icons.email, size: 18),
-                        label: Text(AppLocalizations.of(context)!.tourEmail),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3860F8),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildMediaGallery(List<String> media) {
     return Container(
@@ -1452,7 +1285,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'À partir de',
+                    AppLocalizations.of(context)!.tourFrom,
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                   Text(
@@ -1506,9 +1339,9 @@ class _TourDetailPageState extends State<TourDetailPage> {
                     Text(
                       _hasActiveReservation
                           ? (_userReservation?.status == ReservationStatus.confirmed
-                              ? 'Inscription confirmée'
-                              : 'En attente de confirmation')
-                          : (tour.isBookable ? 'S\'inscrire maintenant' : 'Places épuisées'),
+                              ? AppLocalizations.of(context)!.tourRegistrationConfirmed
+                              : AppLocalizations.of(context)!.tourPendingConfirmation)
+                          : (tour.isBookable ? AppLocalizations.of(context)!.tourRegisterNow : AppLocalizations.of(context)!.tourSpotsSoldOut),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
