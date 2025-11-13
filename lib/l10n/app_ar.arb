@@ -318,6 +318,10 @@
     }
   },
 
+  "poiNoContact": "لا توجد معلومات اتصال متاحة",
+  "poiTourOperatorsTitle": "منظمو الرحلات السياحية",
+  "poiLicensedOperator": "مشغل مرخص",
+
   "profileAboutApp": "حول التطبيق",
   "profileComingSoon": "قريبا",
   "profileComingSoonMessage": "ستتوفر هذه الميزة قريبا",
@@ -454,6 +458,22 @@
   "tourRetry": "إعادة المحاولة",
   "tourViewOnMap": "عرض على الخريطة",
   "tourWhatToBring": "ماذا تحضر",
+  "tourUnknownOperator": "مشغل غير معروف",
+  "tourWebsite": "الموقع الإلكتروني",
+  "toursSearchHint": "البحث عن جولة...",
+  "toursNotFound": "لم يتم العثور على جولات لـ \"{query}\"",
+  "@toursNotFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "toursTourType": "نوع الجولة",
+  "toursSelectType": "حدد نوعًا",
+  "toursDifficulty": "الصعوبة",
+  "toursTourOperator": "منظم الجولات",
+  "toursSelectOperator": "حدد منظمًا",
   "homeRegionDjibouti": "جيبوتي",
   "homeRegionTadjourah": "تاجورة",
   "homeRegionAliSabieh": "علي صبيح",

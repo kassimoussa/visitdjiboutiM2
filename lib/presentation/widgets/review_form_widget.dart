@@ -55,7 +55,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
     if (_rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.reviewsSelectRating),
+          content: Text(AppLocalizations.of(context)!.reviewFormPleaseRate),
           backgroundColor: Colors.orange,
         ),
       );
@@ -95,7 +95,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
         widget.onReviewSubmitted();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_isEditing ? AppLocalizations.of(context)!.reviewsUpdatedSuccess : AppLocalizations.of(context)!.reviewsPublishedSuccess),
+            content: Text(_isEditing ? AppLocalizations.of(context)!.reviewFormUpdated : AppLocalizations.of(context)!.reviewFormPublished),
             backgroundColor: Colors.green,
           ),
         );
@@ -107,7 +107,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
+            content: Text(AppLocalizations.of(context)!.reviewFormError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -145,7 +145,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _isEditing ? AppLocalizations.of(context)!.reviewsEditReview : AppLocalizations.of(context)!.reviewsWriteReview,
+                            _isEditing ? AppLocalizations.of(context)!.reviewFormEditTitle : AppLocalizations.of(context)!.reviewsWriteReview,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -172,7 +172,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
 
                 // Sélection de la note
                 Text(
-                  AppLocalizations.of(context)!.reviewsYourRating,
+                  AppLocalizations.of(context)!.reviewFormYourRating,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -204,7 +204,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
 
                 // Titre (optionnel)
                 Text(
-                  AppLocalizations.of(context)!.reviewsTitleOptional,
+                  AppLocalizations.of(context)!.reviewFormTitle,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -214,7 +214,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 TextFormField(
                   controller: _titleController,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.reviewsSummarizeExperience,
+                    hintText: AppLocalizations.of(context)!.reviewFormTitleHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -232,7 +232,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
 
                 // Commentaire (optionnel)
                 Text(
-                  AppLocalizations.of(context)!.reviewsCommentOptional,
+                  AppLocalizations.of(context)!.reviewFormComment,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -242,7 +242,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 TextFormField(
                   controller: _commentController,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.reviewsShareDetail,
+                    hintText: AppLocalizations.of(context)!.reviewFormCommentHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -305,7 +305,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                                 ),
                               )
                             : Text(
-                                _isEditing ? AppLocalizations.of(context)!.reviewsUpdate : AppLocalizations.of(context)!.reviewsPublish,
+                                _isEditing ? AppLocalizations.of(context)!.reviewFormUpdate : AppLocalizations.of(context)!.reviewFormPublish,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,

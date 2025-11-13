@@ -317,6 +317,10 @@
     }
   },
 
+  "poiNoContact": "No contact information available",
+  "poiTourOperatorsTitle": "Tour operators",
+  "poiLicensedOperator": "Licensed operator",
+
   "profileAboutApp": "About the app",
   "profileComingSoon": "Coming soon",
   "profileComingSoonMessage": "This feature will be available soon",
@@ -453,6 +457,22 @@
   "tourRetry": "Retry",
   "tourViewOnMap": "View on map",
   "tourWhatToBring": "What to bring",
+  "tourUnknownOperator": "Unknown operator",
+  "tourWebsite": "Website",
+  "toursSearchHint": "Search for a tour...",
+  "toursNotFound": "No tours found for \"{query}\"",
+  "@toursNotFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "toursTourType": "Tour type",
+  "toursSelectType": "Select a type",
+  "toursDifficulty": "Difficulty",
+  "toursTourOperator": "Tour operator",
+  "toursSelectOperator": "Select an operator",
   "homeRegionDjibouti": "Djibouti",
   "homeRegionTadjourah": "Tadjourah",
   "homeRegionAliSabieh": "Ali Sabieh",

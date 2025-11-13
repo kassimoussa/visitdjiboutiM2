@@ -318,6 +318,10 @@
     }
   },
 
+  "poiNoContact": "Aucune information de contact disponible",
+  "poiTourOperatorsTitle": "Opérateurs touristiques",
+  "poiLicensedOperator": "Opérateur agréé",
+
   "profileAboutApp": "À propos de l'application",
   "profileComingSoon": "Bientôt disponible",
   "profileComingSoonMessage": "Cette fonctionnalité sera bientôt disponible",
@@ -454,6 +458,22 @@
   "tourRetry": "Réessayer",
   "tourViewOnMap": "Voir sur la carte",
   "tourWhatToBring": "Quoi apporter",
+  "tourUnknownOperator": "Opérateur inconnu",
+  "tourWebsite": "Site web",
+  "toursSearchHint": "Rechercher un tour...",
+  "toursNotFound": "Aucun tour trouvé pour \"{query}\"",
+  "@toursNotFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "toursTourType": "Type de tour",
+  "toursSelectType": "Sélectionner un type",
+  "toursDifficulty": "Difficulté",
+  "toursTourOperator": "Opérateur touristique",
+  "toursSelectOperator": "Sélectionner un opérateur",
   "homeRegionDjibouti": "Djibouti",
   "homeRegionTadjourah": "Tadjourah",
   "homeRegionAliSabieh": "Ali Sabieh",
