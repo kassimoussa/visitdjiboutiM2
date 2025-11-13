@@ -394,6 +394,10 @@
   "reservationsNoneCancelled": "No cancelled reservations",
   "reservationsNoneConfirmed": "No confirmed reservations",
   "reservationsNonePending": "No pending reservations",
+  "reservationsTabAll": "All",
+  "reservationsTabConfirmed": "Confirmed",
+  "reservationsTabPending": "Pending",
+  "reservationsTabCancelled": "Cancelled",
 
   "reservationsPending": "Pending ({count})",
   "@reservationsPending": {

@@ -145,7 +145,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = AppLocalizations.of(context)!.commonUnexpectedError(e.toString());
+          _errorMessage = AppLocalizations.of(context)!.commonUnexpectedError;
         });
       }
     }
@@ -166,19 +166,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           tabs: [
             Tab(
               icon: const Icon(Icons.list),
-              text: AppLocalizations.of(context)!.reservationsAll(_allReservations.length + _allTourReservations.length + _allActivityRegistrations.length),
+              text: '${AppLocalizations.of(context)!.reservationsTabAll} (${_allReservations.length + _allTourReservations.length + _allActivityRegistrations.length})',
             ),
             Tab(
               icon: const Icon(Icons.check_circle),
-              text: AppLocalizations.of(context)!.reservationsConfirmed(_confirmedReservations.length + _confirmedTourReservations.length + _confirmedActivityRegistrations.length),
+              text: '${AppLocalizations.of(context)!.reservationsTabConfirmed} (${_confirmedReservations.length + _confirmedTourReservations.length + _confirmedActivityRegistrations.length})',
             ),
             Tab(
               icon: const Icon(Icons.pending),
-              text: AppLocalizations.of(context)!.reservationsPending(_pendingReservations.length + _pendingTourReservations.length + _pendingActivityRegistrations.length),
+              text: '${AppLocalizations.of(context)!.reservationsTabPending} (${_pendingReservations.length + _pendingTourReservations.length + _pendingActivityRegistrations.length})',
             ),
             Tab(
               icon: const Icon(Icons.cancel),
-              text: AppLocalizations.of(context)!.reservationsCancelled(_cancelledReservations.length + _cancelledTourReservations.length + _cancelledActivityRegistrations.length),
+              text: '${AppLocalizations.of(context)!.reservationsTabCancelled} (${_cancelledReservations.length + _cancelledTourReservations.length + _cancelledActivityRegistrations.length})',
             ),
           ],
         ),

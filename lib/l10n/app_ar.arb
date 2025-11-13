@@ -395,6 +395,10 @@
   "reservationsNoneCancelled": "لا توجد حجوزات ملغاة",
   "reservationsNoneConfirmed": "لا توجد حجوزات مؤكدة",
   "reservationsNonePending": "لا توجد حجوزات معلقة",
+  "reservationsTabAll": "الكل",
+  "reservationsTabConfirmed": "مؤكدة",
+  "reservationsTabPending": "قيد الانتظار",
+  "reservationsTabCancelled": "ملغاة",
 
   "reservationsPending": "قيد الانتظار ({count})",
   "@reservationsPending": {
