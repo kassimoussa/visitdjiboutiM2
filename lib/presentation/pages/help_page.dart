@@ -14,43 +14,43 @@ class _HelpPageState extends State<HelpPage> {
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion1,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer1,
-        'category': AppLocalizations.of(context)!.helpCatEvents,
+        'category': AppLocalizations.of(context)!.helpCategoryEvents,
         'isExpanded': false,
       },
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion2,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer2,
-        'category': AppLocalizations.of(context)!.helpCatUsage,
+        'category': AppLocalizations.of(context)!.helpCategoryUsage,
         'isExpanded': false,
       },
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion3,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer3,
-        'category': AppLocalizations.of(context)!.helpCatFavorites,
+        'category': AppLocalizations.of(context)!.helpCategoryFavorites,
         'isExpanded': false,
       },
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion4,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer4,
-        'category': AppLocalizations.of(context)!.helpCatGeneral,
+        'category': AppLocalizations.of(context)!.helpCategoryGeneral,
         'isExpanded': false,
       },
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion5,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer5,
-        'category': AppLocalizations.of(context)!.helpCatSettings,
+        'category': AppLocalizations.of(context)!.helpCategorySettings,
         'isExpanded': false,
       },
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion6,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer6,
-        'category': AppLocalizations.of(context)!.helpCatContent,
+        'category': AppLocalizations.of(context)!.helpCategoryContent,
         'isExpanded': false,
       },
       {
         'question': AppLocalizations.of(context)!.helpFaqQuestion7,
         'answer': AppLocalizations.of(context)!.helpFaqAnswer7,
-        'category': AppLocalizations.of(context)!.helpCatSupport,
+        'category': AppLocalizations.of(context)!.helpCategorySupport,
         'isExpanded': false,
       },
     ];
@@ -59,14 +59,14 @@ class _HelpPageState extends State<HelpPage> {
   String _selectedCategory = '';
   List<String> _getCategories(BuildContext context) {
     return [
-      AppLocalizations.of(context)!.helpCatAll,
-      AppLocalizations.of(context)!.helpCatEvents,
-      AppLocalizations.of(context)!.helpCatUsage,
-      AppLocalizations.of(context)!.helpCatFavorites,
-      AppLocalizations.of(context)!.helpCatGeneral,
-      AppLocalizations.of(context)!.helpCatSettings,
-      AppLocalizations.of(context)!.helpCatContent,
-      AppLocalizations.of(context)!.helpCatSupport,
+      AppLocalizations.of(context)!.helpCategoryAll,
+      AppLocalizations.of(context)!.helpCategoryEvents,
+      AppLocalizations.of(context)!.helpCategoryUsage,
+      AppLocalizations.of(context)!.helpCategoryFavorites,
+      AppLocalizations.of(context)!.helpCategoryGeneral,
+      AppLocalizations.of(context)!.helpCategorySettings,
+      AppLocalizations.of(context)!.helpCategoryContent,
+      AppLocalizations.of(context)!.helpCategorySupport,
     ];
   }
 
@@ -75,10 +75,10 @@ class _HelpPageState extends State<HelpPage> {
     final faqItems = _getFaqItems(context);
     final categories = _getCategories(context);
     if (_selectedCategory.isEmpty) {
-      _selectedCategory = AppLocalizations.of(context)!.helpCatAll;
+      _selectedCategory = AppLocalizations.of(context)!.helpCategoryAll;
     }
 
-    final filteredFAQ = _selectedCategory == AppLocalizations.of(context)!.helpCatAll
+    final filteredFAQ = _selectedCategory == AppLocalizations.of(context)!.helpCategoryAll
         ? faqItems
         : faqItems.where((item) => item['category'] == _selectedCategory).toList();
 
@@ -110,7 +110,7 @@ class _HelpPageState extends State<HelpPage> {
                 const SizedBox(height: 16),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.helpSearchHint,
+                    hintText: AppLocalizations.of(context)!.helpSearchPlaceholder,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25),
@@ -218,7 +218,7 @@ class _HelpPageState extends State<HelpPage> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.helpNoAnswer,
+                  AppLocalizations.of(context)!.helpCantFindAnswer,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
