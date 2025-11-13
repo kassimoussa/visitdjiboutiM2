@@ -910,7 +910,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          poi.name ?? AppLocalizations.of(context)!.commonPlace,
+                          poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -1029,7 +1029,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          poi.name ?? AppLocalizations.of(context)!.commonPlace,
+                          poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
