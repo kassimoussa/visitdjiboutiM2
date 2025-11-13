@@ -9,6 +9,7 @@ import '../../core/services/favorites_service.dart';
 import '../../core/models/api_response.dart';
 import '../widgets/reservation_form_widget.dart';
 import '../widgets/reviews_section.dart';
+import '../widgets/ratings_summary_widget.dart';
 import '../widgets/contact_operator_button.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'tour_operator_detail_page.dart';
@@ -69,6 +70,47 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             // Fermer le modal et afficher un message de succès
             Navigator.of(context).pop();
           },
+        ),
+      ),
+    );
+  }
+
+  void _showReviewsModal(Poi poi) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.9,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(
+          children: [
+            // Handle bar
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 12),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            // Reviews section
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: ReviewsSection(
+                  poiId: poi.id,
+                  poiName: poi.name,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -302,13 +344,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             const SizedBox(height: 24),
                             if (poi.allowReservations)
                               _buildReservationSection(poi),
-
-                            // Section Avis
-                            const SizedBox(height: 32),
-                            ReviewsSection(
-                              poiId: poi.id,
-                              poiName: poi.name,
-                            ),
 
                             const SizedBox(height: 32),
                             _buildShareSection(poi),
@@ -646,6 +681,12 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
               ],
             ],
+          ),
+          const SizedBox(height: 12),
+          // Rating summary - compact and elegant
+          RatingsSummaryWidget(
+            poiId: poi.id,
+            onTap: () => _showReviewsModal(poi),
           ),
         ],
       ),
