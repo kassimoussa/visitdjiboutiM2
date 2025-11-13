@@ -684,6 +684,7 @@ class AnonymousAuthService {
     if (deviceId == null) {
       deviceId = await _deviceInfoService.generateUniqueDeviceId();
       await _secureStorage.write(key: _deviceIdKey, value: deviceId);
+      return deviceId;
     }
     return deviceId;
   }
