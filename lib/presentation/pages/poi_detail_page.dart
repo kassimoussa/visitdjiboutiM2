@@ -1276,7 +1276,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        operator.name ?? AppLocalizations.of(context)!.tourOperator,
+                        operator.name,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
