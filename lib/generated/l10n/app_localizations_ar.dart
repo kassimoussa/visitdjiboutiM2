@@ -553,6 +553,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeUpcomingEvents => 'الأحداث القادمة';
 
   @override
+  String get homePopularActivities => 'أنشطة شائعة';
+
+  @override
+  String get homeNoActivities => 'لا توجد أنشطة متاحة';
+
+  @override
   String get languageArabic => 'العربية';
 
   @override

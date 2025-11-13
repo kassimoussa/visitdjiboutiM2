@@ -384,8 +384,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           child: ContactOperatorButton(
                             resourceType: 'poi',
                             resourceId: poi.id,
-                            operatorName: poi.tourOperators?.isNotEmpty == true
-                                ? poi.tourOperators!.first.name
+                            operatorName: poi.tourOperators.isNotEmpty == true
+                                ? poi.tourOperators.first.name
                                 : null,
                             iconColor: Colors.black87,
                             onMessageSent: () {

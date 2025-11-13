@@ -221,6 +221,15 @@
   "homeTourOperatorsSubtitle": "Certified operators",
   "homeUpcomingEvents": "Upcoming events",
 
+  "homePopularActivities": "Popular Activities",
+  "@homePopularActivities": {
+    "description": "Title for the popular activities section on the home page"
+  },
+  "homeNoActivities": "No activities available",
+  "@homeNoActivities": {
+    "description": "Message displayed when there are no activities to show"
+  },
+
   "languageArabic": "العربية",
   "languageEnglish": "English",
   "languageFrench": "Français",

@@ -1174,6 +1174,18 @@ abstract class AppLocalizations {
   /// **'Événements à venir'**
   String get homeUpcomingEvents;
 
+  /// Titre de la section des activités populaires sur la page d'accueil
+  ///
+  /// In fr, this message translates to:
+  /// **'Activités populaires'**
+  String get homePopularActivities;
+
+  /// Message affiché lorsqu'il n'y a aucune activité à montrer
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune activité disponible'**
+  String get homeNoActivities;
+
   /// No description provided for @languageArabic.
   ///
   /// In fr, this message translates to:

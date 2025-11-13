@@ -330,7 +330,7 @@ class TourService {
         print('[ TOUR SERVICE] Réservation annulée avec succès');
         return reservationResponse;
       } else {
-        throw Exception('Erreur lors de l\annulation: ${response.statusCode}');
+        throw Exception('Erreur lors de lannulation: ${response.statusCode}');
       }
     } catch (e) {
       print('[ TOUR SERVICE] Erreur annulation: $e');

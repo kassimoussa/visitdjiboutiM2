@@ -554,6 +554,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeUpcomingEvents => 'Upcoming events';
 
   @override
+  String get homePopularActivities => 'Popular Activities';
+
+  @override
+  String get homeNoActivities => 'No activities available';
+
+  @override
   String get languageArabic => 'العربية';
 
   @override

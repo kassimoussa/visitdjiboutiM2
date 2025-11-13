@@ -221,6 +221,15 @@
   "homeTourOperatorsSubtitle": "مشغلون معتمدون",
   "homeUpcomingEvents": "الأحداث القادمة",
 
+  "homePopularActivities": "أنشطة شائعة",
+  "@homePopularActivities": {
+    "description": "عنوان قسم الأنشطة الشائعة في الصفحة الرئيسية"
+  },
+  "homeNoActivities": "لا توجد أنشطة متاحة",
+  "@homeNoActivities": {
+    "description": "رسالة يتم عرضها عند عدم وجود أنشطة لإظهارها"
+  },
+
   "languageArabic": "العربية",
   "languageEnglish": "English",
   "languageFrench": "Français",
