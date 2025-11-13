@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
 import '../pages/tour_operator_detail_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TourOperatorCard extends StatelessWidget {
   final TourOperator operator;
@@ -62,14 +63,16 @@ class TourOperatorCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      operator.name ?? 'Opérateur inconnu',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    child: Builder(
+                      builder: (context) => Text(
+                        operator.name ?? AppLocalizations.of(context)!.tourUnknownOperator,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -98,13 +101,15 @@ class TourOperatorCard extends StatelessWidget {
                 children: [
                   if (operator.displayPhone != 'N/A')
                     Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _launchPhone(operator.displayPhone),
-                        icon: const Icon(Icons.phone, size: 16),
-                        label: const Text('Appeler'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3860F8),
-                          foregroundColor: Colors.white,
+                      child: Builder(
+                        builder: (context) => ElevatedButton.icon(
+                          onPressed: () => _launchPhone(operator.displayPhone),
+                          icon: const Icon(Icons.phone, size: 16),
+                          label: Text(AppLocalizations.of(context)!.tourCall),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3860F8),
+                            foregroundColor: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -112,12 +117,14 @@ class TourOperatorCard extends StatelessWidget {
                     const SizedBox(width: 8),
                   if (operator.website != null && operator.website!.isNotEmpty)
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => _launchWebsite(operator.website!),
-                        icon: const Icon(Icons.language, size: 16),
-                        label: const Text('Site web'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFF3860F8),
+                      child: Builder(
+                        builder: (context) => OutlinedButton.icon(
+                          onPressed: () => _launchWebsite(operator.website!),
+                          icon: const Icon(Icons.language, size: 16),
+                          label: Text(AppLocalizations.of(context)!.tourWebsite),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFF3860F8),
+                          ),
                         ),
                       ),
                     ),

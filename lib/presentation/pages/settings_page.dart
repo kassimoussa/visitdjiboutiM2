@@ -16,10 +16,10 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _locationEnabled = true;
   bool _offlineMode = false;
   bool _darkMode = false;
-  String _selectedLanguage = 'Français';
-  String _selectedRegion = 'Toutes les régions';
+  String _selectedLanguage = 'Français'; // Default, will be overridden by localization
+  String _selectedRegion = 'Toutes les régions'; // Default, will be overridden by localization
   double _mapZoomLevel = 12.0;
-  String _cacheSize = 'Calcul en cours...';
+  String _cacheSize = 'Calcul en cours...'; // Default, will be overridden by localization
 
   @override
   void initState() {
@@ -429,14 +429,14 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Choisir la langue',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.settingsChooseLanguage,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            _buildLanguageOption('🇫🇷', 'Français', 'Français'),
-            _buildLanguageOption('🇬🇧', 'English', 'English'),
-            _buildLanguageOption('🇸🇦', 'العربية', 'العربية'),
+            _buildLanguageOption(AppLocalizations.of(context)!.settingsLanguageFrenchFlag, AppLocalizations.of(context)!.settingsLanguageFrench, 'Français'),
+            _buildLanguageOption(AppLocalizations.of(context)!.settingsLanguageEnglishFlag, AppLocalizations.of(context)!.languageEnglish, 'English'),
+            _buildLanguageOption(AppLocalizations.of(context)!.settingsLanguageArabicFlag, AppLocalizations.of(context)!.languageArabic, 'العربية'),
           ],
         ),
       ),
@@ -468,18 +468,18 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Région préférée',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.settingsPreferredRegionTitle,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            _buildRegionOption('Toutes les régions'),
-            _buildRegionOption('Djibouti'),
-            _buildRegionOption('Tadjourah'),
-            _buildRegionOption('Ali Sabieh'),
-            _buildRegionOption('Dikhil'),
-            _buildRegionOption('Obock'),
-            _buildRegionOption('Arta'),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionAll),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionDjibouti),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionTadjourah),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionAliSabieh),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionDikhil),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionObock),
+            _buildRegionOption(AppLocalizations.of(context)!.settingsRegionArta),
           ],
         ),
       ),
@@ -506,26 +506,26 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Autoriser la géolocalisation'),
-        content: const Text(
-          'Visit Djibouti souhaite accéder à votre position pour vous montrer les points d\'intérêt proches de vous.',
+        title: Text(AppLocalizations.of(context)!.settingsLocationPermissionTitle),
+        content: Text(
+          AppLocalizations.of(context)!.settingsLocationPermissionMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Plus tard'),
+            child: Text(AppLocalizations.of(context)!.settingsLater),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Géolocalisation activée'),
-                  backgroundColor: Color(0xFF10B981),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.settingsLocationEnabled),
+                  backgroundColor: const Color(0xFF10B981),
                 ),
               );
             },
-            child: const Text('Autoriser'),
+            child: Text(AppLocalizations.of(context)!.settingsAllow),
           ),
         ],
       ),
@@ -536,9 +536,9 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Mode hors ligne'),
-        content: const Text(
-          'Le téléchargement des données pour le mode hors ligne consommera environ 50 MB. Voulez-vous continuer ?',
+        title: Text(AppLocalizations.of(context)!.settingsOfflineModeTitle),
+        content: Text(
+          AppLocalizations.of(context)!.settingsOfflineModeMessage,
         ),
         actions: [
           TextButton(
@@ -548,18 +548,18 @@ class _SettingsPageState extends State<SettingsPage> {
               });
               Navigator.pop(context);
             },
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Téléchargement des données en cours...'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.settingsDownloading),
                 ),
               );
             },
-            child: const Text('Télécharger'),
+            child: Text(AppLocalizations.of(context)!.settingsDownload),
           ),
         ],
       ),
@@ -570,29 +570,28 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Vider le cache'),
+        title: Text(AppLocalizations.of(context)!.settingsClearCacheTitle),
         content: Text(
-          'Cette action supprimera toutes les images en cache ($_cacheSize). '
-          'Elles seront retéléchargées lors du prochain usage.',
+          AppLocalizations.of(context)!.settingsClearCacheMessage(_cacheSize),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
-              
+
               try {
                 await _imagePreloader.clearImageCache();
                 await _loadCacheInfo();
-                
+
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Cache vidé avec succès'),
-                      backgroundColor: Color(0xFF10B981),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.settingsCacheCleared),
+                      backgroundColor: const Color(0xFF10B981),
                     ),
                   );
                 }
@@ -600,7 +599,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Erreur lors du vidage: $e'),
+                      content: Text(AppLocalizations.of(context)!.settingsClearCacheError(e.toString())),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -611,7 +610,7 @@ class _SettingsPageState extends State<SettingsPage> {
               backgroundColor: const Color(0xFFEF4444),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Vider'),
+            child: Text(AppLocalizations.of(context)!.settingsClear),
           ),
         ],
       ),
@@ -622,25 +621,25 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cartes hors ligne'),
-        content: const Text(
-          'Télécharger les cartes de Djibouti pour les utiliser sans connexion Internet (200 MB).',
+        title: Text(AppLocalizations.of(context)!.settingsOfflineMapsTitle),
+        content: Text(
+          AppLocalizations.of(context)!.settingsOfflineMapsMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Plus tard'),
+            child: Text(AppLocalizations.of(context)!.settingsLater),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Téléchargement des cartes démarré'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.settingsMapsDownloadStarted),
                 ),
               );
             },
-            child: const Text('Télécharger'),
+            child: Text(AppLocalizations.of(context)!.settingsDownload),
           ),
         ],
       ),
@@ -651,16 +650,16 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confidentialité'),
-        content: const SingleChildScrollView(
+        title: Text(AppLocalizations.of(context)!.settingsPrivacyTitle),
+        content: SingleChildScrollView(
           child: Text(
-            'Visit Djibouti respecte votre vie privée. Nous collectons uniquement les données nécessaires au fonctionnement de l\'application : localisation pour les POIs proches, préférences utilisateur, et données de réservation.\n\nVos données ne sont jamais partagées avec des tiers sans votre consentement.',
+            AppLocalizations.of(context)!.settingsPrivacyMessage,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Compris'),
+            child: Text(AppLocalizations.of(context)!.settingsUnderstood),
           ),
         ],
       ),
@@ -671,16 +670,16 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Conditions d\'utilisation'),
-        content: const SingleChildScrollView(
+        title: Text(AppLocalizations.of(context)!.settingsTermsTitle),
+        content: SingleChildScrollView(
           child: Text(
-            'En utilisant Visit Djibouti, vous acceptez nos conditions d\'utilisation. Cette application est fournie par l\'Office du Tourisme de Djibouti pour promouvoir le tourisme local.\n\nL\'utilisation est gratuite et les informations sont mises à jour régulièrement.',
+            AppLocalizations.of(context)!.settingsTermsMessage,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Fermer'),
+            child: Text(AppLocalizations.of(context)!.settingsClose),
           ),
         ],
       ),
@@ -691,26 +690,26 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sauvegarder'),
-        content: const Text(
-          'Sauvegarder vos favoris, réservations et préférences dans le cloud ?',
+        title: Text(AppLocalizations.of(context)!.settingsBackupTitle),
+        content: Text(
+          AppLocalizations.of(context)!.settingsBackupMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Plus tard'),
+            child: Text(AppLocalizations.of(context)!.settingsLater),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Sauvegarde réussie'),
-                  backgroundColor: Color(0xFF10B981),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.settingsBackupSuccess),
+                  backgroundColor: const Color(0xFF10B981),
                 ),
               );
             },
-            child: const Text('Sauvegarder'),
+            child: Text(AppLocalizations.of(context)!.settingsSave),
           ),
         ],
       ),
@@ -721,14 +720,14 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Restaurer paramètres'),
-        content: const Text(
-          'Cette action remettra tous les paramètres par défaut. Vos favoris et réservations seront conservés.',
+        title: Text(AppLocalizations.of(context)!.settingsResetTitle),
+        content: Text(
+          AppLocalizations.of(context)!.settingsResetMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -743,9 +742,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 _mapZoomLevel = 12.0;
               });
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Paramètres restaurés'),
-                  backgroundColor: Color(0xFF10B981),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.settingsResetSuccess),
+                  backgroundColor: const Color(0xFF10B981),
                 ),
               );
             },
@@ -753,7 +752,7 @@ class _SettingsPageState extends State<SettingsPage> {
               backgroundColor: const Color(0xFFEF4444),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Restaurer'),
+            child: Text(AppLocalizations.of(context)!.settingsRestore),
           ),
         ],
       ),

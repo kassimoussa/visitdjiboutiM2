@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// Widget de formulaire pour créer ou modifier un avis
 class ReviewFormWidget extends StatefulWidget {
@@ -53,8 +54,8 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
   Future<void> _submitReview() async {
     if (_rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuillez sélectionner une note'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.reviewsSelectRating),
           backgroundColor: Colors.orange,
         ),
       );
@@ -94,7 +95,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
         widget.onReviewSubmitted();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_isEditing ? 'Avis modifié avec succès' : 'Avis publié avec succès'),
+            content: Text(_isEditing ? AppLocalizations.of(context)!.reviewsUpdatedSuccess : AppLocalizations.of(context)!.reviewsPublishedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -106,7 +107,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.commonError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -144,7 +145,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _isEditing ? 'Modifier votre avis' : 'Écrire un avis',
+                            _isEditing ? AppLocalizations.of(context)!.reviewsEditReview : AppLocalizations.of(context)!.reviewsWriteReview,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -170,9 +171,9 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 const SizedBox(height: 24),
 
                 // Sélection de la note
-                const Text(
-                  'Votre note *',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.reviewsYourRating,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -202,9 +203,9 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 const SizedBox(height: 24),
 
                 // Titre (optionnel)
-                const Text(
-                  'Titre (optionnel)',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.reviewsTitleOptional,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -213,7 +214,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 TextFormField(
                   controller: _titleController,
                   decoration: InputDecoration(
-                    hintText: 'Résumez votre expérience',
+                    hintText: AppLocalizations.of(context)!.reviewsSummarizeExperience,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -230,9 +231,9 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 const SizedBox(height: 16),
 
                 // Commentaire (optionnel)
-                const Text(
-                  'Votre avis (optionnel)',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.reviewsCommentOptional,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -241,7 +242,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 TextFormField(
                   controller: _commentController,
                   decoration: InputDecoration(
-                    hintText: 'Partagez votre expérience en détail...',
+                    hintText: AppLocalizations.of(context)!.reviewsShareDetail,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -272,9 +273,9 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Annuler',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.commonCancel,
+                          style: const TextStyle(
                             color: Color(0xFF3860F8),
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -304,7 +305,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                                 ),
                               )
                             : Text(
-                                _isEditing ? 'Modifier' : 'Publier',
+                                _isEditing ? AppLocalizations.of(context)!.reviewsUpdate : AppLocalizations.of(context)!.reviewsPublish,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,

@@ -869,7 +869,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          poi.name ?? 'Lieu',
+                          poi.name ?? AppLocalizations.of(context)!.commonPlace,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -922,7 +922,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 markerId: MarkerId('poi_${poi.id}'),
                 position: LatLng(poi.latitude, poi.longitude),
                 infoWindow: InfoWindow(
-                  title: poi.name ?? 'Lieu inconnu',
+                  title: poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
                   snippet: poi.displayAddress,
                 ),
               ),
@@ -988,7 +988,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          poi.name ?? 'Lieu',
+                          poi.name ?? AppLocalizations.of(context)!.commonPlace,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -1148,7 +1148,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     return _buildInfoSection(
       icon: Icons.contact_phone,
       title: AppLocalizations.of(context)!.commonContact,
-      child: _buildFormattedContact(poi.primaryContact?.phone ?? 'Aucun contact disponible'),
+      child: _buildFormattedContact(poi.primaryContact?.phone ?? AppLocalizations.of(context)!.poiNoContact),
     );
   }
 
@@ -1157,7 +1157,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
     return _buildInfoSection(
       icon: Icons.business,
-      title: 'Opérateurs desservant ce lieu',
+      title: AppLocalizations.of(context)!.poiTourOperatorsTitle,
       child: Column(
         children: poi.tourOperators.map((operator) {
           return Padding(
@@ -1235,7 +1235,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        operator.name ?? 'Opérateur',
+                        operator.name ?? AppLocalizations.of(context)!.tourOperator,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -1243,7 +1243,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Opérateur touristique agréé',
+                        AppLocalizations.of(context)!.poiLicensedOperator,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],

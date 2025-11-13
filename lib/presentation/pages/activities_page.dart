@@ -3,6 +3,7 @@ import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/simple_activity_card.dart';
 import '../../core/models/simple_activity.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ActivitiesPage extends StatefulWidget {
   final bool showFeaturedOnly;
@@ -314,7 +315,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Rechercher une activité...',
+                    hintText: AppLocalizations.of(context)!.activitiesSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),

@@ -79,7 +79,7 @@ class _ToursPageState extends State<ToursPage> {
       await _loadTours(reset: true);
     } catch (e) {
       setState(() {
-        _errorMessage = 'Erreur lors du chargement: $e';
+        _errorMessage = AppLocalizations.of(context)!.commonLoadingError(e.toString());
       });
       print('[TOURS PAGE] Erreur: $e');
     } finally {
@@ -209,7 +209,7 @@ class _ToursPageState extends State<ToursPage> {
       child: TextField(
         controller: _searchController,
         decoration: InputDecoration(
-          hintText: 'Rechercher un tour...',
+          hintText: AppLocalizations.of(context)!.toursSearchHint,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
@@ -273,7 +273,7 @@ class _ToursPageState extends State<ToursPage> {
           ),
           TextButton(
             onPressed: _resetFilters,
-            child: const Text('Tout effacer'),
+            child: Text(AppLocalizations.of(context)!.commonClearAll),
           ),
         ],
       ),
@@ -325,7 +325,7 @@ class _ToursPageState extends State<ToursPage> {
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Réessayer'),
+            child: Text(AppLocalizations.of(context)!.commonRetry),
           ),
         ],
       ),
@@ -343,7 +343,7 @@ class _ToursPageState extends State<ToursPage> {
             Text(
               _searchController.text.isEmpty
                   ? AppLocalizations.of(context)!.homeNoFeaturedTours
-                  : 'Aucun tour trouvé pour "${_searchController.text}"',
+                  : AppLocalizations.of(context)!.toursNotFound(_searchController.text),
               style: TextStyle(color: Colors.grey[600], fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -401,16 +401,16 @@ class _ToursPageState extends State<ToursPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Filtres',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        Text(
+                          AppLocalizations.of(context)!.commonFilters,
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         TextButton(
                           onPressed: () {
                             _resetFilters();
                             Navigator.pop(context);
                           },
-                          child: const Text('Réinitialiser'),
+                          child: Text(AppLocalizations.of(context)!.commonReset),
                         ),
                       ],
                     ),
@@ -421,13 +421,13 @@ class _ToursPageState extends State<ToursPage> {
                         children: [
                           // Type de tour
                           _buildFilterSection(
-                            'Type de tour',
+                            AppLocalizations.of(context)!.toursTourType,
                             DropdownButton<TourType?>(
                               isExpanded: true,
                               value: _selectedType,
-                              hint: const Text('Sélectionner un type'),
+                              hint: Text(AppLocalizations.of(context)!.toursSelectType),
                               items: [
-                                const DropdownMenuItem(value: null, child: Text('Tous')),
+                                DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAll)),
                                 ...TourType.values.map((type) => DropdownMenuItem(
                                   value: type,
                                   child: Text('${type.icon} ${type.label}'),
@@ -439,13 +439,13 @@ class _ToursPageState extends State<ToursPage> {
 
                           // Difficulté
                           _buildFilterSection(
-                            'Difficulté',
+                            AppLocalizations.of(context)!.toursDifficulty,
                             DropdownButton<TourDifficulty?>(
                               isExpanded: true,
                               value: _selectedDifficulty,
-                              hint: const Text('Sélectionner une difficulté'),
+                              hint: Text(AppLocalizations.of(context)!.toursSelectDifficulty),
                               items: [
-                                const DropdownMenuItem(value: null, child: Text('Toutes')),
+                                DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAllFeminine)),
                                 ...TourDifficulty.values.map((difficulty) => DropdownMenuItem(
                                   value: difficulty,
                                   child: Text('${difficulty.icon} ${difficulty.label}'),
@@ -458,13 +458,13 @@ class _ToursPageState extends State<ToursPage> {
                           // Opérateur (seulement si pas de opérateur pré-sélectionné)
                           if (widget.operatorId == null && _operators.isNotEmpty)
                             _buildFilterSection(
-                              'Opérateur de tour',
+                              AppLocalizations.of(context)!.toursTourOperator,
                               DropdownButton<int?>(
                                 isExpanded: true,
                                 value: _selectedOperatorId,
-                                hint: const Text('Sélectionner un opérateur'),
+                                hint: Text(AppLocalizations.of(context)!.toursSelectOperator),
                                 items: [
-                                  const DropdownMenuItem(value: null, child: Text('Tous')),
+                                  DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAll)),
                                   ..._operators.map((operator) => DropdownMenuItem(
                                     value: operator.id,
                                     child: Text(operator.name),
@@ -492,7 +492,7 @@ class _ToursPageState extends State<ToursPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text('Appliquer les filtres'),
+                        child: Text(AppLocalizations.of(context)!.commonApplyFilters),
                       ),
                     ),
                   ],

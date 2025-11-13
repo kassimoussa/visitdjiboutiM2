@@ -9,75 +9,78 @@ class HelpPage extends StatefulWidget {
 }
 
 class _HelpPageState extends State<HelpPage> {
-  final List<Map<String, dynamic>> _faqItems = [
-    {
-      'question': 'How to use geolocation?', // TODO: Add translation key
-      'answer': 'Enable location services in your phone settings, then allow Visit Djibouti to access your location. The app will automatically show you nearby POIs.', // TODO: Add translation key
-      'category': 'Navigation',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment réserver un événement ?',
-      'answer': 'Allez dans l\'onglet Événements, sélectionnez un événement qui vous intéresse, puis appuyez sur "S\'inscrire". Vous pouvez gérer vos réservations dans votre profil.',
-      'category': 'Événements',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Puis-je utiliser l\'app sans connexion Internet ?',
-      'answer': 'Oui ! Activez le mode hors ligne dans les paramètres pour télécharger les données essentielles. Les cartes peuvent également être téléchargées pour une utilisation offline.',
-      'category': 'Utilisation',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment ajouter un lieu en favoris ?',
-      'answer': 'Sur la page de détail d\'un POI, appuyez sur l\'icône cœur. Vous retrouverez tous vos favoris dans votre profil.',
-      'category': 'Favoris',
-      'isExpanded': false,
-    },
-    {
-      'question': 'L\'app est-elle gratuite ?',
-      'answer': 'Oui, Visit Djibouti est entièrement gratuite. Certains événements peuvent avoir un coût, mais l\'application elle-même ne nécessite aucun paiement.',
-      'category': 'Général',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment changer la langue de l\'interface ?',
-      'answer': 'Allez dans Paramètres > Langue et sélectionnez votre langue préférée (Français, English, العربية).',
-      'category': 'Paramètres',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Les informations sont-elles mises à jour ?',
-      'answer': 'Oui, notre équipe met à jour régulièrement les informations sur les POIs et événements. Assurez-vous d\'avoir une connexion Internet pour recevoir les dernières données.',
-      'category': 'Contenu',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment signaler un problème avec un lieu ?',
-      'answer': 'Utilisez la fonction "Commentaires" dans le menu principal pour nous signaler tout problème. Votre feedback nous aide à améliorer l\'application.',
-      'category': 'Support',
-      'isExpanded': false,
-    },
-  ];
+  List<Map<String, dynamic>> _getFaqItems(BuildContext context) {
+    return [
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion1,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer1,
+        'category': AppLocalizations.of(context)!.helpCatEvents,
+        'isExpanded': false,
+      },
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion2,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer2,
+        'category': AppLocalizations.of(context)!.helpCatUsage,
+        'isExpanded': false,
+      },
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion3,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer3,
+        'category': AppLocalizations.of(context)!.helpCatFavorites,
+        'isExpanded': false,
+      },
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion4,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer4,
+        'category': AppLocalizations.of(context)!.helpCatGeneral,
+        'isExpanded': false,
+      },
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion5,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer5,
+        'category': AppLocalizations.of(context)!.helpCatSettings,
+        'isExpanded': false,
+      },
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion6,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer6,
+        'category': AppLocalizations.of(context)!.helpCatContent,
+        'isExpanded': false,
+      },
+      {
+        'question': AppLocalizations.of(context)!.helpFaqQuestion7,
+        'answer': AppLocalizations.of(context)!.helpFaqAnswer7,
+        'category': AppLocalizations.of(context)!.helpCatSupport,
+        'isExpanded': false,
+      },
+    ];
+  }
 
-  String _selectedCategory = 'Toutes';
-  final List<String> _categories = [
-    'Toutes',
-    'Navigation',
-    'Événements',
-    'Utilisation',
-    'Favoris',
-    'Général',
-    'Paramètres',
-    'Contenu',
-    'Support',
-  ];
+  String _selectedCategory = '';
+  List<String> _getCategories(BuildContext context) {
+    return [
+      AppLocalizations.of(context)!.helpCatAll,
+      AppLocalizations.of(context)!.helpCatEvents,
+      AppLocalizations.of(context)!.helpCatUsage,
+      AppLocalizations.of(context)!.helpCatFavorites,
+      AppLocalizations.of(context)!.helpCatGeneral,
+      AppLocalizations.of(context)!.helpCatSettings,
+      AppLocalizations.of(context)!.helpCatContent,
+      AppLocalizations.of(context)!.helpCatSupport,
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final filteredFAQ = _selectedCategory == 'Toutes'
-        ? _faqItems
-        : _faqItems.where((item) => item['category'] == _selectedCategory).toList();
+    final faqItems = _getFaqItems(context);
+    final categories = _getCategories(context);
+    if (_selectedCategory.isEmpty) {
+      _selectedCategory = AppLocalizations.of(context)!.helpCatAll;
+    }
+
+    final filteredFAQ = _selectedCategory == AppLocalizations.of(context)!.helpCatAll
+        ? faqItems
+        : faqItems.where((item) => item['category'] == _selectedCategory).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -96,9 +99,9 @@ class _HelpPageState extends State<HelpPage> {
             ),
             child: Column(
               children: [
-                const Text(
-                  'How can we help you?', // TODO: Add translation key
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.helpTitle,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF3860F8),
@@ -107,7 +110,7 @@ class _HelpPageState extends State<HelpPage> {
                 const SizedBox(height: 16),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: 'Rechercher dans l\'aide...',
+                    hintText: AppLocalizations.of(context)!.helpSearchHint,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25),
@@ -134,38 +137,38 @@ class _HelpPageState extends State<HelpPage> {
                 const SizedBox(width: 16),
                 _buildQuickAction(
                   Icons.chat,
-                  'Chat en direct',
+                  AppLocalizations.of(context)!.helpLiveChat,
                   () => _showLiveChat(),
                 ),
                 _buildQuickAction(
                   Icons.email,
-                  'Nous contacter',
+                  AppLocalizations.of(context)!.helpContactUs,
                   () => _showContactForm(),
                 ),
                 _buildQuickAction(
                   Icons.video_library,
-                  'Tutoriels',
+                  AppLocalizations.of(context)!.helpTutorials,
                   () => _showTutorials(),
                 ),
                 _buildQuickAction(
                   Icons.bug_report,
-                  'Signaler un bug',
+                  AppLocalizations.of(context)!.helpReportBug,
                   () => _showBugReport(),
                 ),
                 const SizedBox(width: 16),
               ],
             ),
           ),
-          
+
           // Filtres par catégorie
           Container(
             height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
+              itemCount: categories.length,
               itemBuilder: (context, index) {
-                final category = _categories[index];
+                final category = categories[index];
                 final isSelected = category == _selectedCategory;
                 
                 return Container(
@@ -214,9 +217,9 @@ class _HelpPageState extends State<HelpPage> {
             ),
             child: Column(
               children: [
-                const Text(
-                  'Vous ne trouvez pas la réponse ?',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.helpNoAnswer,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -228,7 +231,7 @@ class _HelpPageState extends State<HelpPage> {
                       child: OutlinedButton.icon(
                         onPressed: () => _showContactForm(),
                         icon: const Icon(Icons.email),
-                        label: const Text('Nous contacter'),
+                        label: Text(AppLocalizations.of(context)!.helpContactUs),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -236,7 +239,7 @@ class _HelpPageState extends State<HelpPage> {
                       child: ElevatedButton.icon(
                         onPressed: () => _showLiveChat(),
                         icon: const Icon(Icons.chat),
-                        label: const Text('Chat en direct'),
+                        label: Text(AppLocalizations.of(context)!.helpLiveChat),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,

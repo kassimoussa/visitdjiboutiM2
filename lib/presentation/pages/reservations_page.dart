@@ -145,7 +145,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = 'Unexpected error: $e'; // TODO: Add translation key
+          _errorMessage = AppLocalizations.of(context)!.commonUnexpectedError(e.toString());
         });
       }
     }

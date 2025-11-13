@@ -587,5 +587,335 @@
   },
   "tourRegistrationConfirm": "Confirm registration",
   "tourRegistrationSuccessMessage": "Registration confirmed successfully!",
-  "tourRegistrationErrorMessage": "Error during registration"
+  "tourRegistrationErrorMessage": "Error during registration",
+
+  "helpFaqQuestion1": "How to book an event?",
+  "helpFaqAnswer1": "Go to the Events tab, select an event that interests you, then tap \"Register\". You can manage your reservations in your profile.",
+  "helpFaqQuestion2": "Can I use the app without an Internet connection?",
+  "helpFaqAnswer2": "Yes! Enable offline mode in settings to download essential data. Maps can also be downloaded for offline use.",
+  "helpFaqQuestion3": "How to add a place to favorites?",
+  "helpFaqAnswer3": "On a POI detail page, tap the heart icon. You'll find all your favorites in your profile.",
+  "helpFaqQuestion4": "Is the app free?",
+  "helpFaqAnswer4": "Yes, Visit Djibouti is completely free. Some events may have a cost, but the app itself requires no payment.",
+  "helpFaqQuestion5": "How to change the interface language?",
+  "helpFaqAnswer5": "Go to Settings > Language and select your preferred language (Français, English, العربية).",
+  "helpFaqQuestion6": "Is information updated?",
+  "helpFaqAnswer6": "Yes, our team regularly updates information about POIs and events. Make sure you have an Internet connection to receive the latest data.",
+  "helpFaqQuestion7": "How to report a problem with a place?",
+  "helpFaqAnswer7": "Use the \"Comments\" function in the main menu to report any issue. Your feedback helps us improve the app.",
+  "helpCategoryAll": "All",
+  "helpCategoryNavigation": "Navigation",
+  "helpCategoryEvents": "Events",
+  "helpCategoryUsage": "Usage",
+  "helpCategoryFavorites": "Favorites",
+  "helpCategoryGeneral": "General",
+  "helpCategorySettings": "Settings",
+  "helpCategoryContent": "Content",
+  "helpCategorySupport": "Support",
+  "helpSearchPlaceholder": "Search in help...",
+  "helpLiveChat": "Live chat",
+  "helpContactUs": "Contact us",
+  "helpTutorials": "Tutorials",
+  "helpReportBug": "Report a bug",
+  "helpCantFindAnswer": "Can't find the answer?",
+  "helpLiveChatTitle": "Live chat",
+  "helpLiveChatInfo": "Our team is available from 8am to 6pm\nto answer your questions in real time.",
+  "helpLiveChatConnecting": "Connecting to chat...",
+  "helpStartChat": "Start chat",
+  "helpContactUsTitle": "Contact us",
+  "helpContactSubject": "Subject",
+  "helpContactMessage": "Your message",
+  "helpContactEmail": "Your email (optional)",
+  "helpMessageSent": "Message sent successfully!",
+  "helpSend": "Send",
+  "helpTutorialsTitle": "Video tutorials",
+  "helpTutorialMap": "How to use the map",
+  "helpTutorialMapDuration": "3 min",
+  "helpTutorialReserve": "Book an event",
+  "helpTutorialReserveDuration": "2 min",
+  "helpTutorialFavorites": "Manage favorites",
+  "helpTutorialFavoritesDuration": "1 min",
+  "helpReportBugTitle": "Report a problem",
+  "helpBugTitle": "Problem title",
+  "helpBugDescription": "Describe the problem encountered...",
+  "helpBugReported": "Bug report sent!",
+  "helpReport": "Report",
+
+  "reservationsEmptyMessage": "Explore our places and events to make your first reservation!",
+  "reservationsDetailsTitle": "Reservation details",
+  "reservationsCancelConfirm": "Are you sure you want to cancel reservation #{confirmationNumber}?",
+  "@reservationsCancelConfirm": {
+    "placeholders": {
+      "confirmationNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsNo": "No",
+  "reservationsYesCancel": "Yes, cancel",
+  "reservationsCancelled": "Reservation cancelled",
+  "reservationsCancelError": "Error during cancellation",
+  "reservationsDeleteConfirm": "Are you sure you want to permanently delete reservation #{confirmationNumber}?\n\nThis action is irreversible.",
+  "@reservationsDeleteConfirm": {
+    "placeholders": {
+      "confirmationNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsYesDelete": "Yes, delete",
+  "reservationsDeleted": "Reservation deleted",
+  "reservationsDeleteError": "Error during deletion",
+  "reservationsRegistrationDetailsTitle": "Registration details",
+  "reservationsRegistrationCancelTitle": "Cancel registration",
+  "reservationsRegistrationCancelConfirm": "Are you sure you want to cancel this registration? Its status will change to \"Cancelled\".",
+  "reservationsRegistrationDeleteConfirm": "Are you sure you want to permanently delete registration #{id}? This action is irreversible.",
+  "@reservationsRegistrationDeleteConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsRegistrationCancelled": "Registration cancelled",
+  "reservationsRegistrationDeleted": "Registration deleted",
+  "reservationsRegistrationCancelError": "Error during cancellation",
+  "reservationsRegistrationDeleteError": "Error during deletion",
+
+  "settingsLanguageFrench": "French",
+  "settingsRegionAll": "All regions",
+  "settingsCacheSizeCalculating": "Calculating...",
+  "settingsChooseLanguage": "Choose language",
+  "settingsLanguageFrenchFlag": "🇫🇷",
+  "settingsLanguageEnglishFlag": "🇬🇧",
+  "settingsLanguageArabicFlag": "🇸🇦",
+  "settingsPreferredRegionTitle": "Preferred region",
+  "settingsRegionDjibouti": "Djibouti",
+  "settingsRegionTadjourah": "Tadjourah",
+  "settingsRegionAliSabieh": "Ali Sabieh",
+  "settingsRegionDikhil": "Dikhil",
+  "settingsRegionObock": "Obock",
+  "settingsRegionArta": "Arta",
+  "settingsLocationPermissionTitle": "Allow location access",
+  "settingsLocationPermissionMessage": "Visit Djibouti would like to access your location to show you nearby points of interest.",
+  "settingsLater": "Later",
+  "settingsAllow": "Allow",
+  "settingsLocationEnabled": "Location enabled",
+  "settingsOfflineModeTitle": "Offline mode",
+  "settingsOfflineModeMessage": "Downloading data for offline mode will use about 50 MB. Do you want to continue?",
+  "settingsDownloading": "Downloading data...",
+  "settingsDownload": "Download",
+  "settingsClearCacheTitle": "Clear cache",
+  "settingsClearCacheMessage": "This action will remove all cached images ({size}). They will be re-downloaded on next use.",
+  "@settingsClearCacheMessage": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsCacheCleared": "Cache cleared successfully",
+  "settingsClearCacheError": "Error during clearing: {error}",
+  "@settingsClearCacheError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsClear": "Clear",
+  "settingsOfflineMapsTitle": "Offline maps",
+  "settingsOfflineMapsMessage": "Download Djibouti maps to use without Internet connection (200 MB).",
+  "settingsMapsDownloadStarted": "Maps download started",
+  "settingsPrivacyTitle": "Privacy",
+  "settingsPrivacyMessage": "Visit Djibouti respects your privacy. We only collect data necessary for the app's operation: location for nearby POIs, user preferences, and reservation data.\n\nYour data is never shared with third parties without your consent.",
+  "settingsUnderstood": "Understood",
+  "settingsTermsTitle": "Terms of use",
+  "settingsTermsMessage": "By using Visit Djibouti, you accept our terms of use. This app is provided by the Djibouti Tourism Office to promote local tourism.\n\nThe app is free and information is regularly updated.",
+  "settingsClose": "Close",
+  "settingsBackupTitle": "Backup",
+  "settingsBackupMessage": "Backup your favorites, reservations and preferences to the cloud?",
+  "settingsBackupSuccess": "Backup successful",
+  "settingsSave": "Save",
+  "settingsResetTitle": "Reset settings",
+  "settingsResetMessage": "This action will restore all settings to defaults. Your favorites and reservations will be kept.",
+  "settingsResetSuccess": "Settings restored",
+  "settingsRestore": "Restore",
+
+  "offlineStatusOnline": "Online - All features available",
+  "offlineStatusOffline": "Offline - Cache mode enabled",
+  "offlineDataTitle": "Offline data",
+  "offlineTotalItems": "Total items",
+  "offlinePois": "Points of interest",
+  "offlineEvents": "Events",
+  "offlineFavorites": "Favorites",
+  "offlineCacheSize": "Cache size",
+  "offlineActionsTitle": "Actions",
+  "offlineSyncNow": "Sync now",
+  "offlineSyncNowSubtitle": "Update data from server",
+  "offlineDownloadForOffline": "Download for offline",
+  "offlineDownloadForOfflineSubtitle": "Download all important data",
+  "offlineClearCache": "Clear cache",
+  "offlineClearCacheSubtitle": "Remove all cached data",
+
+  "reviewFormPleaseRate": "Please select a rating",
+  "reviewFormUpdated": "Review updated successfully",
+  "reviewFormPublished": "Review published successfully",
+  "reviewFormError": "Error: {error}",
+  "@reviewFormError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewFormEditTitle": "Edit your review",
+  "reviewFormWriteTitle": "Write a review",
+  "reviewFormYourRating": "Your rating *",
+  "reviewFormTitle": "Title (optional)",
+  "reviewFormTitleHint": "Summarize your experience",
+  "reviewFormComment": "Your review (optional)",
+  "reviewFormCommentHint": "Share your experience in detail...",
+  "reviewFormUpdate": "Update",
+  "reviewFormPublish": "Publish",
+
+  "reviewsLoadError": "Error loading reviews: {error}",
+  "@reviewsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsVotedHelpful": "Thanks for your vote!",
+  "reviewsVoteError": "Error: {error}",
+  "@reviewsVoteError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsDeleteTitle": "Delete review",
+  "reviewsDeleteConfirm": "Are you sure you want to delete this review?",
+  "reviewsDelete": "Delete",
+  "reviewsDeleted": "Review deleted",
+  "reviewsDeleteError": "Error: {error}",
+  "@reviewsDeleteError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsSectionTitle": "Reviews",
+  "reviewsWriteReview": "Write a review",
+
+  "reservationFormTitle": "Book {type}",
+  "@reservationFormTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationFormTitlePoi": "this place",
+  "reservationFormTitleEvent": "this event",
+  "reservationFormNumberOfPeople": "Number of people *",
+  "reservationFormNumberOfPeopleHint": "1",
+  "reservationFormNumberRequired": "Number of people required",
+  "reservationFormMinOnePerson": "Minimum 1 person",
+  "reservationFormMaxPeople": "Maximum {available} spots available",
+  "@reservationFormMaxPeople": {
+    "placeholders": {
+      "available": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationFormContactInfo": "Contact information (optional)",
+  "reservationFormFullName": "Full name",
+  "reservationFormEmailInvalid": "Invalid email",
+  "reservationFormPhone": "Phone",
+  "reservationFormNotes": "Notes or special requests",
+  "reservationFormNotesHint": "Food allergies, special needs...",
+  "reservationFormConfirm": "Confirm reservation",
+
+  "contactOperatorTitle": "Contact {name}",
+  "@contactOperatorTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contactOperatorTitleDefault": "the operator",
+  "contactOperatorMessageType": "Message type",
+  "contactOperatorYourMessage": "Your message",
+  "contactOperatorMessageHint": "Write your message here...",
+  "contactOperatorMessageRequired": "Please write a message",
+  "contactOperatorMessageTooShort": "Message must contain at least 3 characters",
+  "contactOperatorTypeQuestion": "Question",
+  "contactOperatorTypeReport": "Report",
+  "contactOperatorTypeSuggestion": "Suggestion",
+  "contactOperatorPrefixQuestion": "❓ Question: ",
+  "contactOperatorPrefixReport": "⚠️ Report: ",
+  "contactOperatorPrefixSuggestion": "💡 Suggestion: ",
+  "contactOperatorMessageSent": "Message sent successfully to {name}",
+  "@contactOperatorMessageSent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contactOperatorMessageSentDefault": "the operator",
+  "contactOperatorSendError": "Error sending: {error}",
+  "@contactOperatorSendError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "tourOperatorUnknown": "Unknown operator",
+  "tourOperatorCallButton": "Call",
+  "tourOperatorWebsiteButton": "Website",
+
+  "poiOperatorsServingTitle": "Operators serving this place",
+
+  "activitiesSearchHint": "Search for an activity...",
+
+  "toursSelectDifficulty": "Select difficulty",
+
+  "termsLastUpdated": "Last updated: October 23, 2025",
+  "termsSection1Title": "1. Acceptance of Terms",
+  "termsSection1Content": "By using the Visit Djibouti application (hereinafter \"the Application\"), you agree to be bound by these terms of use. If you do not accept these terms, please do not use the Application.",
+  "termsSection2Title": "2. Service Description",
+  "termsSection2Content": "Visit Djibouti is a mobile application dedicated to promoting tourism in Djibouti. The Application provides:\n\n• Information about tourist points of interest\n• A calendar of cultural and tourist events\n• A reservation system for certain services\n• Favorites and travel planning features\n• Interactive maps and navigation tools\n• Practical information about the country",
+  "termsSection3Title": "3. User Account",
+  "termsSection3Content": "Using certain features requires creating an account. You are responsible for:\n\n• The confidentiality of your credentials\n• All activities performed through your account\n• The accuracy of the information provided\n• Informing us immediately in case of unauthorized use",
+  "termsSection4Title": "4. Acceptable Use",
+  "termsSection4Content": "You agree to:\n\n• Use the Application only for legal purposes\n• Not post offensive or illegal content\n• Respect the rights of others\n• Not attempt to disrupt the Application's operation\n• Not use robots or automated scripts\n• Not collect data from other users",
+  "termsSection5Title": "5. Intellectual Property",
+  "termsSection5Content": "All Application content (texts, images, logos, graphics) is protected by intellectual property laws and belongs to the Djibouti Tourism Office or its partners.",
+  "termsSection6Title": "6. Reservations and Payments",
+  "termsSection6Content": "The Application allows booking certain tourism services:\n\n• Reservations are subject to availability\n• Displayed prices are indicative and may vary\n• Cancellation conditions vary by provider\n• The Tourism Office acts as an intermediary\n• We are not responsible for services provided by third parties",
+  "termsSection7Title": "7. Limitation of Liability",
+  "termsSection7Content": "The Djibouti Tourism Office:\n\n• Strives to provide accurate information but does not guarantee its completeness\n• Is not responsible for services provided by third parties\n• Cannot be held liable for indirect damages\n• Reserves the right to modify or interrupt services without notice\n• Is not responsible for technical or connection problems",
+  "termsSection8Title": "8. User Content",
+  "termsSection8Content": "By posting content (reviews, comments, photos):\n\n• You retain your intellectual property rights\n• You grant us a free, worldwide license to use\n• You guarantee that the content does not violate any rights\n• We reserve the right to moderate or remove any inappropriate content",
+  "termsSection9Title": "9. Links to Third-Party Sites",
+  "termsSection9Content": "The Application may contain links to third-party websites. These links are provided for your convenience, but we have no control over these sites and assume no responsibility for their content.",
+  "termsSection10Title": "10. Service Modifications",
+  "termsSection10Content": "We reserve the right to:\n\n• Modify or interrupt all or part of the Application\n• Add or remove features\n• Change prices or access conditions",
+  "termsSection11Title": "11. Termination",
+  "termsSection11Content": "We may suspend or terminate your access to the Application in case of:\n\n• Violation of these terms\n• Fraudulent or abusive behavior\n• Request from competent authorities\n• Prolonged inactivity",
+  "termsSection12Title": "12. Applicable Law",
+  "termsSection12Content": "These terms are governed by Djiboutian law. Any dispute will be subject to the exclusive jurisdiction of Djibouti courts.",
+  "termsSection13Title": "13. Modifications to Terms",
+  "termsSection13Content": "We may modify these terms at any time. Modifications will be published in the Application and take effect immediately. Your continued use of the Application constitutes your acceptance of the modified terms.",
+  "termsSection14Title": "14. Contact",
+  "termsSection14Content": "For any questions regarding these terms of use, contact us:\n\nDjibouti Tourism Office\nEmail: info@visitdjibouti.dj\nPhone: +253 XXX XXX"
 }
