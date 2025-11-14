@@ -888,6 +888,8 @@
   "reservationFormNotes": "ملاحظات أو طلبات خاصة",
   "reservationFormNotesHint": "حساسية الطعام، احتياجات خاصة...",
   "reservationFormConfirm": "تأكيد الحجز",
+  "reservationFormSuccess": "تم إنشاء الحجز بنجاح!",
+  "reservationFormError": "خطأ في إنشاء الحجز",
 
   "contactOperatorTitle": "الاتصال بـ {name}",
   "@contactOperatorTitle": {

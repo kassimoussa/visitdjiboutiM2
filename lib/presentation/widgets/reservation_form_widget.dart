@@ -5,6 +5,7 @@ import '../../core/models/reservation.dart';
 import '../../core/models/api_response.dart';
 import '../../core/services/reservation_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReservationFormWidget extends StatefulWidget {
   final Poi? poi;
@@ -101,7 +102,11 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Réserver ${_isPoi ? 'ce lieu' : 'cet événement'}',
+          AppLocalizations.of(context)!.reservationFormTitle(
+            _isPoi
+              ? AppLocalizations.of(context)!.reservationFormTitlePoi
+              : AppLocalizations.of(context)!.reservationFormTitleEvent
+          ),
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -216,8 +221,8 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       controller: _peopleController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        labelText: 'Nombre de personnes *',
-        hintText: '1',
+        labelText: AppLocalizations.of(context)!.reservationFormNumberOfPeople,
+        hintText: AppLocalizations.of(context)!.reservationFormNumberOfPeopleHint,
         prefixIcon: const Icon(Icons.people),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -225,16 +230,16 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       ),
       validator: (value) {
         if (value?.isEmpty == true) {
-          return 'Nombre de personnes requis';
+          return AppLocalizations.of(context)!.reservationFormNumberRequired;
         }
         final number = int.tryParse(value!);
         if (number == null || number < 1) {
-          return 'Minimum 1 personne';
+          return AppLocalizations.of(context)!.reservationFormMinOnePerson;
         }
         if (_isEvent && widget.event!.maxParticipants != null) {
           final available = widget.event!.availableSpots ?? 0;
           if (number > available) {
-            return 'Maximum $available places disponibles';
+            return AppLocalizations.of(context)!.reservationFormMaxPeople(available);
           }
         }
         return null;
@@ -251,9 +256,9 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Informations de contact (optionnel)',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.reservationFormContactInfo,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -262,7 +267,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         TextFormField(
           controller: _nameController,
           decoration: InputDecoration(
-            labelText: 'Nom complet',
+            labelText: AppLocalizations.of(context)!.reservationFormFullName,
             prefixIcon: const Icon(Icons.person),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -274,7 +279,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'Email',
+            labelText: AppLocalizations.of(context)!.commonEmail,
             prefixIcon: const Icon(Icons.email),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -283,7 +288,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           validator: (value) {
             if (value?.isNotEmpty == true &&
                 !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-              return 'Email invalide';
+              return AppLocalizations.of(context)!.reservationFormEmailInvalid;
             }
             return null;
           },
@@ -293,7 +298,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           controller: _phoneController,
           keyboardType: TextInputType.phone,
           decoration: InputDecoration(
-            labelText: 'Téléphone',
+            labelText: AppLocalizations.of(context)!.reservationFormPhone,
             prefixIcon: const Icon(Icons.phone),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -309,8 +314,8 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       controller: _notesController,
       maxLines: 3,
       decoration: InputDecoration(
-        labelText: 'Notes ou demandes spéciales',
-        hintText: 'Allergies alimentaires, besoins spéciaux...',
+        labelText: AppLocalizations.of(context)!.reservationFormNotes,
+        hintText: AppLocalizations.of(context)!.reservationFormNotesHint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -330,7 +335,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
         ),
         const SizedBox(width: 12),
@@ -355,9 +360,9 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   )
-                : const Text(
-                    'Confirmer la réservation',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                : Text(
+                    AppLocalizations.of(context)!.reservationFormConfirm,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
           ),
         ),
@@ -409,7 +414,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           print('[FORM] Success! Showing snackbar and navigating to home');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Réservation créée avec succès!'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationFormSuccess),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
@@ -435,7 +440,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           print('[FORM] Error: ${response.message}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de la réservation'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationFormError),
               backgroundColor: Colors.red,
             ),
           );
@@ -447,7 +452,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur inattendue: $e'),
+            content: Text('${AppLocalizations.of(context)!.commonUnexpectedError}: $e'),
             backgroundColor: Colors.red,
           ),
         );
