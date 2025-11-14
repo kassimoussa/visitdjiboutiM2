@@ -79,7 +79,7 @@ class _ToursPageState extends State<ToursPage> {
       await _loadTours(reset: true);
     } catch (e) {
       setState(() {
-        _errorMessage = AppLocalizations.of(context)!.commonLoadingError(e.toString());
+        _errorMessage = AppLocalizations.of(context)!.commonErrorLoading;
       });
       print('[TOURS PAGE] Erreur: $e');
     } finally {
