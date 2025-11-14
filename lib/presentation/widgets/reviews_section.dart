@@ -473,7 +473,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                             fontSize: 15,
                           ),
                         ),
-                        if (review.author.isVerified) ...[
+                        if (review.author.isVerified == true) ...[
                           const SizedBox(width: 4),
                           const Icon(
                             Icons.verified,

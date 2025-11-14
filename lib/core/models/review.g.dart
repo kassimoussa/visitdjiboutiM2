@@ -40,7 +40,7 @@ Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
 
 ReviewAuthor _$ReviewAuthorFromJson(Map<String, dynamic> json) => ReviewAuthor(
   name: json['name'] as String,
-  isVerified: json['is_verified'] as bool,
+  isVerified: json['is_verified'] as bool? ?? false,
   isMe: json['is_me'] as bool,
 );
 
