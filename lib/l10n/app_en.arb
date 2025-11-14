@@ -60,6 +60,7 @@
   "commonDate": "Date",
   "commonDescription": "Description",
   "commonDiscoverPlace": "Discover this place",
+  "commonEdit": "Edit",
   "commonEmail": "Email",
   "commonEntryPrice": "Entry price",
   "commonError": "Error",
@@ -812,6 +813,18 @@
   "reviewsBeFirst": "Be the first to leave a review",
   "reviewsNoReviewsYet": "No reviews yet",
   "reviewsClickToReview": "Click to leave a review",
+  "reviewsTitle": "Reviews",
+  "reviewsCount": "{count} reviews",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewsLoadMore": "Load more reviews",
+  "reviewsOperatorResponse": "Response from the establishment",
+  "reviewsHelpful": "Helpful",
 
   "reviewsLoadError": "Error loading reviews: {error}",
   "@reviewsLoadError": {

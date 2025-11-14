@@ -60,6 +60,7 @@
   "commonDate": "Date",
   "commonDescription": "Description",
   "commonDiscoverPlace": "Découvrir ce lieu",
+  "commonEdit": "Modifier",
   "commonEmail": "Email",
   "commonEntryPrice": "Prix d'entrée",
   "commonError": "Erreur",
@@ -813,6 +814,18 @@
   "reviewsBeFirst": "Soyez le premier à donner votre avis",
   "reviewsNoReviewsYet": "Aucun avis pour le moment",
   "reviewsClickToReview": "Cliquez pour laisser un avis",
+  "reviewsTitle": "Avis",
+  "reviewsCount": "{count} avis",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewsLoadMore": "Voir plus d'avis",
+  "reviewsOperatorResponse": "Réponse de l'établissement",
+  "reviewsHelpful": "Utile",
 
   "reviewsLoadError": "Erreur chargement avis: {error}",
   "@reviewsLoadError": {

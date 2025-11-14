@@ -60,6 +60,7 @@
   "commonDate": "التاريخ",
   "commonDescription": "الوصف",
   "commonDiscoverPlace": "اكتشف هذا المكان",
+  "commonEdit": "تعديل",
   "commonEmail": "البريد الإلكتروني",
   "commonEntryPrice": "سعر الدخول",
   "commonError": "خطأ",
@@ -813,6 +814,18 @@
   "reviewsBeFirst": "كن أول من يترك تقييمًا",
   "reviewsNoReviewsYet": "لا توجد تقييمات حتى الآن",
   "reviewsClickToReview": "انقر لترك تقييم",
+  "reviewsTitle": "التقييمات",
+  "reviewsCount": "{count} تقييمات",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewsLoadMore": "تحميل المزيد من التقييمات",
+  "reviewsOperatorResponse": "رد من المنشأة",
+  "reviewsHelpful": "مفيد",
 
   "reviewsLoadError": "خطأ في تحميل التقييمات: {error}",
   "@reviewsLoadError": {

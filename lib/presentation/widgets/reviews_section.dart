@@ -3,6 +3,7 @@ import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import 'review_form_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// Widget d'affichage de la section avis (statistiques + liste)
 class ReviewsSection extends StatefulWidget {
@@ -113,9 +114,9 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       _loadReviews(); // Recharger pour mettre à jour le compteur
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Merci pour votre vote !'),
-            duration: Duration(seconds: 2),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.reviewsVotedHelpful),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -123,7 +124,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.reviewsVoteError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -135,17 +136,17 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer l\'avis'),
-        content: const Text('Êtes-vous sûr de vouloir supprimer cet avis ?'),
+        title: Text(AppLocalizations.of(context)!.reviewsDeleteTitle),
+        content: Text(AppLocalizations.of(context)!.reviewsDeleteConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Supprimer'),
+            child: Text(AppLocalizations.of(context)!.reviewsDelete),
           ),
         ],
       ),
@@ -161,14 +162,14 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       _loadReviews();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Avis supprimé')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.reviewsDeleted)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.reviewsDeleteError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -235,23 +236,31 @@ class _ReviewsSectionState extends State<ReviewsSection> {
               ),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'Avis',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.reviewsTitle,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),
         if (_authService.isLoggedIn)
-          Flexible(
-            child: ElevatedButton.icon(
-              onPressed: () => _showReviewForm(),
-              icon: const Icon(Icons.edit, size: 18),
-              label: const Text('Écrire un avis'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3860F8),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              ),
+          OutlinedButton(
+            onPressed: () => _showReviewForm(),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFF3860F8),
+              side: const BorderSide(color: Color(0xFF3860F8)),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              minimumSize: Size.zero,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.edit, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  AppLocalizations.of(context)!.reviewFormWriteTitle,
+                  style: const TextStyle(fontSize: 13),
+                ),
+              ],
             ),
           ),
       ],
@@ -305,7 +314,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${_statistics!.totalReviews} avis',
+                      AppLocalizations.of(context)!.reviewsCount(_statistics!.totalReviews),
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -371,7 +380,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildFilterChip('Tous', _filterRating == null, () => _filterByRating(null)),
+          _buildFilterChip(AppLocalizations.of(context)!.commonAll, _filterRating == null, () => _filterByRating(null)),
           const SizedBox(width: 8),
           ...List.generate(5, (index) {
             final rating = 5 - index;
@@ -418,7 +427,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: TextButton(
               onPressed: () => _loadReviews(loadMore: true),
-              child: const Text('Voir plus d\'avis'),
+              child: Text(AppLocalizations.of(context)!.reviewsLoadMore),
             ),
           ),
       ],
@@ -503,23 +512,23 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     }
                   },
                   itemBuilder: (context) => [
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'edit',
                       child: Row(
                         children: [
-                          Icon(Icons.edit, size: 18),
-                          SizedBox(width: 8),
-                          Text('Modifier'),
+                          const Icon(Icons.edit, size: 18),
+                          const SizedBox(width: 8),
+                          Text(AppLocalizations.of(context)!.commonEdit),
                         ],
                       ),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: 'delete',
                       child: Row(
                         children: [
-                          Icon(Icons.delete, size: 18, color: Colors.red),
-                          SizedBox(width: 8),
-                          Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          const Icon(Icons.delete, size: 18, color: Colors.red),
+                          const SizedBox(width: 8),
+                          Text(AppLocalizations.of(context)!.reviewsDelete, style: const TextStyle(color: Colors.red)),
                         ],
                       ),
                     ),
@@ -573,7 +582,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Réponse de l\'établissement',
+                        AppLocalizations.of(context)!.reviewsOperatorResponse,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 13,
@@ -628,7 +637,9 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Utile${(review.helpfulCount ?? 0) > 0 ? ' (${review.helpfulCount})' : ''}',
+                        (review.helpfulCount ?? 0) > 0
+                            ? '${AppLocalizations.of(context)!.reviewsHelpful} (${review.helpfulCount})'
+                            : AppLocalizations.of(context)!.reviewsHelpful,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: review.isHelpful ? FontWeight.w600 : FontWeight.normal,
@@ -657,13 +668,13 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             Icon(Icons.rate_review_outlined, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              'Aucun avis pour le moment',
+              AppLocalizations.of(context)!.reviewsNoReviewsYet,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             if (_authService.isLoggedIn) ...[
               const SizedBox(height: 8),
               Text(
-                'Soyez le premier à donner votre avis !',
+                AppLocalizations.of(context)!.reviewsBeFirst,
                 style: TextStyle(fontSize: 14, color: Colors.grey[500]),
               ),
             ],
@@ -682,7 +693,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
             const SizedBox(height: 16),
             Text(
-              'Erreur de chargement',
+              AppLocalizations.of(context)!.commonErrorLoading,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             const SizedBox(height: 8),
@@ -694,7 +705,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadReviews,
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),
