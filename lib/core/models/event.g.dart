@@ -36,6 +36,9 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
   isSoldOut: json['is_sold_out'] == null
       ? false
       : Event._parseBool(json['is_sold_out']),
+  allowReservations: json['allow_reservations'] == null
+      ? true
+      : Event._parseBool(json['allow_reservations']),
   isActive: json['is_active'] == null
       ? true
       : Event._parseBool(json['is_active']),
@@ -101,6 +104,7 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
   'current_participants': instance.currentParticipants,
   'available_spots': instance.availableSpots,
   'is_sold_out': instance.isSoldOut,
+  'allow_reservations': instance.allowReservations,
   'is_active': instance.isActive,
   'is_ongoing': instance.isOngoing,
   'has_ended': instance.hasEnded,
