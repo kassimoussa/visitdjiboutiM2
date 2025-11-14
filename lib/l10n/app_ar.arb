@@ -810,6 +810,10 @@
   "reviewFormUpdate": "تحديث",
   "reviewFormPublish": "نشر",
 
+  "reviewsBeFirst": "كن أول من يترك تقييمًا",
+  "reviewsNoReviewsYet": "لا توجد تقييمات حتى الآن",
+  "reviewsClickToReview": "انقر لترك تقييم",
+
   "reviewsLoadError": "خطأ في تحميل التقييمات: {error}",
   "@reviewsLoadError": {
     "placeholders": {

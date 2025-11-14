@@ -810,6 +810,10 @@
   "reviewFormUpdate": "Modifier",
   "reviewFormPublish": "Publier",
 
+  "reviewsBeFirst": "Soyez le premier à donner votre avis",
+  "reviewsNoReviewsYet": "Aucun avis pour le moment",
+  "reviewsClickToReview": "Cliquez pour laisser un avis",
+
   "reviewsLoadError": "Erreur chargement avis: {error}",
   "@reviewsLoadError": {
     "placeholders": {

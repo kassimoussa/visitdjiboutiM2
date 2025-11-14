@@ -809,6 +809,10 @@
   "reviewFormUpdate": "Update",
   "reviewFormPublish": "Publish",
 
+  "reviewsBeFirst": "Be the first to leave a review",
+  "reviewsNoReviewsYet": "No reviews yet",
+  "reviewsClickToReview": "Click to leave a review",
+
   "reviewsLoadError": "Error loading reviews: {error}",
   "@reviewsLoadError": {
     "placeholders": {

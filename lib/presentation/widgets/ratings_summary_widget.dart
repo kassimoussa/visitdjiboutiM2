@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// Widget compact pour afficher le résumé des évaluations
 class RatingsSummaryWidget extends StatefulWidget {
@@ -64,9 +65,7 @@ class _RatingsSummaryWidgetState extends State<RatingsSummaryWidget> {
       );
     }
 
-    if (_statistics == null || _statistics!.totalReviews == 0) {
-      return const SizedBox.shrink();
-    }
+    final hasReviews = _statistics != null && _statistics!.totalReviews > 0;
 
     return InkWell(
       onTap: widget.onTap,
@@ -80,52 +79,86 @@ class _RatingsSummaryWidgetState extends State<RatingsSummaryWidget> {
             color: const Color(0xFFFFB800).withOpacity(0.3),
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Note moyenne avec étoile
-            const Icon(
-              Icons.star,
-              color: Color(0xFFFFB800),
-              size: 20,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              _statistics!.displayAverageRating,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1D2233),
-              ),
-            ),
-            const SizedBox(width: 8),
-
-            // Séparateur
-            Container(
-              width: 1,
-              height: 16,
-              color: Colors.grey[300],
-            ),
-            const SizedBox(width: 8),
-
-            // Nombre d'avis
-            Text(
-              '${_statistics!.totalReviews} avis',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[700],
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Icon(
-              Icons.chevron_right,
-              size: 16,
-              color: Colors.grey[600],
-            ),
-          ],
-        ),
+        child: hasReviews ? _buildRatingsSummary(context) : _buildBeFirstInvitation(context),
       ),
+    );
+  }
+
+  Widget _buildRatingsSummary(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Note moyenne avec étoile
+        const Icon(
+          Icons.star,
+          color: Color(0xFFFFB800),
+          size: 20,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          _statistics!.displayAverageRating,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1D2233),
+          ),
+        ),
+        const SizedBox(width: 8),
+
+        // Séparateur
+        Container(
+          width: 1,
+          height: 16,
+          color: Colors.grey[300],
+        ),
+        const SizedBox(width: 8),
+
+        // Nombre d'avis
+        Text(
+          '${_statistics!.totalReviews} avis',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[700],
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Icon(
+          Icons.chevron_right,
+          size: 16,
+          color: Colors.grey[600],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBeFirstInvitation(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Étoile vide
+        const Icon(
+          Icons.star_outline,
+          color: Color(0xFFFFB800),
+          size: 20,
+        ),
+        const SizedBox(width: 8),
+        // Message d'invitation
+        Text(
+          AppLocalizations.of(context)!.reviewsBeFirst,
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[700],
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Icon(
+          Icons.chevron_right,
+          size: 16,
+          color: Colors.grey[600],
+        ),
+      ],
     );
   }
 }
