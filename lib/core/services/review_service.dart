@@ -1,6 +1,7 @@
 import '../api/api_client.dart';
 import '../api/api_constants.dart';
 import '../models/review.dart';
+import 'package:dio/dio.dart';
 
 class ReviewService {
   static final ReviewService _instance = ReviewService._internal();
@@ -8,6 +9,53 @@ class ReviewService {
   ReviewService._internal();
 
   final ApiClient _apiClient = ApiClient();
+
+  /// Extraire le message d'erreur convivial de l'API
+  String _extractErrorMessage(dynamic error) {
+    if (error is DioException) {
+      // Essayer d'extraire le message de l'API
+      if (error.response?.data != null) {
+        final data = error.response!.data;
+        if (data is Map<String, dynamic>) {
+          // Chercher le message dans les formats courants
+          if (data.containsKey('message')) {
+            return data['message'] as String;
+          }
+          if (data.containsKey('error')) {
+            return data['error'] as String;
+          }
+          if (data.containsKey('errors')) {
+            final errors = data['errors'];
+            if (errors is Map) {
+              // Concaténer tous les messages d'erreur
+              return errors.values.map((e) => e.toString()).join(', ');
+            } else if (errors is String) {
+              return errors;
+            }
+          }
+        }
+      }
+
+      // Messages par défaut selon le code d'erreur
+      switch (error.response?.statusCode) {
+        case 400:
+          return 'Requête invalide';
+        case 401:
+          return 'Non autorisé';
+        case 403:
+          return 'Accès refusé';
+        case 404:
+          return 'Ressource non trouvée';
+        case 422:
+          return 'Données invalides';
+        case 500:
+          return 'Erreur serveur';
+        default:
+          return 'Erreur de connexion';
+      }
+    }
+    return error.toString();
+  }
 
   /// Récupérer les avis d'un POI avec statistiques
   Future<ReviewListResponse> getPoiReviews({
@@ -53,7 +101,8 @@ class ReviewService {
       }
     } catch (e) {
       print('[REVIEW SERVICE] Erreur: $e');
-      rethrow;
+      final errorMessage = _extractErrorMessage(e);
+      throw Exception(errorMessage);
     }
   }
 
@@ -101,7 +150,8 @@ class ReviewService {
       }
     } catch (e) {
       print('[REVIEW SERVICE] Erreur création: $e');
-      rethrow;
+      final errorMessage = _extractErrorMessage(e);
+      throw Exception(errorMessage);
     }
   }
 
@@ -150,7 +200,8 @@ class ReviewService {
       }
     } catch (e) {
       print('[REVIEW SERVICE] Erreur modification: $e');
-      rethrow;
+      final errorMessage = _extractErrorMessage(e);
+      throw Exception(errorMessage);
     }
   }
 
@@ -176,7 +227,8 @@ class ReviewService {
       }
     } catch (e) {
       print('[REVIEW SERVICE] Erreur suppression: $e');
-      rethrow;
+      final errorMessage = _extractErrorMessage(e);
+      throw Exception(errorMessage);
     }
   }
 
@@ -203,7 +255,8 @@ class ReviewService {
       }
     } catch (e) {
       print('[REVIEW SERVICE] Erreur vote: $e');
-      rethrow;
+      final errorMessage = _extractErrorMessage(e);
+      throw Exception(errorMessage);
     }
   }
 
@@ -236,7 +289,8 @@ class ReviewService {
       }
     } catch (e) {
       print('[REVIEW SERVICE] Erreur: $e');
-      rethrow;
+      final errorMessage = _extractErrorMessage(e);
+      throw Exception(errorMessage);
     }
   }
 }

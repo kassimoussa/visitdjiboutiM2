@@ -105,10 +105,18 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
         _isSubmitting = false;
       });
       if (mounted) {
+        // Extraire le message d'erreur propre
+        String errorMessage = e.toString();
+        if (e is Exception) {
+          // Enlever le préfixe "Exception: " si présent
+          errorMessage = errorMessage.replaceFirst('Exception: ', '');
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.reviewFormError(e.toString())),
+            content: Text(errorMessage),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
           ),
         );
       }

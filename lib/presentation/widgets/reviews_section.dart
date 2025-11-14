@@ -32,6 +32,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   int _currentPage = 1;
   bool _hasMorePages = false;
   int? _filterRating;
+  bool _userHasReviewed = false;
 
   @override
   void initState() {
@@ -69,6 +70,9 @@ class _ReviewsSectionState extends State<ReviewsSection> {
         _hasMorePages = response.meta?.hasMorePages ?? false;
         _isLoading = false;
         _hasError = false;
+
+        // Vérifier si l'utilisateur a déjà laissé un avis
+        _userHasReviewed = _reviews.any((review) => review.author.isMe);
       });
     } catch (e) {
       print('[REVIEWS SECTION] Erreur chargement avis: $e');
@@ -242,7 +246,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ),
           ],
         ),
-        if (_authService.isLoggedIn)
+        if (_authService.isLoggedIn && !_userHasReviewed)
           OutlinedButton(
             onPressed: () => _showReviewForm(),
             style: OutlinedButton.styleFrom(
