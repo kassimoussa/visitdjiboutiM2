@@ -302,7 +302,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       border: Border.all(color: _getStatusColor(reservation.status)),
                     ),
                     child: Text(
-                      reservation.statusText,
+                      reservation.getStatusText(context),
                       style: TextStyle(
                         color: _getStatusColor(reservation.status),
                         fontSize: 12,
@@ -401,7 +401,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      reservation.priceText,
+                      reservation.getPriceText(context),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
@@ -950,7 +950,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             if (reservation.reservationTime != null)
               _buildDetailRow(AppLocalizations.of(context)!.reservationsTime, reservation.reservationTime!),
             _buildDetailRow(AppLocalizations.of(context)!.reservationsPeople, '${reservation.numberOfPeople}'),
-            _buildDetailRow(AppLocalizations.of(context)!.reservationsStatus, reservation.statusText),
+            _buildDetailRow(AppLocalizations.of(context)!.reservationsStatus, reservation.getStatusText(context)),
             if (reservation.notes?.isNotEmpty == true)
               _buildDetailRow(AppLocalizations.of(context)!.reservationsNotes, reservation.notes!),
             if (reservation.userName?.isNotEmpty == true)

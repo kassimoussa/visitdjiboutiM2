@@ -753,6 +753,12 @@
       }
     }
   },
+  "reservationsStatusPending": "Pending",
+  "reservationsStatusConfirmed": "Confirmed",
+  "reservationsStatusCancelled": "Cancelled",
+  "reservationsStatusUnknown": "Unknown",
+  "reservationsTypePoi": "Place",
+  "reservationsTypeEvent": "Event",
 
   "settingsLanguageFrench": "French",
   "settingsRegionAll": "All regions",

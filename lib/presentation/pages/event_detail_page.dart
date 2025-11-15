@@ -636,7 +636,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  event.statusText,
+                  event.getStatusText(context),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
@@ -681,7 +681,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               ),
               const SizedBox(width: 8),
               Text(
-                event.priceText,
+                event.getPriceText(context),
                 style: TextStyle(
                   color: event.isFree ? Colors.green : const Color(0xFF3860F8),
                   fontSize: 16,
@@ -1011,7 +1011,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
-        event.statusText,
+        event.getStatusText(context),
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -1107,7 +1107,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
           if (!event.isFree) ...[
             const SizedBox(height: 12),
-            _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.priceText),
+            _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.getPriceText(context)),
           ],
 
           if (event.categories.isNotEmpty) ...[
@@ -1526,7 +1526,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                                 ),
                               ),
                               Text(
-                                widget.event.priceText,
+                                widget.event.getPriceText(context),
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,

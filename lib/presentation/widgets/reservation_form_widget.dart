@@ -185,7 +185,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                 if (_isEvent && widget.event!.price > 0) ...[
                   const SizedBox(height: 4),
                   Text(
-                    widget.event!.priceText,
+                    widget.event!.getPriceText(context),
                     style: const TextStyle(
                       color: Color(0xFF3860F8),
                       fontWeight: FontWeight.bold,

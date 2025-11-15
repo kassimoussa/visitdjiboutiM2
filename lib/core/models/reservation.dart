@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 part 'reservation.g.dart';
 
@@ -86,6 +88,33 @@ class Reservation {
   
   String get priceText {
     if (totalPrice == null || totalPrice == 0) return 'Gratuit';
+    return '${totalPrice!.toStringAsFixed(0)} DJF';
+  }
+
+  // Localized methods
+  String getStatusText(BuildContext context) {
+    switch (status) {
+      case 'pending':
+        return AppLocalizations.of(context)!.reservationsStatusPending;
+      case 'confirmed':
+        return AppLocalizations.of(context)!.reservationsStatusConfirmed;
+      case 'cancelled':
+        return AppLocalizations.of(context)!.reservationsStatusCancelled;
+      default:
+        return AppLocalizations.of(context)!.reservationsStatusUnknown;
+    }
+  }
+
+  String getTypeText(BuildContext context) {
+    return isPoi
+      ? AppLocalizations.of(context)!.reservationsTypePoi
+      : AppLocalizations.of(context)!.reservationsTypeEvent;
+  }
+
+  String getPriceText(BuildContext context) {
+    if (totalPrice == null || totalPrice == 0) {
+      return AppLocalizations.of(context)!.eventsFree;
+    }
     return '${totalPrice!.toStringAsFixed(0)} DJF';
   }
 }

@@ -754,6 +754,12 @@
       }
     }
   },
+  "reservationsStatusPending": "قيد الانتظار",
+  "reservationsStatusConfirmed": "مؤكدة",
+  "reservationsStatusCancelled": "ملغاة",
+  "reservationsStatusUnknown": "غير معروف",
+  "reservationsTypePoi": "مكان",
+  "reservationsTypeEvent": "حدث",
 
   "settingsLanguageFrench": "الفرنسية",
   "settingsRegionAll": "جميع المناطق",
