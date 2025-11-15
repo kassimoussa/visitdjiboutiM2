@@ -115,6 +115,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonAll => 'الكل';
 
   @override
+  String get commonAllFeminine => 'كل';
+
+  @override
+  String get commonApplyFilters => 'تطبيق الفلاتر';
+
+  @override
   String get commonCancel => 'إلغاء';
 
   @override
@@ -122,6 +128,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonCategory => 'الفئة';
+
+  @override
+  String get commonClearAll => 'مسح الكل';
 
   @override
   String get commonConnectionError => 'خطأ في الاتصال';
@@ -148,6 +157,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonDiscoverPlace => 'اكتشف هذا المكان';
 
   @override
+  String get commonEdit => 'تعديل';
+
+  @override
   String get commonEmail => 'البريد الإلكتروني';
 
   @override
@@ -170,6 +182,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonFieldRequired => 'هذا الحقل مطلوب';
+
+  @override
+  String get commonFilters => 'الفلاتر';
 
   @override
   String get commonExploreOnSite => 'استكشف في الموقع';
@@ -209,6 +224,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonReservePlace => 'احجز';
+
+  @override
+  String get commonReset => 'إعادة تعيين';
 
   @override
   String get commonRetry => 'إعادة المحاولة';
@@ -683,6 +701,15 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get poiNoContact => 'لا توجد معلومات اتصال متاحة';
+
+  @override
+  String get poiTourOperatorsTitle => 'منظمو الرحلات السياحية';
+
+  @override
+  String get poiLicensedOperator => 'مشغل مرخص';
+
+  @override
   String get profileAboutApp => 'حول التطبيق';
 
   @override
@@ -767,7 +794,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String reservationsCancelled(int count) {
-    return 'ملغاة ($count)';
+    return 'تم إلغاء الحجز';
   }
 
   @override
@@ -792,6 +819,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reservationsNonePending => 'لا توجد حجوزات معلقة';
+
+  @override
+  String get reservationsTabAll => 'الكل';
+
+  @override
+  String get reservationsTabConfirmed => 'مؤكدة';
+
+  @override
+  String get reservationsTabPending => 'قيد الانتظار';
+
+  @override
+  String get reservationsTabCancelled => 'ملغاة';
 
   @override
   String reservationsPending(int count) {
@@ -922,6 +961,35 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tourWhatToBring => 'ماذا تحضر';
+
+  @override
+  String get tourUnknownOperator => 'مشغل غير معروف';
+
+  @override
+  String get tourWebsite => 'الموقع الإلكتروني';
+
+  @override
+  String get toursSearchHint => 'البحث عن جولة...';
+
+  @override
+  String toursNotFound(String query) {
+    return 'لم يتم العثور على جولات لـ \"$query\"';
+  }
+
+  @override
+  String get toursTourType => 'نوع الجولة';
+
+  @override
+  String get toursSelectType => 'حدد نوعًا';
+
+  @override
+  String get toursDifficulty => 'الصعوبة';
+
+  @override
+  String get toursTourOperator => 'منظم الجولات';
+
+  @override
+  String get toursSelectOperator => 'حدد منظمًا';
 
   @override
   String get homeRegionDjibouti => 'جيبوتي';
@@ -1237,4 +1305,750 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get tourRegistrationErrorMessage => 'خطأ أثناء التسجيل';
+
+  @override
+  String get helpFaqQuestion1 => 'كيفية حجز حدث؟';
+
+  @override
+  String get helpFaqAnswer1 =>
+      'انتقل إلى علامة تبويب الأحداث، واختر حدثًا يهمك، ثم اضغط على \"التسجيل\". يمكنك إدارة حجوزاتك في ملفك الشخصي.';
+
+  @override
+  String get helpFaqQuestion2 =>
+      'هل يمكنني استخدام التطبيق بدون اتصال بالإنترنت؟';
+
+  @override
+  String get helpFaqAnswer2 =>
+      'نعم! قم بتفعيل الوضع غير المتصل في الإعدادات لتنزيل البيانات الأساسية. يمكن أيضًا تنزيل الخرائط للاستخدام دون اتصال.';
+
+  @override
+  String get helpFaqQuestion3 => 'كيفية إضافة مكان إلى المفضلة؟';
+
+  @override
+  String get helpFaqAnswer3 =>
+      'في صفحة تفاصيل مكان معين، اضغط على أيقونة القلب. ستجد جميع مفضلاتك في ملفك الشخصي.';
+
+  @override
+  String get helpFaqQuestion4 => 'هل التطبيق مجاني؟';
+
+  @override
+  String get helpFaqAnswer4 =>
+      'نعم، زيارة جيبوتي مجانية تمامًا. قد تكون بعض الأحداث لها تكلفة، لكن التطبيق نفسه لا يتطلب أي دفع.';
+
+  @override
+  String get helpFaqQuestion5 => 'كيفية تغيير لغة الواجهة؟';
+
+  @override
+  String get helpFaqAnswer5 =>
+      'انتقل إلى الإعدادات > اللغة واختر لغتك المفضلة (Français, English, العربية).';
+
+  @override
+  String get helpFaqQuestion6 => 'هل يتم تحديث المعلومات؟';
+
+  @override
+  String get helpFaqAnswer6 =>
+      'نعم، يقوم فريقنا بتحديث المعلومات حول الأماكن والأحداث بانتظام. تأكد من أن لديك اتصال بالإنترنت لتلقي أحدث البيانات.';
+
+  @override
+  String get helpFaqQuestion7 => 'كيفية الإبلاغ عن مشكلة في مكان؟';
+
+  @override
+  String get helpFaqAnswer7 =>
+      'استخدم وظيفة \"التعليقات\" في القائمة الرئيسية للإبلاغ عن أي مشكلة. ملاحظاتك تساعدنا في تحسين التطبيق.';
+
+  @override
+  String get helpCategoryAll => 'الكل';
+
+  @override
+  String get helpCategoryNavigation => 'التنقل';
+
+  @override
+  String get helpCategoryEvents => 'الأحداث';
+
+  @override
+  String get helpCategoryUsage => 'الاستخدام';
+
+  @override
+  String get helpCategoryFavorites => 'المفضلة';
+
+  @override
+  String get helpCategoryGeneral => 'عام';
+
+  @override
+  String get helpCategorySettings => 'الإعدادات';
+
+  @override
+  String get helpCategoryContent => 'المحتوى';
+
+  @override
+  String get helpCategorySupport => 'الدعم';
+
+  @override
+  String get helpTitle => 'كيف يمكننا مساعدتك؟';
+
+  @override
+  String get helpSearchPlaceholder => 'البحث في المساعدة...';
+
+  @override
+  String get helpLiveChat => 'دردشة مباشرة';
+
+  @override
+  String get helpContactUs => 'اتصل بنا';
+
+  @override
+  String get helpTutorials => 'دروس تعليمية';
+
+  @override
+  String get helpReportBug => 'الإبلاغ عن خطأ';
+
+  @override
+  String get helpCantFindAnswer => 'لا تجد الإجابة؟';
+
+  @override
+  String get helpLiveChatTitle => 'دردشة مباشرة';
+
+  @override
+  String get helpLiveChatInfo =>
+      'فريقنا متاح من الساعة 8 صباحًا إلى 6 مساءً\nللإجابة على أسئلتك في الوقت الفعلي.';
+
+  @override
+  String get helpLiveChatConnecting => 'الاتصال بالدردشة جارٍ...';
+
+  @override
+  String get helpStartChat => 'بدء الدردشة';
+
+  @override
+  String get helpContactUsTitle => 'اتصل بنا';
+
+  @override
+  String get helpContactSubject => 'الموضوع';
+
+  @override
+  String get helpContactMessage => 'رسالتك';
+
+  @override
+  String get helpContactEmail => 'بريدك الإلكتروني (اختياري)';
+
+  @override
+  String get helpMessageSent => 'تم إرسال الرسالة بنجاح!';
+
+  @override
+  String get helpSend => 'إرسال';
+
+  @override
+  String get helpTutorialsTitle => 'دروس فيديو';
+
+  @override
+  String get helpTutorialMap => 'كيفية استخدام الخريطة';
+
+  @override
+  String get helpTutorialMapDuration => '3 دقائق';
+
+  @override
+  String get helpTutorialReserve => 'حجز حدث';
+
+  @override
+  String get helpTutorialReserveDuration => '2 دقيقة';
+
+  @override
+  String get helpTutorialFavorites => 'إدارة المفضلة';
+
+  @override
+  String get helpTutorialFavoritesDuration => 'دقيقة واحدة';
+
+  @override
+  String get helpReportBugTitle => 'الإبلاغ عن مشكلة';
+
+  @override
+  String get helpBugTitle => 'عنوان المشكلة';
+
+  @override
+  String get helpBugDescription => 'صف المشكلة التي واجهتها...';
+
+  @override
+  String get helpBugReported => 'تم إرسال تقرير الخطأ!';
+
+  @override
+  String get helpReport => 'إبلاغ';
+
+  @override
+  String get reservationsEmptyMessage =>
+      'استكشف أماكننا وأحداثنا لإجراء حجزك الأول!';
+
+  @override
+  String get reservationsDetailsTitle => 'تفاصيل الحجز';
+
+  @override
+  String reservationsCancelConfirm(String confirmationNumber) {
+    return 'هل أنت متأكد من أنك تريد إلغاء الحجز رقم $confirmationNumber؟';
+  }
+
+  @override
+  String get reservationsNo => 'لا';
+
+  @override
+  String get reservationsYesCancel => 'نعم، إلغاء';
+
+  @override
+  String get reservationsCancelError => 'خطأ أثناء الإلغاء';
+
+  @override
+  String reservationsDeleteConfirm(String confirmationNumber) {
+    return 'هل أنت متأكد من أنك تريد حذف الحجز رقم $confirmationNumber نهائيًا؟\n\nهذا الإجراء لا رجعة فيه.';
+  }
+
+  @override
+  String get reservationsYesDelete => 'نعم، حذف';
+
+  @override
+  String get reservationsDeleted => 'تم حذف الحجز';
+
+  @override
+  String get reservationsDeleteError => 'خطأ أثناء الحذف';
+
+  @override
+  String get reservationsRegistrationDetailsTitle => 'تفاصيل التسجيل';
+
+  @override
+  String get reservationsRegistrationCancelTitle => 'إلغاء التسجيل';
+
+  @override
+  String get reservationsRegistrationCancelConfirm =>
+      'هل أنت متأكد من أنك تريد إلغاء هذا التسجيل؟ سيتغير حالته إلى \"ملغي\".';
+
+  @override
+  String reservationsRegistrationDeleteConfirm(String id) {
+    return 'هل أنت متأكد من أنك تريد حذف التسجيل #$id نهائيًا؟ هذا الإجراء لا رجعة فيه.';
+  }
+
+  @override
+  String get reservationsRegistrationCancelled => 'تم إلغاء التسجيل';
+
+  @override
+  String get reservationsRegistrationDeleted => 'تم حذف التسجيل';
+
+  @override
+  String get reservationsRegistrationCancelError => 'خطأ أثناء الإلغاء';
+
+  @override
+  String get reservationsRegistrationDeleteError => 'خطأ أثناء الحذف';
+
+  @override
+  String get settingsLanguageFrench => 'الفرنسية';
+
+  @override
+  String get settingsRegionAll => 'جميع المناطق';
+
+  @override
+  String get settingsCacheSizeCalculating => 'جاري الحساب...';
+
+  @override
+  String get settingsChooseLanguage => 'اختر اللغة';
+
+  @override
+  String get settingsLanguageFrenchFlag => '🇫🇷';
+
+  @override
+  String get settingsLanguageEnglishFlag => '🇬🇧';
+
+  @override
+  String get settingsLanguageArabicFlag => '🇸🇦';
+
+  @override
+  String get settingsPreferredRegionTitle => 'المنطقة المفضلة';
+
+  @override
+  String get settingsRegionDjibouti => 'جيبوتي';
+
+  @override
+  String get settingsRegionTadjourah => 'تاجورة';
+
+  @override
+  String get settingsRegionAliSabieh => 'علي صبيح';
+
+  @override
+  String get settingsRegionDikhil => 'دخيل';
+
+  @override
+  String get settingsRegionObock => 'أوبوك';
+
+  @override
+  String get settingsRegionArta => 'عرتا';
+
+  @override
+  String get settingsLocationPermissionTitle => 'السماح بالوصول إلى الموقع';
+
+  @override
+  String get settingsLocationPermissionMessage =>
+      'تطبيق زيارة جيبوتي يرغب في الوصول إلى موقعك لعرض نقاط الاهتمام القريبة منك.';
+
+  @override
+  String get settingsLater => 'لاحقًا';
+
+  @override
+  String get settingsAllow => 'سماح';
+
+  @override
+  String get settingsLocationEnabled => 'تم تفعيل الموقع';
+
+  @override
+  String get settingsOfflineModeTitle => 'الوضع دون اتصال';
+
+  @override
+  String get settingsOfflineModeMessage =>
+      'سيستخدم تنزيل البيانات للوضع غير المتصل حوالي 50 ميجابايت. هل تريد المتابعة؟';
+
+  @override
+  String get settingsDownloading => 'جاري تنزيل البيانات...';
+
+  @override
+  String get settingsDownload => 'تنزيل';
+
+  @override
+  String get settingsClearCacheTitle => 'مسح ذاكرة التخزين المؤقت';
+
+  @override
+  String settingsClearCacheMessage(String size) {
+    return 'سيؤدي هذا الإجراء إلى إزالة جميع الصور المخزنة مؤقتًا ($size). سيتم إعادة تنزيلها عند الاستخدام التالي.';
+  }
+
+  @override
+  String get settingsCacheCleared => 'تم مسح ذاكرة التخزين المؤقت بنجاح';
+
+  @override
+  String settingsClearCacheError(String error) {
+    return 'خطأ أثناء المسح: $error';
+  }
+
+  @override
+  String get settingsClear => 'مسح';
+
+  @override
+  String get settingsOfflineMapsTitle => 'الخرائط دون اتصال';
+
+  @override
+  String get settingsOfflineMapsMessage =>
+      'تنزيل خرائط جيبوتي للاستخدام بدون اتصال بالإنترنت (200 ميجابايت).';
+
+  @override
+  String get settingsMapsDownloadStarted => 'بدأ تنزيل الخرائط';
+
+  @override
+  String get settingsPrivacyTitle => 'الخصوصية';
+
+  @override
+  String get settingsPrivacyMessage =>
+      'زيارة جيبوتي تحترم خصوصيتك. نحن نجمع فقط البيانات اللازمة لتشغيل التطبيق: الموقع للأماكن القريبة، وتفضيلات المستخدم، وبيانات الحجز.\n\nلا يتم مشاركة بياناتك مع أطراف ثالثة بدون موافقتك.';
+
+  @override
+  String get settingsUnderstood => 'مفهوم';
+
+  @override
+  String get settingsTermsTitle => 'شروط الاستخدام';
+
+  @override
+  String get settingsTermsMessage =>
+      'باستخدام زيارة جيبوتي، فإنك تقبل شروط الاستخدام الخاصة بنا. يتم توفير هذا التطبيق من قبل مكتب السياحة في جيبوتي لتعزيز السياحة المحلية.\n\nالتطبيق مجاني ويتم تحديث المعلومات بانتظام.';
+
+  @override
+  String get settingsClose => 'إغلاق';
+
+  @override
+  String get settingsBackupTitle => 'نسخ احتياطي';
+
+  @override
+  String get settingsBackupMessage =>
+      'نسخ احتياطي لمفضلاتك وحجوزاتك وتفضيلاتك إلى السحابة؟';
+
+  @override
+  String get settingsBackupSuccess => 'تم النسخ الاحتياطي بنجاح';
+
+  @override
+  String get settingsSave => 'حفظ';
+
+  @override
+  String get settingsResetTitle => 'استعادة الإعدادات';
+
+  @override
+  String get settingsResetMessage =>
+      'سيؤدي هذا الإجراء إلى استعادة جميع الإعدادات إلى الافتراضية. سيتم الاحتفاظ بمفضلاتك وحجوزاتك.';
+
+  @override
+  String get settingsResetSuccess => 'تمت استعادة الإعدادات';
+
+  @override
+  String get settingsRestore => 'استعادة';
+
+  @override
+  String get offlineStatusOnline => 'متصل - جميع الميزات متاحة';
+
+  @override
+  String get offlineStatusOffline =>
+      'غير متصل - تم تفعيل وضع ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineDataTitle => 'البيانات دون اتصال';
+
+  @override
+  String get offlineTotalItems => 'إجمالي العناصر';
+
+  @override
+  String get offlinePois => 'نقاط الاهتمام';
+
+  @override
+  String get offlineEvents => 'الأحداث';
+
+  @override
+  String get offlineFavorites => 'المفضلة';
+
+  @override
+  String get offlineCacheSize => 'حجم ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineActionsTitle => 'الإجراءات';
+
+  @override
+  String get offlineSyncNow => 'مزامنة الآن';
+
+  @override
+  String get offlineSyncNowSubtitle => 'تحديث البيانات من الخادم';
+
+  @override
+  String get offlineDownloadForOffline => 'تنزيل للاستخدام دون اتصال';
+
+  @override
+  String get offlineDownloadForOfflineSubtitle => 'تنزيل جميع البيانات المهمة';
+
+  @override
+  String get offlineClearCache => 'مسح ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineClearCacheSubtitle => 'إزالة جميع البيانات المخزنة مؤقتًا';
+
+  @override
+  String get reviewFormPleaseRate => 'يرجى تحديد تقييم';
+
+  @override
+  String get reviewFormUpdated => 'تم تحديث التقييم بنجاح';
+
+  @override
+  String get reviewFormPublished => 'تم نشر التقييم بنجاح';
+
+  @override
+  String reviewFormError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get reviewFormEditTitle => 'تعديل تقييمك';
+
+  @override
+  String get reviewFormWriteTitle => 'كتابة تقييم';
+
+  @override
+  String get reviewFormYourRating => 'تقييمك *';
+
+  @override
+  String get reviewFormTitle => 'العنوان (اختياري)';
+
+  @override
+  String get reviewFormTitleHint => 'لخص تجربتك';
+
+  @override
+  String get reviewFormComment => 'تقييمك (اختياري)';
+
+  @override
+  String get reviewFormCommentHint => 'شارك تجربتك بالتفصيل...';
+
+  @override
+  String get reviewFormUpdate => 'تحديث';
+
+  @override
+  String get reviewFormPublish => 'نشر';
+
+  @override
+  String get reviewsBeFirst => 'كن أول من يترك تقييمًا';
+
+  @override
+  String get reviewsNoReviewsYet => 'لا توجد تقييمات حتى الآن';
+
+  @override
+  String get reviewsClickToReview => 'انقر لترك تقييم';
+
+  @override
+  String get reviewsTitle => 'التقييمات';
+
+  @override
+  String reviewsCount(int count) {
+    return '$count تقييمات';
+  }
+
+  @override
+  String get reviewsLoadMore => 'تحميل المزيد من التقييمات';
+
+  @override
+  String get reviewsOperatorResponse => 'رد من المنشأة';
+
+  @override
+  String get reviewsHelpful => 'مفيد';
+
+  @override
+  String reviewsLoadError(String error) {
+    return 'خطأ في تحميل التقييمات: $error';
+  }
+
+  @override
+  String get reviewsVotedHelpful => 'شكرًا لتصويتك!';
+
+  @override
+  String reviewsVoteError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get reviewsDeleteTitle => 'حذف التقييم';
+
+  @override
+  String get reviewsDeleteConfirm =>
+      'هل أنت متأكد من أنك تريد حذف هذا التقييم؟';
+
+  @override
+  String get reviewsDelete => 'حذف';
+
+  @override
+  String get reviewsDeleted => 'تم حذف التقييم';
+
+  @override
+  String reviewsDeleteError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get reviewsSectionTitle => 'التقييمات';
+
+  @override
+  String get reviewsWriteReview => 'كتابة تقييم';
+
+  @override
+  String reservationFormTitle(String type) {
+    return 'حجز $type';
+  }
+
+  @override
+  String get reservationFormTitlePoi => 'هذا المكان';
+
+  @override
+  String get reservationFormTitleEvent => 'هذا الحدث';
+
+  @override
+  String get reservationFormNumberOfPeople => 'عدد الأشخاص *';
+
+  @override
+  String get reservationFormNumberOfPeopleHint => '1';
+
+  @override
+  String get reservationFormNumberRequired => 'عدد الأشخاص مطلوب';
+
+  @override
+  String get reservationFormMinOnePerson => 'الحد الأدنى شخص واحد';
+
+  @override
+  String reservationFormMaxPeople(String available) {
+    return 'الحد الأقصى $available أماكن متاحة';
+  }
+
+  @override
+  String get reservationFormContactInfo => 'معلومات الاتصال (اختياري)';
+
+  @override
+  String get reservationFormFullName => 'الاسم الكامل';
+
+  @override
+  String get reservationFormEmailInvalid => 'بريد إلكتروني غير صالح';
+
+  @override
+  String get reservationFormPhone => 'الهاتف';
+
+  @override
+  String get reservationFormNotes => 'ملاحظات أو طلبات خاصة';
+
+  @override
+  String get reservationFormNotesHint => 'حساسية الطعام، احتياجات خاصة...';
+
+  @override
+  String get reservationFormConfirm => 'تأكيد الحجز';
+
+  @override
+  String contactOperatorTitle(String name) {
+    return 'الاتصال بـ $name';
+  }
+
+  @override
+  String get contactOperatorTitleDefault => 'المشغل';
+
+  @override
+  String get contactOperatorMessageType => 'نوع الرسالة';
+
+  @override
+  String get contactOperatorYourMessage => 'رسالتك';
+
+  @override
+  String get contactOperatorMessageHint => 'اكتب رسالتك هنا...';
+
+  @override
+  String get contactOperatorMessageRequired => 'يرجى كتابة رسالة';
+
+  @override
+  String get contactOperatorMessageTooShort =>
+      'يجب أن تحتوي الرسالة على 3 أحرف على الأقل';
+
+  @override
+  String get contactOperatorTypeQuestion => 'سؤال';
+
+  @override
+  String get contactOperatorTypeReport => 'تقرير';
+
+  @override
+  String get contactOperatorTypeSuggestion => 'اقتراح';
+
+  @override
+  String get contactOperatorPrefixQuestion => '❓ سؤال: ';
+
+  @override
+  String get contactOperatorPrefixReport => '⚠️ تقرير: ';
+
+  @override
+  String get contactOperatorPrefixSuggestion => '💡 اقتراح: ';
+
+  @override
+  String contactOperatorMessageSent(String name) {
+    return 'تم إرسال الرسالة بنجاح إلى $name';
+  }
+
+  @override
+  String get contactOperatorMessageSentDefault => 'المشغل';
+
+  @override
+  String contactOperatorSendError(String error) {
+    return 'خطأ في الإرسال: $error';
+  }
+
+  @override
+  String get tourOperatorUnknown => 'مشغل غير معروف';
+
+  @override
+  String get tourOperatorCallButton => 'اتصال';
+
+  @override
+  String get tourOperatorWebsiteButton => 'الموقع الإلكتروني';
+
+  @override
+  String get poiOperatorsServingTitle => 'المشغلون الذين يخدمون هذا المكان';
+
+  @override
+  String get activitiesSearchHint => 'ابحث عن نشاط...';
+
+  @override
+  String get toursSelectDifficulty => 'اختر الصعوبة';
+
+  @override
+  String get termsLastUpdated => 'آخر تحديث: 23 أكتوبر 2025';
+
+  @override
+  String get termsSection1Title => '1. قبول الشروط';
+
+  @override
+  String get termsSection1Content =>
+      'باستخدام تطبيق زيارة جيبوتي (المشار إليه فيما يلي \"التطبيق\")، فإنك توافق على الالتزام بشروط الاستخدام هذه. إذا كنت لا توافق على هذه الشروط، يرجى عدم استخدام التطبيق.';
+
+  @override
+  String get termsSection2Title => '2. وصف الخدمات';
+
+  @override
+  String get termsSection2Content =>
+      'زيارة جيبوتي هو تطبيق محمول مخصص لتعزيز السياحة في جيبوتي. يوفر التطبيق:\n\n• معلومات حول نقاط الاهتمام السياحية\n• تقويم للفعاليات الثقافية والسياحية\n• نظام حجز لبعض الخدمات\n• ميزات المفضلة وتخطيط الرحلات\n• خرائط تفاعلية وأدوات الملاحة\n• معلومات عملية عن البلد';
+
+  @override
+  String get termsSection3Title => '3. حساب المستخدم';
+
+  @override
+  String get termsSection3Content =>
+      'يتطلب استخدام بعض الميزات إنشاء حساب. أنت مسؤول عن:\n\n• سرية بيانات اعتمادك\n• جميع الأنشطة التي يتم إجراؤها من خلال حسابك\n• دقة المعلومات المقدمة\n• إخطارنا فورًا في حالة الاستخدام غير المصرح به';
+
+  @override
+  String get termsSection4Title => '4. الاستخدام المقبول';
+
+  @override
+  String get termsSection4Content =>
+      'أنت توافق على:\n\n• استخدام التطبيق فقط لأغراض قانونية\n• عدم نشر محتوى مسيء أو غير قانوني\n• احترام حقوق الآخرين\n• عدم محاولة تعطيل تشغيل التطبيق\n• عدم استخدام الروبوتات أو النصوص التلقائية\n• عدم جمع بيانات من مستخدمين آخرين';
+
+  @override
+  String get termsSection5Title => '5. الملكية الفكرية';
+
+  @override
+  String get termsSection5Content =>
+      'جميع محتويات التطبيق (النصوص والصور والشعارات والرسومات) محمية بموجب قوانين الملكية الفكرية وتنتمي إلى مكتب السياحة في جيبوتي أو شركائه.';
+
+  @override
+  String get termsSection6Title => '6. الحجوزات والمدفوعات';
+
+  @override
+  String get termsSection6Content =>
+      'يسمح التطبيق بحجز بعض الخدمات السياحية:\n\n• الحجوزات مرهونة بالتوافر\n• الأسعار المعروضة إرشادية وقد تختلف\n• شروط الإلغاء تختلف حسب مقدم الخدمة\n• يعمل مكتب السياحة كوسيط\n• نحن لسنا مسؤولين عن الخدمات المقدمة من أطراف ثالثة';
+
+  @override
+  String get termsSection7Title => '7. تحديد المسؤولية';
+
+  @override
+  String get termsSection7Content =>
+      'مكتب السياحة في جيبوتي:\n\n• يسعى لتقديم معلومات دقيقة لكنه لا يضمن اكتمالها\n• غير مسؤول عن الخدمات المقدمة من أطراف ثالثة\n• لا يمكن تحميله المسؤولية عن الأضرار غير المباشرة\n• يحتفظ بالحق في تعديل أو مقاطعة الخدمات دون إشعار\n• غير مسؤول عن المشاكل الفنية أو مشاكل الاتصال';
+
+  @override
+  String get termsSection8Title => '8. محتوى المستخدم';
+
+  @override
+  String get termsSection8Content =>
+      'من خلال نشر المحتوى (التقييمات والتعليقات والصور):\n\n• تحتفظ بحقوق الملكية الفكرية الخاصة بك\n• تمنحنا ترخيصًا مجانيًا عالميًا للاستخدام\n• تضمن أن المحتوى لا ينتهك أي حقوق\n• نحتفظ بالحق في الإشراف على أو إزالة أي محتوى غير لائق';
+
+  @override
+  String get termsSection9Title => '9. روابط لمواقع الأطراف الثالثة';
+
+  @override
+  String get termsSection9Content =>
+      'قد يحتوي التطبيق على روابط لمواقع ويب تابعة لأطراف ثالثة. يتم توفير هذه الروابط لراحتك، ولكن ليس لدينا سيطرة على هذه المواقع ولا نتحمل أي مسؤولية عن محتواها.';
+
+  @override
+  String get termsSection10Title => '10. تعديلات الخدمة';
+
+  @override
+  String get termsSection10Content =>
+      'نحتفظ بالحق في:\n\n• تعديل أو مقاطعة كل أو جزء من التطبيق\n• إضافة أو إزالة الميزات\n• تغيير الأسعار أو شروط الوصول';
+
+  @override
+  String get termsSection11Title => '11. الإنهاء';
+
+  @override
+  String get termsSection11Content =>
+      'يمكننا تعليق أو إنهاء وصولك إلى التطبيق في حالة:\n\n• انتهاك هذه الشروط\n• سلوك احتيالي أو تعسفي\n• طلب من السلطات المختصة\n• عدم النشاط لفترة طويلة';
+
+  @override
+  String get termsSection12Title => '12. القانون المطبق';
+
+  @override
+  String get termsSection12Content =>
+      'تخضع هذه الشروط للقانون الجيبوتي. أي نزاع سيخضع للاختصاص الحصري لمحاكم جيبوتي.';
+
+  @override
+  String get termsSection13Title => '13. تعديلات الشروط';
+
+  @override
+  String get termsSection13Content =>
+      'يمكننا تعديل هذه الشروط في أي وقت. سيتم نشر التعديلات في التطبيق وتدخل حيز التنفيذ فورًا. استمرارك في استخدام التطبيق يشكل قبولك للشروط المعدلة.';
+
+  @override
+  String get termsSection14Title => '14. الاتصال';
+
+  @override
+  String get termsSection14Content =>
+      'لأي أسئلة بخصوص شروط الاستخدام هذه، اتصل بنا:\n\nمكتب السياحة في جيبوتي\nالبريد الإلكتروني: info@visitdjibouti.dj\nالهاتف: +253 XXX XXX';
 }

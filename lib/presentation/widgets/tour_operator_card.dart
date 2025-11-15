@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
 import '../pages/tour_operator_detail_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class TourOperatorCard extends StatelessWidget {
   final TourOperator operator;

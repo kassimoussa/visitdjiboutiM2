@@ -3,7 +3,7 @@ import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/simple_activity_card.dart';
 import '../../core/models/simple_activity.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class ActivitiesPage extends StatefulWidget {
   final bool showFeaturedOnly;

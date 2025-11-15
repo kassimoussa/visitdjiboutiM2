@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 /// Widget compact pour afficher le résumé des évaluations
 class RatingsSummaryWidget extends StatefulWidget {

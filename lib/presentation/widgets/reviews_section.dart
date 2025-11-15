@@ -3,7 +3,7 @@ import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import 'review_form_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 /// Widget d'affichage de la section avis (statistiques + liste)
 class ReviewsSection extends StatefulWidget {
