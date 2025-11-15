@@ -240,7 +240,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         if (_isEvent && widget.event!.availableSpots != null) {
           final available = widget.event!.availableSpots!;
           if (number > available) {
-            return AppLocalizations.of(context)!.reservationFormMaxPeople(available);
+            return AppLocalizations.of(context)!.reservationFormMaxPeople(available.toString());
           }
         }
         return null;
