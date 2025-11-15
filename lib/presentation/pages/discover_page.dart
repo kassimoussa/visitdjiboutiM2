@@ -9,7 +9,6 @@ import '../../core/models/api_response.dart';
 import '../../core/models/category.dart';
 import '../widgets/poi_card.dart';
 import '../../generated/l10n/app_localizations.dart';
-import 'region_list_page.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -31,10 +30,20 @@ class _DiscoverPageState extends State<DiscoverPage> {
   bool _isLoading = true;
   String? _errorMessage;
   Category? _selectedCategory;
+  String? _selectedRegion;  // Nouveau: filtre par région
   String _currentSearchQuery = '';
   int _currentPage = 1;
   bool _hasMorePages = false;
   bool _isLoadingMore = false;
+
+  final List<String> _regions = [
+    'Djibouti',
+    'Ali Sabieh',
+    'Dikhil',
+    'Tadjourah',
+    'Obock',
+    'Arta',
+  ];
 
   @override
   void initState() {
@@ -183,7 +192,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   // Applique les filtres localement sans recharger depuis l'API
   void _applyFilters() {
     List<Poi> filtered = List.from(_allPois);
-    
+
     // Filtrage par recherche textuelle
     if (_currentSearchQuery.isNotEmpty) {
       final searchQuery = _currentSearchQuery.toLowerCase();
@@ -193,7 +202,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                poi.primaryCategory.toLowerCase().contains(searchQuery);
       }).toList();
     }
-    
+
+    // Filtrage par région
+    if (_selectedRegion != null) {
+      filtered = filtered.where((poi) {
+        return poi.region?.toLowerCase() == _selectedRegion!.toLowerCase();
+      }).toList();
+    }
+
     // Filtrage par catégorie
     if (_selectedCategory != null) {
       filtered = filtered.where((poi) {
@@ -202,9 +218,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
           final childIds = _selectedCategory!.subCategories
               ?.map((sub) => sub.id)
               .toList() ?? [];
-          
-          return poi.categories.any((poiCategory) => 
-            poiCategory.id == _selectedCategory!.id || 
+
+          return poi.categories.any((poiCategory) =>
+            poiCategory.id == _selectedCategory!.id ||
             childIds.contains(poiCategory.id)
           );
         } else {
@@ -213,11 +229,11 @@ class _DiscoverPageState extends State<DiscoverPage> {
         }
       }).toList();
     }
-    
+
     setState(() {
       _filteredPois = filtered;
     });
-    
+
     print('[DISCOVER] Filtres appliqués: ${_filteredPois.length}/${_allPois.length} POIs');
   }
 
@@ -308,116 +324,84 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
     return Column(
       children: [
-        // Barre de recherche
+        // Barre de recherche et bouton filtres
         Container(
           padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
-          child: TextField(
-            controller: _searchController,
-            onChanged: (_) => _onSearchChanged(),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.discoverSearchHint,
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        setState(() {
-                          _currentSearchQuery = '';
-                        });
-                        _applyFilters();
-                      },
-                    )
-                  : null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-                borderSide: BorderSide.none,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
-              filled: true,
-              fillColor: Colors.grey[100],
-            ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (_) => _onSearchChanged(),
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.discoverSearchHint,
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: _searchController.text.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  setState(() {
+                                    _currentSearchQuery = '';
+                                  });
+                                  _applyFilters();
+                                },
+                              )
+                            : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color(0xFF3860F8)),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3860F8),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: IconButton(
+                      onPressed: _showFiltersBottomSheet,
+                      icon: const Icon(Icons.tune, color: Colors.white),
+                      tooltip: AppLocalizations.of(context)!.commonFilters,
+                    ),
+                  ),
+                ],
+              ),
+              if (_hasActiveFilters()) ...[
+                const SizedBox(height: 12),
+                _buildActiveFiltersChips(),
+              ],
+            ],
           ),
         ),
-
-        // Bouton Explorer par région
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegionListPage(),
-                  ),
-                );
-              },
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF3860F8), Color(0xFF0072CE)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.map,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Explorer par région',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Découvrez le contenu par région de Djibouti',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 16),
 
         // Badges de filtrage par catégorie parente
         if (_categories.isNotEmpty)
@@ -457,6 +441,151 @@ class _DiscoverPageState extends State<DiscoverPage> {
         Expanded(
           child: _buildContent(isSmallScreen),
         ),
+      ],
+    );
+  }
+
+  void _showFiltersBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => _buildFiltersSheet(),
+    );
+  }
+
+  Widget _buildFiltersSheet() {
+    return StatefulBuilder(
+      builder: (context, setModalState) {
+        return Container(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.commonFilters,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setModalState(() {
+                            _selectedRegion = null;
+                          });
+                          setState(() {
+                            _selectedRegion = null;
+                          });
+                          _applyFilters();
+                        },
+                        child: Text(AppLocalizations.of(context)!.commonReset),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Région
+                  Text(
+                    AppLocalizations.of(context)!.commonLocation,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _regions.map((region) {
+                      final isSelected = _selectedRegion == region;
+                      return FilterChip(
+                        label: Text(region),
+                        selected: isSelected,
+                        onSelected: (selected) {
+                          setModalState(() {
+                            _selectedRegion = selected ? region : null;
+                          });
+                          setState(() {
+                            _selectedRegion = selected ? region : null;
+                          });
+                          _applyFilters();
+                        },
+                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        checkmarkColor: const Color(0xFF3860F8),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Bouton Appliquer
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3860F8),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.commonApplyFilters,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  bool _hasActiveFilters() {
+    return _selectedRegion != null;
+  }
+
+  Widget _buildActiveFiltersChips() {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        if (_selectedRegion != null)
+          Chip(
+            label: Text(_selectedRegion!),
+            deleteIcon: const Icon(Icons.close, size: 18),
+            onDeleted: () {
+              setState(() {
+                _selectedRegion = null;
+              });
+              _applyFilters();
+            },
+            backgroundColor: const Color(0xFF3860F8).withOpacity(0.1),
+            labelStyle: const TextStyle(color: Color(0xFF3860F8)),
+          ),
       ],
     );
   }
