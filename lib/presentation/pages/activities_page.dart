@@ -115,9 +115,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Filtres',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.commonFilters,
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -139,16 +139,16 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             _hasSpots = null;
                           });
                         },
-                        child: const Text('Réinitialiser'),
+                        child: Text(AppLocalizations.of(context)!.commonReset),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
 
                   // Région
-                  const Text(
-                    'Région',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.activitiesRegion,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -178,9 +178,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   const SizedBox(height: 20),
 
                   // Difficulté
-                  const Text(
-                    'Difficulté',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.activitiesDifficulty,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -211,7 +211,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
 
                   // Places disponibles
                   CheckboxListTile(
-                    title: const Text('Seulement avec places disponibles'),
+                    title: Text(AppLocalizations.of(context)!.activitiesAvailableSpotsOnly),
                     value: _hasSpots ?? false,
                     onChanged: (value) {
                       setModalState(() {
@@ -241,9 +241,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Appliquer les filtres',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.commonApplyFilters,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -266,7 +266,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.showFeaturedOnly ? 'Activités populaires' : 'Activités',
+          widget.showFeaturedOnly ? AppLocalizations.of(context)!.activitiesPopular : AppLocalizations.of(context)!.activitiesTitle,
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF3860F8),
@@ -346,7 +346,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 child: IconButton(
                   onPressed: _showFiltersBottomSheet,
                   icon: const Icon(Icons.tune, color: Colors.white),
-                  tooltip: 'Filtres',
+                  tooltip: AppLocalizations.of(context)!.commonFilters,
                 ),
               ),
             ],
@@ -397,7 +397,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           ),
         if (_hasSpots ?? false)
           Chip(
-            label: const Text('Places disponibles'),
+            label: Text(AppLocalizations.of(context)!.activitiesAvailableSpots),
             deleteIcon: const Icon(Icons.close, size: 18),
             onDeleted: () {
               setState(() {
@@ -465,7 +465,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Aucune activité trouvée',
+            AppLocalizations.of(context)!.activitiesNoActivitiesFound,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -474,7 +474,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Essayez de modifier vos filtres',
+            AppLocalizations.of(context)!.activitiesTryModifyingFilters,
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[500],
@@ -520,9 +520,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           ElevatedButton.icon(
             onPressed: _loadActivities,
             icon: const Icon(Icons.refresh, color: Colors.white),
-            label: const Text(
-              'Réessayer',
-              style: TextStyle(color: Colors.white),
+            label: Text(
+              AppLocalizations.of(context)!.commonRetry,
+              style: const TextStyle(color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3860F8),

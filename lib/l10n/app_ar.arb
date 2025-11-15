@@ -1014,5 +1014,14 @@
   "termsSection13Title": "13. تعديلات الشروط",
   "termsSection13Content": "يمكننا تعديل هذه الشروط في أي وقت. سيتم نشر التعديلات في التطبيق وتدخل حيز التنفيذ فورًا. استمرارك في استخدام التطبيق يشكل قبولك للشروط المعدلة.",
   "termsSection14Title": "14. الاتصال",
-  "termsSection14Content": "لأي أسئلة بخصوص شروط الاستخدام هذه، اتصل بنا:\n\nمكتب السياحة في جيبوتي\nالبريد الإلكتروني: info@visitdjibouti.dj\nالهاتف: +253 XXX XXX"
+  "termsSection14Content": "لأي أسئلة بخصوص شروط الاستخدام هذه، اتصل بنا:\n\nمكتب السياحة في جيبوتي\nالبريد الإلكتروني: info@visitdjibouti.dj\nالهاتف: +253 XXX XXX",
+
+  "activitiesTitle": "الأنشطة",
+  "activitiesPopular": "أنشطة شائعة",
+  "activitiesDifficulty": "الصعوبة",
+  "activitiesRegion": "المنطقة",
+  "activitiesAvailableSpotsOnly": "فقط مع أماكن متاحة",
+  "activitiesAvailableSpots": "أماكن متاحة",
+  "activitiesNoActivitiesFound": "لم يتم العثور على أنشطة",
+  "activitiesTryModifyingFilters": "حاول تعديل الفلاتر"
 }

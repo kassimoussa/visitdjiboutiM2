@@ -1013,5 +1013,14 @@
   "termsSection13Title": "13. Modifications to Terms",
   "termsSection13Content": "We may modify these terms at any time. Modifications will be published in the Application and take effect immediately. Your continued use of the Application constitutes your acceptance of the modified terms.",
   "termsSection14Title": "14. Contact",
-  "termsSection14Content": "For any questions regarding these terms of use, contact us:\n\nDjibouti Tourism Office\nEmail: info@visitdjibouti.dj\nPhone: +253 XXX XXX"
+  "termsSection14Content": "For any questions regarding these terms of use, contact us:\n\nDjibouti Tourism Office\nEmail: info@visitdjibouti.dj\nPhone: +253 XXX XXX",
+
+  "activitiesTitle": "Activities",
+  "activitiesPopular": "Popular Activities",
+  "activitiesDifficulty": "Difficulty",
+  "activitiesRegion": "Region",
+  "activitiesAvailableSpotsOnly": "Only with available spots",
+  "activitiesAvailableSpots": "Available spots",
+  "activitiesNoActivitiesFound": "No activities found",
+  "activitiesTryModifyingFilters": "Try modifying your filters"
 }

@@ -1014,5 +1014,14 @@
   "termsSection13Title": "13. Modifications des conditions",
   "termsSection13Content": "Nous pouvons modifier ces conditions à tout moment. Les modifications seront publiées dans l'Application et prendront effet immédiatement. Votre utilisation continue de l'Application constitue votre acceptation des conditions modifiées.",
   "termsSection14Title": "14. Contact",
-  "termsSection14Content": "Pour toute question concernant ces conditions d'utilisation, contactez-nous:\n\nOffice du Tourisme de Djibouti\nEmail: info@visitdjibouti.dj\nTéléphone: +253 XXX XXX"
+  "termsSection14Content": "Pour toute question concernant ces conditions d'utilisation, contactez-nous:\n\nOffice du Tourisme de Djibouti\nEmail: info@visitdjibouti.dj\nTéléphone: +253 XXX XXX",
+
+  "activitiesTitle": "Activités",
+  "activitiesPopular": "Activités populaires",
+  "activitiesDifficulty": "Difficulté",
+  "activitiesRegion": "Région",
+  "activitiesAvailableSpotsOnly": "Seulement avec places disponibles",
+  "activitiesAvailableSpots": "Places disponibles",
+  "activitiesNoActivitiesFound": "Aucune activité trouvée",
+  "activitiesTryModifyingFilters": "Essayez de modifier vos filtres"
 }
