@@ -348,7 +348,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          reservation.reservableName ?? 'Nom non disponible',
+                          reservation.reservableName ?? AppLocalizations.of(context)!.reservationsNameNotAvailable,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -383,12 +383,12 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               const SizedBox(height: 12),
               
               // Informations de réservation
-              _buildInfoRow(Icons.calendar_today, 'Date', reservation.reservationDate),
+              _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, reservation.reservationDate),
               if (reservation.reservationTime != null)
-                _buildInfoRow(Icons.access_time, 'Heure', reservation.reservationTime!),
-              _buildInfoRow(Icons.people, 'Personnes', '${reservation.numberOfPeople}'),
+                _buildInfoRow(Icons.access_time, AppLocalizations.of(context)!.reservationsTime, reservation.reservationTime!),
+              _buildInfoRow(Icons.people, AppLocalizations.of(context)!.reservationsPeople, '${reservation.numberOfPeople}'),
               if (reservation.reservableLocation?.isNotEmpty == true)
-                _buildInfoRow(Icons.location_on, 'Lieu', reservation.reservableLocation!),
+                _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.reservationsLocation, reservation.reservableLocation!),
               
               // Prix si applicable
               if (reservation.totalPrice != null && reservation.totalPrice! > 0) ...[
@@ -396,9 +396,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.reservationsTotal,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       reservation.priceText,
@@ -423,7 +423,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
-                      child: const Text('Annuler'),
+                      child: Text(AppLocalizations.of(context)!.commonCancel),
                     ),
                   ],
                 ),
@@ -437,7 +437,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
-                      child: const Text('Supprimer'),
+                      child: Text(AppLocalizations.of(context)!.commonDelete),
                     ),
                   ],
                 ),
@@ -497,16 +497,16 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.tour,
                           size: 14,
                           color: Color(0xFF3860F8),
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
-                          'Tour',
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.reservationsTour,
+                          style: const TextStyle(
                             color: Color(0xFF3860F8),
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -537,7 +537,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Réservation #${reservation.id}',
+                          '${AppLocalizations.of(context)!.reservationsNumber}${reservation.id}',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 12,
@@ -563,10 +563,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
               // Informations de réservation
               if (tour?.startDate != null && tour?.endDate != null)
-                _buildInfoRow(Icons.calendar_today, 'Dates', '${tour!.startDate} - ${tour.endDate}'),
-              _buildInfoRow(Icons.people, 'Participants', '${reservation.numberOfPeople}'),
+                _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.reservationsDates, '${tour!.startDate} - ${tour.endDate}'),
+              _buildInfoRow(Icons.people, AppLocalizations.of(context)!.reservationsParticipants, '${reservation.numberOfPeople}'),
               if (reservation.notes != null && reservation.notes!.isNotEmpty)
-                _buildInfoRow(Icons.note, 'Notes', reservation.notes!),
+                _buildInfoRow(Icons.note, AppLocalizations.of(context)!.reservationsNotes, reservation.notes!),
 
               // Actions (similaire aux réservations POI/Event)
               if (reservation.canCancel) ...[
@@ -579,7 +579,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
-                      child: const Text('Annuler'),
+                      child: Text(AppLocalizations.of(context)!.commonCancel),
                     ),
                   ],
                 ),
@@ -593,7 +593,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
-                      child: const Text('Supprimer'),
+                      child: Text(AppLocalizations.of(context)!.commonDelete),
                     ),
                   ],
                 ),
@@ -652,16 +652,16 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.hiking,
                           size: 14,
                           color: Color(0xFF3860F8),
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
-                          'Activité',
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.reservationsActivity,
+                          style: const TextStyle(
                             color: Color(0xFF3860F8),
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -692,7 +692,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Inscription #${registration.id}',
+                          '${AppLocalizations.of(context)!.reservationsRegistrationNumber}${registration.id}',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 12,
@@ -718,10 +718,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
               // Informations d'inscription
               if (registration.preferredDate != null)
-                _buildInfoRow(Icons.calendar_today, 'Date préférée', registration.preferredDate!),
-              _buildInfoRow(Icons.people, 'Participants', '${registration.numberOfPeople}'),
+                _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.reservationsPreferredDate, registration.preferredDate!),
+              _buildInfoRow(Icons.people, AppLocalizations.of(context)!.reservationsParticipants, '${registration.numberOfPeople}'),
               if (registration.specialRequirements != null && registration.specialRequirements!.isNotEmpty)
-                _buildInfoRow(Icons.note, 'Exigences', registration.specialRequirements!),
+                _buildInfoRow(Icons.note, AppLocalizations.of(context)!.reservationsRequirements, registration.specialRequirements!),
 
               // Prix
               if (registration.totalPrice > 0) ...[
@@ -729,9 +729,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.reservationsTotal,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       registration.displayPrice,
@@ -756,7 +756,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
-                      child: const Text('Annuler'),
+                      child: Text(AppLocalizations.of(context)!.commonCancel),
                     ),
                   ],
                 ),
@@ -770,7 +770,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),
-                      child: const Text('Supprimer'),
+                      child: Text(AppLocalizations.of(context)!.commonDelete),
                     ),
                   ],
                 ),
@@ -844,7 +844,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 backgroundColor: const Color(0xFF3860F8),
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),
@@ -875,7 +875,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             ),
             const SizedBox(height: 8),
             Text(
-              'Explorez nos lieux et événements pour faire votre première réservation!',
+              AppLocalizations.of(context)!.reservationsEmptyMessage,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey[600],
@@ -927,9 +927,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Détails de la réservation',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.reservationsDetailsTitle,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -943,22 +943,22 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             const Divider(),
             
             // Details
-            _buildDetailRow('Numéro', reservation.confirmationNumber),
-            _buildDetailRow('Lieu/Événement', reservation.reservableName ?? 'N/A'),
-            _buildDetailRow('Type', reservation.typeText),
-            _buildDetailRow('Date', reservation.reservationDate),
+            _buildDetailRow(AppLocalizations.of(context)!.reservationsConfirmationNumber, reservation.confirmationNumber),
+            _buildDetailRow(AppLocalizations.of(context)!.reservationsPlaceOrEvent, reservation.reservableName ?? 'N/A'),
+            _buildDetailRow(AppLocalizations.of(context)!.reservationsType, reservation.typeText),
+            _buildDetailRow(AppLocalizations.of(context)!.commonDate, reservation.reservationDate),
             if (reservation.reservationTime != null)
-              _buildDetailRow('Heure', reservation.reservationTime!),
-            _buildDetailRow('Personnes', '${reservation.numberOfPeople}'),
-            _buildDetailRow('Statut', reservation.statusText),
+              _buildDetailRow(AppLocalizations.of(context)!.reservationsTime, reservation.reservationTime!),
+            _buildDetailRow(AppLocalizations.of(context)!.reservationsPeople, '${reservation.numberOfPeople}'),
+            _buildDetailRow(AppLocalizations.of(context)!.reservationsStatus, reservation.statusText),
             if (reservation.notes?.isNotEmpty == true)
-              _buildDetailRow('Notes', reservation.notes!),
+              _buildDetailRow(AppLocalizations.of(context)!.reservationsNotes, reservation.notes!),
             if (reservation.userName?.isNotEmpty == true)
-              _buildDetailRow('Contact', reservation.userName!),
+              _buildDetailRow(AppLocalizations.of(context)!.commonContact, reservation.userName!),
             if (reservation.userEmail?.isNotEmpty == true)
-              _buildDetailRow('Email', reservation.userEmail!),
+              _buildDetailRow(AppLocalizations.of(context)!.commonEmail, reservation.userEmail!),
             if (reservation.userPhone?.isNotEmpty == true)
-              _buildDetailRow('Téléphone', reservation.userPhone!),
+              _buildDetailRow(AppLocalizations.of(context)!.commonPhone, reservation.userPhone!),
             
             const SizedBox(height: 16),
             
@@ -975,7 +975,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Annuler cette réservation'),
+                  child: Text(AppLocalizations.of(context)!.reservationsCancelThisReservation),
                 ),
               )
             else if (reservation.isCancelled)
@@ -990,7 +990,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Supprimer cette réservation'),
+                  child: Text(AppLocalizations.of(context)!.reservationsDeleteThisReservation),
                 ),
               ),
           ],
@@ -1035,12 +1035,12 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir annuler la réservation n°${reservation.confirmationNumber}?'
+          AppLocalizations.of(context)!.reservationsCancelConfirm(reservation.confirmationNumber)
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1048,7 +1048,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, annuler'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesCancel),
           ),
         ],
       ),
@@ -1061,7 +1061,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (response.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Réservation annulée'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsCancelled),
               backgroundColor: Colors.green,
             ),
           );
@@ -1069,7 +1069,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de l\'annulation'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsCancelError),
               backgroundColor: Colors.red,
             ),
           );
@@ -1084,12 +1084,12 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsDeleteTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir supprimer définitivement la réservation n°${reservation.confirmationNumber}?\n\nCette action est irréversible.'
+          AppLocalizations.of(context)!.reservationsDeleteConfirm(reservation.confirmationNumber)
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1097,7 +1097,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, supprimer'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesDelete),
           ),
         ],
       ),
@@ -1110,7 +1110,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (response.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Réservation supprimée'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsDeleted),
               backgroundColor: Colors.green,
             ),
           );
@@ -1118,7 +1118,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de la suppression'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsDeleteError),
               backgroundColor: Colors.red,
             ),
           );
@@ -1151,9 +1151,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Détails de la réservation',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.reservationsDetailsTitle,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1167,39 +1167,39 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 const SizedBox(height: 16),
 
                 // Statut
-                _buildDetailRow('Statut', reservation.displayStatus),
+                _buildDetailRow(AppLocalizations.of(context)!.reservationsStatus, reservation.displayStatus),
                 const Divider(),
 
                 // Informations du tour
                 if (reservation.tour != null) ...[
-                  _buildDetailRow('Tour', reservation.tour!.title),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsTour, reservation.tour!.title),
                   if (reservation.tour!.startDate != null && reservation.tour!.endDate != null)
-                    _buildDetailRow('Dates', '${reservation.tour!.startDate} - ${reservation.tour!.endDate}'),
+                    _buildDetailRow(AppLocalizations.of(context)!.reservationsDates, '${reservation.tour!.startDate} - ${reservation.tour!.endDate}'),
                   const Divider(),
                 ],
 
                 // Informations de réservation
-                _buildDetailRow('Réservation #', '${reservation.id}'),
-                _buildDetailRow('Participants', '${reservation.numberOfPeople}'),
+                _buildDetailRow(AppLocalizations.of(context)!.reservationsNumber, '${reservation.id}'),
+                _buildDetailRow(AppLocalizations.of(context)!.reservationsParticipants, '${reservation.numberOfPeople}'),
                 if (reservation.notes != null && reservation.notes!.isNotEmpty)
-                  _buildDetailRow('Notes', reservation.notes!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsNotes, reservation.notes!),
                 const Divider(),
 
                 // Informations utilisateur
                 if (reservation.isGuest) ...[
-                  _buildDetailRow('Nom', reservation.guestName ?? 'Non spécifié'),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsName, reservation.guestName ?? 'Non spécifié'),
                   if (reservation.guestEmail != null)
-                    _buildDetailRow('Email', reservation.guestEmail!),
+                    _buildDetailRow(AppLocalizations.of(context)!.commonEmail, reservation.guestEmail!),
                   if (reservation.guestPhone != null)
-                    _buildDetailRow('Téléphone', reservation.guestPhone!),
+                    _buildDetailRow(AppLocalizations.of(context)!.commonPhone, reservation.guestPhone!),
                   const Divider(),
                 ],
 
                 // Dates système
                 if (reservation.createdAt != null)
-                  _buildDetailRow('Créée le', reservation.createdAt!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsCreatedAt, reservation.createdAt!),
                 if (reservation.updatedAt != null)
-                  _buildDetailRow('Mise à jour', reservation.updatedAt!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsUpdatedAt, reservation.updatedAt!),
 
                 // Actions
                 if (reservation.canCancel) ...[
@@ -1216,7 +1216,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child: const Text('Annuler la réservation'),
+                      child: Text(AppLocalizations.of(context)!.reservationsCancelButton),
                     ),
                   ),
                 ] else if (reservation.status == ReservationStatus.cancelledByUser) ...[
@@ -1233,7 +1233,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child: const Text('Supprimer la réservation'),
+                      child: Text(AppLocalizations.of(context)!.reservationsDeleteButton),
                     ),
                   ),
                 ],
@@ -1249,14 +1249,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Annuler la réservation'),
+        title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir annuler la réservation #${reservation.id}?'
+          '${AppLocalizations.of(context)!.reservationsCancelTitle} #${reservation.id}?'
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1264,7 +1264,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, annuler'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesCancel),
           ),
         ],
       ),
@@ -1278,7 +1278,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           if (response.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(response.message ?? 'Réservation annulée'),
+                content: Text(response.message ?? AppLocalizations.of(context)!.reservationsCancelled),
                 backgroundColor: Colors.green,
               ),
             );
@@ -1286,7 +1286,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(response.message ?? 'Erreur lors de l\'annulation'),
+                content: Text(response.message ?? AppLocalizations.of(context)!.reservationsCancelError),
                 backgroundColor: Colors.red,
               ),
             );
@@ -1296,7 +1296,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur: $e'),
+              content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -1309,14 +1309,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer la réservation'),
+        title: Text(AppLocalizations.of(context)!.reservationsDeleteTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir supprimer définitivement la réservation #${reservation.id}? Cette action est irréversible.'
+          '${AppLocalizations.of(context)!.reservationsDeleteTitle} #${reservation.id}? ${AppLocalizations.of(context)!.reservationsDeleteConfirm('')}'
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1324,7 +1324,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, supprimer'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesDelete),
           ),
         ],
       ),
@@ -1339,16 +1339,16 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           if (success) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Réservation supprimée'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.reservationsDeleted),
                 backgroundColor: Colors.green,
               ),
             );
             _loadReservations(); // Recharger la liste
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Erreur lors de la suppression'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.reservationsDeleteError),
                 backgroundColor: Colors.red,
               ),
             );
@@ -1358,7 +1358,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur: $e'),
+              content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -1391,9 +1391,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Détails de l\'inscription',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.reservationsRegistrationDetailsTitle,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1407,47 +1407,47 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 const SizedBox(height: 16),
 
                 // Statut
-                _buildDetailRow('Statut', registration.displayStatus),
+                _buildDetailRow(AppLocalizations.of(context)!.reservationsStatus, registration.displayStatus),
                 const Divider(),
 
                 // Informations de l'activité
                 if (registration.activity != null) ...[
-                  _buildDetailRow('Activité', registration.activity!.title),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsActivity, registration.activity!.title),
                   const Divider(),
                 ],
 
                 // Informations d'inscription
-                _buildDetailRow('Participants', '${registration.numberOfPeople}'),
+                _buildDetailRow(AppLocalizations.of(context)!.reservationsParticipants, '${registration.numberOfPeople}'),
                 if (registration.preferredDate != null)
-                  _buildDetailRow('Date préférée', _formatDate(registration.preferredDate)),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsPreferredDate, _formatDate(registration.preferredDate)),
                 if (registration.specialRequirements != null && registration.specialRequirements!.isNotEmpty)
-                  _buildDetailRow('Exigences', registration.specialRequirements!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsRequirements, registration.specialRequirements!),
                 if (registration.medicalConditions != null && registration.medicalConditions!.isNotEmpty)
-                  _buildDetailRow('Conditions médicales', registration.medicalConditions!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsMedicalConditions, registration.medicalConditions!),
                 const Divider(),
 
                 // Prix
-                _buildDetailRow('Prix total', registration.displayPrice),
+                _buildDetailRow(AppLocalizations.of(context)!.reservationsTotalPrice, registration.displayPrice),
                 const Divider(),
 
                 // Informations utilisateur (si invité)
                 if (registration.isGuest) ...[
                   if (registration.guestEmail != null)
-                    _buildDetailRow('Email', registration.guestEmail!),
+                    _buildDetailRow(AppLocalizations.of(context)!.commonEmail, registration.guestEmail!),
                   if (registration.guestPhone != null)
-                    _buildDetailRow('Téléphone', registration.guestPhone!),
+                    _buildDetailRow(AppLocalizations.of(context)!.commonPhone, registration.guestPhone!),
                   const Divider(),
                 ],
 
                 // Dates système
                 if (registration.createdAt != null)
-                  _buildDetailRow('Créée le', _formatDate(registration.createdAt)),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsCreatedAt, _formatDate(registration.createdAt)),
                 if (registration.updatedAt != null)
-                  _buildDetailRow('Mise à jour', _formatDate(registration.updatedAt)),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsUpdatedAt, _formatDate(registration.updatedAt)),
                 if (registration.confirmedAt != null)
-                  _buildDetailRow('Confirmée le', _formatDate(registration.confirmedAt)),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsConfirmedAt, _formatDate(registration.confirmedAt)),
                 if (registration.cancelledAt != null)
-                  _buildDetailRow('Annulée le', _formatDate(registration.cancelledAt)),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsCancelledAt, _formatDate(registration.cancelledAt)),
 
                 // Actions
                 if (registration.canCancel) ...[
@@ -1464,7 +1464,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child: const Text('Annuler l\'inscription'),
+                      child: Text(AppLocalizations.of(context)!.reservationsRegistrationCancelButton),
                     ),
                   ),
                 ] else if (registration.status == RegistrationStatus.cancelledByUser || registration.status == RegistrationStatus.cancelledByOperator) ...[
@@ -1481,7 +1481,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child: const Text('Supprimer l\'inscription'),
+                      child: Text(AppLocalizations.of(context)!.reservationsRegistrationDeleteButton),
                     ),
                   ),
                 ],
@@ -1494,11 +1494,11 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
   }
 
   Future<void> _deleteActivityRegistration(ActivityRegistration registration, {bool isCancel = false}) async {
-    final title = isCancel ? 'Annuler l\'inscription' : 'Supprimer l\'inscription';
+    final title = isCancel ? AppLocalizations.of(context)!.reservationsRegistrationCancelTitle : AppLocalizations.of(context)!.reservationsRegistrationDeleteTitle;
     final content = isCancel
-        ? 'Êtes-vous sûr de vouloir annuler cette inscription ? Son statut passera à "Annulé".'
-        : 'Êtes-vous sûr de vouloir supprimer définitivement l\'inscription #${registration.id}? Cette action est irréversible.';
-    final confirmText = isCancel ? 'Oui, annuler' : 'Oui, supprimer';
+        ? AppLocalizations.of(context)!.reservationsRegistrationCancelConfirm
+        : AppLocalizations.of(context)!.reservationsRegistrationDeleteConfirm(registration.id.toString());
+    final confirmText = isCancel ? AppLocalizations.of(context)!.reservationsYesCancel : AppLocalizations.of(context)!.reservationsYesDelete;
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -1508,7 +1508,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1539,7 +1539,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           if (success) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(isCancel ? 'Inscription annulée' : 'Inscription supprimée'),
+                content: Text(isCancel ? AppLocalizations.of(context)!.reservationsRegistrationCancelled : AppLocalizations.of(context)!.reservationsRegistrationDeleted),
                 backgroundColor: Colors.green,
               ),
             );
@@ -1547,7 +1547,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(isCancel ? 'Erreur lors de l\'annulation' : 'Erreur lors de la suppression'),
+                content: Text(isCancel ? AppLocalizations.of(context)!.reservationsRegistrationCancelError : AppLocalizations.of(context)!.reservationsRegistrationDeleteError),
                 backgroundColor: Colors.red,
               ),
             );
@@ -1557,7 +1557,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur: $e'),
+              content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
