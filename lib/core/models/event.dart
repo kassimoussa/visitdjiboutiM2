@@ -50,6 +50,8 @@ class Event {
   final int? availableSpots;
   @JsonKey(name: 'is_sold_out', fromJson: _parseBool, defaultValue: false)
   final bool isSoldOut;
+  @JsonKey(name: 'allow_reservations', fromJson: _parseBool, defaultValue: true)
+  final bool allowReservations;
   @JsonKey(name: 'is_active', fromJson: _parseBool, defaultValue: true)
   final bool isActive;
   @JsonKey(name: 'is_ongoing', fromJson: _parseBool, defaultValue: false)
@@ -111,6 +113,7 @@ class Event {
     required this.currentParticipants,
     this.availableSpots,
     required this.isSoldOut,
+    required this.allowReservations,
     required this.isActive,
     required this.isOngoing,
     required this.hasEnded,
@@ -150,7 +153,7 @@ class Event {
     return 'À venir';
   }
   
-  bool get canRegister => isActive && !hasEnded && !isSoldOut;
+  bool get canRegister => isActive && !hasEnded && !isSoldOut && allowReservations;
   
   // Localized methods
   String getPriceText(BuildContext context) {

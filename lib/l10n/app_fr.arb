@@ -888,6 +888,8 @@
   "reservationFormNotes": "Notes ou demandes spéciales",
   "reservationFormNotesHint": "Allergies alimentaires, besoins spéciaux...",
   "reservationFormConfirm": "Confirmer la réservation",
+  "reservationFormSuccess": "Réservation créée avec succès!",
+  "reservationFormError": "Erreur lors de la réservation",
 
   "contactOperatorTitle": "Contacter {name}",
   "@contactOperatorTitle": {
