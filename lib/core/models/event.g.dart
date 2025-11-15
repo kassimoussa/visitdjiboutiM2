@@ -28,11 +28,11 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
   isFeatured: json['is_featured'] == null
       ? false
       : Event._parseBool(json['is_featured']),
-  maxParticipants: Event._parseInt(json['max_participants']),
+  maxParticipants: Event._parseIntNullable(json['max_participants']),
   currentParticipants: json['current_participants'] == null
       ? 0
       : Event._parseInt(json['current_participants']),
-  availableSpots: Event._parseInt(json['available_spots']),
+  availableSpots: Event._parseIntNullable(json['available_spots']),
   isSoldOut: json['is_sold_out'] == null
       ? false
       : Event._parseBool(json['is_sold_out']),
