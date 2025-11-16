@@ -1045,4 +1045,25 @@
       }
     }
   }
+,
+
+  "securityChangePassword": "تغيير كلمة المرور",
+  "securityCurrentPassword": "كلمة المرور الحالية",
+  "securityCurrentPasswordRequired": "كلمة المرور الحالية مطلوبة",
+  "securityNewPassword": "كلمة المرور الجديدة",
+  "securityNewPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+  "securityPasswordMinLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+  "securityConfirmPassword": "تأكيد كلمة المرور الجديدة",
+  "securityConfirmPasswordRequired": "التأكيد مطلوب",
+  "securityPasswordMismatch": "كلمات المرور غير متطابقة",
+  "securityPasswordChanged": "تم تغيير كلمة المرور بنجاح",
+  "securityPasswordChangeError": "خطأ في تغيير كلمة المرور",
+  "securityError": "خطأ: {error}",
+  "@securityError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

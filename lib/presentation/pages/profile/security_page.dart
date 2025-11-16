@@ -60,7 +60,7 @@ class _SecurityPageState extends State<SecurityPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Changer le mot de passe',
+          AppLocalizations.of(context)!.securityChangePassword,
           style: TextStyle(
             fontSize: ResponsiveConstants.subtitle1,
             fontWeight: FontWeight.bold,
@@ -75,13 +75,13 @@ class _SecurityPageState extends State<SecurityPage> {
           child: Column(
             children: [
               _buildPasswordField(
-                label: 'Mot de passe actuel',
+                label: AppLocalizations.of(context)!.securityCurrentPassword,
                 controller: _currentPasswordController,
                 isVisible: _showCurrentPassword,
                 onToggleVisibility: () => setState(() => _showCurrentPassword = !_showCurrentPassword),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Le mot de passe actuel est obligatoire';
+                    return AppLocalizations.of(context)!.securityCurrentPasswordRequired;
                   }
                   return null;
                 },
@@ -90,16 +90,16 @@ class _SecurityPageState extends State<SecurityPage> {
               SizedBox(height: ResponsiveConstants.mediumSpace),
               
               _buildPasswordField(
-                label: 'Nouveau mot de passe',
+                label: AppLocalizations.of(context)!.securityNewPassword,
                 controller: _newPasswordController,
                 isVisible: _showNewPassword,
                 onToggleVisibility: () => setState(() => _showNewPassword = !_showNewPassword),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Le nouveau mot de passe est obligatoire';
+                    return AppLocalizations.of(context)!.securityNewPasswordRequired;
                   }
                   if (value.length < 8) {
-                    return 'Le mot de passe doit contenir au moins 8 caractères';
+                    return AppLocalizations.of(context)!.securityPasswordMinLength;
                   }
                   return null;
                 },
@@ -108,16 +108,16 @@ class _SecurityPageState extends State<SecurityPage> {
               SizedBox(height: ResponsiveConstants.mediumSpace),
               
               _buildPasswordField(
-                label: 'Confirmer le nouveau mot de passe',
+                label: AppLocalizations.of(context)!.securityConfirmPassword,
                 controller: _confirmPasswordController,
                 isVisible: _showConfirmPassword,
                 onToggleVisibility: () => setState(() => _showConfirmPassword = !_showConfirmPassword),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'La confirmation est obligatoire';
+                    return AppLocalizations.of(context)!.securityConfirmPasswordRequired;
                   }
                   if (value != _newPasswordController.text) {
-                    return 'Les mots de passe ne correspondent pas';
+                    return AppLocalizations.of(context)!.securityPasswordMismatch;
                   }
                   return null;
                 },
@@ -147,7 +147,7 @@ class _SecurityPageState extends State<SecurityPage> {
                           ),
                         )
                       : Text(
-                          'Changer le mot de passe',
+                          AppLocalizations.of(context)!.securityChangePassword,
                           style: TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.w600,
@@ -250,7 +250,7 @@ class _SecurityPageState extends State<SecurityPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Mot de passe modifié avec succès'),
+              content: Text(AppLocalizations.of(context)!.securityPasswordChanged),
               backgroundColor: const Color(0xFF009639),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -263,7 +263,7 @@ class _SecurityPageState extends State<SecurityPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors du changement de mot de passe'),
+              content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.securityPasswordChangeError),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -277,7 +277,7 @@ class _SecurityPageState extends State<SecurityPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: $e'),
+            content: Text(AppLocalizations.of(context)!.securityError(e.toString())),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(

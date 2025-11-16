@@ -1044,4 +1044,25 @@
       }
     }
   }
+,
+
+  "securityChangePassword": "Change Password",
+  "securityCurrentPassword": "Current Password",
+  "securityCurrentPasswordRequired": "Current password is required",
+  "securityNewPassword": "New Password",
+  "securityNewPasswordRequired": "New password is required",
+  "securityPasswordMinLength": "Password must contain at least 8 characters",
+  "securityConfirmPassword": "Confirm New Password",
+  "securityConfirmPasswordRequired": "Confirmation is required",
+  "securityPasswordMismatch": "Passwords do not match",
+  "securityPasswordChanged": "Password changed successfully",
+  "securityPasswordChangeError": "Error changing password",
+  "securityError": "Error: {error}",
+  "@securityError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

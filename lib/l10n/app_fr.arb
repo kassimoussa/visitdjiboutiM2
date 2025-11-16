@@ -1044,5 +1044,25 @@
         "type": "String"
       }
     }
+  },
+
+  "securityChangePassword": "Changer le mot de passe",
+  "securityCurrentPassword": "Mot de passe actuel",
+  "securityCurrentPasswordRequired": "Le mot de passe actuel est obligatoire",
+  "securityNewPassword": "Nouveau mot de passe",
+  "securityNewPasswordRequired": "Le nouveau mot de passe est obligatoire",
+  "securityPasswordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+  "securityConfirmPassword": "Confirmer le nouveau mot de passe",
+  "securityConfirmPasswordRequired": "La confirmation est obligatoire",
+  "securityPasswordMismatch": "Les mots de passe ne correspondent pas",
+  "securityPasswordChanged": "Mot de passe modifié avec succès",
+  "securityPasswordChangeError": "Erreur lors du changement de mot de passe",
+  "securityError": "Erreur: {error}",
+  "@securityError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }
