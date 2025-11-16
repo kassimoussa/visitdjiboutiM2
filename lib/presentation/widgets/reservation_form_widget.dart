@@ -5,7 +5,7 @@ import '../../core/models/reservation.dart';
 import '../../core/models/api_response.dart';
 import '../../core/services/reservation_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vd_gem/generated/l10n/app_localizations.dart';
 
 class ReservationFormWidget extends StatefulWidget {
   final Poi? poi;

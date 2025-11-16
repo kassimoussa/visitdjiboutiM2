@@ -1534,6 +1534,128 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reservationsRegistrationDeleteError => 'خطأ أثناء الحذف';
 
   @override
+  String get reservationsNameNotAvailable => 'الاسم غير متاح';
+
+  @override
+  String get reservationsTime => 'الوقت';
+
+  @override
+  String get reservationsPeople => 'الأشخاص';
+
+  @override
+  String get reservationsLocation => 'الموقع';
+
+  @override
+  String get reservationsTotal => 'الإجمالي:';
+
+  @override
+  String get commonDelete => 'حذف';
+
+  @override
+  String get reservationsTour => 'جولة';
+
+  @override
+  String get reservationsNumber => 'الحجز #';
+
+  @override
+  String get reservationsDates => 'التواريخ';
+
+  @override
+  String get reservationsParticipants => 'المشاركون';
+
+  @override
+  String get reservationsNotes => 'ملاحظات';
+
+  @override
+  String get reservationsActivity => 'نشاط';
+
+  @override
+  String get reservationsRegistrationNumber => 'التسجيل #';
+
+  @override
+  String get reservationsPreferredDate => 'التاريخ المفضل';
+
+  @override
+  String get reservationsRequirements => 'المتطلبات';
+
+  @override
+  String get reservationsConfirmationNumber => 'الرقم';
+
+  @override
+  String get reservationsPlaceOrEvent => 'المكان/الحدث';
+
+  @override
+  String get reservationsType => 'النوع';
+
+  @override
+  String get reservationsStatus => 'الحالة';
+
+  @override
+  String get reservationsCancelThisReservation => 'إلغاء هذا الحجز';
+
+  @override
+  String get reservationsDeleteThisReservation => 'حذف هذا الحجز';
+
+  @override
+  String get reservationsCreatedAt => 'تم الإنشاء في';
+
+  @override
+  String get reservationsUpdatedAt => 'تم التحديث';
+
+  @override
+  String get reservationsCancelButton => 'إلغاء الحجز';
+
+  @override
+  String get reservationsDeleteButton => 'حذف الحجز';
+
+  @override
+  String get reservationsMedicalConditions => 'الحالات الطبية';
+
+  @override
+  String get reservationsTotalPrice => 'السعر الإجمالي';
+
+  @override
+  String get reservationsConfirmedAt => 'تم التأكيد في';
+
+  @override
+  String get reservationsCancelledAt => 'تم الإلغاء في';
+
+  @override
+  String get reservationsRegistrationCancelButton => 'إلغاء التسجيل';
+
+  @override
+  String get reservationsRegistrationDeleteButton => 'حذف التسجيل';
+
+  @override
+  String get reservationsRegistrationDeleteTitle => 'حذف التسجيل';
+
+  @override
+  String get reservationsName => 'الاسم';
+
+  @override
+  String reservationsError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get reservationsStatusPending => 'قيد الانتظار';
+
+  @override
+  String get reservationsStatusConfirmed => 'مؤكدة';
+
+  @override
+  String get reservationsStatusCancelled => 'ملغاة';
+
+  @override
+  String get reservationsStatusUnknown => 'غير معروف';
+
+  @override
+  String get reservationsTypePoi => 'مكان';
+
+  @override
+  String get reservationsTypeEvent => 'حدث';
+
+  @override
   String get settingsLanguageFrench => 'الفرنسية';
 
   @override
@@ -1879,6 +2001,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reservationFormConfirm => 'تأكيد الحجز';
 
   @override
+  String get reservationFormSuccess => 'تم إنشاء الحجز بنجاح!';
+
+  @override
+  String get reservationFormError => 'خطأ في إنشاء الحجز';
+
+  @override
   String contactOperatorTitle(String name) {
     return 'الاتصال بـ $name';
   }
@@ -2051,4 +2179,28 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get termsSection14Content =>
       'لأي أسئلة بخصوص شروط الاستخدام هذه، اتصل بنا:\n\nمكتب السياحة في جيبوتي\nالبريد الإلكتروني: info@visitdjibouti.dj\nالهاتف: +253 XXX XXX';
+
+  @override
+  String get activitiesTitle => 'الأنشطة';
+
+  @override
+  String get activitiesPopular => 'أنشطة شائعة';
+
+  @override
+  String get activitiesDifficulty => 'الصعوبة';
+
+  @override
+  String get activitiesRegion => 'المنطقة';
+
+  @override
+  String get activitiesAvailableSpotsOnly => 'فقط مع أماكن متاحة';
+
+  @override
+  String get activitiesAvailableSpots => 'أماكن متاحة';
+
+  @override
+  String get activitiesNoActivitiesFound => 'لم يتم العثور على أنشطة';
+
+  @override
+  String get activitiesTryModifyingFilters => 'حاول تعديل الفلاتر';
 }

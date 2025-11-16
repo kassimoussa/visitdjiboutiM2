@@ -3016,6 +3016,246 @@ abstract class AppLocalizations {
   /// **'Erreur lors de la suppression'**
   String get reservationsRegistrationDeleteError;
 
+  /// No description provided for @reservationsNameNotAvailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom non disponible'**
+  String get reservationsNameNotAvailable;
+
+  /// No description provided for @reservationsTime.
+  ///
+  /// In fr, this message translates to:
+  /// **'Heure'**
+  String get reservationsTime;
+
+  /// No description provided for @reservationsPeople.
+  ///
+  /// In fr, this message translates to:
+  /// **'Personnes'**
+  String get reservationsPeople;
+
+  /// No description provided for @reservationsLocation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu'**
+  String get reservationsLocation;
+
+  /// No description provided for @reservationsTotal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Total:'**
+  String get reservationsTotal;
+
+  /// No description provided for @commonDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get commonDelete;
+
+  /// No description provided for @reservationsTour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour'**
+  String get reservationsTour;
+
+  /// No description provided for @reservationsNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservation #'**
+  String get reservationsNumber;
+
+  /// No description provided for @reservationsDates.
+  ///
+  /// In fr, this message translates to:
+  /// **'Dates'**
+  String get reservationsDates;
+
+  /// No description provided for @reservationsParticipants.
+  ///
+  /// In fr, this message translates to:
+  /// **'Participants'**
+  String get reservationsParticipants;
+
+  /// No description provided for @reservationsNotes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Notes'**
+  String get reservationsNotes;
+
+  /// No description provided for @reservationsActivity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activité'**
+  String get reservationsActivity;
+
+  /// No description provided for @reservationsRegistrationNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription #'**
+  String get reservationsRegistrationNumber;
+
+  /// No description provided for @reservationsPreferredDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date préférée'**
+  String get reservationsPreferredDate;
+
+  /// No description provided for @reservationsRequirements.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exigences'**
+  String get reservationsRequirements;
+
+  /// No description provided for @reservationsConfirmationNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro'**
+  String get reservationsConfirmationNumber;
+
+  /// No description provided for @reservationsPlaceOrEvent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu/Événement'**
+  String get reservationsPlaceOrEvent;
+
+  /// No description provided for @reservationsType.
+  ///
+  /// In fr, this message translates to:
+  /// **'Type'**
+  String get reservationsType;
+
+  /// No description provided for @reservationsStatus.
+  ///
+  /// In fr, this message translates to:
+  /// **'Statut'**
+  String get reservationsStatus;
+
+  /// No description provided for @reservationsCancelThisReservation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler cette réservation'**
+  String get reservationsCancelThisReservation;
+
+  /// No description provided for @reservationsDeleteThisReservation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer cette réservation'**
+  String get reservationsDeleteThisReservation;
+
+  /// No description provided for @reservationsCreatedAt.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créée le'**
+  String get reservationsCreatedAt;
+
+  /// No description provided for @reservationsUpdatedAt.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mise à jour'**
+  String get reservationsUpdatedAt;
+
+  /// No description provided for @reservationsCancelButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler la réservation'**
+  String get reservationsCancelButton;
+
+  /// No description provided for @reservationsDeleteButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer la réservation'**
+  String get reservationsDeleteButton;
+
+  /// No description provided for @reservationsMedicalConditions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Conditions médicales'**
+  String get reservationsMedicalConditions;
+
+  /// No description provided for @reservationsTotalPrice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prix total'**
+  String get reservationsTotalPrice;
+
+  /// No description provided for @reservationsConfirmedAt.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmée le'**
+  String get reservationsConfirmedAt;
+
+  /// No description provided for @reservationsCancelledAt.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annulée le'**
+  String get reservationsCancelledAt;
+
+  /// No description provided for @reservationsRegistrationCancelButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler l\'inscription'**
+  String get reservationsRegistrationCancelButton;
+
+  /// No description provided for @reservationsRegistrationDeleteButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer l\'inscription'**
+  String get reservationsRegistrationDeleteButton;
+
+  /// No description provided for @reservationsRegistrationDeleteTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer l\'inscription'**
+  String get reservationsRegistrationDeleteTitle;
+
+  /// No description provided for @reservationsName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom'**
+  String get reservationsName;
+
+  /// No description provided for @reservationsError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur: {error}'**
+  String reservationsError(String error);
+
+  /// No description provided for @reservationsStatusPending.
+  ///
+  /// In fr, this message translates to:
+  /// **'En attente'**
+  String get reservationsStatusPending;
+
+  /// No description provided for @reservationsStatusConfirmed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmée'**
+  String get reservationsStatusConfirmed;
+
+  /// No description provided for @reservationsStatusCancelled.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annulée'**
+  String get reservationsStatusCancelled;
+
+  /// No description provided for @reservationsStatusUnknown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inconnue'**
+  String get reservationsStatusUnknown;
+
+  /// No description provided for @reservationsTypePoi.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu'**
+  String get reservationsTypePoi;
+
+  /// No description provided for @reservationsTypeEvent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événement'**
+  String get reservationsTypeEvent;
+
   /// No description provided for @settingsLanguageFrench.
   ///
   /// In fr, this message translates to:
@@ -3652,6 +3892,18 @@ abstract class AppLocalizations {
   /// **'Confirmer la réservation'**
   String get reservationFormConfirm;
 
+  /// No description provided for @reservationFormSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservation créée avec succès!'**
+  String get reservationFormSuccess;
+
+  /// No description provided for @reservationFormError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de la réservation'**
+  String get reservationFormError;
+
   /// No description provided for @contactOperatorTitle.
   ///
   /// In fr, this message translates to:
@@ -3957,6 +4209,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Pour toute question concernant ces conditions d\'utilisation, contactez-nous:\n\nOffice du Tourisme de Djibouti\nEmail: info@visitdjibouti.dj\nTéléphone: +253 XXX XXX'**
   String get termsSection14Content;
+
+  /// No description provided for @activitiesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activités'**
+  String get activitiesTitle;
+
+  /// No description provided for @activitiesPopular.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activités populaires'**
+  String get activitiesPopular;
+
+  /// No description provided for @activitiesDifficulty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Difficulté'**
+  String get activitiesDifficulty;
+
+  /// No description provided for @activitiesRegion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Région'**
+  String get activitiesRegion;
+
+  /// No description provided for @activitiesAvailableSpotsOnly.
+  ///
+  /// In fr, this message translates to:
+  /// **'Seulement avec places disponibles'**
+  String get activitiesAvailableSpotsOnly;
+
+  /// No description provided for @activitiesAvailableSpots.
+  ///
+  /// In fr, this message translates to:
+  /// **'Places disponibles'**
+  String get activitiesAvailableSpots;
+
+  /// No description provided for @activitiesNoActivitiesFound.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune activité trouvée'**
+  String get activitiesNoActivitiesFound;
+
+  /// No description provided for @activitiesTryModifyingFilters.
+  ///
+  /// In fr, this message translates to:
+  /// **'Essayez de modifier vos filtres'**
+  String get activitiesTryModifyingFilters;
 }
 
 class _AppLocalizationsDelegate

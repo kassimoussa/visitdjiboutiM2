@@ -1554,6 +1554,128 @@ class AppLocalizationsFr extends AppLocalizations {
       'Erreur lors de la suppression';
 
   @override
+  String get reservationsNameNotAvailable => 'Nom non disponible';
+
+  @override
+  String get reservationsTime => 'Heure';
+
+  @override
+  String get reservationsPeople => 'Personnes';
+
+  @override
+  String get reservationsLocation => 'Lieu';
+
+  @override
+  String get reservationsTotal => 'Total:';
+
+  @override
+  String get commonDelete => 'Supprimer';
+
+  @override
+  String get reservationsTour => 'Tour';
+
+  @override
+  String get reservationsNumber => 'Réservation #';
+
+  @override
+  String get reservationsDates => 'Dates';
+
+  @override
+  String get reservationsParticipants => 'Participants';
+
+  @override
+  String get reservationsNotes => 'Notes';
+
+  @override
+  String get reservationsActivity => 'Activité';
+
+  @override
+  String get reservationsRegistrationNumber => 'Inscription #';
+
+  @override
+  String get reservationsPreferredDate => 'Date préférée';
+
+  @override
+  String get reservationsRequirements => 'Exigences';
+
+  @override
+  String get reservationsConfirmationNumber => 'Numéro';
+
+  @override
+  String get reservationsPlaceOrEvent => 'Lieu/Événement';
+
+  @override
+  String get reservationsType => 'Type';
+
+  @override
+  String get reservationsStatus => 'Statut';
+
+  @override
+  String get reservationsCancelThisReservation => 'Annuler cette réservation';
+
+  @override
+  String get reservationsDeleteThisReservation => 'Supprimer cette réservation';
+
+  @override
+  String get reservationsCreatedAt => 'Créée le';
+
+  @override
+  String get reservationsUpdatedAt => 'Mise à jour';
+
+  @override
+  String get reservationsCancelButton => 'Annuler la réservation';
+
+  @override
+  String get reservationsDeleteButton => 'Supprimer la réservation';
+
+  @override
+  String get reservationsMedicalConditions => 'Conditions médicales';
+
+  @override
+  String get reservationsTotalPrice => 'Prix total';
+
+  @override
+  String get reservationsConfirmedAt => 'Confirmée le';
+
+  @override
+  String get reservationsCancelledAt => 'Annulée le';
+
+  @override
+  String get reservationsRegistrationCancelButton => 'Annuler l\'inscription';
+
+  @override
+  String get reservationsRegistrationDeleteButton => 'Supprimer l\'inscription';
+
+  @override
+  String get reservationsRegistrationDeleteTitle => 'Supprimer l\'inscription';
+
+  @override
+  String get reservationsName => 'Nom';
+
+  @override
+  String reservationsError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get reservationsStatusPending => 'En attente';
+
+  @override
+  String get reservationsStatusConfirmed => 'Confirmée';
+
+  @override
+  String get reservationsStatusCancelled => 'Annulée';
+
+  @override
+  String get reservationsStatusUnknown => 'Inconnue';
+
+  @override
+  String get reservationsTypePoi => 'Lieu';
+
+  @override
+  String get reservationsTypeEvent => 'Événement';
+
+  @override
   String get settingsLanguageFrench => 'Français';
 
   @override
@@ -1904,6 +2026,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reservationFormConfirm => 'Confirmer la réservation';
 
   @override
+  String get reservationFormSuccess => 'Réservation créée avec succès!';
+
+  @override
+  String get reservationFormError => 'Erreur lors de la réservation';
+
+  @override
   String contactOperatorTitle(String name) {
     return 'Contacter $name';
   }
@@ -2076,4 +2204,29 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get termsSection14Content =>
       'Pour toute question concernant ces conditions d\'utilisation, contactez-nous:\n\nOffice du Tourisme de Djibouti\nEmail: info@visitdjibouti.dj\nTéléphone: +253 XXX XXX';
+
+  @override
+  String get activitiesTitle => 'Activités';
+
+  @override
+  String get activitiesPopular => 'Activités populaires';
+
+  @override
+  String get activitiesDifficulty => 'Difficulté';
+
+  @override
+  String get activitiesRegion => 'Région';
+
+  @override
+  String get activitiesAvailableSpotsOnly =>
+      'Seulement avec places disponibles';
+
+  @override
+  String get activitiesAvailableSpots => 'Places disponibles';
+
+  @override
+  String get activitiesNoActivitiesFound => 'Aucune activité trouvée';
+
+  @override
+  String get activitiesTryModifyingFilters => 'Essayez de modifier vos filtres';
 }
