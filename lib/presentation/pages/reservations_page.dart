@@ -1059,17 +1059,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       
       if (mounted) {
         if (response.isSuccess) {
+          final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelled;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelled),
+              content: Text(message),
               backgroundColor: Colors.green,
             ),
           );
           _loadReservations(); // Recharger la liste
         } else {
+          final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelError;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelError),
+              content: Text(message),
               backgroundColor: Colors.red,
             ),
           );
@@ -1108,17 +1110,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       
       if (mounted) {
         if (response.isSuccess) {
+          final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsDeleted;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.reservationsDeleted),
+              content: Text(message),
               backgroundColor: Colors.green,
             ),
           );
           _loadReservations(); // Recharger la liste
         } else {
+          final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsDeleteError;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.reservationsDeleteError),
+              content: Text(message),
               backgroundColor: Colors.red,
             ),
           );
@@ -1276,17 +1280,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
         if (mounted) {
           if (response.success) {
+            final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelled;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelled),
+                content: Text(message),
                 backgroundColor: Colors.green,
               ),
             );
             _loadReservations(); // Recharger la liste
           } else {
+            final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelError;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelError),
+                content: Text(message),
                 backgroundColor: Colors.red,
               ),
             );
