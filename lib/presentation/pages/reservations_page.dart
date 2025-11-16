@@ -1062,7 +1062,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelled;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(message),
+              content: Text(message.toString()),
               backgroundColor: Colors.green,
             ),
           );
@@ -1283,7 +1283,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             final message = response.message?.toString() ?? AppLocalizations.of(context)!.reservationsCancelled;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(message),
+                content: Text(message.toString()),
                 backgroundColor: Colors.green,
               ),
             );
