@@ -1065,5 +1065,70 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "aboutAppName": "زيارة جيبوتي",
+  "aboutVersion": "الإصدار {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutDescription": "زيارة جيبوتي هو التطبيق الرسمي للوكالة الوطنية للسياحة في جيبوتي (ANT). اكتشف عجائب بلدنا: من المناظر القمرية لبحيرة عسل إلى الشعاب المرجانية في جزر موشا، مروراً بأسواق مدينة جيبوتي النابضة بالحياة.",
+  "aboutOrganization": "ANT - الوكالة الوطنية للسياحة",
+  "aboutOrganizationFull": "الوكالة الوطنية للسياحة في جيبوتي",
+  "aboutOrganizationDescription": "المنظمة الرسمية لتعزيز وتطوير السياحة",
+
+  "aboutStatsPois": "نقاط الاهتمام",
+  "aboutStatsEvents": "الفعاليات",
+  "aboutStatsRegions": "المناطق",
+
+  "aboutFeaturesTitle": "الميزات",
+  "aboutFeatureDiscoverTitle": "اكتشف",
+  "aboutFeatureDiscoverDesc": "أكثر من 50 نقطة اهتمام مع صور وأوصاف تفصيلية",
+  "aboutFeatureEventsTitle": "الفعاليات",
+  "aboutFeatureEventsDesc": "تقويم كامل للفعاليات الثقافية والسياحية",
+  "aboutFeatureMapsTitle": "خرائط تفاعلية",
+  "aboutFeatureMapsDesc": "الملاحة عبر GPS وتحديد موقع نقاط الاهتمام القريبة",
+  "aboutFeatureFavoritesTitle": "المفضلة",
+  "aboutFeatureFavoritesDesc": "احفظ أماكنك المفضلة وخطط لزياراتك",
+  "aboutFeatureOfflineTitle": "وضع عدم الاتصال",
+  "aboutFeatureOfflineDesc": "الوصول إلى المعلومات حتى بدون اتصال بالإنترنت",
+
+  "aboutDevelopedByTitle": "تطوير بواسطة",
+  "aboutPartnersTitle": "الشركاء",
+  "aboutPartnerMinistry": "وزارة التجارة والسياحة",
+  "aboutPartnerMinistryDesc": "جمهورية جيبوتي",
+  "aboutPartnerHotels": "جمعية الفنادق",
+  "aboutPartnerHotelsDesc": "قطاع السياحة الخاص",
+
+  "aboutTechnologiesTitle": "التقنيات",
+  "aboutTechFlutter": "إطار عمل الهاتف المحمول متعدد المنصات",
+  "aboutTechDart": "لغة برمجة حديثة",
+  "aboutTechLaravel": "واجهة برمجة تطبيقات خلفية قوية وآمنة",
+  "aboutTechMaps": "رسم الخرائط وتحديد الموقع الجغرافي",
+
+  "aboutContactTitle": "الاتصال والروابط",
+  "aboutContactWebsite": "الموقع الرسمي",
+  "aboutContactEmail": "البريد الإلكتروني",
+  "aboutContactPhone": "الهاتف",
+  "aboutContactAddress": "العنوان",
+  "aboutContactAddressValue": "ساحة 27 يونيو، مدينة جيبوتي",
+
+  "aboutCopyright": "© {year} الوكالة الوطنية للسياحة في جيبوتي",
+  "@aboutCopyright": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutCopyrightDescription": "جميع الحقوق محفوظة. تم تطوير هذا التطبيق للترويج للسياحة في جيبوتي.",
+
+  "aboutOpeningWebsite": "فتح الموقع الإلكتروني...",
+  "aboutOpeningEmail": "فتح تطبيق البريد الإلكتروني...",
+  "aboutOpeningPhone": "فتح تطبيق الهاتف...",
+  "aboutOpeningMap": "فتح الخريطة..."
 }

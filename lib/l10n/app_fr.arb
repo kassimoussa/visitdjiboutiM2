@@ -1064,5 +1064,70 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "aboutAppName": "Visit Djibouti",
+  "aboutVersion": "Version {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutDescription": "Visit Djibouti est l'application officielle de l'Agence Nationale du Tourisme de Djibouti (ANT). Découvrez les merveilles de notre pays : des paysages lunaires du Lac Assal aux récifs coralliens des Îles Moucha, en passant par les marchés animés de Djibouti-ville.",
+  "aboutOrganization": "ANT - Agence Nationale du Tourisme",
+  "aboutOrganizationFull": "Agence Nationale du Tourisme de Djibouti",
+  "aboutOrganizationDescription": "Organisme officiel de promotion et développement touristique",
+
+  "aboutStatsPois": "Points d'Intérêt",
+  "aboutStatsEvents": "Événements",
+  "aboutStatsRegions": "Régions",
+
+  "aboutFeaturesTitle": "Fonctionnalités",
+  "aboutFeatureDiscoverTitle": "Découvrir",
+  "aboutFeatureDiscoverDesc": "Plus de 50 points d'intérêt avec photos et descriptions détaillées",
+  "aboutFeatureEventsTitle": "Événements",
+  "aboutFeatureEventsDesc": "Calendrier complet des événements culturels et touristiques",
+  "aboutFeatureMapsTitle": "Cartes interactives",
+  "aboutFeatureMapsDesc": "Navigation GPS et localisation des POIs proches de vous",
+  "aboutFeatureFavoritesTitle": "Favoris",
+  "aboutFeatureFavoritesDesc": "Sauvegardez vos lieux préférés et planifiez vos visites",
+  "aboutFeatureOfflineTitle": "Mode hors ligne",
+  "aboutFeatureOfflineDesc": "Accédez aux informations même sans connexion Internet",
+
+  "aboutDevelopedByTitle": "Développé par",
+  "aboutPartnersTitle": "Partenaires",
+  "aboutPartnerMinistry": "Ministère du Commerce et du Tourisme",
+  "aboutPartnerMinistryDesc": "République de Djibouti",
+  "aboutPartnerHotels": "Association des Hôteliers",
+  "aboutPartnerHotelsDesc": "Secteur privé du tourisme",
+
+  "aboutTechnologiesTitle": "Technologies",
+  "aboutTechFlutter": "Framework mobile multiplateforme",
+  "aboutTechDart": "Langage de programmation moderne",
+  "aboutTechLaravel": "API Backend robuste et sécurisée",
+  "aboutTechMaps": "Cartographie et géolocalisation",
+
+  "aboutContactTitle": "Contact & Liens",
+  "aboutContactWebsite": "Site web officiel",
+  "aboutContactEmail": "Email",
+  "aboutContactPhone": "Téléphone",
+  "aboutContactAddress": "Adresse",
+  "aboutContactAddressValue": "Place du 27 Juin, Djibouti-ville",
+
+  "aboutCopyright": "© {year} Agence Nationale du Tourisme de Djibouti",
+  "@aboutCopyright": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutCopyrightDescription": "Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.",
+
+  "aboutOpeningWebsite": "Ouverture du site web...",
+  "aboutOpeningEmail": "Ouverture de l'application email...",
+  "aboutOpeningPhone": "Ouverture de l'application téléphone...",
+  "aboutOpeningMap": "Ouverture de la carte..."
 }

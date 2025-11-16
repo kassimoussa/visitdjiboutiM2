@@ -1064,5 +1064,70 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "aboutAppName": "Visit Djibouti",
+  "aboutVersion": "Version {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutDescription": "Visit Djibouti is the official app of Djibouti's National Tourism Agency (ANT). Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.",
+  "aboutOrganization": "ANT - National Tourism Agency",
+  "aboutOrganizationFull": "National Tourism Agency of Djibouti",
+  "aboutOrganizationDescription": "Official organization for tourism promotion and development",
+
+  "aboutStatsPois": "Points of Interest",
+  "aboutStatsEvents": "Events",
+  "aboutStatsRegions": "Regions",
+
+  "aboutFeaturesTitle": "Features",
+  "aboutFeatureDiscoverTitle": "Discover",
+  "aboutFeatureDiscoverDesc": "Over 50 points of interest with photos and detailed descriptions",
+  "aboutFeatureEventsTitle": "Events",
+  "aboutFeatureEventsDesc": "Complete calendar of cultural and tourism events",
+  "aboutFeatureMapsTitle": "Interactive Maps",
+  "aboutFeatureMapsDesc": "GPS navigation and location of nearby POIs",
+  "aboutFeatureFavoritesTitle": "Favorites",
+  "aboutFeatureFavoritesDesc": "Save your favorite places and plan your visits",
+  "aboutFeatureOfflineTitle": "Offline Mode",
+  "aboutFeatureOfflineDesc": "Access information even without Internet connection",
+
+  "aboutDevelopedByTitle": "Developed by",
+  "aboutPartnersTitle": "Partners",
+  "aboutPartnerMinistry": "Ministry of Trade and Tourism",
+  "aboutPartnerMinistryDesc": "Republic of Djibouti",
+  "aboutPartnerHotels": "Hotel Association",
+  "aboutPartnerHotelsDesc": "Private tourism sector",
+
+  "aboutTechnologiesTitle": "Technologies",
+  "aboutTechFlutter": "Multi-platform mobile framework",
+  "aboutTechDart": "Modern programming language",
+  "aboutTechLaravel": "Robust and secure backend API",
+  "aboutTechMaps": "Mapping and geolocation",
+
+  "aboutContactTitle": "Contact & Links",
+  "aboutContactWebsite": "Official website",
+  "aboutContactEmail": "Email",
+  "aboutContactPhone": "Phone",
+  "aboutContactAddress": "Address",
+  "aboutContactAddressValue": "Place du 27 Juin, Djibouti City",
+
+  "aboutCopyright": "© {year} National Tourism Agency of Djibouti",
+  "@aboutCopyright": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutCopyrightDescription": "All rights reserved. This application is developed to promote tourism in Djibouti.",
+
+  "aboutOpeningWebsite": "Opening website...",
+  "aboutOpeningEmail": "Opening email app...",
+  "aboutOpeningPhone": "Opening phone app...",
+  "aboutOpeningMap": "Opening map..."
 }
