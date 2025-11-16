@@ -206,7 +206,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     // Filtrage par région
     if (_selectedRegion != null) {
       filtered = filtered.where((poi) {
-        return poi.region?.toLowerCase() == _selectedRegion!.toLowerCase();
+        return poi.region.toLowerCase() == _selectedRegion!.toLowerCase();
       }).toList();
     }
 
