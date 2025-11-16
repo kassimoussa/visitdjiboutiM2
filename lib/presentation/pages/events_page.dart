@@ -26,7 +26,7 @@ class _EventsPageState extends State<EventsPage> {
   List<Category> _categories = [];
   bool _isLoading = true;
   String? _errorMessage;
-  String _selectedCategory = 'Tous';
+  Category? _selectedCategory;  // Changé de String à Category?
   String _selectedStatus = 'upcoming';
   int _currentPage = 1;
   bool _hasMorePages = false;
@@ -67,9 +67,7 @@ class _EventsPageState extends State<EventsPage> {
     try {
       final ApiResponse<EventListData> response = await _eventService.getEvents(
         search: _searchController.text.isEmpty ? null : _searchController.text,
-        categoryId: _selectedCategory == 'Tous' ? null : 
-                   _categories.firstWhere((c) => c.name == _selectedCategory, 
-                   orElse: () => const Category(id: -1, name: '', slug: '')).id,
+        categoryId: _selectedCategory?.id,
         status: _selectedStatus == 'all' ? null : _selectedStatus,
         page: loadMore ? _currentPage + 1 : 1,
         perPage: 10,
@@ -84,12 +82,9 @@ class _EventsPageState extends State<EventsPage> {
             _currentPage++;
           } else {
             _events = eventsData.events;
-            _categories = [
-              const Category(id: -1, name: 'Tous', slug: 'tous'),
-              ...eventsData.filters.categories
-            ];
+            _categories = _buildCategoriesHierarchy(eventsData.filters.categories);
             print('[EVENTS PAGE] Catégories reçues: ${eventsData.filters.categories.length}');
-            print('[EVENTS PAGE] Total catégories avec "Tous": ${_categories.length}');
+            print('[EVENTS PAGE] Catégories hiérarchiques: ${_categories.length}');
             _currentPage = eventsData.pagination.currentPage;
           }
           _hasMorePages = eventsData.pagination.hasNextPage;
@@ -179,7 +174,7 @@ class _EventsPageState extends State<EventsPage> {
     });
   }
 
-  void _onCategoryChanged(String category) {
+  void _onCategoryChanged(Category? category) {
     if (_selectedCategory != category) {
       setState(() {
         _selectedCategory = category;
@@ -248,30 +243,33 @@ class _EventsPageState extends State<EventsPage> {
           ),
         ),
 
-        // Filtres par catégorie
+        // Filtres par catégorie avec badges stylisés
         if (_categories.isNotEmpty)
           Container(
-            height: isSmallScreen ? 45 : 50,
-            padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
+            height: 50,
+            margin: const EdgeInsets.only(bottom: 8),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
+              padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
+              itemCount: _categories.length + 1, // +1 pour "Tout"
               itemBuilder: (context, index) {
-                final category = _categories[index];
-                final isSelected = category.name == _selectedCategory;
+                if (index == 0) {
+                  // Badge "Tout" pour réinitialiser le filtre
+                  return _buildCategoryBadge(
+                    label: AppLocalizations.of(context)!.commonAll,
+                    isSelected: _selectedCategory == null,
+                    onTap: () => _onCategoryChanged(null),
+                    icon: Icons.grid_view,
+                  );
+                }
 
-                return Container(
-                  margin: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: Text(category.name),
-                    selected: isSelected,
-                    onSelected: (_) => _onCategoryChanged(category.name),
-                    backgroundColor: Colors.grey[200],
-                    selectedColor: const Color(0xFF3860F8),
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black87,
-                    ),
-                  ),
+                final category = _categories[index - 1];
+                return _buildCategoryBadge(
+                  label: category.name,
+                  isSelected: _selectedCategory?.id == category.id,
+                  onTap: () => _onCategoryChanged(category),
+                  icon: _getCategoryIcon(category.icon),
+                  color: category.color != null ? Color(int.parse(category.color!.replaceFirst('#', '0xFF'))) : null,
                 );
               },
             ),
@@ -368,11 +366,11 @@ class _EventsPageState extends State<EventsPage> {
                 fontSize: 16,
               ),
             ),
-            if (_searchController.text.isNotEmpty || _selectedCategory != 'Tous' || _selectedStatus != 'upcoming')
+            if (_searchController.text.isNotEmpty || _selectedCategory != null || _selectedStatus != 'upcoming')
               TextButton(
                 onPressed: () {
                   _searchController.clear();
-                  _selectedCategory = 'Tous';
+                  _selectedCategory = null;
                   _selectedStatus = 'upcoming';
                   _loadEvents();
                 },
@@ -739,6 +737,141 @@ class _EventsPageState extends State<EventsPage> {
     if (event.isOngoing) return const Color(0xFF009639);
     if (event.isSoldOut) return Colors.red;
     return const Color(0xFF3860F8);
+  }
+
+  // Construit une hiérarchie de catégories avec les données reçues de l'API
+  List<Category> _buildCategoriesHierarchy(List<Category> flatCategories) {
+    print('[EVENTS] Nombre de catégories reçues: ${flatCategories.length}');
+
+    // Séparer les catégories parentes et enfants
+    final parentCategories = <Category>[];
+    final childCategories = <Category>[];
+
+    for (final category in flatCategories) {
+      print('[EVENTS] Catégorie: ${category.name} (ID: ${category.id}, Level: ${category.level}, ParentId: ${category.parentId})');
+
+      if (category.isParentCategory) {
+        parentCategories.add(category);
+      } else {
+        childCategories.add(category);
+      }
+    }
+
+    // Construire la hiérarchie : associer les enfants à leurs parents
+    final categoriesWithChildren = <Category>[];
+
+    for (final parent in parentCategories) {
+      // Trouver tous les enfants de cette catégorie parente
+      final children = childCategories
+          .where((child) => child.parentId == parent.id)
+          .toList();
+
+      if (children.isNotEmpty) {
+        // Créer une nouvelle catégorie avec ses sous-catégories
+        final categoryWithChildren = Category(
+          id: parent.id,
+          name: parent.name,
+          slug: parent.slug,
+          description: parent.description,
+          color: parent.color,
+          icon: parent.icon,
+          level: parent.level,
+          parentId: parent.parentId,
+          subCategories: children,
+        );
+        categoriesWithChildren.add(categoryWithChildren);
+      } else {
+        // Pas d'enfants, ajouter la catégorie telle quelle
+        categoriesWithChildren.add(parent);
+      }
+    }
+
+    print('[EVENTS] Catégories avec hiérarchie: ${categoriesWithChildren.length}');
+    return categoriesWithChildren;
+  }
+
+  Widget _buildCategoryBadge({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+    IconData? icon,
+    Color? color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: FilterChip(
+        label: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(
+                icon,
+                size: 18,
+                color: isSelected ? Colors.white : (color ?? const Color(0xFF3860F8)),
+              ),
+              const SizedBox(width: 6),
+            ],
+            Text(label),
+          ],
+        ),
+        selected: isSelected,
+        onSelected: (_) => onTap(),
+        backgroundColor: Colors.grey[100],
+        selectedColor: color ?? const Color(0xFF3860F8),
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.white : Colors.black87,
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        elevation: isSelected ? 2 : 0,
+        shadowColor: color ?? const Color(0xFF3860F8),
+      ),
+    );
+  }
+
+  IconData _getCategoryIcon(String? iconName) {
+    if (iconName == null || iconName.isEmpty) return Icons.event;
+
+    switch (iconName.toLowerCase()) {
+      case 'festival':
+      case 'celebration':
+        return Icons.celebration;
+      case 'music':
+      case 'concert':
+        return Icons.music_note;
+      case 'sports':
+      case 'sport':
+        return Icons.sports;
+      case 'cultural':
+      case 'culture':
+        return Icons.museum;
+      case 'conference':
+      case 'business':
+        return Icons.business;
+      case 'workshop':
+      case 'education':
+        return Icons.school;
+      case 'exhibition':
+      case 'art':
+        return Icons.palette;
+      case 'theater':
+      case 'performance':
+        return Icons.theater_comedy;
+      case 'food':
+      case 'dining':
+        return Icons.restaurant;
+      case 'family':
+      case 'kids':
+        return Icons.family_restroom;
+      case 'outdoor':
+      case 'nature':
+        return Icons.park;
+      case 'charity':
+      case 'fundraiser':
+        return Icons.volunteer_activism;
+      default:
+        return Icons.event;
+    }
   }
 
   @override
