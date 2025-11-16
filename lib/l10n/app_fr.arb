@@ -1023,5 +1023,26 @@
   "activitiesAvailableSpotsOnly": "Seulement avec places disponibles",
   "activitiesAvailableSpots": "Places disponibles",
   "activitiesNoActivitiesFound": "Aucune activité trouvée",
-  "activitiesTryModifyingFilters": "Essayez de modifier vos filtres"
+  "activitiesTryModifyingFilters": "Essayez de modifier vos filtres",
+
+  "personalInfoUser": "Utilisateur",
+  "personalInfoVerifiedAccount": "Compte vérifié",
+  "personalInfoBasicInfo": "Informations de base",
+  "personalInfoFullName": "Nom complet",
+  "personalInfoNameRequired": "Le nom est obligatoire",
+  "personalInfoNameMinLength": "Le nom doit contenir au moins 2 caractères",
+  "personalInfoEmail": "Adresse e-mail",
+  "personalInfoEmailRequired": "L'adresse e-mail est obligatoire",
+  "personalInfoEmailInvalid": "Adresse e-mail invalide",
+  "personalInfoPhoneOptional": "Téléphone (optionnel)",
+  "personalInfoProfileUpdated": "Profil mis à jour avec succès",
+  "personalInfoUpdateError": "Erreur lors de la mise à jour",
+  "personalInfoError": "Erreur: {error}",
+  "@personalInfoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

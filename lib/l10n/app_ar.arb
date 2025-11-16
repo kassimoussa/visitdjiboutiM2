@@ -1023,5 +1023,26 @@
   "activitiesAvailableSpotsOnly": "فقط مع أماكن متاحة",
   "activitiesAvailableSpots": "أماكن متاحة",
   "activitiesNoActivitiesFound": "لم يتم العثور على أنشطة",
-  "activitiesTryModifyingFilters": "حاول تعديل الفلاتر"
+  "activitiesTryModifyingFilters": "حاول تعديل الفلاتر",
+
+  "personalInfoUser": "مستخدم",
+  "personalInfoVerifiedAccount": "حساب موثق",
+  "personalInfoBasicInfo": "معلومات أساسية",
+  "personalInfoFullName": "الاسم الكامل",
+  "personalInfoNameRequired": "الاسم مطلوب",
+  "personalInfoNameMinLength": "يجب أن يحتوي الاسم على حرفين على الأقل",
+  "personalInfoEmail": "عنوان البريد الإلكتروني",
+  "personalInfoEmailRequired": "عنوان البريد الإلكتروني مطلوب",
+  "personalInfoEmailInvalid": "عنوان بريد إلكتروني غير صالح",
+  "personalInfoPhoneOptional": "الهاتف (اختياري)",
+  "personalInfoProfileUpdated": "تم تحديث الملف الشخصي بنجاح",
+  "personalInfoUpdateError": "خطأ في تحديث الملف الشخصي",
+  "personalInfoError": "خطأ: {error}",
+  "@personalInfoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

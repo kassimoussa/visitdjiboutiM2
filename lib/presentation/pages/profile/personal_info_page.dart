@@ -103,7 +103,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           SizedBox(height: ResponsiveConstants.mediumSpace),
           
           Text(
-            _user?.name ?? 'Utilisateur',
+            _user?.name ?? AppLocalizations.of(context)!.personalInfoUser,
             style: TextStyle(
               fontSize: ResponsiveConstants.headline6,
               fontWeight: FontWeight.bold,
@@ -131,7 +131,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Text(
-              'Compte vérifié',
+              AppLocalizations.of(context)!.personalInfoVerifiedAccount,
               style: TextStyle(
                 fontSize: ResponsiveConstants.caption,
                 color: const Color(0xFF009639),
@@ -149,7 +149,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Informations de base',
+          AppLocalizations.of(context)!.personalInfoBasicInfo,
           style: TextStyle(
             fontSize: ResponsiveConstants.subtitle1,
             fontWeight: FontWeight.bold,
@@ -160,15 +160,15 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         SizedBox(height: ResponsiveConstants.mediumSpace),
         
         _buildInfoField(
-          label: 'Nom complet',
+          label: AppLocalizations.of(context)!.personalInfoFullName,
           controller: _nameController,
           icon: Icons.person_outline,
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'Le nom est obligatoire';
+              return AppLocalizations.of(context)!.personalInfoNameRequired;
             }
             if (value.trim().length < 2) {
-              return 'Le nom doit contenir au moins 2 caractères';
+              return AppLocalizations.of(context)!.personalInfoNameMinLength;
             }
             return null;
           },
@@ -177,17 +177,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         SizedBox(height: ResponsiveConstants.mediumSpace),
         
         _buildInfoField(
-          label: 'Adresse e-mail',
+          label: AppLocalizations.of(context)!.personalInfoEmail,
           controller: _emailController,
           icon: Icons.email_outlined,
           keyboardType: TextInputType.emailAddress,
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'L\'adresse e-mail est obligatoire';
+              return AppLocalizations.of(context)!.personalInfoEmailRequired;
             }
             final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
             if (!emailRegex.hasMatch(value.trim())) {
-              return 'Adresse e-mail invalide';
+              return AppLocalizations.of(context)!.personalInfoEmailInvalid;
             }
             return null;
           },
@@ -196,7 +196,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         SizedBox(height: ResponsiveConstants.mediumSpace),
         
         _buildInfoField(
-          label: 'Téléphone (optionnel)',
+          label: AppLocalizations.of(context)!.personalInfoPhoneOptional,
           controller: _phoneController,
           icon: Icons.phone_outlined,
           keyboardType: TextInputType.phone,
@@ -277,7 +277,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               side: const BorderSide(color: Colors.grey),
             ),
             child: Text(
-              'Annuler',
+              AppLocalizations.of(context)!.commonCancel,
               style: TextStyle(
                 fontSize: ResponsiveConstants.body1,
                 color: Colors.grey[700],
@@ -300,7 +300,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               ),
             ),
             child: Text(
-              'Enregistrer',
+              AppLocalizations.of(context)!.commonSave,
               style: TextStyle(
                 fontSize: ResponsiveConstants.body1,
                 fontWeight: FontWeight.w600,
@@ -350,7 +350,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Profil mis à jour avec succès'),
+              content: Text(AppLocalizations.of(context)!.personalInfoProfileUpdated),
               backgroundColor: const Color(0xFF009639),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -363,7 +363,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de la mise à jour'),
+              content: Text(response.message?.toString() ?? AppLocalizations.of(context)!.personalInfoUpdateError),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -377,7 +377,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: $e'),
+            content: Text(AppLocalizations.of(context)!.personalInfoError(e.toString())),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
