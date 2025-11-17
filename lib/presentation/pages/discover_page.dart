@@ -10,6 +10,8 @@ import '../../core/models/category.dart';
 import '../widgets/poi_card.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'region_list_page.dart';
+import '../../core/utils/retry_helper.dart';
+import '../widgets/error_state_widget.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -73,18 +75,22 @@ class _DiscoverPageState extends State<DiscoverPage> {
     }
 
     try {
-      final ApiResponse<PoiListData> response = await _poiService.getPois(
-        page: loadMore ? _currentPage + 1 : 1,
-        perPage: 100, // Charger plus de POIs d'un coup
-        useCache: true, // Utiliser le cache pour optimiser
+      final ApiResponse<PoiListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _poiService.getPois(
+          page: loadMore ? _currentPage + 1 : 1,
+          perPage: 100,
+          useCache: true,
+        ),
+        maxAttempts: 3,
+        operationName: "Chargement POIs DiscoverPage${loadMore ? ' (load more)' : ''}",
       );
 
       print('[DISCOVER PAGE] Réponse API reçue - success: ${response.isSuccess}, hasData: ${response.hasData}');
-      
+
       if (response.isSuccess && response.hasData) {
         final poisData = response.data!;
         print('[DISCOVER PAGE] Nombre de POIs reçus: ${poisData.pois.length}');
-        
+
         setState(() {
           if (loadMore) {
             _allPois.addAll(poisData.pois);
@@ -100,22 +106,30 @@ class _DiscoverPageState extends State<DiscoverPage> {
           _isLoadingMore = false;
           _errorMessage = null;
         });
-        
+
         // Appliquer les filtres actuels après le chargement
         _applyFilters();
       } else {
+        throw Exception(response.message ?? 'Erreur de chargement POIs');
+      }
+    } catch (e) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
           _isLoadingMore = false;
-          _errorMessage = response.message ?? 'Loading error'; // Temporaire
+          _errorMessage = RetryHelper.getErrorMessage(e);
         });
+
+        // Afficher une snackbar seulement si ce n'est pas un load more
+        if (!loadMore) {
+          ErrorSnackBar.show(
+            context,
+            title: 'Erreur de chargement',
+            message: RetryHelper.getErrorMessage(e),
+            onRetry: _loadAllPois,
+          );
+        }
       }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _isLoadingMore = false;
-        _errorMessage = 'Unexpected error'; // Temporaire
-      });
     }
   }
 
@@ -137,15 +151,19 @@ class _DiscoverPageState extends State<DiscoverPage> {
     }
 
     try {
-      final ApiResponse<PoiListData> response = await _poiService.getPois(
-        perPage: 50,
-        page: 1,
-        useCache: false, // Force l'appel API sans cache
+      final ApiResponse<PoiListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _poiService.getPois(
+          perPage: 50,
+          page: 1,
+          useCache: false,
+        ),
+        maxAttempts: 3,
+        operationName: "Rechargement POIs forcé DiscoverPage (changement langue)",
       );
 
       if (response.isSuccess && response.hasData) {
         final poisData = response.data!;
-        
+
         if (mounted) {
           setState(() {
             _allPois = poisData.pois;
@@ -155,27 +173,29 @@ class _DiscoverPageState extends State<DiscoverPage> {
             _isLoading = false;
             _errorMessage = null;
           });
-          
+
           print('[DISCOVER PAGE] POIs rechargés: ${_allPois.length} items (langue: ${_localizationService.currentLanguageCode})');
-          
+
           // Appliquer les filtres après le rechargement
           _applyFilters();
         }
       } else {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-            _errorMessage = response.message ?? 'Erreur de chargement';
-          });
-        }
+        throw Exception(response.message ?? 'Erreur rechargement POIs');
       }
     } catch (e) {
       print('[DISCOVER PAGE] Erreur rechargement forcé: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = 'Erreur inattendue';
+          _errorMessage = RetryHelper.getErrorMessage(e);
         });
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur rechargement',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadAllPoisForced,
+        );
       }
     }
   }
@@ -478,35 +498,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
     }
 
     if (_errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadAllPois,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3860F8),
-                foregroundColor: Colors.white,
-              ),
-              child: Text(AppLocalizations.of(context)!.commonRetry),
-            ),
-          ],
-        ),
+      return ErrorStateWidget.loading(
+        resourceName: "points d'intérêt",
+        errorDetails: _errorMessage,
+        onRetry: _loadAllPois,
       );
     }
 

@@ -8,6 +8,8 @@ import '../../core/models/api_response.dart';
 import '../../core/models/category.dart';
 import 'event_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
+import '../../core/utils/retry_helper.dart';
+import '../widgets/error_state_widget.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
@@ -65,15 +67,19 @@ class _EventsPageState extends State<EventsPage> {
     }
 
     try {
-      final ApiResponse<EventListData> response = await _eventService.getEvents(
-        search: _searchController.text.isEmpty ? null : _searchController.text,
-        categoryId: _selectedCategory == 'Tous' ? null : 
-                   _categories.firstWhere((c) => c.name == _selectedCategory, 
-                   orElse: () => const Category(id: -1, name: '', slug: '')).id,
-        status: _selectedStatus == 'all' ? null : _selectedStatus,
-        page: loadMore ? _currentPage + 1 : 1,
-        perPage: 10,
-        useCache: false, // Force API call to get categories
+      final ApiResponse<EventListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _eventService.getEvents(
+          search: _searchController.text.isEmpty ? null : _searchController.text,
+          categoryId: _selectedCategory == 'Tous' ? null :
+              _categories.firstWhere((c) => c.name == _selectedCategory,
+                  orElse: () => const Category(id: -1, name: '', slug: '')).id,
+          status: _selectedStatus == 'all' ? null : _selectedStatus,
+          page: loadMore ? _currentPage + 1 : 1,
+          perPage: 10,
+          useCache: false,
+        ),
+        maxAttempts: 3,
+        operationName: "Chargement événements EventsPage${loadMore ? ' (load more)' : ''}",
       );
 
       if (response.isSuccess && response.hasData) {
@@ -98,18 +104,26 @@ class _EventsPageState extends State<EventsPage> {
           _errorMessage = null;
         });
       } else {
+        throw Exception(response.message ?? 'Erreur de chargement événements');
+      }
+    } catch (e) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
           _isLoadingMore = false;
-          _errorMessage = response.message ?? AppLocalizations.of(context)!.commonErrorLoading;
+          _errorMessage = RetryHelper.getErrorMessage(e);
         });
+
+        // Afficher une snackbar seulement si ce n'est pas un load more
+        if (!loadMore) {
+          ErrorSnackBar.show(
+            context,
+            title: 'Erreur de chargement',
+            message: RetryHelper.getErrorMessage(e),
+            onRetry: _loadEvents,
+          );
+        }
       }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _isLoadingMore = false;
-        _errorMessage = AppLocalizations.of(context)!.commonErrorUnexpected;
-      });
     }
   }
 
@@ -133,19 +147,23 @@ class _EventsPageState extends State<EventsPage> {
 
     try {
       final searchQuery = _searchController.text.trim();
-      final ApiResponse<EventListData> response = await _eventService.getEvents(
-        search: searchQuery.isEmpty ? null : searchQuery,
-        status: _selectedStatus,
-        sortBy: 'start_date',
-        sortOrder: 'asc',
-        perPage: 20,
-        page: 1,
-        useCache: false, // Force l'appel API sans cache pour avoir les catégories
+      final ApiResponse<EventListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _eventService.getEvents(
+          search: searchQuery.isEmpty ? null : searchQuery,
+          status: _selectedStatus,
+          sortBy: 'start_date',
+          sortOrder: 'asc',
+          perPage: 20,
+          page: 1,
+          useCache: false,
+        ),
+        maxAttempts: 3,
+        operationName: "Rechargement événements forcé (changement langue)",
       );
 
       if (response.isSuccess && response.hasData) {
         final eventsData = response.data!;
-        
+
         setState(() {
           _events = eventsData.events;
           _currentPage = eventsData.pagination.currentPage + 1;
@@ -153,20 +171,26 @@ class _EventsPageState extends State<EventsPage> {
           _isLoading = false;
           _errorMessage = null;
         });
-        
+
         print('[EVENTS PAGE] Événements rechargés: ${_events.length} items (langue: ${_localizationService.currentLanguageCode})');
       } else {
-        setState(() {
-          _isLoading = false;
-          _errorMessage = response.message ?? 'Erreur de chargement';
-        });
+        throw Exception(response.message ?? 'Erreur rechargement événements');
       }
     } catch (e) {
       print('[EVENTS PAGE] Erreur rechargement forcé: $e');
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Erreur inattendue';
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = RetryHelper.getErrorMessage(e);
+        });
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur rechargement',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadEventsForced,
+        );
+      }
     }
   }
 
@@ -318,35 +342,10 @@ class _EventsPageState extends State<EventsPage> {
     }
 
     if (_errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadEvents,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3860F8),
-                foregroundColor: Colors.white,
-              ),
-              child: Text(AppLocalizations.of(context)!.commonRetry),
-            ),
-          ],
-        ),
+      return ErrorStateWidget.loading(
+        resourceName: "événements",
+        errorDetails: _errorMessage,
+        onRetry: _loadEvents,
       );
     }
 
@@ -557,24 +556,18 @@ class _EventsPageState extends State<EventsPage> {
                                 final success = await _favoritesService.toggleEventFavorite(event.id);
                                 if (success && mounted) {
                                   setState(() {}); // Refresh pour mettre à jour l'UI
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        isFavorite 
-                                          ? AppLocalizations.of(context)!.eventsRemovedFromFavorites(event.title)
-                                          : AppLocalizations.of(context)!.eventsAddedToFavorites(event.title),
-                                      ),
-                                      duration: const Duration(seconds: 2),
-                                    ),
+                                  ErrorSnackBar.showSuccess(
+                                    context,
+                                    message: isFavorite
+                                        ? AppLocalizations.of(context)!.eventsRemovedFromFavorites(event.title)
+                                        : AppLocalizations.of(context)!.eventsAddedToFavorites(event.title),
                                   );
                                 }
                               } catch (e) {
                                 if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(AppLocalizations.of(context)!.commonErrorFavorites),
-                                      backgroundColor: Colors.red,
-                                    ),
+                                  ErrorSnackBar.show(
+                                    context,
+                                    message: AppLocalizations.of(context)!.commonErrorFavorites,
                                   );
                                 }
                               }

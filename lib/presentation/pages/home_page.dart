@@ -26,6 +26,8 @@ import 'tours_page.dart';
 import 'activities_page.dart';
 import 'essentials_page.dart';
 import 'embassies_page.dart';
+import '../../core/utils/retry_helper.dart';
+import '../widgets/error_state_widget.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int) onTabChange;
@@ -102,23 +104,30 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadFeaturedPois() async {
     print('🏠 [HOME] Chargement POIs - Langue: ${_localizationService.currentLanguageCode}');
+
+    setState(() => _isLoadingPois = true);
+
     try {
-      final ApiResponse<PoiListData> response = await _poiService.getPois(
-        perPage: 15,
-        useCache: false, // Force API call pour tester les traductions
+      final ApiResponse<PoiListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _poiService.getPois(
+          perPage: 15,
+          useCache: false,
+        ),
+        maxAttempts: 3,
+        operationName: "Chargement POIs featured HomePage",
       );
-      
+
       print('🏠 [HOME] Réponse API reçue - Success: ${response.isSuccess}');
       if (response.isSuccess && response.hasData) {
         final allPois = response.data!.pois;
         allPois.shuffle();
-        
+
         if (mounted) {
           setState(() {
             _featuredPois = allPois.take(8).toList();
             _isLoadingPois = false;
           });
-          
+
           print('🏠 [HOME] POIs chargés: ${_featuredPois.length} items');
           print('🏠 [HOME] Premier POI: ${_featuredPois.isNotEmpty ? _featuredPois.first.name : "aucun"}');
 
@@ -127,10 +136,19 @@ class _HomePageState extends State<HomePage> {
           }
         }
       } else {
-        if (mounted) setState(() => _isLoadingPois = false);
+        throw Exception(response.message ?? 'Erreur de chargement POIs');
       }
     } catch (e) {
-      if (mounted) setState(() => _isLoadingPois = false);
+      if (mounted) {
+        setState(() => _isLoadingPois = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur POIs',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadFeaturedPois,
+        );
+      }
     }
   }
 
@@ -162,14 +180,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadUpcomingEvents() async {
+    setState(() => _isLoadingEvents = true);
+
     try {
-      final ApiResponse<EventListData> response = await _eventService.getEvents(
-        status: 'upcoming',
-        perPage: 5,
-        sortBy: 'start_date',
-        sortOrder: 'asc',
+      final ApiResponse<EventListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _eventService.getEvents(
+          status: 'upcoming',
+          perPage: 5,
+          sortBy: 'start_date',
+          sortOrder: 'asc',
+        ),
+        maxAttempts: 3,
+        operationName: "Chargement événements HomePage",
       );
-      
+
       if (response.isSuccess && response.hasData) {
         if (mounted) {
           setState(() {
@@ -178,16 +202,31 @@ class _HomePageState extends State<HomePage> {
           });
         }
       } else {
-        if (mounted) setState(() => _isLoadingEvents = false);
+        throw Exception(response.message ?? 'Erreur de chargement événements');
       }
     } catch (e) {
-      if (mounted) setState(() => _isLoadingEvents = false);
+      if (mounted) {
+        setState(() => _isLoadingEvents = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur événements',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadUpcomingEvents,
+        );
+      }
     }
   }
 
   Future<void> _loadFeaturedTours() async {
+    setState(() => _isLoadingTours = true);
+
     try {
-      final response = await _tourService.getFeaturedTours(limit: 5);
+      final response = await RetryHelper.apiCall(
+        apiRequest: () => _tourService.getFeaturedTours(limit: 5),
+        maxAttempts: 3,
+        operationName: "Chargement tours HomePage",
+      );
 
       if (mounted) {
         setState(() {
@@ -196,13 +235,28 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e) {
-      if (mounted) setState(() => _isLoadingTours = false);
+      if (mounted) {
+        setState(() => _isLoadingTours = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur tours',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadFeaturedTours,
+        );
+      }
     }
   }
 
   Future<void> _loadFeaturedActivities() async {
+    setState(() => _isLoadingActivities = true);
+
     try {
-      final activities = await _activityService.getFeaturedActivities(limit: 5);
+      final activities = await RetryHelper.apiCall(
+        apiRequest: () => _activityService.getFeaturedActivities(limit: 5),
+        maxAttempts: 3,
+        operationName: "Chargement activités HomePage",
+      );
 
       if (mounted) {
         setState(() {
@@ -211,26 +265,37 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e) {
-      if (mounted) setState(() => _isLoadingActivities = false);
+      if (mounted) {
+        setState(() => _isLoadingActivities = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur activités',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadFeaturedActivities,
+        );
+      }
     }
   }
 
   /// Version forcée qui bypass le cache pour les changements de langue
   Future<void> _loadFeaturedPoisForced() async {
-    setState(() {
-      _isLoadingPois = true;
-    });
-    
+    setState(() => _isLoadingPois = true);
+
     try {
-      final ApiResponse<PoiListData> response = await _poiService.getPois(
-        perPage: 15,
-        useCache: false, // Force l'appel API sans cache
+      final ApiResponse<PoiListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _poiService.getPois(
+          perPage: 15,
+          useCache: false,
+        ),
+        maxAttempts: 3,
+        operationName: "Rechargement POIs forcé (changement langue)",
       );
-      
+
       if (response.isSuccess && response.hasData) {
         final allPois = response.data!.pois;
         allPois.shuffle();
-        
+
         if (mounted) {
           setState(() {
             _featuredPois = allPois.take(8).toList();
@@ -243,29 +308,40 @@ class _HomePageState extends State<HomePage> {
           }
         }
       } else {
-        if (mounted) setState(() => _isLoadingPois = false);
+        throw Exception(response.message ?? 'Erreur rechargement POIs');
       }
     } catch (e) {
       print('[HOME PAGE] Erreur rechargement POIs: $e');
-      if (mounted) setState(() => _isLoadingPois = false);
+      if (mounted) {
+        setState(() => _isLoadingPois = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur rechargement POIs',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadFeaturedPoisForced,
+        );
+      }
     }
   }
 
   /// Version forcée qui bypass le cache pour les changements de langue
   Future<void> _loadUpcomingEventsForced() async {
-    setState(() {
-      _isLoadingEvents = true;
-    });
-    
+    setState(() => _isLoadingEvents = true);
+
     try {
-      final ApiResponse<EventListData> response = await _eventService.getEvents(
-        status: 'upcoming',
-        perPage: 5,
-        sortBy: 'start_date',
-        sortOrder: 'asc',
-        useCache: false, // Force l'appel API sans cache
+      final ApiResponse<EventListData> response = await RetryHelper.apiCall(
+        apiRequest: () => _eventService.getEvents(
+          status: 'upcoming',
+          perPage: 5,
+          sortBy: 'start_date',
+          sortOrder: 'asc',
+          useCache: false,
+        ),
+        maxAttempts: 3,
+        operationName: "Rechargement événements forcé (changement langue)",
       );
-      
+
       if (response.isSuccess && response.hasData) {
         if (mounted) {
           setState(() {
@@ -275,22 +351,33 @@ class _HomePageState extends State<HomePage> {
           print('[HOME PAGE] Événements rechargés: ${_upcomingEvents.length} items (langue: ${_localizationService.currentLanguageCode})');
         }
       } else {
-        if (mounted) setState(() => _isLoadingEvents = false);
+        throw Exception(response.message ?? 'Erreur rechargement événements');
       }
     } catch (e) {
       print('[HOME PAGE] Erreur rechargement événements: $e');
-      if (mounted) setState(() => _isLoadingEvents = false);
+      if (mounted) {
+        setState(() => _isLoadingEvents = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur rechargement événements',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadUpcomingEventsForced,
+        );
+      }
     }
   }
 
   /// Version forcée qui bypass le cache pour les changements de langue
   Future<void> _loadFeaturedToursForced() async {
-    setState(() {
-      _isLoadingTours = true;
-    });
+    setState(() => _isLoadingTours = true);
 
     try {
-      final response = await _tourService.getFeaturedTours(limit: 5);
+      final response = await RetryHelper.apiCall(
+        apiRequest: () => _tourService.getFeaturedTours(limit: 5),
+        maxAttempts: 3,
+        operationName: "Rechargement tours forcé (changement langue)",
+      );
 
       if (mounted) {
         setState(() {
@@ -301,7 +388,16 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       print('[HOME PAGE] Erreur rechargement tours: $e');
-      if (mounted) setState(() => _isLoadingTours = false);
+      if (mounted) {
+        setState(() => _isLoadingTours = false);
+
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur rechargement tours',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadFeaturedToursForced,
+        );
+      }
     }
   }
 
