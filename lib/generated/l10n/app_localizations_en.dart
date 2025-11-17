@@ -232,6 +232,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonRetry => 'Retry';
 
   @override
+  String get commonSave => 'Save';
+
+  @override
   String get commonSeeAll => 'See all';
 
   @override
@@ -2207,4 +2210,226 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activitiesTryModifyingFilters => 'Try modifying your filters';
+
+  @override
+  String get personalInfoUser => 'User';
+
+  @override
+  String get personalInfoVerifiedAccount => 'Verified Account';
+
+  @override
+  String get personalInfoBasicInfo => 'Basic Information';
+
+  @override
+  String get personalInfoFullName => 'Full Name';
+
+  @override
+  String get personalInfoNameRequired => 'Name is required';
+
+  @override
+  String get personalInfoNameMinLength =>
+      'Name must contain at least 2 characters';
+
+  @override
+  String get personalInfoEmail => 'Email Address';
+
+  @override
+  String get personalInfoEmailRequired => 'Email address is required';
+
+  @override
+  String get personalInfoEmailInvalid => 'Invalid email address';
+
+  @override
+  String get personalInfoPhoneOptional => 'Phone (optional)';
+
+  @override
+  String get personalInfoProfileUpdated => 'Profile updated successfully';
+
+  @override
+  String get personalInfoUpdateError => 'Error updating profile';
+
+  @override
+  String personalInfoError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get securityChangePassword => 'Change Password';
+
+  @override
+  String get securityCurrentPassword => 'Current Password';
+
+  @override
+  String get securityCurrentPasswordRequired => 'Current password is required';
+
+  @override
+  String get securityNewPassword => 'New Password';
+
+  @override
+  String get securityNewPasswordRequired => 'New password is required';
+
+  @override
+  String get securityPasswordMinLength =>
+      'Password must contain at least 8 characters';
+
+  @override
+  String get securityConfirmPassword => 'Confirm New Password';
+
+  @override
+  String get securityConfirmPasswordRequired => 'Confirmation is required';
+
+  @override
+  String get securityPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get securityPasswordChanged => 'Password changed successfully';
+
+  @override
+  String get securityPasswordChangeError => 'Error changing password';
+
+  @override
+  String securityError(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get aboutAppName => 'Visit Djibouti';
+
+  @override
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get aboutDescription =>
+      'Visit Djibouti is the official app of Djibouti\'s National Tourism Agency (ANT). Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.';
+
+  @override
+  String get aboutOrganization => 'ANT - National Tourism Agency';
+
+  @override
+  String get aboutOrganizationFull => 'National Tourism Agency of Djibouti';
+
+  @override
+  String get aboutOrganizationDescription =>
+      'Official organization for tourism promotion and development';
+
+  @override
+  String get aboutStatsPois => 'Points of Interest';
+
+  @override
+  String get aboutStatsEvents => 'Events';
+
+  @override
+  String get aboutStatsRegions => 'Regions';
+
+  @override
+  String get aboutFeaturesTitle => 'Features';
+
+  @override
+  String get aboutFeatureDiscoverTitle => 'Discover';
+
+  @override
+  String get aboutFeatureDiscoverDesc =>
+      'Over 50 points of interest with photos and detailed descriptions';
+
+  @override
+  String get aboutFeatureEventsTitle => 'Events';
+
+  @override
+  String get aboutFeatureEventsDesc =>
+      'Complete calendar of cultural and tourism events';
+
+  @override
+  String get aboutFeatureMapsTitle => 'Interactive Maps';
+
+  @override
+  String get aboutFeatureMapsDesc =>
+      'GPS navigation and location of nearby POIs';
+
+  @override
+  String get aboutFeatureFavoritesTitle => 'Favorites';
+
+  @override
+  String get aboutFeatureFavoritesDesc =>
+      'Save your favorite places and plan your visits';
+
+  @override
+  String get aboutFeatureOfflineTitle => 'Offline Mode';
+
+  @override
+  String get aboutFeatureOfflineDesc =>
+      'Access information even without Internet connection';
+
+  @override
+  String get aboutDevelopedByTitle => 'Developed by';
+
+  @override
+  String get aboutPartnersTitle => 'Partners';
+
+  @override
+  String get aboutPartnerMinistry => 'Ministry of Trade and Tourism';
+
+  @override
+  String get aboutPartnerMinistryDesc => 'Republic of Djibouti';
+
+  @override
+  String get aboutPartnerHotels => 'Hotel Association';
+
+  @override
+  String get aboutPartnerHotelsDesc => 'Private tourism sector';
+
+  @override
+  String get aboutTechnologiesTitle => 'Technologies';
+
+  @override
+  String get aboutTechFlutter => 'Multi-platform mobile framework';
+
+  @override
+  String get aboutTechDart => 'Modern programming language';
+
+  @override
+  String get aboutTechLaravel => 'Robust and secure backend API';
+
+  @override
+  String get aboutTechMaps => 'Mapping and geolocation';
+
+  @override
+  String get aboutContactTitle => 'Contact & Links';
+
+  @override
+  String get aboutContactWebsite => 'Official website';
+
+  @override
+  String get aboutContactEmail => 'Email';
+
+  @override
+  String get aboutContactPhone => 'Phone';
+
+  @override
+  String get aboutContactAddress => 'Address';
+
+  @override
+  String get aboutContactAddressValue => 'Place du 27 Juin, Djibouti City';
+
+  @override
+  String aboutCopyright(String year) {
+    return '© $year National Tourism Agency of Djibouti';
+  }
+
+  @override
+  String get aboutCopyrightDescription =>
+      'All rights reserved. This application is developed to promote tourism in Djibouti.';
+
+  @override
+  String get aboutOpeningWebsite => 'Opening website...';
+
+  @override
+  String get aboutOpeningEmail => 'Opening email app...';
+
+  @override
+  String get aboutOpeningPhone => 'Opening phone app...';
+
+  @override
+  String get aboutOpeningMap => 'Opening map...';
 }

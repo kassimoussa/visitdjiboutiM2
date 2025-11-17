@@ -544,6 +544,12 @@ abstract class AppLocalizations {
   /// **'Réessayer'**
   String get commonRetry;
 
+  /// No description provided for @commonSave.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarder'**
+  String get commonSave;
+
   /// No description provided for @commonSeeAll.
   ///
   /// In fr, this message translates to:
@@ -4257,6 +4263,414 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Essayez de modifier vos filtres'**
   String get activitiesTryModifyingFilters;
+
+  /// No description provided for @personalInfoUser.
+  ///
+  /// In fr, this message translates to:
+  /// **'Utilisateur'**
+  String get personalInfoUser;
+
+  /// No description provided for @personalInfoVerifiedAccount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte vérifié'**
+  String get personalInfoVerifiedAccount;
+
+  /// No description provided for @personalInfoBasicInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Informations de base'**
+  String get personalInfoBasicInfo;
+
+  /// No description provided for @personalInfoFullName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom complet'**
+  String get personalInfoFullName;
+
+  /// No description provided for @personalInfoNameRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le nom est obligatoire'**
+  String get personalInfoNameRequired;
+
+  /// No description provided for @personalInfoNameMinLength.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le nom doit contenir au moins 2 caractères'**
+  String get personalInfoNameMinLength;
+
+  /// No description provided for @personalInfoEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse e-mail'**
+  String get personalInfoEmail;
+
+  /// No description provided for @personalInfoEmailRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'adresse e-mail est obligatoire'**
+  String get personalInfoEmailRequired;
+
+  /// No description provided for @personalInfoEmailInvalid.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse e-mail invalide'**
+  String get personalInfoEmailInvalid;
+
+  /// No description provided for @personalInfoPhoneOptional.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone (optionnel)'**
+  String get personalInfoPhoneOptional;
+
+  /// No description provided for @personalInfoProfileUpdated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil mis à jour avec succès'**
+  String get personalInfoProfileUpdated;
+
+  /// No description provided for @personalInfoUpdateError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de la mise à jour'**
+  String get personalInfoUpdateError;
+
+  /// No description provided for @personalInfoError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur: {error}'**
+  String personalInfoError(String error);
+
+  /// No description provided for @securityChangePassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer le mot de passe'**
+  String get securityChangePassword;
+
+  /// No description provided for @securityCurrentPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe actuel'**
+  String get securityCurrentPassword;
+
+  /// No description provided for @securityCurrentPasswordRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le mot de passe actuel est obligatoire'**
+  String get securityCurrentPasswordRequired;
+
+  /// No description provided for @securityNewPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau mot de passe'**
+  String get securityNewPassword;
+
+  /// No description provided for @securityNewPasswordRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le nouveau mot de passe est obligatoire'**
+  String get securityNewPasswordRequired;
+
+  /// No description provided for @securityPasswordMinLength.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le mot de passe doit contenir au moins 8 caractères'**
+  String get securityPasswordMinLength;
+
+  /// No description provided for @securityConfirmPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer le nouveau mot de passe'**
+  String get securityConfirmPassword;
+
+  /// No description provided for @securityConfirmPasswordRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'La confirmation est obligatoire'**
+  String get securityConfirmPasswordRequired;
+
+  /// No description provided for @securityPasswordMismatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les mots de passe ne correspondent pas'**
+  String get securityPasswordMismatch;
+
+  /// No description provided for @securityPasswordChanged.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe modifié avec succès'**
+  String get securityPasswordChanged;
+
+  /// No description provided for @securityPasswordChangeError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors du changement de mot de passe'**
+  String get securityPasswordChangeError;
+
+  /// No description provided for @securityError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur: {error}'**
+  String securityError(String error);
+
+  /// No description provided for @aboutAppName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Visit Djibouti'**
+  String get aboutAppName;
+
+  /// No description provided for @aboutVersion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version {version}'**
+  String aboutVersion(String version);
+
+  /// No description provided for @aboutDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Visit Djibouti est l\'application officielle de l\'Agence Nationale du Tourisme de Djibouti (ANT). Découvrez les merveilles de notre pays : des paysages lunaires du Lac Assal aux récifs coralliens des Îles Moucha, en passant par les marchés animés de Djibouti-ville.'**
+  String get aboutDescription;
+
+  /// No description provided for @aboutOrganization.
+  ///
+  /// In fr, this message translates to:
+  /// **'ANT - Agence Nationale du Tourisme'**
+  String get aboutOrganization;
+
+  /// No description provided for @aboutOrganizationFull.
+  ///
+  /// In fr, this message translates to:
+  /// **'Agence Nationale du Tourisme de Djibouti'**
+  String get aboutOrganizationFull;
+
+  /// No description provided for @aboutOrganizationDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Organisme officiel de promotion et développement touristique'**
+  String get aboutOrganizationDescription;
+
+  /// No description provided for @aboutStatsPois.
+  ///
+  /// In fr, this message translates to:
+  /// **'Points d\'Intérêt'**
+  String get aboutStatsPois;
+
+  /// No description provided for @aboutStatsEvents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événements'**
+  String get aboutStatsEvents;
+
+  /// No description provided for @aboutStatsRegions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régions'**
+  String get aboutStatsRegions;
+
+  /// No description provided for @aboutFeaturesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fonctionnalités'**
+  String get aboutFeaturesTitle;
+
+  /// No description provided for @aboutFeatureDiscoverTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrir'**
+  String get aboutFeatureDiscoverTitle;
+
+  /// No description provided for @aboutFeatureDiscoverDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Plus de 50 points d\'intérêt avec photos et descriptions détaillées'**
+  String get aboutFeatureDiscoverDesc;
+
+  /// No description provided for @aboutFeatureEventsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événements'**
+  String get aboutFeatureEventsTitle;
+
+  /// No description provided for @aboutFeatureEventsDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Calendrier complet des événements culturels et touristiques'**
+  String get aboutFeatureEventsDesc;
+
+  /// No description provided for @aboutFeatureMapsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cartes interactives'**
+  String get aboutFeatureMapsTitle;
+
+  /// No description provided for @aboutFeatureMapsDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Navigation GPS et localisation des POIs proches de vous'**
+  String get aboutFeatureMapsDesc;
+
+  /// No description provided for @aboutFeatureFavoritesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Favoris'**
+  String get aboutFeatureFavoritesTitle;
+
+  /// No description provided for @aboutFeatureFavoritesDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegardez vos lieux préférés et planifiez vos visites'**
+  String get aboutFeatureFavoritesDesc;
+
+  /// No description provided for @aboutFeatureOfflineTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode hors ligne'**
+  String get aboutFeatureOfflineTitle;
+
+  /// No description provided for @aboutFeatureOfflineDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Accédez aux informations même sans connexion Internet'**
+  String get aboutFeatureOfflineDesc;
+
+  /// No description provided for @aboutDevelopedByTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Développé par'**
+  String get aboutDevelopedByTitle;
+
+  /// No description provided for @aboutPartnersTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Partenaires'**
+  String get aboutPartnersTitle;
+
+  /// No description provided for @aboutPartnerMinistry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ministère du Commerce et du Tourisme'**
+  String get aboutPartnerMinistry;
+
+  /// No description provided for @aboutPartnerMinistryDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'République de Djibouti'**
+  String get aboutPartnerMinistryDesc;
+
+  /// No description provided for @aboutPartnerHotels.
+  ///
+  /// In fr, this message translates to:
+  /// **'Association des Hôteliers'**
+  String get aboutPartnerHotels;
+
+  /// No description provided for @aboutPartnerHotelsDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Secteur privé du tourisme'**
+  String get aboutPartnerHotelsDesc;
+
+  /// No description provided for @aboutTechnologiesTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Technologies'**
+  String get aboutTechnologiesTitle;
+
+  /// No description provided for @aboutTechFlutter.
+  ///
+  /// In fr, this message translates to:
+  /// **'Framework mobile multiplateforme'**
+  String get aboutTechFlutter;
+
+  /// No description provided for @aboutTechDart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langage de programmation moderne'**
+  String get aboutTechDart;
+
+  /// No description provided for @aboutTechLaravel.
+  ///
+  /// In fr, this message translates to:
+  /// **'API Backend robuste et sécurisée'**
+  String get aboutTechLaravel;
+
+  /// No description provided for @aboutTechMaps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cartographie et géolocalisation'**
+  String get aboutTechMaps;
+
+  /// No description provided for @aboutContactTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contact & Liens'**
+  String get aboutContactTitle;
+
+  /// No description provided for @aboutContactWebsite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Site web officiel'**
+  String get aboutContactWebsite;
+
+  /// No description provided for @aboutContactEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get aboutContactEmail;
+
+  /// No description provided for @aboutContactPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get aboutContactPhone;
+
+  /// No description provided for @aboutContactAddress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresse'**
+  String get aboutContactAddress;
+
+  /// No description provided for @aboutContactAddressValue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Place du 27 Juin, Djibouti-ville'**
+  String get aboutContactAddressValue;
+
+  /// No description provided for @aboutCopyright.
+  ///
+  /// In fr, this message translates to:
+  /// **'© {year} Agence Nationale du Tourisme de Djibouti'**
+  String aboutCopyright(String year);
+
+  /// No description provided for @aboutCopyrightDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.'**
+  String get aboutCopyrightDescription;
+
+  /// No description provided for @aboutOpeningWebsite.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverture du site web...'**
+  String get aboutOpeningWebsite;
+
+  /// No description provided for @aboutOpeningEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverture de l\'application email...'**
+  String get aboutOpeningEmail;
+
+  /// No description provided for @aboutOpeningPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverture de l\'application téléphone...'**
+  String get aboutOpeningPhone;
+
+  /// No description provided for @aboutOpeningMap.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouverture de la carte...'**
+  String get aboutOpeningMap;
 }
 
 class _AppLocalizationsDelegate

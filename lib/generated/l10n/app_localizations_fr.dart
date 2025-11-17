@@ -235,6 +235,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonRetry => 'Réessayer';
 
   @override
+  String get commonSave => 'Sauvegarder';
+
+  @override
   String get commonSeeAll => 'Voir tout';
 
   @override
@@ -2229,4 +2232,232 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get activitiesTryModifyingFilters => 'Essayez de modifier vos filtres';
+
+  @override
+  String get personalInfoUser => 'Utilisateur';
+
+  @override
+  String get personalInfoVerifiedAccount => 'Compte vérifié';
+
+  @override
+  String get personalInfoBasicInfo => 'Informations de base';
+
+  @override
+  String get personalInfoFullName => 'Nom complet';
+
+  @override
+  String get personalInfoNameRequired => 'Le nom est obligatoire';
+
+  @override
+  String get personalInfoNameMinLength =>
+      'Le nom doit contenir au moins 2 caractères';
+
+  @override
+  String get personalInfoEmail => 'Adresse e-mail';
+
+  @override
+  String get personalInfoEmailRequired => 'L\'adresse e-mail est obligatoire';
+
+  @override
+  String get personalInfoEmailInvalid => 'Adresse e-mail invalide';
+
+  @override
+  String get personalInfoPhoneOptional => 'Téléphone (optionnel)';
+
+  @override
+  String get personalInfoProfileUpdated => 'Profil mis à jour avec succès';
+
+  @override
+  String get personalInfoUpdateError => 'Erreur lors de la mise à jour';
+
+  @override
+  String personalInfoError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get securityChangePassword => 'Changer le mot de passe';
+
+  @override
+  String get securityCurrentPassword => 'Mot de passe actuel';
+
+  @override
+  String get securityCurrentPasswordRequired =>
+      'Le mot de passe actuel est obligatoire';
+
+  @override
+  String get securityNewPassword => 'Nouveau mot de passe';
+
+  @override
+  String get securityNewPasswordRequired =>
+      'Le nouveau mot de passe est obligatoire';
+
+  @override
+  String get securityPasswordMinLength =>
+      'Le mot de passe doit contenir au moins 8 caractères';
+
+  @override
+  String get securityConfirmPassword => 'Confirmer le nouveau mot de passe';
+
+  @override
+  String get securityConfirmPasswordRequired =>
+      'La confirmation est obligatoire';
+
+  @override
+  String get securityPasswordMismatch =>
+      'Les mots de passe ne correspondent pas';
+
+  @override
+  String get securityPasswordChanged => 'Mot de passe modifié avec succès';
+
+  @override
+  String get securityPasswordChangeError =>
+      'Erreur lors du changement de mot de passe';
+
+  @override
+  String securityError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get aboutAppName => 'Visit Djibouti';
+
+  @override
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get aboutDescription =>
+      'Visit Djibouti est l\'application officielle de l\'Agence Nationale du Tourisme de Djibouti (ANT). Découvrez les merveilles de notre pays : des paysages lunaires du Lac Assal aux récifs coralliens des Îles Moucha, en passant par les marchés animés de Djibouti-ville.';
+
+  @override
+  String get aboutOrganization => 'ANT - Agence Nationale du Tourisme';
+
+  @override
+  String get aboutOrganizationFull =>
+      'Agence Nationale du Tourisme de Djibouti';
+
+  @override
+  String get aboutOrganizationDescription =>
+      'Organisme officiel de promotion et développement touristique';
+
+  @override
+  String get aboutStatsPois => 'Points d\'Intérêt';
+
+  @override
+  String get aboutStatsEvents => 'Événements';
+
+  @override
+  String get aboutStatsRegions => 'Régions';
+
+  @override
+  String get aboutFeaturesTitle => 'Fonctionnalités';
+
+  @override
+  String get aboutFeatureDiscoverTitle => 'Découvrir';
+
+  @override
+  String get aboutFeatureDiscoverDesc =>
+      'Plus de 50 points d\'intérêt avec photos et descriptions détaillées';
+
+  @override
+  String get aboutFeatureEventsTitle => 'Événements';
+
+  @override
+  String get aboutFeatureEventsDesc =>
+      'Calendrier complet des événements culturels et touristiques';
+
+  @override
+  String get aboutFeatureMapsTitle => 'Cartes interactives';
+
+  @override
+  String get aboutFeatureMapsDesc =>
+      'Navigation GPS et localisation des POIs proches de vous';
+
+  @override
+  String get aboutFeatureFavoritesTitle => 'Favoris';
+
+  @override
+  String get aboutFeatureFavoritesDesc =>
+      'Sauvegardez vos lieux préférés et planifiez vos visites';
+
+  @override
+  String get aboutFeatureOfflineTitle => 'Mode hors ligne';
+
+  @override
+  String get aboutFeatureOfflineDesc =>
+      'Accédez aux informations même sans connexion Internet';
+
+  @override
+  String get aboutDevelopedByTitle => 'Développé par';
+
+  @override
+  String get aboutPartnersTitle => 'Partenaires';
+
+  @override
+  String get aboutPartnerMinistry => 'Ministère du Commerce et du Tourisme';
+
+  @override
+  String get aboutPartnerMinistryDesc => 'République de Djibouti';
+
+  @override
+  String get aboutPartnerHotels => 'Association des Hôteliers';
+
+  @override
+  String get aboutPartnerHotelsDesc => 'Secteur privé du tourisme';
+
+  @override
+  String get aboutTechnologiesTitle => 'Technologies';
+
+  @override
+  String get aboutTechFlutter => 'Framework mobile multiplateforme';
+
+  @override
+  String get aboutTechDart => 'Langage de programmation moderne';
+
+  @override
+  String get aboutTechLaravel => 'API Backend robuste et sécurisée';
+
+  @override
+  String get aboutTechMaps => 'Cartographie et géolocalisation';
+
+  @override
+  String get aboutContactTitle => 'Contact & Liens';
+
+  @override
+  String get aboutContactWebsite => 'Site web officiel';
+
+  @override
+  String get aboutContactEmail => 'Email';
+
+  @override
+  String get aboutContactPhone => 'Téléphone';
+
+  @override
+  String get aboutContactAddress => 'Adresse';
+
+  @override
+  String get aboutContactAddressValue => 'Place du 27 Juin, Djibouti-ville';
+
+  @override
+  String aboutCopyright(String year) {
+    return '© $year Agence Nationale du Tourisme de Djibouti';
+  }
+
+  @override
+  String get aboutCopyrightDescription =>
+      'Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.';
+
+  @override
+  String get aboutOpeningWebsite => 'Ouverture du site web...';
+
+  @override
+  String get aboutOpeningEmail => 'Ouverture de l\'application email...';
+
+  @override
+  String get aboutOpeningPhone => 'Ouverture de l\'application téléphone...';
+
+  @override
+  String get aboutOpeningMap => 'Ouverture de la carte...';
 }

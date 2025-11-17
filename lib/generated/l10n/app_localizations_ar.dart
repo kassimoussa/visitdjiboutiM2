@@ -232,6 +232,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonRetry => 'إعادة المحاولة';
 
   @override
+  String get commonSave => 'حفظ';
+
+  @override
   String get commonSeeAll => 'عرض الكل';
 
   @override
@@ -2203,4 +2206,225 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get activitiesTryModifyingFilters => 'حاول تعديل الفلاتر';
+
+  @override
+  String get personalInfoUser => 'مستخدم';
+
+  @override
+  String get personalInfoVerifiedAccount => 'حساب موثق';
+
+  @override
+  String get personalInfoBasicInfo => 'معلومات أساسية';
+
+  @override
+  String get personalInfoFullName => 'الاسم الكامل';
+
+  @override
+  String get personalInfoNameRequired => 'الاسم مطلوب';
+
+  @override
+  String get personalInfoNameMinLength =>
+      'يجب أن يحتوي الاسم على حرفين على الأقل';
+
+  @override
+  String get personalInfoEmail => 'عنوان البريد الإلكتروني';
+
+  @override
+  String get personalInfoEmailRequired => 'عنوان البريد الإلكتروني مطلوب';
+
+  @override
+  String get personalInfoEmailInvalid => 'عنوان بريد إلكتروني غير صالح';
+
+  @override
+  String get personalInfoPhoneOptional => 'الهاتف (اختياري)';
+
+  @override
+  String get personalInfoProfileUpdated => 'تم تحديث الملف الشخصي بنجاح';
+
+  @override
+  String get personalInfoUpdateError => 'خطأ في تحديث الملف الشخصي';
+
+  @override
+  String personalInfoError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get securityChangePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get securityCurrentPassword => 'كلمة المرور الحالية';
+
+  @override
+  String get securityCurrentPasswordRequired => 'كلمة المرور الحالية مطلوبة';
+
+  @override
+  String get securityNewPassword => 'كلمة المرور الجديدة';
+
+  @override
+  String get securityNewPasswordRequired => 'كلمة المرور الجديدة مطلوبة';
+
+  @override
+  String get securityPasswordMinLength =>
+      'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل';
+
+  @override
+  String get securityConfirmPassword => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get securityConfirmPasswordRequired => 'التأكيد مطلوب';
+
+  @override
+  String get securityPasswordMismatch => 'كلمات المرور غير متطابقة';
+
+  @override
+  String get securityPasswordChanged => 'تم تغيير كلمة المرور بنجاح';
+
+  @override
+  String get securityPasswordChangeError => 'خطأ في تغيير كلمة المرور';
+
+  @override
+  String securityError(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String get aboutAppName => 'زيارة جيبوتي';
+
+  @override
+  String aboutVersion(String version) {
+    return 'الإصدار $version';
+  }
+
+  @override
+  String get aboutDescription =>
+      'زيارة جيبوتي هو التطبيق الرسمي للوكالة الوطنية للسياحة في جيبوتي (ANT). اكتشف عجائب بلدنا: من المناظر القمرية لبحيرة عسل إلى الشعاب المرجانية في جزر موشا، مروراً بأسواق مدينة جيبوتي النابضة بالحياة.';
+
+  @override
+  String get aboutOrganization => 'ANT - الوكالة الوطنية للسياحة';
+
+  @override
+  String get aboutOrganizationFull => 'الوكالة الوطنية للسياحة في جيبوتي';
+
+  @override
+  String get aboutOrganizationDescription =>
+      'المنظمة الرسمية لتعزيز وتطوير السياحة';
+
+  @override
+  String get aboutStatsPois => 'نقاط الاهتمام';
+
+  @override
+  String get aboutStatsEvents => 'الفعاليات';
+
+  @override
+  String get aboutStatsRegions => 'المناطق';
+
+  @override
+  String get aboutFeaturesTitle => 'الميزات';
+
+  @override
+  String get aboutFeatureDiscoverTitle => 'اكتشف';
+
+  @override
+  String get aboutFeatureDiscoverDesc =>
+      'أكثر من 50 نقطة اهتمام مع صور وأوصاف تفصيلية';
+
+  @override
+  String get aboutFeatureEventsTitle => 'الفعاليات';
+
+  @override
+  String get aboutFeatureEventsDesc =>
+      'تقويم كامل للفعاليات الثقافية والسياحية';
+
+  @override
+  String get aboutFeatureMapsTitle => 'خرائط تفاعلية';
+
+  @override
+  String get aboutFeatureMapsDesc =>
+      'الملاحة عبر GPS وتحديد موقع نقاط الاهتمام القريبة';
+
+  @override
+  String get aboutFeatureFavoritesTitle => 'المفضلة';
+
+  @override
+  String get aboutFeatureFavoritesDesc => 'احفظ أماكنك المفضلة وخطط لزياراتك';
+
+  @override
+  String get aboutFeatureOfflineTitle => 'وضع عدم الاتصال';
+
+  @override
+  String get aboutFeatureOfflineDesc =>
+      'الوصول إلى المعلومات حتى بدون اتصال بالإنترنت';
+
+  @override
+  String get aboutDevelopedByTitle => 'تطوير بواسطة';
+
+  @override
+  String get aboutPartnersTitle => 'الشركاء';
+
+  @override
+  String get aboutPartnerMinistry => 'وزارة التجارة والسياحة';
+
+  @override
+  String get aboutPartnerMinistryDesc => 'جمهورية جيبوتي';
+
+  @override
+  String get aboutPartnerHotels => 'جمعية الفنادق';
+
+  @override
+  String get aboutPartnerHotelsDesc => 'قطاع السياحة الخاص';
+
+  @override
+  String get aboutTechnologiesTitle => 'التقنيات';
+
+  @override
+  String get aboutTechFlutter => 'إطار عمل الهاتف المحمول متعدد المنصات';
+
+  @override
+  String get aboutTechDart => 'لغة برمجة حديثة';
+
+  @override
+  String get aboutTechLaravel => 'واجهة برمجة تطبيقات خلفية قوية وآمنة';
+
+  @override
+  String get aboutTechMaps => 'رسم الخرائط وتحديد الموقع الجغرافي';
+
+  @override
+  String get aboutContactTitle => 'الاتصال والروابط';
+
+  @override
+  String get aboutContactWebsite => 'الموقع الرسمي';
+
+  @override
+  String get aboutContactEmail => 'البريد الإلكتروني';
+
+  @override
+  String get aboutContactPhone => 'الهاتف';
+
+  @override
+  String get aboutContactAddress => 'العنوان';
+
+  @override
+  String get aboutContactAddressValue => 'ساحة 27 يونيو، مدينة جيبوتي';
+
+  @override
+  String aboutCopyright(String year) {
+    return '© $year الوكالة الوطنية للسياحة في جيبوتي';
+  }
+
+  @override
+  String get aboutCopyrightDescription =>
+      'جميع الحقوق محفوظة. تم تطوير هذا التطبيق للترويج للسياحة في جيبوتي.';
+
+  @override
+  String get aboutOpeningWebsite => 'فتح الموقع الإلكتروني...';
+
+  @override
+  String get aboutOpeningEmail => 'فتح تطبيق البريد الإلكتروني...';
+
+  @override
+  String get aboutOpeningPhone => 'فتح تطبيق الهاتف...';
+
+  @override
+  String get aboutOpeningMap => 'فتح الخريطة...';
 }
