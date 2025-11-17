@@ -7,6 +7,8 @@ import '../../core/services/connectivity_service.dart';
 import '../../core/services/location_service.dart';
 import '../../core/services/directions_service.dart';
 import '../../core/utils/map_marker_helper.dart';
+import '../../core/utils/retry_helper.dart';
+import '../widgets/error_state_widget.dart';
 import 'poi_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
@@ -46,6 +48,8 @@ class _MapPageState extends State<MapPage> {
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
   bool _isLoading = true;
+  bool _hasError = false;
+  String? _errorMessage;
   bool _showNearbyList = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -205,12 +209,19 @@ class _MapPageState extends State<MapPage> {
   }
   
   Future<void> _loadPois() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _errorMessage = null;
+    });
 
-      final response = await _poiService.getPois(useCache: false);
+    try {
+      // Utiliser retry automatique
+      final response = await RetryHelper.apiCall(
+        apiRequest: () => _poiService.getPois(useCache: false),
+        maxAttempts: 3,
+        operationName: "Chargement POIs sur carte",
+      );
 
       if (response.success && response.data != null) {
         final pois = response.data!.pois;
@@ -225,32 +236,32 @@ class _MapPageState extends State<MapPage> {
           _pois = pois;
           _filteredPois = pois;
           _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _isLoading = false;
+          _hasError = false;
         });
 
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.mapErrorLoadingPois(response.message ?? '')),
-              backgroundColor: Colors.red,
-            ),
+        // Message de succès
+        if (mounted && pois.isNotEmpty) {
+          ErrorSnackBar.showSuccess(
+            context,
+            message: '${pois.length} lieux chargés sur la carte',
           );
         }
+      } else {
+        throw Exception(response.message ?? 'Erreur de chargement');
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
+        _hasError = true;
+        _errorMessage = RetryHelper.getErrorMessage(e);
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.mapError(e.toString())),
-            backgroundColor: Colors.red,
-          ),
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur de chargement',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadPois,
         );
       }
     }
@@ -287,6 +298,15 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
+
+    // Si erreur, afficher widget d'erreur avec retry
+    if (_hasError && !_isLoading) {
+      return ErrorStateWidget.loading(
+        resourceName: "la carte",
+        errorDetails: _errorMessage,
+        onRetry: _loadPois,
+      );
+    }
 
     // Si hors ligne, afficher une vue alternative
     if (_connectivityService.isOffline) {
@@ -444,11 +464,9 @@ class _MapPageState extends State<MapPage> {
                 );
 
                 if (!success && mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Impossible d\'ouvrir Google Maps'),
-                      backgroundColor: Colors.red,
-                    ),
+                  ErrorSnackBar.show(
+                    context,
+                    message: 'Impossible d\'ouvrir Google Maps',
                   );
                 }
               },
@@ -497,11 +515,11 @@ class _MapPageState extends State<MapPage> {
   /// Affiche l'itinéraire sur la carte
   Future<void> _showDirectionsOnMap(Poi poi) async {
     if (_userPosition == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Position non disponible. Veuillez activer la géolocalisation.'),
-          backgroundColor: Colors.orange,
-        ),
+      ErrorSnackBar.showWarning(
+        context,
+        message: 'Position non disponible. Veuillez activer la géolocalisation.',
+        onAction: _getUserLocation,
+        actionLabel: 'Activer',
       );
       return;
     }
@@ -557,29 +575,20 @@ class _MapPageState extends State<MapPage> {
       );
 
       // Afficher les infos de l'itinéraire
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Distance: ${result.distance} • Durée: ${result.duration}'),
-          backgroundColor: const Color(0xFF3860F8),
-          action: SnackBarAction(
-            label: 'Effacer',
-            textColor: Colors.white,
-            onPressed: () {
-              setState(() {
-                _polylines.clear();
-                _selectedPoiForDirections = null;
-              });
-            },
-          ),
-          duration: const Duration(seconds: 10),
-        ),
+      ErrorSnackBar.showInfo(
+        context,
+        message: 'Distance: ${result.distance} • Durée: ${result.duration}',
+        duration: const Duration(seconds: 10),
       );
+
+      // Ajouter un bouton pour effacer dans un snackbar séparé ou utiliser le même
+      // Note: ErrorSnackBar.showInfo ne supporte pas les actions custom pour le moment
+      // On pourrait l'améliorer si nécessaire
     } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Impossible de calculer l\'itinéraire'),
-          backgroundColor: Colors.red,
-        ),
+      ErrorSnackBar.show(
+        context,
+        message: 'Impossible de calculer l\'itinéraire',
+        onRetry: () => _showDirectionsOnMap(poi),
       );
     }
   }
