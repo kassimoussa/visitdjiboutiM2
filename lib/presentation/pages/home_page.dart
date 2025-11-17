@@ -403,11 +403,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
-    
+
     return SingleChildScrollView(
-        padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+        padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -416,19 +417,19 @@ class _HomePageState extends State<HomePage> {
               onShuffle: _isLoadingPois ? null : _loadFeaturedPois,
               onSeeAll: () => widget.onTabChange(1),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildFeaturedPoisCarousel(isSmallScreen),
-            
-            const SizedBox(height: 24),
-            
+
+            SizedBox(height: ResponsiveConstants.largeSpace),
+
             _buildSectionHeader(
               title: AppLocalizations.of(context)!.homeUpcomingEvents,
               onSeeAll: () => widget.onTabChange(2),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildUpcomingEventsCarousel(),
 
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
 
             _buildSectionHeader(
               title: AppLocalizations.of(context)!.homeFeaturedTours,
@@ -437,10 +438,10 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(builder: (_) => const ToursPage(showFeaturedOnly: true)),
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildFeaturedToursCarousel(),
 
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
 
             _buildSectionHeader(
               title: AppLocalizations.of(context)!.homePopularActivities,
@@ -449,21 +450,21 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(builder: (_) => const ActivitiesPage(showFeaturedOnly: true)),
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildFeaturedActivitiesCarousel(),
 
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
 
             _buildSectionHeader(
               title: AppLocalizations.of(context)!.homeDiscoverByRegion,
               subtitle: AppLocalizations.of(context)!.homeDiscoverByRegionSubtitle,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildRegionGrid(isSmallScreen),
 
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
             _buildSectionHeader(title: AppLocalizations.of(context)!.homeEssentials),
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildEssentialsSection(),
           ],
         ),
@@ -482,8 +483,8 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 20,
+                style: TextStyle(
+                  fontSize: ResponsiveConstants.subtitle1,
                   fontWeight: FontWeight.bold,
                 ),
                 maxLines: 2,
@@ -493,7 +494,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveConstants.body2,
                     color: Colors.grey[600],
                     fontStyle: FontStyle.italic,
                   ),
@@ -505,7 +506,7 @@ class _HomePageState extends State<HomePage> {
         ),
         // Utiliser SizedBox pour fixer la largeur des actions
         SizedBox(
-          width: onSeeAll != null && onShuffle != null ? 140 : 80,
+          width: onSeeAll != null && onShuffle != null ? 140.w : 80.w,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -514,14 +515,14 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   onPressed: onSeeAll,
                   style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    minimumSize: const Size(60, 36),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    minimumSize: Size(60.w, 36.h),
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.commonSeeAll,
-                    style: const TextStyle(
-                      color: Color(0xFF3860F8),
-                      fontSize: 13,
+                    style: TextStyle(
+                      color: const Color(0xFF3860F8),
+                      fontSize: ResponsiveConstants.caption,
                     ),
                   ),
                 ),
@@ -531,10 +532,10 @@ class _HomePageState extends State<HomePage> {
                   icon: const Icon(Icons.refresh),
                   tooltip: AppLocalizations.of(context)!.homeShufflePois,
                   color: const Color(0xFF3860F8),
-                  padding: const EdgeInsets.all(8),
-                  constraints: const BoxConstraints(
-                    minWidth: 40,
-                    minHeight: 40,
+                  padding: EdgeInsets.all(8.w),
+                  constraints: BoxConstraints(
+                    minWidth: 40.w,
+                    minHeight: 40.h,
                   ),
                 ),
             ],
@@ -553,7 +554,7 @@ class _HomePageState extends State<HomePage> {
               ? Center(
                   child: Text(
                     AppLocalizations.of(context)!.homeNoFeaturedPois,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
                   ),
                 )
               : NotificationListener<ScrollNotification>(
@@ -584,7 +585,7 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
                           child: PoiCard(poi: poi),
                         ),
                       );
@@ -603,7 +604,7 @@ class _HomePageState extends State<HomePage> {
               ? Center(
                   child: Text(
                     AppLocalizations.of(context)!.homeNoUpcomingEvents,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
                   ),
                 )
               : PageView.builder(
@@ -626,7 +627,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
                         child: EventCard(event: event),
                       ),
                     );
@@ -646,7 +647,7 @@ class _HomePageState extends State<HomePage> {
               ? Center(
                   child: Text(
                     AppLocalizations.of(context)!.homeNoFeaturedTours,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
                   ),
                 )
               : PageView.builder(
@@ -669,7 +670,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
                         child: TourCard(tour: tour),
                       ),
                     );
@@ -689,7 +690,7 @@ class _HomePageState extends State<HomePage> {
               ? Center(
                   child: Text(
                     AppLocalizations.of(context)!.homeNoActivities,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
                   ),
                 )
               : PageView.builder(
@@ -712,7 +713,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
                         child: SimpleActivityCard(activity: activity),
                       ),
                     );
@@ -758,11 +759,11 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
         child: Container(
-          height: 120,
+          height: ResponsiveConstants.cardImageHeight,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -774,19 +775,19 @@ class _HomePageState extends State<HomePage> {
             boxShadow: [
               BoxShadow(
                 color: color.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+                blurRadius: 8.w,
+                offset: Offset(0, 2.h),
               ),
             ],
           ),
           child: Stack(
             children: [
               Positioned(
-                top: 8,
-                right: 8,
+                top: 8.h,
+                right: 8.w,
                 child: Container(
-                  width: 20,
-                  height: 20,
+                  width: 20.w,
+                  height: 20.h,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
@@ -799,31 +800,31 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       emoji,
-                      style: const TextStyle(fontSize: 36),
+                      style: TextStyle(fontSize: 36.sp),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: ResponsiveConstants.smallSpace),
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: ResponsiveConstants.body1,
                         shadows: [
                           Shadow(
-                            offset: Offset(0, 1),
-                            blurRadius: 2,
+                            offset: Offset(0, 1.h),
+                            blurRadius: 2.w,
                             color: Colors.black26,
                           ),
                         ],
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: ResponsiveConstants.tinySpace),
                     Text(
                       AppLocalizations.of(context)!.homeDiscover,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
-                        fontSize: 12,
+                        fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -846,14 +847,14 @@ class _HomePageState extends State<HomePage> {
           subtitle: AppLocalizations.of(context)!.homeTourOperatorsSubtitle,
           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TourOperatorsPage())),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: ResponsiveConstants.smallSpace),
         _buildEssentialLink(
           icon: Icons.info_outline,
           title: AppLocalizations.of(context)!.homeEssentialInfo,
           subtitle: AppLocalizations.of(context)!.homeEssentialInfoSubtitle,
           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EssentialsPage())),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: ResponsiveConstants.smallSpace),
         _buildEssentialLink(
           icon: Icons.account_balance,
           title: AppLocalizations.of(context)!.homeEmbassies,
