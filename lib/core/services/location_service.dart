@@ -53,10 +53,7 @@ class LocationService {
 
       // Obtenir la position
       _currentPosition = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 10,
-        ),
+        desiredAccuracy: LocationAccuracy.high,
       );
 
       print('[LOCATION] Position obtenue: ${_currentPosition!.latitude}, ${_currentPosition!.longitude}');
@@ -94,10 +91,8 @@ class LocationService {
   /// Surveille les changements de position en temps réel
   Stream<Position> getPositionStream() {
     return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 10,
-      ),
+      desiredAccuracy: LocationAccuracy.high,
+      distanceFilter: 10,
     );
   }
 }
