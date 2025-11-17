@@ -23,6 +23,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     // Debug pour voir l'état d'authentification
     print('[DEBUG DRAWER] isLoggedIn: ${_authService.isLoggedIn}');
     print('[DEBUG DRAWER] currentUser: ${_authService.currentUser?.name}');
@@ -36,7 +37,7 @@ class _AppDrawerState extends State<AppDrawer> {
             // Header avec authentification
             _buildHeader(context),
 
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
 
             // Menu principal
             Padding(
@@ -88,12 +89,12 @@ class _AppDrawerState extends State<AppDrawer> {
                     onTap: () => _navigateTo(context, const AboutPage()),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: ResponsiveConstants.largeSpace),
 
                   // Version info
                   _buildVersionInfo(),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: ResponsiveConstants.mediumSpace),
                 ],
               ),
             ),
@@ -145,7 +146,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: ResponsiveConstants.mediumSpace),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +154,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     Text(
                       AppLocalizations.of(context)!.appTitle,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: ResponsiveConstants.subtitle1,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -161,7 +162,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     Text(
                       AppLocalizations.of(context)!.appDescription,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: ResponsiveConstants.body2,
                         color: Colors.white70,
                       ),
                     ),
@@ -171,7 +172,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ],
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: ResponsiveConstants.largeSpace),
           
           // Boutons d'authentification
           _authService.isLoggedIn ? _buildLoggedInSection() : _buildAuthButtons(),
@@ -201,7 +202,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: ResponsiveConstants.smallSpace),
         Expanded(
           child: OutlinedButton(
             onPressed: () => _navigateToAuth(context, const LoginPage()),
@@ -243,11 +244,11 @@ class _AppDrawerState extends State<AppDrawer> {
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: ResponsiveConstants.body2,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: ResponsiveConstants.smallSpace),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,14 +258,14 @@ class _AppDrawerState extends State<AppDrawer> {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14,
+                    fontSize: ResponsiveConstants.body2,
                   ),
                 ),
                 Text(
                   AppLocalizations.of(context)!.drawerConnected,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.7),
-                    fontSize: 12,
+                    fontSize: ResponsiveConstants.caption,
                   ),
                 ),
               ],
@@ -311,7 +312,7 @@ class _AppDrawerState extends State<AppDrawer> {
           title,
           style: const TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 16,
+            fontSize: ResponsiveConstants.body1,
           ),
         ),
         subtitle: subtitle != null
@@ -319,7 +320,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 subtitle,
                 style: TextStyle(
                   color: Colors.grey[600],
-                  fontSize: 14,
+                  fontSize: ResponsiveConstants.body2,
                 ),
               )
             : null,
@@ -356,7 +357,7 @@ class _AppDrawerState extends State<AppDrawer> {
             AppLocalizations.of(context)!.drawerVersion,
             style: TextStyle(
               color: Colors.grey[600],
-              fontSize: 12,
+              fontSize: ResponsiveConstants.caption,
             ),
           ),
         ],
