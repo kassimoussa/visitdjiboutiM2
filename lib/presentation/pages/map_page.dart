@@ -11,6 +11,7 @@ import '../widgets/error_state_widget.dart';
 import 'poi_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
+import '../../core/utils/responsive.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -253,6 +254,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
 
@@ -321,7 +323,7 @@ class _MapPageState extends State<MapPage> {
                       Text(
                         poi.name,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: ResponsiveConstants.subtitle2,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -582,7 +584,7 @@ class _MapPageState extends State<MapPage> {
                       Text(
                         'Chargement de la carte...',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -684,7 +686,7 @@ class _MapPageState extends State<MapPage> {
                         const Text(
                           'POIs à proximité',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: ResponsiveConstants.subtitle2,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -830,7 +832,7 @@ class _MapPageState extends State<MapPage> {
                 Text(
                   AppLocalizations.of(context)!.mapTitle,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF3860F8),
                   ),
@@ -839,7 +841,7 @@ class _MapPageState extends State<MapPage> {
                 Text(
                   'Djibouti',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveConstants.body2,
                     color: Colors.grey[600],
                   ),
                 ),
