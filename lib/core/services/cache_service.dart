@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'connectivity_service.dart';
+import '../utils/cache_keys.dart';
 
 class CacheService {
   static final CacheService _instance = CacheService._internal();
@@ -9,14 +10,114 @@ class CacheService {
 
   static const Duration _defaultCacheDuration = Duration(minutes: 15);
   static const Duration _offlineCacheDuration = Duration(days: 7); // Cache plus long pour mode hors ligne
-  
+
+  // Configuration LRU (Least Recently Used)
+  static const int _maxCacheItems = 100; // Nombre maximum d'items en cache
+  static const String _lruMetadataKey = '_cache_lru_metadata';
+
   final ConnectivityService _connectivityService = ConnectivityService();
-  
-  // Stockage avec timestamp pour expiration et support hors ligne
+
+  // ========== Gestion LRU (Least Recently Used) ==========
+
+  /// Récupère les métadonnées LRU (clé -> lastAccessTime)
+  Future<Map<String, int>> _getLRUMetadata() async {
+    final prefs = await SharedPreferences.getInstance();
+    final metadataString = prefs.getString(_lruMetadataKey);
+
+    if (metadataString == null) return {};
+
+    try {
+      final decoded = jsonDecode(metadataString) as Map<String, dynamic>;
+      return decoded.map((key, value) => MapEntry(key, value as int));
+    } catch (e) {
+      print('[CACHE LRU] Erreur lecture metadata: $e');
+      return {};
+    }
+  }
+
+  /// Sauvegarde les métadonnées LRU
+  Future<void> _saveLRUMetadata(Map<String, int> metadata) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_lruMetadataKey, jsonEncode(metadata));
+  }
+
+  /// Met à jour le timestamp de dernier accès pour une clé
+  Future<void> _updateLastAccess(String key) async {
+    final metadata = await _getLRUMetadata();
+    metadata[key] = DateTime.now().millisecondsSinceEpoch;
+    await _saveLRUMetadata(metadata);
+  }
+
+  /// Éviction LRU: supprime les items les moins récemment utilisés
+  Future<void> _evictLRU() async {
+    final prefs = await SharedPreferences.getInstance();
+    final allKeys = prefs.getKeys().toList();
+
+    // Filtrer seulement les clés de cache valides (exclure metadata et préférences)
+    final cacheKeys = allKeys.where((key) =>
+        key != _lruMetadataKey &&
+        !key.startsWith('_') && // Exclure les clés internes
+        CacheKeys.isValidCacheKey(key)
+    ).toList();
+
+    // Si on n'a pas dépassé la limite, ne rien faire
+    if (cacheKeys.length <= _maxCacheItems) {
+      return;
+    }
+
+    print('[CACHE LRU] Éviction nécessaire: ${cacheKeys.length}/$_maxCacheItems items');
+
+    final metadata = await _getLRUMetadata();
+
+    // Créer une liste de (clé, lastAccessTime)
+    final cacheItemsWithAccess = cacheKeys.map((key) {
+      final lastAccess = metadata[key] ?? 0; // 0 si jamais accédé
+      return MapEntry(key, lastAccess);
+    }).toList();
+
+    // Trier par lastAccessTime (les plus anciens en premier)
+    cacheItemsWithAccess.sort((a, b) => a.value.compareTo(b.value));
+
+    // Calculer combien d'items supprimer
+    final itemsToEvict = cacheKeys.length - _maxCacheItems;
+
+    // Supprimer les items les moins récemment utilisés
+    for (int i = 0; i < itemsToEvict; i++) {
+      final keyToRemove = cacheItemsWithAccess[i].key;
+
+      // Ne pas supprimer les données offline
+      final cachedString = prefs.getString(keyToRemove);
+      if (cachedString != null) {
+        try {
+          final cacheItem = jsonDecode(cachedString);
+          final isOfflineData = cacheItem['isOfflineData'] == true;
+
+          if (!isOfflineData) {
+            await prefs.remove(keyToRemove);
+            metadata.remove(keyToRemove);
+            print('[CACHE LRU] Éviction: $keyToRemove (type: ${CacheKeys.getDataType(keyToRemove)})');
+          }
+        } catch (e) {
+          // Supprimer les items corrompus
+          await prefs.remove(keyToRemove);
+          metadata.remove(keyToRemove);
+        }
+      }
+    }
+
+    // Sauvegarder les métadonnées mises à jour
+    await _saveLRUMetadata(metadata);
+
+    print('[CACHE LRU] Éviction terminée: ${cacheKeys.length - itemsToEvict} items restants');
+  }
+
+  // ========== Stockage et récupération ==========
+
+  /// Stockage avec timestamp pour expiration et support hors ligne
   Future<void> cacheData(String key, dynamic data, {Duration? cacheDuration, bool isOfflineData = false}) async {
     final prefs = await SharedPreferences.getInstance();
     final effectiveDuration = isOfflineData ? _offlineCacheDuration : (cacheDuration ?? _defaultCacheDuration);
-    
+
     final cacheItem = {
       'data': data,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
@@ -25,38 +126,50 @@ class CacheService {
       'lastUpdated': DateTime.now().toIso8601String(),
     };
     await prefs.setString(key, jsonEncode(cacheItem));
-    print('[CACHE] Données mises en cache: $key (${isOfflineData ? "hors ligne" : "normale"})');
+
+    // Mettre à jour le timestamp LRU
+    await _updateLastAccess(key);
+
+    // Éviction LRU si nécessaire
+    await _evictLRU();
+
+    print('[CACHE] Données mises en cache: $key (${isOfflineData ? "hors ligne" : "normale"}, type: ${CacheKeys.getDataType(key)})');
   }
 
-  // Récupération avec vérification d'expiration et support hors ligne
+  /// Récupération avec vérification d'expiration et support hors ligne
   Future<T?> getCachedData<T>(String key, {bool allowExpiredIfOffline = true}) async {
     final prefs = await SharedPreferences.getInstance();
     final cachedString = prefs.getString(key);
-    
+
     if (cachedString == null) return null;
-    
+
     try {
       final cacheItem = jsonDecode(cachedString);
       final timestamp = cacheItem['timestamp'] as int;
       final duration = cacheItem['duration'] as int;
       final isOfflineData = cacheItem['isOfflineData'] as bool? ?? false;
       final now = DateTime.now().millisecondsSinceEpoch;
-      
+
       // Vérifier si le cache a expiré
       final isExpired = now - timestamp > duration;
-      
+
       if (isExpired) {
         // Si hors ligne et que les données expirées sont autorisées, les retourner quand même
         if (allowExpiredIfOffline && _connectivityService.isOffline) {
           print('[CACHE] Données expirées utilisées en mode hors ligne: $key');
+          // Mettre à jour lastAccess même pour données expirées hors ligne
+          await _updateLastAccess(key);
           return cacheItem['data'] as T;
         }
-        
+
         // Sinon, supprimer le cache expiré
         await prefs.remove(key);
         return null;
       }
-      
+
+      // Mettre à jour le timestamp LRU pour indiquer que cette clé a été accédée
+      await _updateLastAccess(key);
+
       return cacheItem['data'] as T;
     } catch (e) {
       // Supprimer le cache corrompu
@@ -65,24 +178,36 @@ class CacheService {
     }
   }
 
-  // Cache spécifique pour les POIs
+  // ========== Méthodes de cache spécifiques ==========
+
+  /// Cache des POIs par région
   Future<void> cachePois(String region, List<dynamic> pois) async {
-    await cacheData('pois_$region', pois, cacheDuration: const Duration(hours: 2));
+    await cacheData(
+      CacheKeys.poisByRegion(region),
+      pois,
+      cacheDuration: const Duration(hours: 2),
+    );
   }
 
+  /// Récupère les POIs mis en cache pour une région
   Future<List<dynamic>?> getCachedPois(String region) async {
-    return getCachedData<List<dynamic>>('pois_$region');
+    return getCachedData<List<dynamic>>(CacheKeys.poisByRegion(region));
   }
 
-  // Cache pour les événements
+  /// Cache des événements
   Future<void> cacheEvents(List<dynamic> events, {String? languageCode}) async {
-    final cacheKey = languageCode != null ? 'events_$languageCode' : 'events';
-    await cacheData(cacheKey, events, cacheDuration: const Duration(minutes: 30));
+    await cacheData(
+      CacheKeys.events(languageCode: languageCode),
+      events,
+      cacheDuration: const Duration(minutes: 30),
+    );
   }
 
+  /// Récupère les événements mis en cache
   Future<List<dynamic>?> getCachedEvents({String? languageCode}) async {
-    final cacheKey = languageCode != null ? 'events_$languageCode' : 'events';
-    return getCachedData<List<dynamic>>(cacheKey);
+    return getCachedData<List<dynamic>>(
+      CacheKeys.events(languageCode: languageCode),
+    );
   }
 
   // Nettoyage du cache
@@ -154,39 +279,43 @@ class CacheService {
 
   /// Cache les données favoris pour le mode hors ligne
   Future<void> cacheFavorites(List<dynamic> favorites) async {
-    await cacheForOffline('offline_favorites', favorites);
+    await cacheForOffline(CacheKeys.offlineFavorites, favorites);
   }
 
   /// Récupère les favoris en mode hors ligne
   Future<List<dynamic>?> getOfflineFavorites() async {
-    return getCachedData<List<dynamic>>('offline_favorites', allowExpiredIfOffline: true);
+    return getCachedData<List<dynamic>>(
+      CacheKeys.offlineFavorites,
+      allowExpiredIfOffline: true,
+    );
   }
 
   /// Obtient des statistiques sur le cache hors ligne
   Future<Map<String, dynamic>> getOfflineCacheStats() async {
     final offlineKeys = await getOfflineCacheKeys();
     final prefs = await SharedPreferences.getInstance();
-    
+
     int totalSize = 0;
     int poisCount = 0;
     int eventsCount = 0;
     int favoritesCount = 0;
-    
+
     for (final key in offlineKeys) {
       final cachedString = prefs.getString(key);
       if (cachedString != null) {
         totalSize += cachedString.length;
-        
-        if (key.startsWith('pois_')) {
+
+        final dataType = CacheKeys.getDataType(key);
+        if (dataType == 'POIs') {
           poisCount++;
-        } else if (key.contains('events')) {
+        } else if (dataType == 'Events') {
           eventsCount++;
-        } else if (key.contains('favorites')) {
+        } else if (dataType == 'Favorites') {
           favoritesCount++;
         }
       }
     }
-    
+
     return {
       'totalItems': offlineKeys.length,
       'totalSize': totalSize,
@@ -195,6 +324,76 @@ class CacheService {
       'favoritesCount': favoritesCount,
       'sizeInKB': (totalSize / 1024).toStringAsFixed(1),
     };
+  }
+
+  /// Obtient des statistiques LRU complètes
+  Future<Map<String, dynamic>> getLRUStats() async {
+    final prefs = await SharedPreferences.getInstance();
+    final allKeys = prefs.getKeys().toList();
+
+    // Filtrer les clés de cache valides
+    final cacheKeys = allKeys.where((key) =>
+        key != _lruMetadataKey &&
+        !key.startsWith('_') &&
+        CacheKeys.isValidCacheKey(key)
+    ).toList();
+
+    final metadata = await _getLRUMetadata();
+
+    // Calculer la taille totale
+    int totalSize = 0;
+    for (final key in cacheKeys) {
+      final value = prefs.getString(key);
+      if (value != null) {
+        totalSize += value.length;
+      }
+    }
+
+    // Trouver l'item le plus ancien et le plus récent
+    int? oldestAccess;
+    int? newestAccess;
+    String? oldestKey;
+    String? newestKey;
+
+    for (final key in cacheKeys) {
+      final accessTime = metadata[key];
+      if (accessTime != null) {
+        if (oldestAccess == null || accessTime < oldestAccess) {
+          oldestAccess = accessTime;
+          oldestKey = key;
+        }
+        if (newestAccess == null || accessTime > newestAccess) {
+          newestAccess = accessTime;
+          newestKey = key;
+        }
+      }
+    }
+
+    return {
+      'totalItems': cacheKeys.length,
+      'maxItems': _maxCacheItems,
+      'percentageFull': ((cacheKeys.length / _maxCacheItems) * 100).toStringAsFixed(1),
+      'totalSizeKB': (totalSize / 1024).toStringAsFixed(1),
+      'oldestAccessKey': oldestKey,
+      'oldestAccessTime': oldestAccess != null
+          ? DateTime.fromMillisecondsSinceEpoch(oldestAccess).toIso8601String()
+          : null,
+      'newestAccessKey': newestKey,
+      'newestAccessTime': newestAccess != null
+          ? DateTime.fromMillisecondsSinceEpoch(newestAccess).toIso8601String()
+          : null,
+      'itemsByType': _countItemsByType(cacheKeys),
+    };
+  }
+
+  /// Compte les items par type
+  Map<String, int> _countItemsByType(List<String> keys) {
+    final counts = <String, int>{};
+    for (final key in keys) {
+      final type = CacheKeys.getDataType(key);
+      counts[type] = (counts[type] ?? 0) + 1;
+    }
+    return counts;
   }
 
   /// Synchronise les données avec le serveur quand la connexion revient
