@@ -13,6 +13,7 @@ import 'tour_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
+import '../../core/utils/responsive.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -112,6 +113,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
@@ -141,7 +143,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           Text(
             AppLocalizations.of(context)!.favoritesTitle,
             style: const TextStyle(
-              fontSize: 28,
+              fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1D2233),
             ),
@@ -218,7 +220,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.grey[700],
             fontWeight: FontWeight.w600,
-            fontSize: 14,
+            fontSize: ResponsiveConstants.body2,
           ),
         ),
       ),
@@ -230,7 +232,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return ListView.separated(
       padding: const EdgeInsets.all(20),
       itemCount: 5,
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      separatorBuilder: (context, index) => SizedBox(height: ResponsiveConstants.mediumSpace),
       itemBuilder: (context, index) => _buildShimmerCard(),
     );
   }
@@ -247,7 +249,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       child: ListView.separated(
         padding: const EdgeInsets.all(20),
         itemCount: items.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 16),
+        separatorBuilder: (context, index) => SizedBox(height: ResponsiveConstants.mediumSpace),
         itemBuilder: (context, index) {
           final item = items[index];
           if (item is Poi) {
@@ -360,26 +362,26 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 size: 60,
                 color: Colors.grey[400],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               Text(
                 message,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: ResponsiveConstants.subtitle2,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF1A1A1A),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               Text(
                 AppLocalizations.of(context)!.favoritesEmptyDescription,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   color: Colors.grey[600],
                   height: 1.5,
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: ResponsiveConstants.extraLargeSpace),
               ElevatedButton(
                 onPressed: () {
                   if (Navigator.canPop(context)) {
@@ -398,7 +400,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               child: Text(
                 AppLocalizations.of(context)!.discoverTitle,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -431,26 +433,26 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   color: Colors.grey[400],
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: ResponsiveConstants.extraLargeSpace),
               Text(
                 AppLocalizations.of(context)!.favoritesEmpty,
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: ResponsiveConstants.headline6,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF1A1A1A),
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
               Text(
                 AppLocalizations.of(context)!.favoritesEmptyDescription,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   color: Colors.grey[600],
                   height: 1.5,
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: ResponsiveConstants.extraLargeSpace),
               ElevatedButton(
                 onPressed: () {
                   if (Navigator.canPop(context)) {
@@ -469,7 +471,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 child: Text(
                   AppLocalizations.of(context)!.discoverTitle,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -600,7 +602,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   Text(
                     tour.title,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: ResponsiveConstants.subtitle2,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1D2233),
                     ),
@@ -643,7 +645,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: ResponsiveConstants.smallSpace),
                   Row(
                     children: [
                       Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
@@ -656,7 +658,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       Text(
                         tour.displayPrice,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF009639),
                         ),
