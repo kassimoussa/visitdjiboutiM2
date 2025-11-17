@@ -9,6 +9,7 @@ import '../../core/services/tour_service.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/cached_image_widget.dart';
 import '../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
 
 class ReservationsPage extends StatefulWidget {
   const ReservationsPage({super.key});
@@ -153,6 +154,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.drawerReservations),
@@ -305,7 +307,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       reservation.statusText,
                       style: TextStyle(
                         color: _getStatusColor(reservation.status),
-                        fontSize: 12,
+                        fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -329,7 +331,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           reservation.typeText,
                           style: const TextStyle(
                             color: Color(0xFF3860F8),
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -338,7 +340,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
               
               // Nom et numéro de réservation
               Row(
@@ -350,7 +352,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         Text(
                           reservation.reservableName ?? 'Nom non disponible',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
@@ -361,7 +363,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           'N° ${reservation.confirmationNumber}',
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                           ),
                         ),
                       ],
@@ -380,7 +382,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 ],
               ),
               
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
               
               // Informations de réservation
               _buildInfoRow(Icons.calendar_today, 'Date', reservation.reservationDate),
@@ -392,7 +394,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               
               // Prix si applicable
               if (reservation.totalPrice != null && reservation.totalPrice! > 0) ...[
-                const SizedBox(height: 8),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -405,7 +407,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
-                        fontSize: 16,
+                        fontSize: ResponsiveConstants.body1,
                       ),
                     ),
                   ],
@@ -414,7 +416,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               
               // Actions
               if (reservation.isPending) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -428,7 +430,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ],
                 ),
               ] else if (reservation.isCancelled) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -484,7 +486,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       reservation.displayStatus,
                       style: TextStyle(
                         color: statusColor,
-                        fontSize: 12,
+                        fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -508,7 +510,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           'Tour',
                           style: TextStyle(
                             color: Color(0xFF3860F8),
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -517,7 +519,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
 
               // Nom et numéro de réservation
               Row(
@@ -529,7 +531,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         Text(
                           tour?.title ?? 'Tour non disponible',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
@@ -540,7 +542,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           'Réservation #${reservation.id}',
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                           ),
                         ),
                       ],
@@ -559,7 +561,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 ],
               ),
 
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
 
               // Informations de réservation
               if (tour?.startDate != null && tour?.endDate != null)
@@ -570,7 +572,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
               // Actions (similaire aux réservations POI/Event)
               if (reservation.canCancel) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -584,7 +586,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ],
                 ),
               ] else if (reservation.status == ReservationStatus.cancelledByUser) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -639,7 +641,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       registration.displayStatus,
                       style: TextStyle(
                         color: statusColor,
-                        fontSize: 12,
+                        fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -663,7 +665,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           'Activité',
                           style: TextStyle(
                             color: Color(0xFF3860F8),
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -672,7 +674,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
 
               // Nom et numéro d'inscription
               Row(
@@ -684,7 +686,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         Text(
                           registration.activity?.title ?? 'Activité',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
@@ -695,7 +697,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           'Inscription #${registration.id}',
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                           ),
                         ),
                       ],
@@ -714,7 +716,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 ],
               ),
 
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
 
               // Informations d'inscription
               if (registration.preferredDate != null)
@@ -725,7 +727,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
               // Prix
               if (registration.totalPrice > 0) ...[
-                const SizedBox(height: 8),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -738,7 +740,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
-                        fontSize: 16,
+                        fontSize: ResponsiveConstants.body1,
                       ),
                     ),
                   ],
@@ -747,7 +749,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
               // Actions
               if (registration.canCancel) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -761,7 +763,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ],
                 ),
               ] else if (registration.status == RegistrationStatus.cancelledByUser || registration.status == RegistrationStatus.cancelledByOperator) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -792,19 +794,19 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             size: 16,
             color: Colors.grey[600],
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: ResponsiveConstants.smallSpace),
           Text(
             '$label: ',
             style: TextStyle(
               color: Colors.grey[600],
-              fontSize: 14,
+              fontSize: ResponsiveConstants.body2,
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: ResponsiveConstants.body2,
                 fontWeight: FontWeight.w500,
               ),
               maxLines: 1,
@@ -828,13 +830,13 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               size: 64,
               color: Colors.grey[400],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(
               _errorMessage!,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 16,
+                fontSize: ResponsiveConstants.body1,
               ),
             ),
             const SizedBox(height: 24),
@@ -864,22 +866,22 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               size: 64,
               color: Colors.grey[400],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(
               message,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: ResponsiveConstants.subtitle2,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             Text(
               'Explorez nos lieux et événements pour faire votre première réservation!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 14,
+                fontSize: ResponsiveConstants.body2,
               ),
             ),
           ],
@@ -930,7 +932,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 const Text(
                   'Détails de la réservation',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -960,7 +962,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             if (reservation.userPhone?.isNotEmpty == true)
               _buildDetailRow('Téléphone', reservation.userPhone!),
             
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             
             // Actions
             if (reservation.isPending)
@@ -1011,7 +1013,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               '$label:',
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 14,
+                fontSize: ResponsiveConstants.body2,
               ),
             ),
           ),
@@ -1019,7 +1021,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             child: Text(
               value,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: ResponsiveConstants.body2,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -1164,7 +1166,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
 
                 // Statut
                 _buildDetailRow('Statut', reservation.displayStatus),
@@ -1404,7 +1406,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
 
                 // Statut
                 _buildDetailRow('Statut', registration.displayStatus),
