@@ -89,6 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -176,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text(
                   _user?.name ?? AppLocalizations.of(context)!.profileUser,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: ResponsiveConstants.headline6,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -184,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text(
                   _user?.email ?? '',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     color: Colors.white.withOpacity(0.9),
                   ),
                 ),
@@ -247,11 +248,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
                 Text(
                   AppLocalizations.of(context)!.authWelcomeToApp,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: ResponsiveConstants.headline6,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -260,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text(
                   AppLocalizations.of(context)!.profileDiscoverDjibouti,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     color: Colors.white70,
                   ),
                 ),
@@ -376,12 +377,12 @@ class _ProfilePageState extends State<ProfilePage> {
             AppLocalizations.of(context)!.profileCreateAccountBenefits,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: ResponsiveConstants.body1,
               color: Colors.grey[700],
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: ResponsiveConstants.largeSpace),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -405,7 +406,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text(
                 AppLocalizations.of(context)!.authCreateAccount,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -434,7 +435,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 AppLocalizations.of(context)!.authLogin,
                 style: const TextStyle(
                   color: Color(0xFF3860F8),
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.w600,
                 ),
               ),
