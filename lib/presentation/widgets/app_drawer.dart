@@ -30,72 +30,71 @@ class _AppDrawerState extends State<AppDrawer> {
     return Drawer(
       backgroundColor: Colors.white,
       child: SafeArea(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             // Header avec authentification
             _buildHeader(context),
-            
+
             const SizedBox(height: 24),
-            
+
             // Menu principal
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    _buildMenuItem(
-                      icon: Icons.person,
-                      title: AppLocalizations.of(context)!.profileTitle,
-                      onTap: () => _navigateTo(context, const ProfilePage()),
-                    ),
-                    
-                    /* _buildMenuItem(
-                      icon: Icons.tour,
-                      title: 'Tours',
-                      subtitle: 'Découvrez nos circuits guidés',
-                      onTap: () => _navigateTo(context, const ToursPage()),
-                    ), */
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  _buildMenuItem(
+                    icon: Icons.person,
+                    title: AppLocalizations.of(context)!.profileTitle,
+                    onTap: () => _navigateTo(context, const ProfilePage()),
+                  ),
 
-                    _buildMenuItem(
-                      icon: Icons.book_online,
-                      title: AppLocalizations.of(context)!.drawerReservations,
-                      subtitle: AppLocalizations.of(context)!.drawerReservationsSubtitle,
-                      onTap: () => _navigateTo(context, const ReservationsPage()),
-                    ),
-                    
-                    _buildMenuItem(
-                      icon: Icons.language,
-                      title: AppLocalizations.of(context)!.profileLanguage,
-                      subtitle: LocalizationService().currentLanguageName,
-                      onTap: () => _showLanguageDialog(context),
-                    ),
+                  /* _buildMenuItem(
+                    icon: Icons.tour,
+                    title: 'Tours',
+                    subtitle: 'Découvrez nos circuits guidés',
+                    onTap: () => _navigateTo(context, const ToursPage()),
+                  ), */
 
-                    /* _buildMenuItem(
-                      icon: Icons.settings,
-                      title: AppLocalizations.of(context)!.profileSettings,
-                      onTap: () => _navigateTo(context, const SettingsPage()),
-                    ), */
+                  _buildMenuItem(
+                    icon: Icons.book_online,
+                    title: AppLocalizations.of(context)!.drawerReservations,
+                    subtitle: AppLocalizations.of(context)!.drawerReservationsSubtitle,
+                    onTap: () => _navigateTo(context, const ReservationsPage()),
+                  ),
 
-                    _buildMenuItem(
-                      icon: Icons.help_outline,
-                      title: AppLocalizations.of(context)!.drawerHelp,
-                      onTap: () => _navigateTo(context, const HelpPage()),
-                    ),
-                    
-                    _buildMenuItem(
-                      icon: Icons.info_outline,
-                      title: AppLocalizations.of(context)!.profileAboutApp,
-                      onTap: () => _navigateTo(context, const AboutPage()),
-                    ),
-                    
-                    const Spacer(),
-                    
-                    // Version info
-                    _buildVersionInfo(),
-                    
-                    const SizedBox(height: 16),
-                  ],
-                ),
+                  _buildMenuItem(
+                    icon: Icons.language,
+                    title: AppLocalizations.of(context)!.profileLanguage,
+                    subtitle: LocalizationService().currentLanguageName,
+                    onTap: () => _showLanguageDialog(context),
+                  ),
+
+                  /* _buildMenuItem(
+                    icon: Icons.settings,
+                    title: AppLocalizations.of(context)!.profileSettings,
+                    onTap: () => _navigateTo(context, const SettingsPage()),
+                  ), */
+
+                  _buildMenuItem(
+                    icon: Icons.help_outline,
+                    title: AppLocalizations.of(context)!.drawerHelp,
+                    onTap: () => _navigateTo(context, const HelpPage()),
+                  ),
+
+                  _buildMenuItem(
+                    icon: Icons.info_outline,
+                    title: AppLocalizations.of(context)!.profileAboutApp,
+                    onTap: () => _navigateTo(context, const AboutPage()),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Version info
+                  _buildVersionInfo(),
+
+                  const SizedBox(height: 16),
+                ],
               ),
             ),
           ],

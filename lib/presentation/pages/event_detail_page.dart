@@ -811,8 +811,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Text(
                 // Si maxParticipants est null ou 0 (illimité), afficher seulement le nombre d'inscrits
                 (event.maxParticipants == null || event.maxParticipants == 0)
-                    ? '${event.currentParticipants ?? 0} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}'
-                    : '${event.currentParticipants}/${event.maxParticipants} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}',
+                    ? '${event.currentParticipants ?? 0}'
+                    : '${event.currentParticipants}/${event.maxParticipants}',
                 style: const TextStyle(
                   color: Color(0xFF3860F8),
                   fontWeight: FontWeight.w500,
