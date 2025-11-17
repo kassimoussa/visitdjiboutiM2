@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart' as cluster_manager;
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/connectivity_service.dart';
@@ -12,19 +11,6 @@ import '../widgets/error_state_widget.dart';
 import 'poi_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
-
-/// Wrapper pour POI afin de l'utiliser avec ClusterManager
-class PoiClusterItem with cluster_manager.ClusterItem {
-  final Poi poi;
-
-  PoiClusterItem(this.poi);
-
-  @override
-  LatLng get location => LatLng(poi.latitude, poi.longitude);
-
-  @override
-  String get geohash => '';
-}
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -40,8 +26,9 @@ class _MapPageState extends State<MapPage> {
   final LocationService _locationService = LocationService();
   final DirectionsService _directionsService = DirectionsService();
 
-  // Cluster Manager pour grouper les markers
-  cluster_manager.ClusterManager? _clusterManager;
+  // Cluster Manager natif pour grouper les markers
+  late ClusterManager _clusterManager;
+  Map<MarkerId, Poi> _markerPoiMap = {}; // Association marker ID -> POI
 
   List<Poi> _pois = [];
   List<Poi> _filteredPois = [];
@@ -65,7 +52,7 @@ class _MapPageState extends State<MapPage> {
     target: LatLng(11.6000, 42.8500),
     zoom: 8.0,
   );
-  
+
   @override
   void initState() {
     super.initState();
@@ -81,66 +68,39 @@ class _MapPageState extends State<MapPage> {
     super.dispose();
   }
 
-  /// Initialise le cluster manager
+  /// Initialise le cluster manager natif
   void _initializeClusterManager() {
-    _clusterManager = cluster_manager.ClusterManager<PoiClusterItem>(
-      [],
-      _updateMarkers,
-      markerBuilder: _markerBuilder,
-      levels: [1, 4.25, 6.75, 8.25, 11.5, 14.5, 16.0, 16.5, 20.0],
-      extraPercent: 0.2,
-      stopClusteringZoom: 17.0,
+    _clusterManager = ClusterManager(
+      clusterManagerId: ClusterManagerId('poi_cluster'),
     );
   }
 
-  /// Met à jour les markers affichés
-  void _updateMarkers(Set<Marker> markers) {
-    if (mounted) {
-      setState(() {
-        _markers = markers;
-      });
-    }
-  }
+  /// Crée les markers avec clustering natif
+  Future<void> _createMarkers(List<Poi> pois) async {
+    final markers = <Marker>{};
+    final markerPoiMap = <MarkerId, Poi>{};
 
-  /// Construit un marker personnalisé
-  Future<Marker> _markerBuilder(dynamic clusterData) async {
-    final cluster = clusterData as cluster_manager.Cluster<PoiClusterItem>;
-    return Marker(
-      markerId: MarkerId(cluster.getId()),
-      position: cluster.location,
-      onTap: () {
-        if (cluster.isMultiple) {
-          // C'est un cluster, zoomer dessus pour voir les POIs individuels
-          _mapController?.animateCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                target: cluster.location,
-                zoom: 15.0, // Zoom fixe pour afficher les POIs du cluster
-              ),
-            ),
-          );
-        } else {
-          // C'est un POI unique, afficher le bottom sheet
-          _showPoiBottomSheet(cluster.items.first.poi);
-        }
-      },
-      icon: await _getMarkerIcon(cluster),
-    );
-  }
+    for (final poi in pois) {
+      final markerId = MarkerId('poi_${poi.id}');
+      markerPoiMap[markerId] = poi;
 
-  /// Obtient l'icône du marker (cluster ou POI unique)
-  Future<BitmapDescriptor> _getMarkerIcon(cluster_manager.Cluster<PoiClusterItem> cluster) async {
-    if (cluster.isMultiple) {
-      // Créer une icône de cluster avec le nombre de POIs
-      return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
-    } else {
-      // Créer une icône personnalisée basée sur la catégorie
-      final poi = cluster.items.first.poi;
-      return await MapMarkerHelper.createCustomMarkerIcon(
-        category: poi.primaryCategory,
-        size: 120,
+      final marker = Marker(
+        markerId: markerId,
+        position: LatLng(poi.latitude, poi.longitude),
+        clusterManagerId: _clusterManager.clusterManagerId,
+        onTap: () => _showPoiBottomSheet(poi),
+        icon: await MapMarkerHelper.createCustomMarkerIcon(
+          category: poi.primaryCategory,
+          size: 120,
+        ),
       );
+      markers.add(marker);
     }
+
+    setState(() {
+      _markers = markers;
+      _markerPoiMap = markerPoiMap;
+    });
   }
 
   /// Obtient la position de l'utilisateur
@@ -208,7 +168,7 @@ class _MapPageState extends State<MapPage> {
       }
     }
   }
-  
+
   Future<void> _loadPois() async {
     setState(() {
       _isLoading = true;
@@ -227,11 +187,8 @@ class _MapPageState extends State<MapPage> {
       if (response.success && response.data != null) {
         final pois = response.data!.pois;
 
-        // Créer les items de cluster
-        final clusterItems = pois.map((poi) => PoiClusterItem(poi)).toList();
-
-        // Mettre à jour le cluster manager
-        _clusterManager?.setItems(clusterItems);
+        // Créer les markers avec clustering natif
+        await _createMarkers(pois);
 
         setState(() {
           _pois = pois;
@@ -267,7 +224,7 @@ class _MapPageState extends State<MapPage> {
       }
     }
   }
-  
+
   void _navigateToPoiDetail(Poi poi) {
     Navigator.push(
       context,
@@ -276,8 +233,8 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   }
-  
-  void _filterPois(String query) {
+
+  void _filterPois(String query) async {
     setState(() {
       if (query.isEmpty) {
         _filteredPois = _pois;
@@ -288,11 +245,10 @@ class _MapPageState extends State<MapPage> {
                  (poi.shortDescription ?? '').toLowerCase().contains(query.toLowerCase());
         }).toList();
       }
-
-      // Mettre à jour le cluster manager avec les POIs filtrés
-      final clusterItems = _filteredPois.map((poi) => PoiClusterItem(poi)).toList();
-      _clusterManager?.setItems(clusterItems);
     });
+
+    // Recréer les markers avec les POIs filtrés
+    await _createMarkers(_filteredPois);
   }
 
   @override
@@ -638,15 +594,9 @@ class _MapPageState extends State<MapPage> {
                 initialCameraPosition: _initialPosition,
                 markers: _markers,
                 polylines: _polylines,
+                clusterManagers: {_clusterManager},
                 onMapCreated: (GoogleMapController controller) {
                   _mapController = controller;
-                  _clusterManager?.setMapId(controller.mapId);
-                },
-                onCameraMove: (CameraPosition position) {
-                  _clusterManager?.onCameraMove(position);
-                },
-                onCameraIdle: () {
-                  _clusterManager?.updateMap();
                 },
                 mapType: MapType.normal,
                 myLocationEnabled: true,
@@ -993,9 +943,9 @@ class _MapPageState extends State<MapPage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-              
+
               final pois = snapshot.data ?? <Poi>[];
-              
+
               if (pois.isEmpty) {
                 return Center(
                   child: Column(
@@ -1016,7 +966,7 @@ class _MapPageState extends State<MapPage> {
                   ),
                 );
               }
-              
+
               return ListView.builder(
                 itemCount: pois.length,
                 itemBuilder: (context, index) {
@@ -1039,7 +989,7 @@ class _MapPageState extends State<MapPage> {
       ],
     );
   }
-  
+
   Future<List<Poi>> _loadCachedPois() async {
     final response = await _poiService.getPois(useCache: true);
     if (response.isSuccess && response.data != null) {
