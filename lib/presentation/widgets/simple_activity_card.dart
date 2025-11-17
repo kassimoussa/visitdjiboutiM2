@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/simple_activity.dart';
 import '../../core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
@@ -72,12 +73,16 @@ class SimpleActivityCard extends StatelessWidget {
             borderRadius: BorderRadius.vertical(
                 top: Radius.circular(ResponsiveConstants.mediumRadius)),
             child: activity.imageUrl != null
-                ? Image.network(
-                    activity.imageUrl!,
+                ? CachedNetworkImage(
+                    imageUrl: activity.imageUrl!,
                     width: double.infinity,
                     height: ResponsiveConstants.cardImageHeight,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) =>
                         _buildDefaultImagePlaceholder(),
                   )
                 : _buildDefaultImagePlaceholder(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 // Google Maps import - utilisé seulement sur Android
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
@@ -534,27 +535,24 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               },
               itemCount: imageUrls.length,
               itemBuilder: (context, index) {
-                return Image.network(
-                  imageUrls[index],
+                return CachedNetworkImage(
+                  imageUrl: imageUrls[index],
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
+                  placeholder: (context, url) => Container(
+                    color: const Color(0xFFE8D5A3),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF3860F8),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) {
                     return Container(
                       color: const Color(0xFFE8D5A3),
                       child: const Center(
                         child: Icon(
                           Icons.place,
                           size: 80,
-                          color: Color(0xFF3860F8),
-                        ),
-                      ),
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      color: const Color(0xFFE8D5A3),
-                      child: const Center(
-                        child: CircularProgressIndicator(
                           color: Color(0xFF3860F8),
                         ),
                       ),
@@ -1195,12 +1193,21 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 if (operator.logoUrl?.isNotEmpty == true)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      operator.logoUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: operator.logoUrl,
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
+                      placeholder: (context, url) => Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Container(
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/conversion_trigger_service.dart';
@@ -572,12 +573,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               child: tour.featuredImage?.url != null
-                  ? Image.network(
-                      tour.featuredImage!.url,
+                  ? CachedNetworkImage(
+                      imageUrl: tour.featuredImage!.url,
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
+                      placeholder: (context, url) => Container(
+                        height: 200,
+                        color: Colors.grey[200],
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) {
                         return Container(
                           height: 200,
                           color: Colors.grey[200],

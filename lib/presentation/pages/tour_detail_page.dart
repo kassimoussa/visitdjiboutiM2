@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/models/tour_reservation.dart';
@@ -498,27 +499,24 @@ class _TourDetailPageState extends State<TourDetailPage> {
               },
               itemCount: imageUrls.length,
               itemBuilder: (context, index) {
-                return Image.network(
-                  imageUrls[index],
+                return CachedNetworkImage(
+                  imageUrl: imageUrls[index],
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
+                  placeholder: (context, url) => Container(
+                    color: const Color(0xFFE8D5A3),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF3860F8),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) {
                     return Container(
                       color: const Color(0xFFE8D5A3),
                       child: const Center(
                         child: Icon(
                           Icons.tour,
                           size: 80,
-                          color: Color(0xFF3860F8),
-                        ),
-                      ),
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      color: const Color(0xFFE8D5A3),
-                      child: const Center(
-                        child: CircularProgressIndicator(
                           color: Color(0xFF3860F8),
                         ),
                       ),
@@ -1099,23 +1097,16 @@ class _TourDetailPageState extends State<TourDetailPage> {
                         borderRadius: BorderRadius.circular(11),
                         child: Padding(
                           padding: const EdgeInsets.all(8),
-                          child: Image.network(
-                            operator.logoUrl,
+                          child: CachedNetworkImage(
+                            imageUrl: operator.logoUrl,
                             fit: BoxFit.contain,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                  strokeWidth: 2,
-                                  color: const Color(0xFF3860F8),
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) => Center(
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: const Color(0xFF3860F8),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Center(
                               child: Icon(
                                 Icons.business,
                                 color: Colors.grey[400],
@@ -1234,12 +1225,21 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   margin: const EdgeInsets.only(right: 12),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      media[index],
+                    child: CachedNetworkImage(
+                      imageUrl: media[index],
                       width: 160,
                       height: 120,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
+                      placeholder: (context, url) => Container(
+                        width: 160,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Container(
                         width: 160,
                         height: 120,
                         decoration: BoxDecoration(

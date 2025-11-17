@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/simple_tour.dart';
 import '../../core/models/tour.dart';
 import '../../core/services/favorites_service.dart';
@@ -153,12 +154,16 @@ class _SimpleTourCardState extends State<SimpleTourCard> {
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(ResponsiveConstants.mediumRadius)),
             child: widget.tour.hasImages
-                ? Image.network(
-                    widget.tour.firstImageUrl,
+                ? CachedNetworkImage(
+                    imageUrl: widget.tour.firstImageUrl,
                     width: double.infinity,
                     height: ResponsiveConstants.cardImageHeight,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => _buildDefaultImagePlaceholder(),
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => _buildDefaultImagePlaceholder(),
                   )
                 : _buildDefaultImagePlaceholder(),
           ),

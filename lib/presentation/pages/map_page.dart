@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/connectivity_service.dart';
@@ -167,12 +168,18 @@ class _MapPageState extends State<MapPage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: poi.imageUrl.isNotEmpty
-                      ? Image.network(
-                          poi.imageUrl,
+                      ? CachedNetworkImage(
+                          imageUrl: poi.imageUrl,
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
+                          placeholder: (context, url) => Container(
+                            width: 60,
+                            height: 60,
+                            color: Colors.grey[200],
+                            child: const Center(child: CircularProgressIndicator()),
+                          ),
+                          errorWidget: (context, url, error) => Container(
                             width: 60,
                             height: 60,
                             color: const Color(0xFF3860F8).withOpacity(0.1),

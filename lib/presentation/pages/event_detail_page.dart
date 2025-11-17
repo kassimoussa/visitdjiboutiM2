@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/event.dart';
 import '../../core/models/event_registration.dart';
 import '../../core/models/reservation.dart';
@@ -530,27 +531,24 @@ class _EventDetailPageState extends State<EventDetailPage> {
               },
               itemCount: imageUrls.length,
               itemBuilder: (context, index) {
-                return Image.network(
-                  imageUrls[index],
+                return CachedNetworkImage(
+                  imageUrl: imageUrls[index],
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
+                  placeholder: (context, url) => Container(
+                    color: const Color(0xFFE8D5A3),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF3860F8),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) {
                     return Container(
                       color: const Color(0xFFE8D5A3),
                       child: const Center(
                         child: Icon(
                           Icons.event,
                           size: 80,
-                          color: Color(0xFF3860F8),
-                        ),
-                      ),
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      color: const Color(0xFFE8D5A3),
-                      child: const Center(
-                        child: CircularProgressIndicator(
                           color: Color(0xFF3860F8),
                         ),
                       ),

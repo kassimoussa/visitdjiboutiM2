@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/activity.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/activity_service.dart';
@@ -474,27 +475,24 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               },
               itemCount: imageUrls.length,
               itemBuilder: (context, index) {
-                return Image.network(
-                  imageUrls[index],
+                return CachedNetworkImage(
+                  imageUrl: imageUrls[index],
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
+                  placeholder: (context, url) => Container(
+                    color: const Color(0xFFE8D5A3),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF3860F8),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) {
                     return Container(
                       color: const Color(0xFFE8D5A3),
                       child: const Center(
                         child: Icon(
                           Icons.kayaking,
                           size: 80,
-                          color: Color(0xFF3860F8),
-                        ),
-                      ),
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      color: const Color(0xFFE8D5A3),
-                      child: const Center(
-                        child: CircularProgressIndicator(
                           color: Color(0xFF3860F8),
                         ),
                       ),
@@ -1171,23 +1169,16 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         borderRadius: BorderRadius.circular(11),
                         child: Padding(
                           padding: const EdgeInsets.all(8),
-                          child: Image.network(
-                            operator.logoUrl,
+                          child: CachedNetworkImage(
+                            imageUrl: operator.logoUrl,
                             fit: BoxFit.contain,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                  strokeWidth: 2,
-                                  color: const Color(0xFF3860F8),
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) => Center(
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: const Color(0xFF3860F8),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Center(
                               child: Icon(
                                 Icons.business,
                                 color: Colors.grey[400],

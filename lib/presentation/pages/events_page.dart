@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/localization_service.dart';
@@ -448,22 +449,19 @@ class _EventsPageState extends State<EventsPage> {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(12),
                           ),
-                          child: Image.network(
-                            event.imageUrl,
+                          child: CachedNetworkImage(
+                            imageUrl: event.imageUrl,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF3860F8),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) {
                               return const Center(
                                 child: Icon(
                                   Icons.event,
                                   size: 60,
-                                  color: Color(0xFF3860F8),
-                                ),
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(
-                                child: CircularProgressIndicator(
                                   color: Color(0xFF3860F8),
                                 ),
                               );

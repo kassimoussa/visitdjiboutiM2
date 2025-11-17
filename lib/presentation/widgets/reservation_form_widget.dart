@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/event.dart';
 import '../../core/models/reservation.dart';
@@ -130,12 +131,18 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: _imageUrl?.isNotEmpty == true
-                ? Image.network(
-                    _imageUrl!,
+                ? CachedNetworkImage(
+                    imageUrl: _imageUrl!,
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => _buildPlaceholderImage(),
+                    placeholder: (context, url) => Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => _buildPlaceholderImage(),
                   )
                 : _buildPlaceholderImage(),
           ),

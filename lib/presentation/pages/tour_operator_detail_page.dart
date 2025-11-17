@@ -832,11 +832,15 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   child: tour.hasImages
                       ? ClipRRect(
                           borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                          child: Image.network(
-                            tour.firstImageUrl,
+                          child: CachedNetworkImage(
+                            imageUrl: tour.firstImageUrl,
                             fit: BoxFit.cover,
                             width: double.infinity,
-                            errorBuilder: (context, error, stackTrace) {
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey[200],
+                              child: const Center(child: CircularProgressIndicator()),
+                            ),
+                            errorWidget: (context, url, error) {
                               return Container(
                                 color: Colors.grey[200],
                                 child: const Icon(

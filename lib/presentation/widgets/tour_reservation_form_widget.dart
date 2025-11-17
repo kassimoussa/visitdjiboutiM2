@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/models/tour.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -138,12 +139,18 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: widget.tour.hasImages
-                ? Image.network(
-                    widget.tour.firstImageUrl,
+                ? CachedNetworkImage(
+                    imageUrl: widget.tour.firstImageUrl,
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => _buildPlaceholderImage(),
+                    placeholder: (context, url) => Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => _buildPlaceholderImage(),
                   )
                 : _buildPlaceholderImage(),
           ),
