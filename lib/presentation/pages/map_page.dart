@@ -110,12 +110,12 @@ class _MapPageState extends State<MapPage> {
       position: cluster.location,
       onTap: () {
         if (cluster.isMultiple) {
-          // C'est un cluster, zoomer dessus
+          // C'est un cluster, zoomer dessus pour voir les POIs individuels
           _mapController?.animateCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: cluster.location,
-                zoom: (_mapController!.cameraPosition?.zoom ?? 8.0) + 2,
+                zoom: 15.0, // Zoom fixe pour afficher les POIs du cluster
               ),
             ),
           );
