@@ -1,6 +1,7 @@
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'location_service.dart';
 
 /// Service pour obtenir des directions et itinéraires
 class DirectionsService {
@@ -32,10 +33,37 @@ class DirectionsService {
 
       if (result.points.isNotEmpty) {
         print('[DIRECTIONS] Itinéraire obtenu avec ${result.points.length} points');
+
+        // Convertir les points en LatLng
+        final latLngPoints = result.points
+            .map((point) => LatLng(point.latitude, point.longitude))
+            .toList();
+
+        // Calculer la distance totale en additionnant les segments
+        double totalDistanceMeters = 0;
+        final locationService = LocationService();
+        for (int i = 0; i < latLngPoints.length - 1; i++) {
+          final start = latLngPoints[i];
+          final end = latLngPoints[i + 1];
+          totalDistanceMeters += locationService.calculateDistance(
+            start.latitude,
+            start.longitude,
+            end.latitude,
+            end.longitude,
+          );
+        }
+
+        // Formater la distance
+        final distanceText = locationService.formatDistance(totalDistanceMeters);
+
+        // Estimer la durée (approximation : 60 km/h en moyenne)
+        final durationMinutes = (totalDistanceMeters / 1000) / 60 * 60;
+        final durationText = _formatDuration(durationMinutes);
+
         return DirectionsResult(
-          points: result.points.map((point) => LatLng(point.latitude, point.longitude)).toList(),
-          distance: result.distance ?? 'N/A',
-          duration: result.duration ?? 'N/A',
+          points: latLngPoints,
+          distance: distanceText,
+          duration: durationText,
         );
       } else {
         print('[DIRECTIONS] Aucun itinéraire trouvé');
@@ -44,6 +72,22 @@ class DirectionsService {
     } catch (e) {
       print('[DIRECTIONS] Erreur lors de l\'obtention de l\'itinéraire: $e');
       return null;
+    }
+  }
+
+  /// Formate la durée en minutes en texte lisible
+  String _formatDuration(double minutes) {
+    if (minutes < 1) {
+      return '< 1 min';
+    } else if (minutes < 60) {
+      return '${minutes.round()} min';
+    } else {
+      final hours = minutes ~/ 60;
+      final remainingMinutes = (minutes % 60).round();
+      if (remainingMinutes == 0) {
+        return '$hours h';
+      }
+      return '$hours h $remainingMinutes min';
     }
   }
 
