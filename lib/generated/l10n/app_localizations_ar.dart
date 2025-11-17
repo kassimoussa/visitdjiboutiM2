@@ -238,6 +238,59 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonVisitorTips => 'نصائح للزوار';
 
   @override
+  String get errorConnectionTitle => 'خطأ في الاتصال';
+
+  @override
+  String get errorConnectionMessage =>
+      'غير قادر على الاتصال بالخادم. تحقق من اتصالك بالإنترنت.';
+
+  @override
+  String get errorLoadingTitle => 'خطأ في التحميل';
+
+  @override
+  String errorLoadingMessage(Object resourceName) {
+    return 'غير قادر على تحميل $resourceName. يرجى المحاولة مرة أخرى.';
+  }
+
+  @override
+  String get errorGenericTitle => 'حدث خطأ';
+
+  @override
+  String get errorGenericMessage =>
+      'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorPermissionTitle => 'الإذن مطلوب';
+
+  @override
+  String errorPermissionMessage(Object permissionName) {
+    return 'يحتاج التطبيق إلى إذن $permissionName للعمل.';
+  }
+
+  @override
+  String get errorTimeoutTitle => 'انتهت المهلة';
+
+  @override
+  String get errorTimeoutMessage =>
+      'استغرق الطلب وقتًا طويلاً. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get errorNoDataTitle => 'لا توجد نتائج';
+
+  @override
+  String get errorNoDataMessage => 'لا توجد بيانات متاحة في الوقت الحالي.';
+
+  @override
+  String get errorServerTitle => 'خطأ في الخادم';
+
+  @override
+  String get errorServerMessage =>
+      'يواجه الخادم صعوبات. يرجى المحاولة مرة أخرى لاحقًا.';
+
+  @override
   String get commonWebsite => 'الموقع الإلكتروني';
 
   @override
@@ -582,6 +635,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mapUnknownPlace => 'مكان غير معروف';
+
+  @override
+  String get mapLocationPermissionDenied =>
+      'تم رفض إذن الموقع. يرجى تفعيله في الإعدادات.';
 
   @override
   String get navigationHome => 'الرئيسية';

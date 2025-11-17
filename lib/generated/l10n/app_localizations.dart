@@ -556,6 +556,96 @@ abstract class AppLocalizations {
   /// **'Conseils aux visiteurs'**
   String get commonVisitorTips;
 
+  /// No description provided for @errorConnectionTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de connexion'**
+  String get errorConnectionTitle;
+
+  /// No description provided for @errorConnectionMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de se connecter au serveur. Vérifiez votre connexion internet.'**
+  String get errorConnectionMessage;
+
+  /// No description provided for @errorLoadingTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de chargement'**
+  String get errorLoadingTitle;
+
+  /// No description provided for @errorLoadingMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger {resourceName}. Veuillez réessayer.'**
+  String errorLoadingMessage(Object resourceName);
+
+  /// No description provided for @errorGenericTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur est survenue'**
+  String get errorGenericTitle;
+
+  /// No description provided for @errorGenericMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une erreur inattendue s\'est produite. Veuillez réessayer.'**
+  String get errorGenericMessage;
+
+  /// No description provided for @errorPermissionTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Permission requise'**
+  String get errorPermissionTitle;
+
+  /// No description provided for @errorPermissionMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'application a besoin de la permission {permissionName} pour fonctionner.'**
+  String errorPermissionMessage(Object permissionName);
+
+  /// No description provided for @errorTimeoutTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Délai d\'attente dépassé'**
+  String get errorTimeoutTitle;
+
+  /// No description provided for @errorTimeoutMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'La requête a pris trop de temps. Veuillez réessayer.'**
+  String get errorTimeoutMessage;
+
+  /// No description provided for @errorOpenSettings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir les paramètres'**
+  String get errorOpenSettings;
+
+  /// No description provided for @errorNoDataTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun résultat'**
+  String get errorNoDataTitle;
+
+  /// No description provided for @errorNoDataMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune donnée disponible pour le moment.'**
+  String get errorNoDataMessage;
+
+  /// No description provided for @errorServerTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur serveur'**
+  String get errorServerTitle;
+
+  /// No description provided for @errorServerMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le serveur rencontre des difficultés. Veuillez réessayer plus tard.'**
+  String get errorServerMessage;
+
   /// No description provided for @commonWebsite.
   ///
   /// In fr, this message translates to:
@@ -1227,6 +1317,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Lieu inconnu'**
   String get mapUnknownPlace;
+
+  /// No description provided for @mapLocationPermissionDenied.
+  ///
+  /// In fr, this message translates to:
+  /// **'Permission de localisation refusée. Veuillez l\'activer dans les paramètres.'**
+  String get mapLocationPermissionDenied;
 
   /// No description provided for @navigationHome.
   ///

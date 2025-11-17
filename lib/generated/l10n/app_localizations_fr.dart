@@ -241,6 +241,59 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonVisitorTips => 'Conseils aux visiteurs';
 
   @override
+  String get errorConnectionTitle => 'Erreur de connexion';
+
+  @override
+  String get errorConnectionMessage =>
+      'Impossible de se connecter au serveur. Vérifiez votre connexion internet.';
+
+  @override
+  String get errorLoadingTitle => 'Erreur de chargement';
+
+  @override
+  String errorLoadingMessage(Object resourceName) {
+    return 'Impossible de charger $resourceName. Veuillez réessayer.';
+  }
+
+  @override
+  String get errorGenericTitle => 'Une erreur est survenue';
+
+  @override
+  String get errorGenericMessage =>
+      'Une erreur inattendue s\'est produite. Veuillez réessayer.';
+
+  @override
+  String get errorPermissionTitle => 'Permission requise';
+
+  @override
+  String errorPermissionMessage(Object permissionName) {
+    return 'L\'application a besoin de la permission $permissionName pour fonctionner.';
+  }
+
+  @override
+  String get errorTimeoutTitle => 'Délai d\'attente dépassé';
+
+  @override
+  String get errorTimeoutMessage =>
+      'La requête a pris trop de temps. Veuillez réessayer.';
+
+  @override
+  String get errorOpenSettings => 'Ouvrir les paramètres';
+
+  @override
+  String get errorNoDataTitle => 'Aucun résultat';
+
+  @override
+  String get errorNoDataMessage => 'Aucune donnée disponible pour le moment.';
+
+  @override
+  String get errorServerTitle => 'Erreur serveur';
+
+  @override
+  String get errorServerMessage =>
+      'Le serveur rencontre des difficultés. Veuillez réessayer plus tard.';
+
+  @override
   String get commonWebsite => 'Site web';
 
   @override
@@ -588,6 +641,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get mapUnknownPlace => 'Lieu inconnu';
+
+  @override
+  String get mapLocationPermissionDenied =>
+      'Permission de localisation refusée. Veuillez l\'activer dans les paramètres.';
 
   @override
   String get navigationHome => 'Accueil';

@@ -238,6 +238,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonVisitorTips => 'Visitor tips';
 
   @override
+  String get errorConnectionTitle => 'Connection error';
+
+  @override
+  String get errorConnectionMessage =>
+      'Unable to connect to the server. Check your internet connection.';
+
+  @override
+  String get errorLoadingTitle => 'Loading error';
+
+  @override
+  String errorLoadingMessage(Object resourceName) {
+    return 'Unable to load $resourceName. Please try again.';
+  }
+
+  @override
+  String get errorGenericTitle => 'An error occurred';
+
+  @override
+  String get errorGenericMessage =>
+      'An unexpected error occurred. Please try again.';
+
+  @override
+  String get errorPermissionTitle => 'Permission required';
+
+  @override
+  String errorPermissionMessage(Object permissionName) {
+    return 'The app needs $permissionName permission to function.';
+  }
+
+  @override
+  String get errorTimeoutTitle => 'Timeout';
+
+  @override
+  String get errorTimeoutMessage =>
+      'The request took too long. Please try again.';
+
+  @override
+  String get errorOpenSettings => 'Open settings';
+
+  @override
+  String get errorNoDataTitle => 'No results';
+
+  @override
+  String get errorNoDataMessage => 'No data available at the moment.';
+
+  @override
+  String get errorServerTitle => 'Server error';
+
+  @override
+  String get errorServerMessage =>
+      'The server is experiencing difficulties. Please try again later.';
+
+  @override
   String get commonWebsite => 'Website';
 
   @override
@@ -583,6 +636,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapUnknownPlace => 'Unknown place';
+
+  @override
+  String get mapLocationPermissionDenied =>
+      'Location permission denied. Please enable it in settings.';
 
   @override
   String get navigationHome => 'Home';
