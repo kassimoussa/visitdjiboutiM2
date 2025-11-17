@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'contact_operator_modal.dart';
 
 /// Bouton pour contacter un opérateur/administration
@@ -37,7 +38,7 @@ class ContactOperatorButton extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(
+        padding: Responsive.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: ContactOperatorModal(

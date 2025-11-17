@@ -49,21 +49,21 @@ class _LanguageRestartPageState extends State<LanguageRestartPage> {
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 strokeWidth: 2,
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 24.h),
               Text(
                 'Changement de langue...',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text(
                 'Rechargement des contenus',
                 style: TextStyle(
                   color: Colors.white70,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/anonymous_user.dart';
 import '../pages/auth/signup_page.dart';
 
@@ -59,7 +60,7 @@ class ConversionPrompt extends StatelessWidget {
   Widget _buildDialog(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: _buildContent(context),
     );
@@ -69,7 +70,7 @@ class ConversionPrompt extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       child: _buildContent(context),
     );
@@ -77,14 +78,14 @@ class ConversionPrompt extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.all(24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Icon et titre
           Container(
-            width: 80,
-            height: 80,
+            width: 80.w,
+            height: 80.h,
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withValues(alpha: 0.1),
               shape: BoxShape.circle,
@@ -96,36 +97,36 @@ class ConversionPrompt extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           
           Text(
             trigger.message,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1D2233),
             ),
             textAlign: TextAlign.center,
           ),
           
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           
           Text(
             trigger.description,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               color: Colors.grey[600],
               height: 1.5,
             ),
             textAlign: TextAlign.center,
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Avantages de la création de compte
           _buildBenefitsList(),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Boutons d'action
           Column(
@@ -137,22 +138,22 @@ class ConversionPrompt extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3860F8),
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: Responsive.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                   child: Text(
                     trigger.buttonText,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               
               TextButton(
                 onPressed: () => _handleDismiss(context),
@@ -160,7 +161,7 @@ class ConversionPrompt extends StatelessWidget {
                   _getDismissText(),
                   style: TextStyle(
                     color: Colors.grey[600],
-                    fontSize: 14,
+                    fontSize: 14.sp,
                   ),
                 ),
               ),
@@ -175,10 +176,10 @@ class ConversionPrompt extends StatelessWidget {
     final benefits = _getBenefits();
     
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,14 +187,14 @@ class ConversionPrompt extends StatelessWidget {
           const Text(
             'Avec un compte, vous pourrez :',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: Color(0xFF1D2233),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           ...benefits.map((benefit) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: Responsive.only(bottom: 8),
             child: Row(
               children: [
                 Icon(
@@ -201,12 +202,12 @@ class ConversionPrompt extends StatelessWidget {
                   size: 16,
                   color: const Color(0xFF009639),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
                     benefit,
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 13.sp,
                       color: Colors.grey[700],
                     ),
                   ),
@@ -333,8 +334,8 @@ class SubtleConversionBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: Responsive.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -342,7 +343,7 @@ class SubtleConversionBanner extends StatelessWidget {
             const Color(0xFF009639).withValues(alpha: 0.1),
           ],
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: const Color(0xFF3860F8).withValues(alpha: 0.2),
         ),
@@ -350,8 +351,8 @@ class SubtleConversionBanner extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 40.w,
+            height: 40.h,
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withValues(alpha: 0.2),
               shape: BoxShape.circle,
@@ -365,7 +366,7 @@ class SubtleConversionBanner extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           
           Expanded(
             child: Column(
@@ -374,16 +375,16 @@ class SubtleConversionBanner extends StatelessWidget {
                 Text(
                   trigger.message,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF1D2233),
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   'Créez votre compte en 2 minutes',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: Colors.grey[600],
                   ),
                 ),
@@ -391,7 +392,7 @@ class SubtleConversionBanner extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           
           // Bouton d'action
           TextButton(
@@ -399,14 +400,14 @@ class SubtleConversionBanner extends StatelessWidget {
             style: TextButton.styleFrom(
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: Responsive.symmetric(horizontal: 12, vertical: 6),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: const Text(
               'Créer',
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 12.sp),
             ),
           ),
           

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 // Google Maps import - utilisé seulement sur Android
@@ -61,7 +62,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(
+        padding: Responsive.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: ReservationFormWidget(
@@ -210,7 +211,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     size: 64,
                     color: Colors.grey[400],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Text(
                     _errorMessage!,
                     style: TextStyle(
@@ -219,7 +220,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -278,8 +279,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30.r),
+                            topRight: Radius.circular(30.r),
                           ),
                         ),
                         child: Column(
@@ -301,20 +302,20 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                               _buildContactSection(poi),
                             if (poi.hasTourOperators)
                               _buildTourOperatorsSection(poi),
-                            const SizedBox(height: 24),
+                            SizedBox(height: 24.h),
                             if (poi.allowReservations)
                               _buildReservationSection(poi),
 
                             // Section Avis
-                            const SizedBox(height: 32),
+                            SizedBox(height: 32.h),
                             ReviewsSection(
                               poiId: poi.id,
                               poiName: poi.name,
                             ),
 
-                            const SizedBox(height: 32),
+                            SizedBox(height: 32.h),
                             _buildShareSection(poi),
-                            const SizedBox(height: 32),
+                            SizedBox(height: 32.h),
                           ],
                         ),
                       ),
@@ -346,7 +347,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: Responsive.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
                         Container(
@@ -364,7 +365,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: Responsive.symmetric(horizontal: 16),
                             child: Text(
                               poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
                               style: const TextStyle(
@@ -497,7 +498,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: 350,
+        height: 350.h,
         color: const Color(0xFFE8D5A3),
         child: const Center(
           child: Icon(
@@ -522,7 +523,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         );
       },
       child: SizedBox(
-        height: 350,
+        height: 350.h,
         width: double.infinity,
         child: Stack(
           children: [
@@ -583,11 +584,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     child: Container(
                       width: isActive ? 12 : 8,
                       height: isActive ? 12 : 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      margin: Responsive.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
-                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
                       ),
                     ),
                   );
@@ -602,7 +603,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Widget _buildHeader(Poi poi) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -614,7 +615,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Row(
             children: [
               Icon(
@@ -622,11 +623,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 size: 20,
                 color: Colors.grey[600],
               ),
-              const SizedBox(width: 4),
+              SizedBox(width: 4.w),
               Text(
                 poi.region ?? AppLocalizations.of(context)!.commonUnknown,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: Colors.grey[600],
                 ),
               ),
@@ -637,11 +638,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   size: 16,
                   color: Colors.pink,
                 ),
-                const SizedBox(width: 4),
+                SizedBox(width: 4.w),
                 Text(
                   '${poi.favoritesCount}',
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: Colors.pink,
                     fontWeight: FontWeight.w500,
                   ),
@@ -656,11 +657,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Widget _buildDescriptionSection(Poi poi) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: Colors.grey[200]!,
         ),
@@ -671,10 +672,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF3860F8).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
                   Icons.info_outline,
@@ -682,21 +683,21 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.commonDescription,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             poi.description ?? poi.shortDescription ?? '',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               color: Colors.grey[700],
               height: 1.5,
             ),
@@ -708,11 +709,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Widget _buildShortDescriptionSection(Poi poi) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: Colors.grey[200]!,
         ),
@@ -723,10 +724,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF3860F8).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
                   Icons.info_outline,
@@ -734,21 +735,21 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.commonOverview,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             poi.shortDescription ?? '',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               color: Colors.grey[700],
               height: 1.5,
             ),
@@ -760,11 +761,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Widget _buildNoDescriptionPlaceholder(Poi poi) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: Colors.blue[100]!,
         ),
@@ -772,10 +773,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: Responsive.all(8),
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             child: const Icon(
               Icons.explore,
@@ -783,12 +784,12 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               '${AppLocalizations.of(context)!.commonDiscoverPlace} ${poi.region ?? AppLocalizations.of(context)!.commonUnknown} ! ${AppLocalizations.of(context)!.commonExploreOnSite}',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 color: Colors.grey[700],
                 height: 1.5,
                 fontStyle: FontStyle.italic,
@@ -810,14 +811,14 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           // Remplacer Google Maps par une image statique ou un placeholder sur iOS
           Container(
             width: double.infinity,
-            height: 250,
+            height: 250.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               color: const Color(0xFF3860F8).withOpacity(0.1),
             ),
             child: _buildGoogleMapView(poi),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildInfoRow(
             Icons.location_on,
             AppLocalizations.of(context)!.commonAddress,
@@ -838,10 +839,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           child: Container(
             width: double.infinity,
-            height: 250,
+            height: 250.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -857,10 +858,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: Responsive.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Column(
                       children: [
@@ -869,7 +870,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           size: 48,
                           color: Color(0xFF3860F8),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Text(
                           poi.name ?? 'Lieu',
                           style: const TextStyle(
@@ -878,11 +879,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           poi.displayAddress,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.grey[600],
                           ),
                           textAlign: TextAlign.center,
@@ -913,7 +914,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           child: GoogleMap(
             initialCameraPosition: CameraPosition(
               target: LatLng(poi.latitude, poi.longitude),
@@ -957,10 +958,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           child: Container(
             width: double.infinity,
-            height: 250,
+            height: 250.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -976,10 +977,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: Responsive.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Column(
                       children: [
@@ -988,7 +989,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           size: 48,
                           color: Color(0xFF3860F8),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Text(
                           poi.name ?? 'Lieu',
                           style: const TextStyle(
@@ -997,11 +998,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           poi.displayAddress,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.grey[600],
                           ),
                           textAlign: TextAlign.center,
@@ -1051,7 +1052,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ),
           
           if (hasEntryFee) ...[
-            if (hasOpeningHours) const SizedBox(height: 12),
+            if (hasOpeningHours) SizedBox(height: 12.h),
             _buildInfoRow(
               Icons.attach_money,
               AppLocalizations.of(context)!.commonEntryPrice,
@@ -1060,7 +1061,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           ],
           
           if (hasWebsite) ...[
-            if (hasOpeningHours || hasEntryFee) const SizedBox(height: 12),
+            if (hasOpeningHours || hasEntryFee) SizedBox(height: 12.h),
             _buildInfoRow(
               Icons.language,
               AppLocalizations.of(context)!.commonWebsite,
@@ -1070,12 +1071,12 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           ],
           
           if (allowsReservations) ...[
-            if (hasOpeningHours || hasEntryFee || hasWebsite) const SizedBox(height: 12),
+            if (hasOpeningHours || hasEntryFee || hasWebsite) SizedBox(height: 12.h),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: Responsive.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: const Color(0xFF009639).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(
                 children: [
@@ -1114,10 +1115,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         runSpacing: 8,
         children: poi.categories.map((category) {
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: Responsive.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
               border: Border.all(
                 color: const Color(0xFF3860F8).withOpacity(0.3),
               ),
@@ -1126,7 +1127,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               category.name ?? AppLocalizations.of(context)!.commonCategory,
               style: const TextStyle(
                 color: Color(0xFF3860F8),
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -1163,7 +1164,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       child: Column(
         children: poi.tourOperators.map((operator) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: Responsive.only(bottom: 12),
             child: _buildOperatorCard(operator),
           );
         }).toList(),
@@ -1182,10 +1183,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         decoration: BoxDecoration(
           color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.grey[200]!),
         ),
         child: Column(
@@ -1196,18 +1197,18 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 // Logo de l'opérateur
                 if (operator.logoUrl?.isNotEmpty == true)
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                     child: Image.network(
                       operator.logoUrl,
-                      width: 60,
-                      height: 60,
+                      width: 60.w,
+                      height: 60.h,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Container(
-                        width: 60,
-                        height: 60,
+                        width: 60.w,
+                        height: 60.h,
                         decoration: BoxDecoration(
                           color: const Color(0xFF3860F8).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: const Icon(
                           Icons.business,
@@ -1219,11 +1220,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   )
                 else
                   Container(
-                    width: 60,
-                    height: 60,
+                    width: 60.w,
+                    height: 60.h,
                     decoration: BoxDecoration(
                       color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: const Icon(
                       Icons.business,
@@ -1231,7 +1232,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       size: 30,
                     ),
                   ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1243,11 +1244,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Text(
                         'Opérateur touristique agréé',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: Colors.grey[600],
                         ),
                       ),
@@ -1275,9 +1276,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          padding: Responsive.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                         ),
                       ),
@@ -1293,9 +1294,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          padding: Responsive.symmetric(vertical: 8),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                         ),
                       ),
@@ -1365,7 +1366,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Widget _buildReservationSection(Poi poi) {
     return Container(
-      margin: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
+      margin: Responsive.only(left: 24, right: 24, bottom: 16),
       child: ElevatedButton.icon(
         onPressed: () => _showReservationForm(poi),
         icon: const Icon(Icons.bookmark_add),
@@ -1375,7 +1376,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),
@@ -1384,7 +1385,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Widget _buildShareSection(Poi poi) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+      margin: Responsive.symmetric(horizontal: 24),
       child: ElevatedButton.icon(
         onPressed: () {
           HapticFeedback.lightImpact();
@@ -1418,7 +1419,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),
@@ -1431,7 +1432,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: lines.map((line) {
-        if (line.trim().isEmpty) return const SizedBox(height: 4);
+        if (line.trim().isEmpty) return SizedBox(height: 4.h);
         
         if (line.toLowerCase().contains('telephone') || 
             line.toLowerCase().contains('téléphone') ||
@@ -1452,12 +1453,12 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           return _buildContactInfo(line, Icons.facebook, false);
         } else {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: Responsive.only(bottom: 4),
             child: Text(
               line,
               style: TextStyle(
                 color: Colors.grey[700],
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
           );
@@ -1468,16 +1469,16 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
 
   Widget _buildContactHeader(String title, IconData icon) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 4),
+      padding: Responsive.only(top: 8, bottom: 4),
       child: Row(
         children: [
           Icon(icon, size: 16, color: const Color(0xFF3860F8)),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Text(
             title,
             style: const TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 14,
+              fontSize: 14.sp,
               color: Color(0xFF3860F8),
             ),
           ),
@@ -1488,7 +1489,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
 
   Widget _buildContactInfo(String info, IconData icon, bool isClickable) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4, left: 24),
+      padding: Responsive.only(bottom: 4, left: 24),
       child: GestureDetector(
         onTap: () {
           HapticFeedback.lightImpact();
@@ -1508,7 +1509,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           info.trim(),
           style: TextStyle(
             color: Colors.grey[700],
-            fontSize: 14,
+            fontSize: 14.sp,
           ),
         ),
       ),
@@ -1525,10 +1526,10 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
   }) {
     return Container(
       margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: backgroundColor ?? Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -1543,10 +1544,10 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 decoration: BoxDecoration(
                   color: (iconColor ?? const Color(0xFF3860F8)).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Icon(
                   icon,
@@ -1554,7 +1555,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Text(
                   title,
@@ -1566,12 +1567,12 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           if (content != null)
             Text(
               content,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 color: Colors.grey[700],
                 height: 1.5,
               ),
@@ -1584,7 +1585,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
 
   Widget _buildInfoRow(IconData icon, String label, String value, {bool isLink = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
+      padding: Responsive.only(bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1593,7 +1594,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
             size: 18,
             color: Colors.grey[600],
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1601,16 +1602,16 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
                 Text(
                   label,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2.h),
                 Text(
                   value,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: isLink ? const Color(0xFF3860F8) : Colors.grey[700],
                     height: 1.4,
                   ),

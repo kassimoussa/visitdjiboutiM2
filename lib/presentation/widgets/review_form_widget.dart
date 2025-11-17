@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 
@@ -120,16 +121,16 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
       ),
-      padding: EdgeInsets.only(
+      padding: Responsive.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: Responsive.all(24),
           child: Form(
             key: _formKey,
             child: Column(
@@ -146,15 +147,15 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                           Text(
                             _isEditing ? 'Modifier votre avis' : 'Écrire un avis',
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4.h),
                           Text(
                             widget.poiName,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: Colors.grey[600],
                             ),
                           ),
@@ -167,17 +168,17 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 // Sélection de la note
                 const Text(
                   'Votre note *',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(5, (index) {
@@ -189,7 +190,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        padding: Responsive.symmetric(horizontal: 4),
                         child: Icon(
                           _rating >= starRating ? Icons.star : Icons.star_border,
                           color: const Color(0xFFFFB800),
@@ -199,57 +200,57 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                     );
                   }),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 // Titre (optionnel)
                 const Text(
                   'Titre (optionnel)',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 TextFormField(
                   controller: _titleController,
                   decoration: InputDecoration(
                     hintText: 'Résumez votre expérience',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: const BorderSide(
                         color: Color(0xFF3860F8),
-                        width: 2,
+                        width: 2.w,
                       ),
                     ),
                   ),
                   maxLength: 100,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
 
                 // Commentaire (optionnel)
                 const Text(
                   'Votre avis (optionnel)',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 TextFormField(
                   controller: _commentController,
                   decoration: InputDecoration(
                     hintText: 'Partagez votre expérience en détail...',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: const BorderSide(
                         color: Color(0xFF3860F8),
-                        width: 2,
+                        width: 2.w,
                       ),
                     ),
                     alignLabelWithHint: true,
@@ -257,7 +258,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                   maxLines: 6,
                   maxLength: 1000,
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 // Boutons
                 Row(
@@ -266,38 +267,38 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                       child: OutlinedButton(
                         onPressed: _isSubmitting ? null : () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: Responsive.symmetric(vertical: 16),
                           side: const BorderSide(color: Color(0xFF3860F8)),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
                         child: const Text(
                           'Annuler',
                           style: TextStyle(
                             color: Color(0xFF3860F8),
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _isSubmitting ? null : _submitReview,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: Responsive.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
                         child: _isSubmitting
                             ? const SizedBox(
-                                height: 20,
-                                width: 20,
+                                height: 20.h,
+                                width: 20.w,
                                 child: CircularProgressIndicator(
                                   color: Colors.white,
                                   strokeWidth: 2,
@@ -306,7 +307,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                             : Text(
                                 _isEditing ? 'Modifier' : 'Publier',
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -314,7 +315,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
               ],
             ),
           ),

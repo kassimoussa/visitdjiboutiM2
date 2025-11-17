@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 // import 'package:vd_gem/presentation/pages/settings_page.dart'; // Hidden temporarily
 import 'package:vd_gem/presentation/pages/about_page.dart';
 import 'package:vd_gem/presentation/pages/help_page.dart';
@@ -41,7 +42,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
             // Menu principal
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: Responsive.symmetric(horizontal: 16),
               child: Column(
                 children: [
                   _buildMenuItem(
@@ -126,15 +127,15 @@ class _AppDrawerState extends State<AppDrawer> {
             children: [
               // Logo de l'application
               Container(
-                width: 48,
-                height: 48,
+                width: 48.w,
+                height: 48.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-                padding: const EdgeInsets.all(4),
+                padding: Responsive.all(4),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                   child: Image.asset(
                     'assets/images/logo_visitdjibouti.png',
                     fit: BoxFit.contain,
@@ -190,9 +191,9 @@ class _AppDrawerState extends State<AppDrawer> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: const Color(0xFF3860F8),
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: Responsive.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               elevation: 0,
             ),
@@ -208,9 +209,9 @@ class _AppDrawerState extends State<AppDrawer> {
             onPressed: () => _navigateToAuth(context, const LoginPage()),
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: Responsive.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               side: const BorderSide(color: Colors.white),
             ),
@@ -228,16 +229,16 @@ class _AppDrawerState extends State<AppDrawer> {
     final user = _authService.currentUser;
     
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: Responsive.all(12),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: Colors.white.withOpacity(0.2)),
       ),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 16,
+            radius: 16.r,
             backgroundColor: Colors.white.withOpacity(0.2),
             child: Text(
               user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : '👤',
@@ -293,14 +294,14 @@ class _AppDrawerState extends State<AppDrawer> {
     required VoidCallback onTap,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: Responsive.only(bottom: 8),
       child: ListTile(
         leading: Container(
-          width: 40,
-          height: 40,
+          width: 40.w,
+          height: 40.h,
           decoration: BoxDecoration(
             color: const Color(0xFF3860F8).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
           child: Icon(
             icon,
@@ -331,19 +332,19 @@ class _AppDrawerState extends State<AppDrawer> {
         ),
         onTap: onTap,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        contentPadding: Responsive.symmetric(horizontal: 16, vertical: 4),
       ),
     );
   }
 
   Widget _buildVersionInfo() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: Responsive.all(12),
       decoration: BoxDecoration(
         color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
         children: [
@@ -352,7 +353,7 @@ class _AppDrawerState extends State<AppDrawer> {
             size: 16,
             color: Colors.grey[600],
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Text(
             AppLocalizations.of(context)!.drawerVersion,
             style: TextStyle(

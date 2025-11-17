@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
@@ -282,11 +283,11 @@ class _MapPageState extends State<MapPage> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(16),
+        margin: Responsive.all(16),
+        padding: Responsive.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -294,28 +295,28 @@ class _MapPageState extends State<MapPage> {
             Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                   child: poi.imageUrl.isNotEmpty
                       ? Image.network(
                           poi.imageUrl,
-                          width: 60,
-                          height: 60,
+                          width: 60.w,
+                          height: 60.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) => Container(
-                            width: 60,
-                            height: 60,
+                            width: 60.w,
+                            height: 60.h,
                             color: const Color(0xFF3860F8).withOpacity(0.1),
                             child: const Icon(Icons.place, color: Color(0xFF3860F8)),
                           ),
                         )
                       : Container(
-                          width: 60,
-                          height: 60,
+                          width: 60.w,
+                          height: 60.h,
                           color: const Color(0xFF3860F8).withOpacity(0.1),
                           child: const Icon(Icons.place, color: Color(0xFF3860F8)),
                         ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,7 +336,7 @@ class _MapPageState extends State<MapPage> {
                         Text(
                           poi.shortDescription!,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.grey,
                           ),
                           maxLines: 2,
@@ -346,7 +347,7 @@ class _MapPageState extends State<MapPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Row(
               children: [
                 Expanded(
@@ -363,7 +364,7 @@ class _MapPageState extends State<MapPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () {
@@ -388,11 +389,11 @@ class _MapPageState extends State<MapPage> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(16),
+        margin: Responsive.all(16),
+        padding: Responsive.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -401,16 +402,16 @@ class _MapPageState extends State<MapPage> {
             Text(
               'Obtenir un itinéraire',
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               'Vers: ${poi.name}',
               style: const TextStyle(color: Colors.grey),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ListTile(
               leading: const Icon(Icons.navigation, color: Color(0xFF3860F8)),
               title: const Text('Ouvrir dans Google Maps'),
@@ -443,11 +444,11 @@ class _MapPageState extends State<MapPage> {
             if (_userPosition != null) ...[
               const Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: Responsive.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   children: [
                     const Icon(Icons.info_outline, size: 16, color: Colors.grey),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         'Distance: ${_locationService.formatDistance(
@@ -458,7 +459,7 @@ class _MapPageState extends State<MapPage> {
                             poi.longitude,
                           ),
                         )}',
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style: const TextStyle(fontSize: 12.sp, color: Colors.grey),
                       ),
                     ),
                   ],
@@ -490,12 +491,12 @@ class _MapPageState extends State<MapPage> {
       builder: (context) => const Center(
         child: Card(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: Responsive.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Text('Calcul de l\'itinéraire...'),
               ],
             ),
@@ -580,7 +581,7 @@ class _MapPageState extends State<MapPage> {
                       CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       Text(
                         'Chargement de la carte...',
                         style: TextStyle(
@@ -616,7 +617,7 @@ class _MapPageState extends State<MapPage> {
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(25.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
@@ -641,7 +642,7 @@ class _MapPageState extends State<MapPage> {
                       )
                     : null,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(25.r),
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
@@ -662,25 +663,25 @@ class _MapPageState extends State<MapPage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
+                  top: Radius.circular(20.r),
                 ),
               ),
               child: Column(
                 children: [
                   // Handle pour drag
                   Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    width: 40,
-                    height: 4,
+                    margin: Responsive.symmetric(vertical: 8),
+                    width: 40.w,
+                    height: 4.h,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(2.r),
                     ),
                   ),
 
                   // Titre
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: Responsive.symmetric(horizontal: 16),
                     child: Row(
                       children: [
                         const Text(
@@ -706,7 +707,7 @@ class _MapPageState extends State<MapPage> {
                   // Liste
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: Responsive.symmetric(horizontal: 16),
                       itemCount: _filteredPois.length,
                       itemBuilder: (context, index) {
                         final poi = _filteredPois[index];
@@ -769,7 +770,7 @@ class _MapPageState extends State<MapPage> {
                 foregroundColor: const Color(0xFF3860F8),
                 child: Icon(_showNearbyList ? Icons.map : Icons.list),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               FloatingActionButton.small(
                 heroTag: 'location',
                 onPressed: _centerOnUserLocation,
@@ -779,13 +780,13 @@ class _MapPageState extends State<MapPage> {
                 foregroundColor: const Color(0xFF3860F8),
                 child: _isLocatingUser
                     ? const SizedBox(
-                        width: 20,
-                        height: 20,
+                        width: 20.w,
+                        height: 20.h,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.my_location),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               FloatingActionButton.small(
                 heroTag: 'refresh',
                 onPressed: _loadPois,
@@ -806,10 +807,10 @@ class _MapPageState extends State<MapPage> {
         // Vue de la carte stylisée pour iOS
         Container(
           width: double.infinity,
-          height: 200,
-          margin: const EdgeInsets.all(16),
+          height: 200.h,
+          margin: Responsive.all(16),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -828,7 +829,7 @@ class _MapPageState extends State<MapPage> {
                   size: 48,
                   color: const Color(0xFF3860F8),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Text(
                   AppLocalizations.of(context)!.mapTitle,
                   style: const TextStyle(
@@ -837,7 +838,7 @@ class _MapPageState extends State<MapPage> {
                     color: Color(0xFF3860F8),
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   'Djibouti',
                   style: TextStyle(
@@ -869,7 +870,7 @@ class _MapPageState extends State<MapPage> {
                     )
                   : null,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(25.r),
                 borderSide: BorderSide.none,
               ),
               filled: true,
@@ -887,7 +888,7 @@ class _MapPageState extends State<MapPage> {
                   itemBuilder: (context, index) {
                     final poi = _filteredPois[index];
                     return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      margin: Responsive.symmetric(horizontal: 16, vertical: 4),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundColor: const Color(0xFF3860F8).withOpacity(0.1),
@@ -922,12 +923,12 @@ class _MapPageState extends State<MapPage> {
         // Message d'information hors ligne
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           color: Colors.orange.withOpacity(0.1),
           child: const Row(
             children: [
               Icon(Icons.wifi_off, color: Colors.orange),
-              SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   'Carte hors ligne - Affichage de la liste des POIs disponibles',
@@ -954,12 +955,12 @@ class _MapPageState extends State<MapPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.map_outlined, size: 64, color: Colors.grey),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       const Text(
                         'Aucune donnée de carte disponible hors ligne',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       const Text(
                         'Connectez-vous à internet pour télécharger les POIs',
                         style: TextStyle(color: Colors.grey),
@@ -974,7 +975,7 @@ class _MapPageState extends State<MapPage> {
                 itemBuilder: (context, index) {
                   final poi = pois[index];
                   return Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    margin: Responsive.symmetric(horizontal: 16, vertical: 4),
                     child: ListTile(
                       leading: const Icon(Icons.place, color: Color(0xFF3860F8)),
                       title: Text(poi.name),

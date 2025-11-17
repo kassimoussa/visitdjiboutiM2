@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../core/models/activity.dart';
@@ -112,7 +113,7 @@ class ActivityCard extends StatelessWidget {
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: Responsive.symmetric(
                     horizontal: ResponsiveConstants.smallSpace,
                     vertical: ResponsiveConstants.tinySpace),
                 decoration: BoxDecoration(
@@ -184,7 +185,7 @@ class ActivityCard extends StatelessWidget {
       runSpacing: ResponsiveConstants.smallSpace,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: Responsive.symmetric(
               horizontal: ResponsiveConstants.smallSpace,
               vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
@@ -202,7 +203,7 @@ class ActivityCard extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: Responsive.symmetric(
               horizontal: ResponsiveConstants.smallSpace,
               vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
@@ -221,7 +222,7 @@ class ActivityCard extends StatelessWidget {
         ),
         if (activity.region != null)
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: Responsive.symmetric(
                 horizontal: ResponsiveConstants.smallSpace,
                 vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(

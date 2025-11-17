@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/category.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -60,7 +61,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
 
   Widget _buildFilterButton() {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: Responsive.symmetric(
         horizontal: widget.isSmallScreen ? 12 : 16,
         vertical: 8,
       ),
@@ -79,12 +80,12 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
                   _animationController.reverse();
                 }
               },
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(25.r),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: Responsive.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(25.r),
                   border: Border.all(
                     color: widget.selectedCategory != null 
                       ? const Color(0xFF3860F8) 
@@ -101,7 +102,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
                         : Colors.grey[600],
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         widget.selectedCategory?.name ?? 'Filtrer par catégorie',
@@ -139,12 +140,12 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
           
           // Compteur de résultats si filtré
           if (widget.selectedCategory != null) ...[
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: Responsive.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: const Color(0xFF3860F8),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: const Icon(
                 Icons.filter_alt,
@@ -170,7 +171,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
     if (quickCategories.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      height: 40,
+      height: 40.h,
       padding: EdgeInsets.symmetric(horizontal: widget.isSmallScreen ? 12 : 16),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -205,7 +206,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
     bool isSelected,
   ) {
     return Container(
-      margin: const EdgeInsets.only(right: 8),
+      margin: Responsive.only(right: 8),
       child: FilterChip(
         avatar: Icon(icon, size: 16),
         label: Text(label),
@@ -215,7 +216,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
         selectedColor: const Color(0xFF3860F8),
         labelStyle: TextStyle(
           color: isSelected ? Colors.white : Colors.black87,
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
         ),
       ),
@@ -230,7 +231,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
           height: _animationController.value * 300,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
@@ -240,29 +241,29 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
             ],
           ),
           child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20.r)),
             child: Column(
               children: [
                 // Handle bar
                 Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  width: 40,
-                  height: 4,
+                  margin: Responsive.only(top: 8),
+                  width: 40.w,
+                  height: 4.h,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(2.r),
                   ),
                 ),
                 
                 // Header
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: Responsive.all(16),
                   child: Row(
                     children: [
                       const Text(
                         'Filtrer par catégorie',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -298,7 +299,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
         .toList();
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: Responsive.symmetric(horizontal: 16),
       itemCount: parentCategories.length,
       itemBuilder: (context, index) {
         final category = parentCategories[index];
@@ -329,11 +330,11 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
                       '${category.subCategories?.length ?? 0}',
                       style: TextStyle(
                         color: Colors.grey[500],
-                        fontSize: 12,
+                        fontSize: 12.sp,
                       ),
                     ),
                   if (category.hasSubCategories) ...[
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4.w),
                     Icon(
                       isExpanded ? Icons.expand_less : Icons.expand_more,
                       color: Colors.grey[600],
@@ -362,23 +363,23 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
                     final isSubSelected = widget.selectedCategory?.id == subCategory.id;
                     
                     return ListTile(
-                      contentPadding: const EdgeInsets.only(left: 56, right: 16),
+                      contentPadding: Responsive.only(left: 56, right: 16),
                       title: Text(
                         subCategory.name,
                         style: TextStyle(
                           fontWeight: isSubSelected ? FontWeight.w600 : FontWeight.normal,
                           color: isSubSelected ? const Color(0xFF3860F8) : null,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                         ),
                       ),
                       leading: Container(
-                        width: 4,
-                        height: 20,
+                        width: 4.w,
+                        height: 20.h,
                         decoration: BoxDecoration(
                           color: isSubSelected 
                             ? const Color(0xFF3860F8) 
                             : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: BorderRadius.circular(2.r),
                         ),
                       ),
                       onTap: () {

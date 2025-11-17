@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/tour_operator_service.dart';
 import '../../core/models/tour_operator.dart';
@@ -84,16 +85,16 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                         size: 64,
                         color: Colors.grey[400],
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       Text(
                         _errorMessage!,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.grey[600],
-                          fontSize: 16,
+                          fontSize: 16.sp,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       ElevatedButton(
                         onPressed: _loadTourOperators,
                         style: ElevatedButton.styleFrom(
@@ -111,7 +112,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(20),
+                            padding: Responsive.all(20),
                             decoration: BoxDecoration(
                               color: const Color(0xFF3860F8).withOpacity(0.1),
                               shape: BoxShape.circle,
@@ -122,11 +123,11 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                               color: Color(0xFF3860F8),
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
                           const Text(
                             'Aucun opérateur disponible',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
                               color: Color(0xFF1D2233),
                             ),
@@ -135,17 +136,17 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                       ),
                     )
                   : SingleChildScrollView(
-                      padding: const EdgeInsets.all(20),
+                      padding: Responsive.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(8),
+                                padding: Responsive.all(8),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF3860F8).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: const Icon(
                                   Icons.groups,
@@ -153,18 +154,18 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                                   size: 20,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12.w),
                               Text(
                                 '${_operators.length} partenaire${_operators.length > 1 ? 's' : ''} local${_operators.length > 1 ? 'aux' : ''}',
                                 style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF1D2233),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
                           GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -196,7 +197,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
             Colors.grey[50]!,
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -206,7 +207,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
         ],
         border: Border.all(
           color: Colors.grey[200]!,
-          width: 1,
+          width: 1.w,
         ),
       ),
       child: Material(
@@ -220,22 +221,22 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: Responsive.all(20),
             child: Row(
               children: [
                 // Logo section
                 if (operator.logo != null && operator.logoUrl.isNotEmpty)
                   Container(
-                    width: 70,
-                    height: 70,
-                    margin: const EdgeInsets.only(right: 16),
+                    width: 70.w,
+                    height: 70.h,
+                    margin: Responsive.only(right: 16),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
                         color: Colors.grey[200]!,
-                        width: 1,
+                        width: 1.w,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -246,7 +247,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       child: CachedNetworkImage(
                         imageUrl: operator.logoUrl,
                         fit: BoxFit.cover,
@@ -282,7 +283,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                             child: Text(
                               operator.name,
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF1D2233),
                               ),
@@ -292,30 +293,30 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           ),
                           if (operator.featured == true)
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
                                 color: const Color(0xFF009639),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: const Text(
                                 'Recommandé',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12.h),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (operator.hasPhone)
                             _buildContactChip(Icons.phone, operator.displayPhone),
                           if (operator.hasPhone && operator.hasEmail)
-                            const SizedBox(height: 6),
+                            SizedBox(height: 6.h),
                           if (operator.hasEmail)
                             _buildContactChip(Icons.email, operator.displayEmail),
                         ],
@@ -325,7 +326,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                 ),
                 // Arrow indicator
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: Responsive.all(8),
                   decoration: BoxDecoration(
                     color: const Color(0xFF3860F8).withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -346,10 +347,10 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
 
   Widget _buildContactChip(IconData icon, String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: Responsive.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -359,11 +360,11 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
             size: 12,
             color: const Color(0xFF3860F8),
           ),
-          const SizedBox(width: 4),
+          SizedBox(width: 4.w),
           Text(
             label,
             style: const TextStyle(
-              fontSize: 11,
+              fontSize: 11.sp,
               color: Color(0xFF3860F8),
               fontWeight: FontWeight.w500,
             ),

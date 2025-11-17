@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/cache_service.dart';
@@ -352,7 +353,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     )
                   : null,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(25.r),
                 borderSide: BorderSide.none,
               ),
               filled: true,
@@ -367,7 +368,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           child: Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: InkWell(
               onTap: () {
@@ -378,11 +379,11 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   ),
                 );
               },
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               child: Container(
                 padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   gradient: const LinearGradient(
                     colors: [Color(0xFF3860F8), Color(0xFF0072CE)],
                     begin: Alignment.topLeft,
@@ -395,7 +396,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       padding: EdgeInsets.all(ResponsiveConstants.smallSpace),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: const Icon(
                         Icons.map,
@@ -412,16 +413,16 @@ class _DiscoverPageState extends State<DiscoverPage> {
                             'Explorer par région',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: 4.h),
                           Text(
                             'Découvrez le contenu par région de Djibouti',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13,
+                              fontSize: 13.sp,
                             ),
                           ),
                         ],
@@ -444,11 +445,11 @@ class _DiscoverPageState extends State<DiscoverPage> {
         // Badges de filtrage par catégorie parente
         if (_categories.isNotEmpty)
           Container(
-            height: 50,
-            margin: const EdgeInsets.only(bottom: 8),
+            height: 50.h,
+            margin: Responsive.only(bottom: 8),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: Responsive.symmetric(horizontal: 16),
               itemCount: _categories.length + 1, // +1 pour "Tout"
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -524,7 +525,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 : 'Aucun résultat pour ces filtres',
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 16,
+                fontSize: 16.sp,
               ),
             ),
             if (_searchController.text.isNotEmpty || _selectedCategory != null)
@@ -558,7 +559,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               Future.microtask(() => _loadAllPois(loadMore: true));
             }
             return Container(
-              padding: const EdgeInsets.all(16),
+              padding: Responsive.all(16),
               child: const Center(
                 child: CircularProgressIndicator(
                   color: Color(0xFF3860F8),
@@ -582,7 +583,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     Color? color,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: Responsive.only(right: 8),
       child: FilterChip(
         label: Row(
           mainAxisSize: MainAxisSize.min,
@@ -593,7 +594,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 size: 18,
                 color: isSelected ? Colors.white : (color ?? const Color(0xFF3860F8)),
               ),
-              const SizedBox(width: 6),
+              SizedBox(width: 6.w),
             ],
             Text(label),
           ],
@@ -605,14 +606,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
         labelStyle: TextStyle(
           color: isSelected ? Colors.white : Colors.black87,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          fontSize: 14,
+          fontSize: 14.sp,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: Responsive.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
           side: BorderSide(
             color: isSelected ? (color ?? const Color(0xFF3860F8)) : Colors.grey[300]!,
-            width: 1,
+            width: 1.w,
           ),
         ),
       ),

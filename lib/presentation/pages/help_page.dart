@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 
@@ -92,7 +93,7 @@ class _HelpPageState extends State<HelpPage> {
         children: [
           // Header avec recherche
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: Responsive.all(16),
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withOpacity(0.05),
             ),
@@ -112,7 +113,7 @@ class _HelpPageState extends State<HelpPage> {
                     hintText: 'Rechercher dans l\'aide...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(25.r),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
@@ -128,8 +129,8 @@ class _HelpPageState extends State<HelpPage> {
           
           // Accès rapide
           Container(
-            height: 80,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            height: 80.h,
+            padding: Responsive.symmetric(vertical: 16),
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -161,8 +162,8 @@ class _HelpPageState extends State<HelpPage> {
           
           // Filtres par catégorie
           Container(
-            height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            height: 50.h,
+            padding: Responsive.symmetric(horizontal: 16),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: _categories.length,
@@ -171,7 +172,7 @@ class _HelpPageState extends State<HelpPage> {
                 final isSelected = category == _selectedCategory;
                 
                 return Container(
-                  margin: const EdgeInsets.only(right: 8),
+                  margin: Responsive.only(right: 8),
                   child: FilterChip(
                     label: Text(category),
                     selected: isSelected,
@@ -196,7 +197,7 @@ class _HelpPageState extends State<HelpPage> {
           // FAQ Liste
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: Responsive.symmetric(horizontal: 16),
               itemCount: filteredFAQ.length,
               itemBuilder: (context, index) {
                 final faq = filteredFAQ[index];
@@ -207,7 +208,7 @@ class _HelpPageState extends State<HelpPage> {
           
           // Footer avec contact
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: Responsive.all(16),
             decoration: BoxDecoration(
               color: Colors.grey[50],
               border: Border(
@@ -259,17 +260,17 @@ class _HelpPageState extends State<HelpPage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80,
-        margin: const EdgeInsets.only(right: 12),
+        width: 80.w,
+        margin: Responsive.only(right: 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 48.w,
+              height: 48.h,
               decoration: BoxDecoration(
                 color: const Color(0xFF3860F8).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
                 icon,
@@ -281,7 +282,7 @@ class _HelpPageState extends State<HelpPage> {
               child: Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 11,
+                  fontSize: 11.sp,
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
@@ -297,7 +298,7 @@ class _HelpPageState extends State<HelpPage> {
 
   Widget _buildFAQItem(Map<String, dynamic> faq) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: Responsive.only(bottom: 8),
       child: ExpansionTile(
         title: Text(
           faq['question'],
@@ -307,12 +308,12 @@ class _HelpPageState extends State<HelpPage> {
           ),
         ),
         subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
+          padding: Responsive.only(top: 4),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            padding: Responsive.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: Text(
               faq['category'],
@@ -325,10 +326,10 @@ class _HelpPageState extends State<HelpPage> {
           ),
         ),
         leading: Container(
-          padding: const EdgeInsets.all(8),
+          padding: Responsive.all(8),
           decoration: BoxDecoration(
             color: const Color(0xFF3860F8).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
           child: const Icon(
             Icons.help_outline,
@@ -359,7 +360,7 @@ class _HelpPageState extends State<HelpPage> {
       isScrollControlled: true,
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.8,
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           children: [
             Row(
@@ -381,10 +382,10 @@ class _HelpPageState extends State<HelpPage> {
             SizedBox(height: ResponsiveConstants.mediumSpace),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: Responsive.all(16),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -439,11 +440,11 @@ class _HelpPageState extends State<HelpPage> {
       context: context,
       isScrollControlled: true,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(
+        padding: Responsive.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -459,7 +460,7 @@ class _HelpPageState extends State<HelpPage> {
                 decoration: InputDecoration(
                   labelText: 'Sujet',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ),
@@ -469,7 +470,7 @@ class _HelpPageState extends State<HelpPage> {
                 decoration: InputDecoration(
                   labelText: 'Votre message',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ),
@@ -478,7 +479,7 @@ class _HelpPageState extends State<HelpPage> {
                 decoration: InputDecoration(
                   labelText: 'Votre email (optionnel)',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ),
@@ -524,7 +525,7 @@ class _HelpPageState extends State<HelpPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -566,11 +567,11 @@ class _HelpPageState extends State<HelpPage> {
       context: context,
       isScrollControlled: true,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(
+        padding: Responsive.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -586,7 +587,7 @@ class _HelpPageState extends State<HelpPage> {
                 decoration: InputDecoration(
                   labelText: 'Titre du problème',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ),
@@ -597,7 +598,7 @@ class _HelpPageState extends State<HelpPage> {
                   labelText: 'Description détaillée',
                   hintText: 'Décrivez le problème rencontré...',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ),

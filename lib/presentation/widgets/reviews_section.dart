@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -179,23 +180,23 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+      margin: Responsive.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // En-tête avec bouton "Écrire un avis"
           _buildHeader(),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           // Statistiques
           if (_statistics != null) ...[
             _buildStatistics(),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
           ],
 
           // Filtres par note
           _buildRatingFilter(),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           // Liste des avis
           if (_isLoading && _reviews.isEmpty)
@@ -223,10 +224,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: Responsive.all(8),
               decoration: BoxDecoration(
                 color: const Color(0xFF3860F8).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: const Icon(
                 Icons.star_outline,
@@ -234,10 +235,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                 size: 20,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             const Text(
               'Avis',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -250,7 +251,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3860F8),
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: Responsive.symmetric(horizontal: 16, vertical: 8),
               ),
             ),
           ),
@@ -262,10 +263,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     if (_statistics == null) return const SizedBox.shrink();
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -286,7 +287,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     Text(
                       _statistics!.displayAverageRating,
                       style: const TextStyle(
-                        fontSize: 48,
+                        fontSize: 48.sp,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
                       ),
@@ -303,11 +304,11 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                         );
                       }),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Text(
                       '${_statistics!.totalReviews} avis',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -325,16 +326,16 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     final percentage = _statistics!.getPercentageForRating(rating);
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      padding: Responsive.symmetric(vertical: 2),
                       child: Row(
                         children: [
                           Text(
                             '$rating',
-                            style: const TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12.sp),
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4.w),
                           const Icon(Icons.star, size: 12, color: Color(0xFFFFB800)),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Expanded(
                             child: LinearProgressIndicator(
                               value: percentage / 100,
@@ -344,12 +345,12 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           SizedBox(
-                            width: 30,
+                            width: 30.w,
                             child: Text(
                               '$count',
-                              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
                               textAlign: TextAlign.right,
                             ),
                           ),
@@ -372,11 +373,11 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       child: Row(
         children: [
           _buildFilterChip('Tous', _filterRating == null, () => _filterByRating(null)),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           ...List.generate(5, (index) {
             final rating = 5 - index;
             return Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: Responsive.only(right: 8),
               child: _buildFilterChip(
                 '$rating ⭐',
                 _filterRating == rating,
@@ -393,10 +394,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: Responsive.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF3860F8) : Colors.grey[200],
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: Text(
           label,
@@ -415,7 +416,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
         ..._reviews.map((review) => _buildReviewCard(review)),
         if (_hasMorePages)
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: Responsive.symmetric(vertical: 16),
             child: TextButton(
               onPressed: () => _loadReviews(loadMore: true),
               child: const Text('Voir plus d\'avis'),
@@ -427,11 +428,11 @@ class _ReviewsSectionState extends State<ReviewsSection> {
 
   Widget _buildReviewCard(Review review) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: Responsive.only(bottom: 16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: Colors.grey[200]!),
       ),
       child: Column(
@@ -450,7 +451,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -461,11 +462,11 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                           review.author.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                           ),
                         ),
                         if (review.author.isVerified) ...[
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4.w),
                           const Icon(
                             Icons.verified,
                             size: 16,
@@ -483,10 +484,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                             size: 16,
                           );
                         }),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                         Text(
                           _formatDate(review.createdAt),
-                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
                         ),
                       ],
                     ),
@@ -508,7 +509,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                       child: Row(
                         children: [
                           Icon(Icons.edit, size: 18),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('Modifier'),
                         ],
                       ),
@@ -518,7 +519,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                       child: Row(
                         children: [
                           Icon(Icons.delete, size: 18, color: Colors.red),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           Text('Supprimer', style: TextStyle(color: Colors.red)),
                         ],
                       ),
@@ -530,21 +531,21 @@ class _ReviewsSectionState extends State<ReviewsSection> {
 
           // Titre et commentaire
           if (review.hasTitle) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Text(
               review.title!,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 16.sp,
               ),
             ),
           ],
           if (review.hasComment) ...[
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               review.comment!,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.grey[800],
                 height: 1.5,
               ),
@@ -553,12 +554,12 @@ class _ReviewsSectionState extends State<ReviewsSection> {
 
           // Réponse de l'opérateur
           if (review.hasOperatorResponse) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: Responsive.all(12),
               decoration: BoxDecoration(
                 color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(color: const Color(0xFF3860F8).withValues(alpha: 0.2)),
               ),
               child: Column(
@@ -571,26 +572,26 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                         size: 16,
                         color: Color(0xFF3860F8),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6.w),
                       Text(
                         'Réponse de l\'établissement',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 13,
+                          fontSize: 13.sp,
                           color: Colors.grey[700],
                         ),
                       ),
                       const Spacer(),
                       Text(
                         _formatDate(review.operatorResponse!.date),
-                        style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+                        style: TextStyle(fontSize: 11.sp, color: Colors.grey[600]),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     review.operatorResponse!.text,
-                    style: const TextStyle(fontSize: 13, height: 1.4),
+                    style: const TextStyle(fontSize: 13.sp, height: 1.4),
                   ),
                 ],
               ),
@@ -598,18 +599,18 @@ class _ReviewsSectionState extends State<ReviewsSection> {
           ],
 
           // Bouton "Utile"
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           Row(
             children: [
               InkWell(
                 onTap: review.isHelpful ? null : () => _voteHelpful(review),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: Responsive.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: review.isHelpful
                         ? const Color(0xFF3860F8).withValues(alpha: 0.1)
                         : Colors.grey[100],
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
                       color: review.isHelpful
                           ? const Color(0xFF3860F8)
@@ -626,11 +627,11 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                             ? const Color(0xFF3860F8)
                             : Colors.grey[600],
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6.w),
                       Text(
                         'Utile${(review.helpfulCount ?? 0) > 0 ? ' (${review.helpfulCount})' : ''}',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: review.isHelpful ? FontWeight.w600 : FontWeight.normal,
                           color: review.isHelpful
                               ? const Color(0xFF3860F8)
@@ -655,16 +656,16 @@ class _ReviewsSectionState extends State<ReviewsSection> {
         child: Column(
           children: [
             Icon(Icons.rate_review_outlined, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               'Aucun avis pour le moment',
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
             ),
             if (_authService.isLoggedIn) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text(
                 'Soyez le premier à donner votre avis !',
-                style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
               ),
             ],
           ],
@@ -680,18 +681,18 @@ class _ReviewsSectionState extends State<ReviewsSection> {
         child: Column(
           children: [
             Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               'Erreur de chargement',
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               _errorMessage,
-              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ElevatedButton(
               onPressed: _loadReviews,
               child: const Text('Réessayer'),

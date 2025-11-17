@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/event.dart';
 import '../../core/models/event_registration.dart';
@@ -196,7 +197,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(
+        padding: Responsive.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: ReservationFormWidget(
@@ -215,7 +216,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => _RegistrationBottomSheet(
         event: _eventDetails ?? widget.event,
@@ -245,10 +246,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('${AppLocalizations.of(context)!.eventDetailRegistrationNumber}: ${registration.registration.registrationNumber}'),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text('${AppLocalizations.of(context)!.eventDetailParticipants}: ${registration.registration.participantsCount}'),
             if (registration.registration.specialRequirements != null) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text('${AppLocalizations.of(context)!.eventDetailSpecialRequirements}: ${registration.registration.specialRequirements}'),
             ],
           ],
@@ -332,8 +333,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30.r),
+                            topRight: Radius.circular(30.r),
                           ),
                         ),
                         child: Column(
@@ -342,7 +343,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             _buildHeader(event),
                             _buildContent(event),
                             _buildRegistrationSection(event),
-                            const SizedBox(height: 32),
+                            SizedBox(height: 32.h),
                           ],
                         ),
                       ),
@@ -374,7 +375,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: Responsive.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
                         Container(
@@ -392,7 +393,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: Responsive.symmetric(horizontal: 16),
                             child: Text(
                               event.title ?? AppLocalizations.of(context)!.commonEvent,
                               style: const TextStyle(
@@ -493,7 +494,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: 350,
+        height: 350.h,
         color: const Color(0xFFE8D5A3),
         child: const Center(
           child: Icon(
@@ -518,7 +519,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         );
       },
       child: SizedBox(
-        height: 350,
+        height: 350.h,
         width: double.infinity,
         child: Stack(
           children: [
@@ -579,11 +580,11 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     child: Container(
                       width: isActive ? 12 : 8,
                       height: isActive ? 12 : 8,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      margin: Responsive.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
-                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
                       ),
                     ),
                   );
@@ -598,7 +599,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildHeader(Event event) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -632,10 +633,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: Responsive.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: _getStatusColor(event.statusText),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
                 child: Text(
                   event.statusText,
@@ -686,7 +687,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 event.priceText,
                 style: TextStyle(
                   color: event.isFree ? Colors.green : const Color(0xFF3860F8),
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -740,7 +741,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildRegistrationSection(Event event) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: Responsive.all(20),
       child: _buildRegistrationButton(event),
     );
   }
@@ -749,17 +750,17 @@ class _EventDetailPageState extends State<EventDetailPage> {
     if (event.hasEnded) {
       return Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         decoration: BoxDecoration(
           color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.grey[300]!),
         ),
         child: Text(
           AppLocalizations.of(context)!.eventDetailEventEnded,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             color: Colors.grey,
             fontWeight: FontWeight.w500,
           ),
@@ -770,17 +771,17 @@ class _EventDetailPageState extends State<EventDetailPage> {
     if (event.isSoldOut) {
       return Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         decoration: BoxDecoration(
           color: Colors.red[50],
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.red[200]!),
         ),
         child: Text(
           AppLocalizations.of(context)!.eventDetailEventFull,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             color: Colors.red,
             fontWeight: FontWeight.w500,
           ),
@@ -794,10 +795,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
         // Afficher le conteneur des participants
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(12),
+          padding: Responsive.all(12),
           decoration: BoxDecoration(
             color: const Color(0xFF3860F8).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             border: Border.all(
               color: const Color(0xFF3860F8).withOpacity(0.3),
             ),
@@ -851,9 +852,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       : Colors.orange)            // Orange pour en attente
                   : const Color(0xFF3860F8),      // Bleu pour s'inscrire
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: Responsive.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               elevation: 0,
               disabledBackgroundColor: _hasActiveReservation
@@ -903,11 +904,11 @@ class _EventDetailPageState extends State<EventDetailPage> {
         if (_errorMessage != null)
           Container(
             width: double.infinity,
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(12),
+            margin: Responsive.all(16),
+            padding: Responsive.all(12),
             decoration: BoxDecoration(
               color: Colors.orange.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: Colors.orange.withOpacity(0.3)),
             ),
             child: Row(
@@ -925,7 +926,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ),
         
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -938,11 +939,11 @@ class _EventDetailPageState extends State<EventDetailPage> {
         ),
         
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          padding: const EdgeInsets.all(20),
+          margin: Responsive.symmetric(horizontal: 24),
+          padding: Responsive.all(20),
           decoration: BoxDecoration(
             color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
             border: Border.all(
               color: Colors.grey[200]!,
             ),
@@ -953,10 +954,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: Responsive.all(8),
                     decoration: BoxDecoration(
                       color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: const Icon(
                       Icons.info_outline,
@@ -964,7 +965,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12.w),
                   Text(
                     AppLocalizations.of(context)!.commonDescription,
                     style: const TextStyle(
@@ -978,7 +979,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Text(
                 (event.description?.isNotEmpty ?? false) ? event.description! : (event.shortDescription ?? ''),
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: Colors.grey[700],
                   height: 1.5,
                 ),
@@ -987,15 +988,15 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ),
         ),
         
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         
         _buildInfoSection(event),
         
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         
         if (event.latitude != null && event.longitude != null) _buildLocationSection(event),
         
-        const SizedBox(height: 100), // Espace pour la bottom bar
+        SizedBox(height: 100.h), // Espace pour la bottom bar
       ],
     );
   }
@@ -1013,10 +1014,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
     }
     
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: Responsive.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Text(
         event.statusText,
@@ -1030,10 +1031,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildFeaturedChip() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: Responsive.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Text(
         AppLocalizations.of(context)!.eventDetailPopular,
@@ -1047,10 +1048,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildFreeChip() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: Responsive.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: const Color(0xFF009639),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Text(
         AppLocalizations.of(context)!.eventDetailFree,
@@ -1065,10 +1066,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
   Widget _buildInfoSection(Event event) {
     return Container(
       margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -1083,10 +1084,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF3860F8).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
                   Icons.info,
@@ -1094,7 +1095,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.commonInformations,
@@ -1129,7 +1130,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
+      padding: Responsive.only(bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1138,7 +1139,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             size: 18,
             color: Colors.grey[600],
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1151,7 +1152,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2.h),
                 Text(
                   value,
                   style: TextStyle(
@@ -1171,10 +1172,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
   Widget _buildLocationSection(Event event) {
     return Container(
       margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -1189,10 +1190,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF3860F8).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
                   Icons.map,
@@ -1200,7 +1201,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.commonLocation,
@@ -1215,13 +1216,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
           SizedBox(height: ResponsiveConstants.mediumSpace),
           Container(
             width: double.infinity,
-            height: 250,
+            height: 250.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               color: const Color(0xFF3860F8).withOpacity(0.1),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               child: GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(event.latitude!, event.longitude!),
@@ -1257,7 +1258,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 size: 18,
                 color: Colors.grey[600],
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1270,7 +1271,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2.h),
                     Text(
                       event.displayLocation,
                       style: TextStyle(
@@ -1294,7 +1295,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   size: 18,
                   color: Colors.grey[600],
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1307,7 +1308,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           color: Colors.black87,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2.h),
                       Text(
                         '${event.latitude!.toStringAsFixed(4)}, ${event.longitude!.toStringAsFixed(4)}',
                         style: TextStyle(
@@ -1376,29 +1377,29 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
         return Container(
           decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
           ),
           child: Column(
             children: [
               Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.symmetric(vertical: 12),
+                width: 40.w,
+                height: 4.h,
+                margin: Responsive.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
               
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: Responsive.symmetric(horizontal: 20),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
                         '${AppLocalizations.of(context)!.eventDetailRegistration} - ${widget.event.title ?? AppLocalizations.of(context)!.commonEvent}',
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1416,7 +1417,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                   key: _formKey,
                   child: ListView(
                     controller: scrollController,
-                    padding: const EdgeInsets.all(20),
+                    padding: Responsive.all(20),
                     children: [
                       TextFormField(
                         controller: _participantsController,
@@ -1511,14 +1512,14 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                         ),
                       ),
                       
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24.h),
                       
                       if (!widget.event.isFree)
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: Responsive.all(16),
                           decoration: BoxDecoration(
                             color: const Color(0xFF3860F8).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                             border: Border.all(
                               color: const Color(0xFF3860F8).withOpacity(0.3),
                             ),
@@ -1545,7 +1546,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           ),
                         ),
                       
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24.h),
                       
                       SizedBox(
                         width: double.infinity,
@@ -1554,15 +1555,15 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF3860F8),
                             foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: Responsive.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(8.r),
                             ),
                           ),
                           child: _isLoading
                               ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
+                                  height: 20.h,
+                                  width: 20.w,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

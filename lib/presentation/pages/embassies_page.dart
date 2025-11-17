@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/essentials_service.dart';
 import '../../core/models/embassy.dart';
@@ -167,7 +168,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     if (_errorMessage != null && embassies.isEmpty) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: Responsive.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -176,16 +177,16 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
                 size: 64,
                 color: Colors.grey[400],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Text(
                 _errorMessage!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey[600],
-                  fontSize: 16,
+                  fontSize: 16.sp,
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               ElevatedButton(
                 onPressed: _loadEmbassies,
                 style: ElevatedButton.styleFrom(
@@ -203,7 +204,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     if (embassies.isEmpty) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: Responsive.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -212,22 +213,22 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
                 size: 64,
                 color: Colors.grey[400],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Text(
                 emptyMessage,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text(
                 emptySubtitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey[600],
-                  fontSize: 14,
+                  fontSize: 14.sp,
                 ),
               ),
             ],
@@ -237,7 +238,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       itemCount: embassies.length,
       itemBuilder: (context, index) {
         final embassy = embassies[index];
@@ -248,18 +249,18 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
 
   Widget _buildEmbassyCard(Embassy embassy) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: Responsive.only(bottom: 16),
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        tilePadding: Responsive.symmetric(horizontal: 16, vertical: 8),
         childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         leading: _buildCountryFlag(embassy.countryCode),
         title: Text(
           embassy.name,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 16.sp,
           ),
         ),
         subtitle: Column(
@@ -267,11 +268,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
           children: [
             if (embassy.ambassadorName != null)
               Padding(
-                padding: const EdgeInsets.only(top: 4),
+                padding: Responsive.only(top: 4),
                 child: Text(
                   embassy.ambassadorName!,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 13.sp,
                     color: Colors.grey[600],
                     fontStyle: FontStyle.italic,
                   ),
@@ -279,16 +280,16 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               ),
             if (embassy.address != null)
               Padding(
-                padding: const EdgeInsets.only(top: 4),
+                padding: Responsive.only(top: 4),
                 child: Row(
                   children: [
                     Icon(Icons.location_on, size: 16, color: Colors.grey[500]),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4.w),
                     Expanded(
                       child: Text(
                         embassy.address!,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: Colors.grey[600],
                         ),
                         maxLines: 1,
@@ -309,11 +310,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
 
   Widget _buildCountryFlag(String countryCode) {
     return Container(
-      width: 50,
-      height: 50,
+      width: 50.w,
+      height: 50.h,
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8),
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(25.r),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF3860F8).withOpacity(0.3),
@@ -328,7 +329,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 14,
+            fontSize: 14.sp,
           ),
         ),
       ),
@@ -341,37 +342,37 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
       children: [
         if (embassy.address != null) ...[
           _buildDetailRow(Icons.location_on, 'Adresse complète', embassy.address!),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         
         if (embassy.postalBox != null) ...[
           _buildDetailRow(Icons.markunread_mailbox, 'Boîte Postale', embassy.postalBox!),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         
         if (embassy.primaryPhone.isNotEmpty) ...[
           _buildDetailRow(Icons.phone, 'Téléphone', embassy.primaryPhone),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         
         if (embassy.phones.length > 1) ...[
           _buildDetailRow(Icons.phone_in_talk, 'Autres téléphones', embassy.phones.skip(1).join(', ')),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         
         if (embassy.fax != null) ...[
           _buildDetailRow(Icons.fax, 'Fax', embassy.fax!),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         
         if (embassy.primaryEmail.isNotEmpty) ...[
           _buildDetailRow(Icons.email, AppLocalizations.of(context)!.embassiesEmail, embassy.primaryEmail),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         
         if (embassy.website != null) ...[
           _buildDetailRow(Icons.language, AppLocalizations.of(context)!.embassiesWebsite, embassy.website!),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
         ],
         
         // Boutons d'action
@@ -392,7 +393,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
             
             if (embassy.primaryPhone.isNotEmpty && 
                 (embassy.primaryEmail.isNotEmpty || embassy.website != null))
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
             
             if (embassy.primaryEmail.isNotEmpty)
               Expanded(
@@ -408,7 +409,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               ),
             
             if (embassy.primaryEmail.isNotEmpty && embassy.website != null)
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
             
             if (embassy.website != null)
               Expanded(
@@ -432,10 +433,10 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(6),
+          padding: Responsive.all(6),
           decoration: BoxDecoration(
             color: const Color(0xFF3860F8).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(6.r),
           ),
           child: Icon(
             icon,
@@ -443,7 +444,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
             color: const Color(0xFF3860F8),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,16 +452,16 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: 2.h),
               Text(
                 value,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),

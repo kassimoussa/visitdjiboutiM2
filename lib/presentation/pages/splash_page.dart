@@ -199,7 +199,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             ),
                             padding: EdgeInsets.all(logoPadding),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(16.r),
                               child: Image.asset(
                                 'assets/images/logo_visitdjibouti.png',
                                 fit: BoxFit.contain,
@@ -262,29 +262,29 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       children: [
                         if (!_isInitialized) ...[
                           SizedBox(
-                            width: 32,
-                            height: 32,
+                            width: 32.w,
+                            height: 32.h,
                             child: CircularProgressIndicator(
                               valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
                               strokeWidth: 3,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
                           FadeTransition(
                             opacity: _fadeAnimation,
                             child: Text(
                               _currentStatus,
                               style: const TextStyle(
                                 color: Color(0xFF6B7280),
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                         ] else ...[
                           Container(
-                            width: 48,
-                            height: 48,
+                            width: 48.w,
+                            height: 48.h,
                             decoration: BoxDecoration(
                               color: const Color(0xFF009639).withValues(alpha: 0.1),
                               shape: BoxShape.circle,
@@ -295,12 +295,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                               size: 28,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12.h),
                           const Text(
                             'Prêt !',
                             style: TextStyle(
                               color: Color(0xFF009639),
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -323,13 +323,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                width: 32,
-                                height: 22,
+                                width: 32.w,
+                                height: 22.h,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(4.r),
                                   border: Border.all(
                                     color: Colors.grey.shade200,
-                                    width: 1,
+                                    width: 1.w,
                                   ),
                                   gradient: const LinearGradient(
                                     begin: Alignment.topCenter,
@@ -341,23 +341,23 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12.w),
                               const Text(
                                 'République de Djibouti',
                                 style: TextStyle(
                                   color: Color(0xFF6B7280),
-                                  fontSize: 13,
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12.h),
                           Text(
                             'Version 1.0.0',
                             style: TextStyle(
                               color: Colors.grey.shade400,
-                              fontSize: 11,
+                              fontSize: 11.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ),

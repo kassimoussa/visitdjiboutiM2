@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/poi_list_response.dart';
@@ -88,16 +89,16 @@ class _RegionPageState extends State<RegionPage> {
         actions: [
           if (!_isLoading)
             Container(
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              margin: Responsive.only(right: 16),
+              padding: Responsive.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               child: Text(
                 '${_regionPois.length} ${_regionPois.length <= 1 ? 'lieu' : 'lieux'}',
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
@@ -122,7 +123,7 @@ class _RegionPageState extends State<RegionPage> {
                         itemBuilder: (context, index) {
                           final poi = _regionPois[index];
                           return Padding(
-                            padding: EdgeInsets.only(
+                            padding: Responsive.only(
                               bottom: ResponsiveConstants.largeSpace,
                             ),
                             child: PoiCard(poi: poi),
@@ -173,18 +174,18 @@ class _RegionPageState extends State<RegionPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: Responsive.all(32),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: widget.regionColor.withValues(alpha: 0.1),
                 border: Border.all(
                   color: widget.regionColor.withValues(alpha: 0.3),
-                  width: 2,
+                  width: 2.w,
                 ),
               ),
               child: Text(
                 widget.regionEmoji,
-                style: const TextStyle(fontSize: 48),
+                style: const TextStyle(fontSize: 48.sp),
               ),
             ),
             SizedBox(height: ResponsiveConstants.largeSpace),

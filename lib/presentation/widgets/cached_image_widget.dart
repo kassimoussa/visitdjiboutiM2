@@ -82,11 +82,11 @@ class CachedImageWidget extends StatelessWidget {
               strokeWidth: 2,
               color: Color(0xFF3860F8),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               'Chargement...',
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 11.sp,
                 color: Colors.grey,
               ),
             ),
@@ -118,11 +118,11 @@ class CachedImageWidget extends StatelessWidget {
               size: 32,
               color: Colors.grey,
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               'Image non disponible',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 10.sp,
                 color: Colors.grey,
               ),
               textAlign: TextAlign.center,
@@ -156,13 +156,13 @@ class PoiImageWidget extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(12.r),
       placeholder: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
           color: const Color(0xFFE8D5A3),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: const Center(
           child: Icon(
@@ -177,7 +177,7 @@ class PoiImageWidget extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: const Color(0xFFE8D5A3),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: const Center(
           child: Icon(
@@ -213,13 +213,13 @@ class EventImageWidget extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(8.r),
       placeholder: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
           color: const Color(0xFF3860F8),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         child: const Center(
           child: Icon(
@@ -234,7 +234,7 @@ class EventImageWidget extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: const Color(0xFF3860F8),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         child: const Center(
           child: Icon(

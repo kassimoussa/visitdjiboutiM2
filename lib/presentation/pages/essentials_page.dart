@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/essentials_service.dart';
 import '../../core/models/organization.dart';
@@ -115,7 +116,7 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(AppLocalizations.of(context)!.essentialsUnavailableInfo, style: TextStyle(color: Colors.grey[600])),
           ],
         ),
@@ -123,30 +124,30 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: Responsive.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 _organization!.name,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 _organization!.description,
-                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
               ),
-              const Divider(height: 32),
+              const Divider(height: 32.h),
               _buildContactItem(Icons.location_on, 'Adresse', _organization!.address),
               _buildContactItem(Icons.phone, 'Téléphone', _organization!.phone),
               _buildContactItem(Icons.email, AppLocalizations.of(context)!.embassiesEmail, _organization!.email),
               _buildContactItem(Icons.schedule, 'Horaires', _organization!.openingHours),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Row(
                 children: [
                   Expanded(
@@ -160,7 +161,7 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () => _launchEmail(_organization!.email),
@@ -191,7 +192,7 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.link_off, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(AppLocalizations.of(context)!.essentialsNoLinksAvailable, style: TextStyle(color: Colors.grey[600])),
           ],
         ),
@@ -199,14 +200,14 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       itemCount: _externalLinks.length,
       itemBuilder: (context, index) {
         final link = _externalLinks[index];
         return Card(
-          margin: const EdgeInsets.only(bottom: 12),
+          margin: Responsive.only(bottom: 12),
           elevation: 2,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: _getPlatformColor(link.color),
@@ -224,18 +225,18 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
 
   Widget _buildContactItem(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: Responsive.symmetric(vertical: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 20, color: const Color(0xFF3860F8)),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                Text(value, style: const TextStyle(fontSize: 14)),
+                Text(label, style: const TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                Text(value, style: const TextStyle(fontSize: 14.sp)),
               ],
             ),
           ),

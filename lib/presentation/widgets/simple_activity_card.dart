@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/simple_activity.dart';
 import '../../core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
@@ -98,7 +99,7 @@ class SimpleActivityCard extends StatelessWidget {
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: Responsive.symmetric(
                     horizontal: ResponsiveConstants.smallSpace,
                     vertical: ResponsiveConstants.tinySpace),
                 decoration: BoxDecoration(
@@ -133,11 +134,11 @@ class SimpleActivityCard extends StatelessWidget {
               size: 40,
               color: const Color(0xFF3860F8),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               'Activité',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12.sp,
                 color: Colors.grey[600],
                 fontWeight: FontWeight.w500,
               ),
@@ -203,7 +204,7 @@ class SimpleActivityCard extends StatelessWidget {
       children: [
         if (activity.displayDuration.isNotEmpty)
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: Responsive.symmetric(
                 horizontal: ResponsiveConstants.smallSpace,
                 vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
@@ -230,7 +231,7 @@ class SimpleActivityCard extends StatelessWidget {
             ),
           ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: Responsive.symmetric(
               horizontal: ResponsiveConstants.smallSpace,
               vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
@@ -249,7 +250,7 @@ class SimpleActivityCard extends StatelessWidget {
         ),
         if (activity.hasAvailableSpots)
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: Responsive.symmetric(
                 horizontal: ResponsiveConstants.smallSpace,
                 vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(

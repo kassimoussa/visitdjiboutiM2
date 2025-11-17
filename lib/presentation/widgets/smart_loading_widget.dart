@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/utils/responsive.dart';
 
 class SmartLoadingWidget extends StatefulWidget {
@@ -61,8 +62,8 @@ class _SmartLoadingWidgetState extends State<SmartLoadingWidget>
           children: [
             // Indicateur de chargement avec animation personnalisée
             SizedBox(
-              width: 60,
-              height: 60,
+              width: 60.w,
+              height: 60.h,
               child: widget.showProgress && widget.progress != null
                   ? CircularProgressIndicator(
                       value: widget.progress,
@@ -182,9 +183,9 @@ class _AnimatedDotsState extends State<AnimatedDots>
           animation: _animations[index],
           builder: (context, child) {
             return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: 8,
-              height: 8,
+              margin: Responsive.symmetric(horizontal: 3),
+              width: 8.w,
+              height: 8.h,
               decoration: BoxDecoration(
                 color: Color(0xFF3860F8).withOpacity(_animations[index].value),
                 shape: BoxShape.circle,
@@ -250,7 +251,7 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                     children: [
                       // Image skeleton
                       Container(
-                        height: 150,
+                        height: 150.h,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.grey[300]!.withOpacity(_animation.value),
@@ -260,21 +261,21 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                       SizedBox(height: ResponsiveConstants.mediumSpace),
                       // Title skeleton
                       Container(
-                        height: 20,
+                        height: 20.h,
                         width: double.infinity * 0.7,
                         decoration: BoxDecoration(
                           color: Colors.grey[300]!.withOpacity(_animation.value),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(4.r),
                         ),
                       ),
                       SizedBox(height: ResponsiveConstants.smallSpace),
                       // Subtitle skeleton
                       Container(
-                        height: 16,
+                        height: 16.h,
                         width: double.infinity * 0.9,
                         decoration: BoxDecoration(
                           color: Colors.grey[300]!.withOpacity(_animation.value),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(4.r),
                         ),
                       ),
                       SizedBox(height: ResponsiveConstants.smallSpace),
@@ -282,20 +283,20 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                       Row(
                         children: [
                           Container(
-                            height: 24,
-                            width: 80,
+                            height: 24.h,
+                            width: 80.w,
                             decoration: BoxDecoration(
                               color: Colors.grey[300]!.withOpacity(_animation.value),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),
                           SizedBox(width: ResponsiveConstants.smallSpace),
                           Container(
-                            height: 24,
-                            width: 60,
+                            height: 24.h,
+                            width: 60.w,
                             decoration: BoxDecoration(
                               color: Colors.grey[300]!.withOpacity(_animation.value),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),
                         ],

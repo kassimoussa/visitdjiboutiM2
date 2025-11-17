@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 
 /// Widget pour afficher un état d'erreur avec possibilité de réessayer
 class ErrorStateWidget extends StatelessWidget {
@@ -109,13 +110,13 @@ class ErrorStateWidget extends StatelessWidget {
               size: 64,
               color: iconColor ?? Colors.red.shade300,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             // Titre
             Text(
               title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1D2233),
               ),
@@ -124,11 +125,11 @@ class ErrorStateWidget extends StatelessWidget {
 
             // Message
             if (message != null) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 message!,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   color: Colors.grey.shade600,
                   height: 1.5,
                 ),
@@ -138,7 +139,7 @@ class ErrorStateWidget extends StatelessWidget {
 
             // Bouton réessayer
             if (onRetry != null) ...[
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: Icon(
@@ -148,12 +149,12 @@ class ErrorStateWidget extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3860F8),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
+                  padding: Responsive.symmetric(
                     horizontal: 32,
                     vertical: 12,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ),
@@ -186,10 +187,10 @@ class ErrorSnackBar {
                 title,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4.h),
             ],
             Text(message),
           ],
@@ -205,7 +206,7 @@ class ErrorSnackBar {
             : null,
         duration: duration,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
     );
@@ -222,7 +223,7 @@ class ErrorSnackBar {
         content: Row(
           children: [
             const Icon(Icons.check_circle, color: Colors.white),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(child: Text(message)),
           ],
         ),
@@ -230,7 +231,7 @@ class ErrorSnackBar {
         behavior: SnackBarBehavior.floating,
         duration: duration,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
     );
@@ -249,7 +250,7 @@ class ErrorSnackBar {
         content: Row(
           children: [
             const Icon(Icons.warning_amber, color: Colors.white),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(child: Text(message)),
           ],
         ),
@@ -264,7 +265,7 @@ class ErrorSnackBar {
             : null,
         duration: duration,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
     );
@@ -281,7 +282,7 @@ class ErrorSnackBar {
         content: Row(
           children: [
             const Icon(Icons.info_outline, color: Colors.white),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(child: Text(message)),
           ],
         ),
@@ -289,7 +290,7 @@ class ErrorSnackBar {
         behavior: SnackBarBehavior.floating,
         duration: duration,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
     );
@@ -312,16 +313,16 @@ class ErrorDialog {
       barrierDismissible: barrierDismissible,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         title: Row(
           children: [
             Icon(Icons.error_outline, color: Colors.red.shade400),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18.sp),
               ),
             ),
           ],

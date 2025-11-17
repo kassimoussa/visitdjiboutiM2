@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
@@ -242,8 +243,8 @@ class _ToursPageState extends State<ToursPage> {
     if (!hasFilters) return const SizedBox.shrink();
 
     return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      height: 50.h,
+      padding: Responsive.symmetric(horizontal: 16),
       child: Row(
         children: [
           Expanded(
@@ -282,7 +283,7 @@ class _ToursPageState extends State<ToursPage> {
 
   Widget _buildFilterChip(String label, VoidCallback onRemove) {
     return Container(
-      margin: const EdgeInsets.only(right: 8),
+      margin: Responsive.only(right: 8),
       child: Chip(
         label: Text(label),
         onDeleted: onRemove,
@@ -299,7 +300,7 @@ class _ToursPageState extends State<ToursPage> {
         padding: EdgeInsets.only(bottom: ResponsiveConstants.mediumSpace),
         child: const ShimmerLoading(
           child: Card(
-            child: SizedBox(height: 200),
+            child: SizedBox(height: 200.h),
           ),
         ),
       ),
@@ -316,7 +317,7 @@ class _ToursPageState extends State<ToursPage> {
           Text(
             _errorMessage!,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: ResponsiveConstants.mediumSpace),
           ElevatedButton(
@@ -344,7 +345,7 @@ class _ToursPageState extends State<ToursPage> {
               _searchController.text.isEmpty
                   ? AppLocalizations.of(context)!.homeNoFeaturedTours
                   : 'Aucun tour trouvé pour "${_searchController.text}"',
-              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+              style: TextStyle(color: Colors.grey[600], fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
           ],
@@ -362,7 +363,7 @@ class _ToursPageState extends State<ToursPage> {
           if (index == _filteredTours.length) {
             return const Center(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: Responsive.all(16),
                 child: CircularProgressIndicator(color: Color(0xFF3860F8)),
               ),
             );
@@ -383,7 +384,7 @@ class _ToursPageState extends State<ToursPage> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.7,
@@ -394,7 +395,7 @@ class _ToursPageState extends State<ToursPage> {
           return StatefulBuilder(
             builder: (context, setModalState) {
               return Container(
-                padding: const EdgeInsets.all(20),
+                padding: Responsive.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -403,7 +404,7 @@ class _ToursPageState extends State<ToursPage> {
                       children: [
                         const Text(
                           'Filtres',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                         ),
                         TextButton(
                           onPressed: () {
@@ -476,7 +477,7 @@ class _ToursPageState extends State<ToursPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -487,9 +488,9 @@ class _ToursPageState extends State<ToursPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: Responsive.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
                         child: const Text('Appliquer les filtres'),
@@ -511,11 +512,11 @@ class _ToursPageState extends State<ToursPage> {
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         child,
-        const SizedBox(height: 20),
+        SizedBox(height: 20.h),
       ],
     );
   }

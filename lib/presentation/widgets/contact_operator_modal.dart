@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/comment_service.dart';
 
 /// Modal pour contacter un opérateur/administration
@@ -32,9 +33,9 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.all(24),
       child: Form(
         key: _formKey,
         child: Column(
@@ -45,10 +46,10 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: Responsive.all(8),
                   decoration: BoxDecoration(
                     color: const Color(0xFF3860F8).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: const Icon(
                     Icons.email,
@@ -56,12 +57,12 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
                     'Contacter ${widget.operatorName ?? 'l\'opérateur'}',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -72,29 +73,29 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             // Type de message
             const Text(
               'Type de message',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15,
+                fontSize: 15.sp,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _buildMessageTypeChips(),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             // Message
             const Text(
               'Votre message',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15,
+                fontSize: 15.sp,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             TextFormField(
               controller: _messageController,
               maxLines: 5,
@@ -102,15 +103,15 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
               decoration: InputDecoration(
                 hintText: 'Écrivez votre message ici...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   borderSide: BorderSide(color: Colors.grey[300]!),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFF3860F8), width: 2),
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: const BorderSide(color: Color(0xFF3860F8), width: 2.w),
                 ),
                 filled: true,
                 fillColor: Colors.grey[50],
@@ -125,7 +126,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 return null;
               },
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             // Boutons
             Row(
@@ -134,30 +135,30 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                   child: OutlinedButton(
                     onPressed: _isSubmitting ? null : () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding: Responsive.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     child: const Text('Annuler'),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isSubmitting ? null : _submitMessage,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF3860F8),
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding: Responsive.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     child: _isSubmitting
                         ? const SizedBox(
-                            height: 20,
-                            width: 20,
+                            height: 20.h,
+                            width: 20.w,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               color: Colors.white,
@@ -180,11 +181,11 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
         Expanded(
           child: _buildChip('Question', 'question', Icons.help_outline),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8.w),
         Expanded(
           child: _buildChip('Signalement', 'report', Icons.flag_outlined),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8.w),
         Expanded(
           child: _buildChip('Suggestion', 'suggestion', Icons.lightbulb_outline),
         ),
@@ -196,12 +197,12 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
     final isSelected = _messageType == value;
     return InkWell(
       onTap: () => setState(() => _messageType = value),
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        padding: Responsive.symmetric(vertical: 12, horizontal: 8),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF3860F8) : Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
             color: isSelected ? const Color(0xFF3860F8) : Colors.grey[300]!,
             width: isSelected ? 2 : 1,
@@ -215,12 +216,12 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
               color: isSelected ? Colors.white : Colors.grey[600],
               size: 24,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               label,
               style: TextStyle(
                 color: isSelected ? Colors.white : Colors.grey[700],
-                fontSize: 12,
+                fontSize: 12.sp,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
               textAlign: TextAlign.center,
@@ -266,7 +267,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
             content: Row(
               children: [
                 const Icon(Icons.check_circle, color: Colors.white),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
                     'Message envoyé avec succès à ${widget.operatorName ?? 'l\'opérateur'}',
@@ -277,7 +278,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
             duration: const Duration(seconds: 3),
           ),
@@ -292,7 +293,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
           ),
         );

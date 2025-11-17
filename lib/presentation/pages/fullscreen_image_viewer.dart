@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class FullscreenImageViewer extends StatefulWidget {
@@ -79,7 +80,7 @@ class _FullscreenImageViewerState extends State<FullscreenImageViewer> {
             left: 0,
             right: 0,
             child: Container(
-              padding: EdgeInsets.only(
+              padding: Responsive.only(
                 top: MediaQuery.of(context).padding.top + 8,
                 bottom: 16,
                 left: 8,
@@ -110,7 +111,7 @@ class _FullscreenImageViewerState extends State<FullscreenImageViewer> {
                     '${_currentIndex + 1}/${widget.imageUrls.length}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

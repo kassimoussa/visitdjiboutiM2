@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/image_preloader_service.dart';
 import 'offline_settings_page.dart';
 import '../../generated/l10n/app_localizations.dart';
@@ -46,7 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
         centerTitle: true,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         children: [
           // Section Général
           _buildSectionTitle(AppLocalizations.of(context)!.settingsGeneral),
@@ -84,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Section Notifications
           _buildSectionTitle(AppLocalizations.of(context)!.drawerNotifications),
@@ -121,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
             } : null,
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Section Localisation
           _buildSectionTitle(AppLocalizations.of(context)!.settingsLocation),
@@ -156,7 +157,7 @@ class _SettingsPageState extends State<SettingsPage> {
             } : null,
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Section Données
           _buildSectionTitle(AppLocalizations.of(context)!.settingsDataStorage),
@@ -186,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onTap: () => _showOfflineMapDialog(),
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Section Sécurité
           _buildSectionTitle(AppLocalizations.of(context)!.settingsSecurityPrivacy),
@@ -205,7 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onTap: () => _showTermsDialog(),
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Section Actions
           _buildSectionTitle(AppLocalizations.of(context)!.settingsActions),
@@ -225,7 +226,7 @@ class _SettingsPageState extends State<SettingsPage> {
             textColor: const Color(0xFFEF4444),
           ),
           
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           
           // Informations app
           Center(
@@ -234,24 +235,24 @@ class _SettingsPageState extends State<SettingsPage> {
                 Text(
                   'Visit Djibouti',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[700],
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   'Version 1.0.0 (Build 1)',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: Colors.grey[600],
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Text(
                   '© 2024 Office du Tourisme de Djibouti',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: Colors.grey[500],
                   ),
                 ),
@@ -259,7 +260,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
         ],
       ),
     );
@@ -271,7 +272,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Text(
         title,
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w600,
           color: const Color(0xFF3860F8),
           letterSpacing: 1.1,
@@ -288,7 +289,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Color? textColor,
   }) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: Responsive.only(bottom: 8),
       child: ListTile(
         leading: Icon(
           icon,
@@ -320,7 +321,7 @@ class _SettingsPageState extends State<SettingsPage> {
     required ValueChanged<bool>? onChanged,
   }) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: Responsive.only(bottom: 8),
       child: ListTile(
         leading: Icon(
           icon,
@@ -361,9 +362,9 @@ class _SettingsPageState extends State<SettingsPage> {
     required ValueChanged<double>? onChanged,
   }) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: Responsive.only(bottom: 8),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           children: [
             Row(
@@ -374,7 +375,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ? const Color(0xFF3860F8)
                       : Colors.grey[400],
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -389,7 +390,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         subtitle,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: onChanged != null 
                               ? Colors.grey[600]
                               : Colors.grey[500],
@@ -425,15 +426,15 @@ class _SettingsPageState extends State<SettingsPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'Choisir la langue',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildLanguageOption('🇫🇷', 'Français', 'Français'),
             _buildLanguageOption('🇬🇧', 'English', 'English'),
             _buildLanguageOption('🇸🇦', 'العربية', 'العربية'),
@@ -446,7 +447,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildLanguageOption(String flag, String name, String value) {
     final isSelected = _selectedLanguage == value;
     return ListTile(
-      leading: Text(flag, style: const TextStyle(fontSize: 24)),
+      leading: Text(flag, style: const TextStyle(fontSize: 24.sp)),
       title: Text(name),
       trailing: isSelected 
           ? const Icon(Icons.check, color: Color(0xFF3860F8))
@@ -464,15 +465,15 @@ class _SettingsPageState extends State<SettingsPage> {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'Région préférée',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildRegionOption('Toutes les régions'),
             _buildRegionOption('Djibouti'),
             _buildRegionOption('Tadjourah'),

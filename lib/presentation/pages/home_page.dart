@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/tour_service.dart';
@@ -868,7 +869,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildEssentialLink({required IconData icon, required String title, required String subtitle, required VoidCallback onTap}) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: ListTile(
         leading: Icon(icon, color: const Color(0xFF3860F8), size: 32),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),

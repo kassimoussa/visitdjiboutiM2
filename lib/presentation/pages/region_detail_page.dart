@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/region_service.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
@@ -110,13 +111,13 @@ class _RegionDetailPageState extends State<RegionDetailPage>
               size: 64,
               color: Colors.red,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               _errorMessage!,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             ElevatedButton(
               onPressed: _loadRegionContent,
               child: const Text('Réessayer'),
@@ -136,10 +137,10 @@ class _RegionDetailPageState extends State<RegionDetailPage>
               size: 64,
               color: Colors.grey,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               'Aucun contenu disponible pour ${widget.regionName}',
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
           ],
@@ -170,7 +171,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
     return RefreshIndicator(
       onRefresh: _loadRegionContent,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: pois.length,
         itemBuilder: (context, index) {
           return PoiCard(poi: pois[index]);
@@ -192,7 +193,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
     return RefreshIndicator(
       onRefresh: _loadRegionContent,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: events.length,
         itemBuilder: (context, index) {
           return EventCard(event: events[index]);
@@ -214,7 +215,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
     return RefreshIndicator(
       onRefresh: _loadRegionContent,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: activities.length,
         itemBuilder: (context, index) {
           return ActivityCard(activity: activities[index]);
@@ -236,10 +237,10 @@ class _RegionDetailPageState extends State<RegionDetailPage>
             size: 64,
             color: Colors.grey,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             message,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16.sp),
             textAlign: TextAlign.center,
           ),
         ],

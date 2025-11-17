@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
@@ -13,7 +14,7 @@ class TourOperatorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -23,7 +24,7 @@ class TourOperatorCard extends StatelessWidget {
             ),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -33,39 +34,39 @@ class TourOperatorCard extends StatelessWidget {
               Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                     child: operator.logoUrl.isNotEmpty
                         ? CachedNetworkImage(
                             imageUrl: operator.logoUrl,
-                            width: 48,
-                            height: 48,
+                            width: 48.w,
+                            height: 48.h,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Container(
-                              width: 48,
-                              height: 48,
+                              width: 48.w,
+                              height: 48.h,
                               color: Colors.grey[200],
                               child: const Icon(Icons.business, color: Colors.grey),
                             ),
                             errorWidget: (context, url, error) => Container(
-                              width: 48,
-                              height: 48,
+                              width: 48.w,
+                              height: 48.h,
                               color: Colors.grey[300],
                               child: const Icon(Icons.broken_image, color: Colors.grey),
                             ),
                           )
                         : Container(
-                            width: 48,
-                            height: 48,
+                            width: 48.w,
+                            height: 48.h,
                             color: Colors.grey[200],
                             child: const Icon(Icons.business, color: Colors.grey),
                           ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
                       operator.name ?? 'Opérateur inconnu',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
@@ -74,16 +75,16 @@ class TourOperatorCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               // Description
               if (operator.description != null && operator.description!.isNotEmpty)
                 Text(
                   operator.description!,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               // Contact info
               if (operator.address != null && operator.address!.isNotEmpty)
                 _buildContactInfo(Icons.location_on, operator.address!),
@@ -91,7 +92,7 @@ class TourOperatorCard extends StatelessWidget {
                 _buildContactInfo(Icons.phone, operator.displayPhone),
               if (operator.displayEmail != 'N/A')
                 _buildContactInfo(Icons.email, operator.displayEmail),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               
               // Action buttons
               Row(
@@ -109,7 +110,7 @@ class TourOperatorCard extends StatelessWidget {
                       ),
                     ),
                   if (operator.displayPhone != 'N/A' && operator.website != null)
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                   if (operator.website != null && operator.website!.isNotEmpty)
                     Expanded(
                       child: OutlinedButton.icon(
@@ -132,15 +133,15 @@ class TourOperatorCard extends StatelessWidget {
 
   Widget _buildContactInfo(IconData icon, String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
+      padding: Responsive.only(bottom: 4.0),
       child: Row(
         children: [
           Icon(icon, size: 16, color: Colors.grey[600]),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Expanded(
             child: Text(
               text,
-              style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+              style: TextStyle(fontSize: 13.sp, color: Colors.grey[700]),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

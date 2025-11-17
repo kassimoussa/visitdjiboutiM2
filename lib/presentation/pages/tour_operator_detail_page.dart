@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
@@ -180,7 +181,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     _buildToursSection(),
                     _buildPoisSection(),
                     /* _buildActionButtons(context), */
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                   ],
                 ),
               ),
@@ -209,8 +210,8 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 ),
                 child: SafeArea(
                   child: Container(
-                    height: 56,
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    height: 56.h,
+                    padding: Responsive.symmetric(horizontal: 4),
                     child: Row(
                       children: [
                         IconButton(
@@ -222,7 +223,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                           child: Text(
                             operator.name,
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF1D2233),
                             ),
@@ -231,7 +232,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: 48), // Balance the back button
+                        SizedBox(width: 48.w), // Balance the back button
                       ],
                     ),
                   ),
@@ -338,7 +339,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                       ),
                     ),
                     backgroundColor: Color(0xFF009639),
@@ -355,11 +356,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
     final logoUrl = operator.logoUrl;
 
     return Container(
-      margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.all(24),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -375,20 +376,20 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             children: [
               if (logoUrl.isNotEmpty)
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   child: CachedNetworkImage(
                     imageUrl: logoUrl,
-                    height: 50,
-                    width: 50,
+                    height: 50.h,
+                    width: 50.w,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
-                      height: 50,
-                      width: 50,
+                      height: 50.h,
+                      width: 50.w,
                       color: Colors.grey[200],
                     ),
                     errorWidget: (context, url, error) => Container(
-                      height: 50,
-                      width: 50,
+                      height: 50.h,
+                      width: 50.w,
                       color: Colors.grey[200],
                       child: const Icon(Icons.business_center),
                     ),
@@ -396,10 +397,10 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 )
               else
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: Responsive.all(12),
                   decoration: BoxDecoration(
                     color: const Color(0xFF3860F8).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: const Icon(
                     Icons.tour,
@@ -407,7 +408,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     size: 24,
                   ),
                 ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,16 +416,16 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     Text(
                       operator.name,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1D2233),
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4.h),
                     Text(
                       AppLocalizations.of(context)!.operatorLabel,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -434,7 +435,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             ],
           ),
           if (operator.address != null && operator.address!.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.operatorAddress, operator.address!),
           ],
         ],
@@ -444,11 +445,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
 
   Widget _buildDescriptionSection() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24, vertical: 8),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -467,22 +468,22 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 color: Color(0xFF3860F8),
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Text(
                 AppLocalizations.of(context)!.operatorDescription,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D2233),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             operator.description!,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               color: Colors.grey[700],
               height: 1.6,
             ),
@@ -494,11 +495,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
 
   Widget _buildContactSection() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24, vertical: 8),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -517,26 +518,26 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 color: Color(0xFF3860F8),
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Text(
                 AppLocalizations.of(context)!.operatorContact,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D2233),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           if (operator.hasPhone)
             _buildInfoRow(Icons.phone, AppLocalizations.of(context)!.operatorPhone, operator.displayPhone),
           if (operator.hasEmail) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _buildInfoRow(Icons.email, AppLocalizations.of(context)!.operatorEmail, operator.displayEmail),
           ],
           if (operator.hasWebsite) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _buildInfoRow(Icons.language, AppLocalizations.of(context)!.operatorWebsite, operator.displayWebsite, isLink: true),
           ],
         ],
@@ -546,7 +547,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
 
   Widget _buildActionButtons(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      margin: Responsive.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
           if (operator.hasPhone) ...[
@@ -560,12 +561,12 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   foregroundColor: Colors.white,
                   minimumSize: const Size(0, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
               ),
             ),
-            if (operator.hasEmail || operator.hasWebsite) const SizedBox(width: 12),
+            if (operator.hasEmail || operator.hasWebsite) SizedBox(width: 12.w),
           ],
           if (operator.hasEmail) ...[
             Expanded(
@@ -577,12 +578,12 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   foregroundColor: const Color(0xFF3860F8),
                   minimumSize: const Size(0, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
               ),
             ),
-            if (operator.hasWebsite) const SizedBox(width: 12),
+            if (operator.hasWebsite) SizedBox(width: 12.w),
           ],
           if (operator.hasWebsite)
             Expanded(
@@ -594,7 +595,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   foregroundColor: const Color(0xFF009639),
                   minimumSize: const Size(0, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
               ),
@@ -613,7 +614,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
           size: 18,
           color: Colors.grey[600],
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -621,16 +622,16 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
               Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: 2.h),
               Text(
                 value,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   color: isLink ? const Color(0xFF3860F8) : Colors.grey[700],
                   height: 1.4,
                 ),
@@ -677,11 +678,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
 
   Widget _buildToursSection() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24, vertical: 8),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -700,11 +701,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 color: Color(0xFF3860F8),
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Text(
                 AppLocalizations.of(context)!.operatorTours,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D2233),
                 ),
@@ -730,11 +731,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           if (_isLoadingTours)
             const Center(
               child: Padding(
-                padding: EdgeInsets.all(32),
+                padding: Responsive.all(32),
                 child: CircularProgressIndicator(
                   color: Color(0xFF3860F8),
                 ),
@@ -742,7 +743,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             )
           else if (_operatorTours.isEmpty)
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: Responsive.all(32),
               child: Column(
                 children: [
                   Icon(
@@ -750,20 +751,20 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     size: 48,
                     color: Colors.grey[400],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Text(
                     AppLocalizations.of(context)!.operatorNoTours,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       color: Colors.grey[600],
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     AppLocalizations.of(context)!.operatorNoToursMessage,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       color: Colors.grey[500],
                     ),
                     textAlign: TextAlign.center,
@@ -773,15 +774,15 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             )
           else
             SizedBox(
-              height: 280,
+              height: 280.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: _operatorTours.length,
                 itemBuilder: (context, index) {
                   final tour = _operatorTours[index];
                   return Container(
-                    width: 250,
-                    margin: EdgeInsets.only(
+                    width: 250.w,
+                    margin: Responsive.only(
                       right: index < _operatorTours.length - 1 ? 16 : 0,
                     ),
                     child: _buildTourCard(tour),
@@ -807,7 +808,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.grey.withOpacity(0.2)),
           boxShadow: [
             BoxShadow(
@@ -824,14 +825,14 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             Stack(
               children: [
                 Container(
-                  height: 120,
+                  height: 120.h,
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12.r)),
                     color: Colors.grey[200],
                   ),
                   child: tour.hasImages
                       ? ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12.r)),
                           child: Image.network(
                             tour.firstImageUrl,
                             fit: BoxFit.cover,
@@ -851,7 +852,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       : Container(
                           decoration: BoxDecoration(
                             color: const Color(0xFF3860F8).withOpacity(0.1),
-                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12.r)),
                           ),
                           child: const Center(
                             child: Icon(
@@ -869,7 +870,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   child: GestureDetector(
                     onTap: () => _toggleTourFavorite(tour),
                     child: Container(
-                      padding: const EdgeInsets.all(6),
+                      padding: Responsive.all(6),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
@@ -899,7 +900,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             // Contenu du tour
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: Responsive.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -907,7 +908,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     Text(
                       tour.title,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1D2233),
                       ),
@@ -915,37 +916,37 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
 
                     // Type et difficulté
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: Responsive.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: const Color(0xFF3860F8).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
                             tour.type.label,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 10.sp,
                               color: Color(0xFF3860F8),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: Responsive.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: Colors.grey.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
                             tour.difficulty.label,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 10.sp,
                               color: Colors.grey[700],
                               fontWeight: FontWeight.w600,
                             ),
@@ -954,7 +955,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       ],
                     ),
 
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
 
                     // Prix et durée
                     Row(
@@ -964,18 +965,18 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                           size: 12,
                           color: Colors.grey,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           tour.displayDuration,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.grey[600],
                           ),
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4.h),
 
                     Row(
                       children: [
@@ -984,11 +985,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                           size: 12,
                           color: Colors.grey,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           tour.displayPrice,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF009639),
                           ),
@@ -1007,11 +1008,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                             size: 12,
                             color: Colors.grey,
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4.w),
                           Text(
                             '${tour.viewsCount} ${AppLocalizations.of(context)!.operatorViews}',
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 11.sp,
                               color: Colors.grey[600],
                             ),
                           ),
@@ -1029,11 +1030,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
 
   Widget _buildPoisSection() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24, vertical: 8),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -1052,22 +1053,22 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 color: Color(0xFF3860F8),
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Text(
                 AppLocalizations.of(context)!.operatorPoisServed,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D2233),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           if (_isLoadingTours)
             const Center(
               child: Padding(
-                padding: EdgeInsets.all(32),
+                padding: Responsive.all(32),
                 child: CircularProgressIndicator(
                   color: Color(0xFF3860F8),
                 ),
@@ -1075,7 +1076,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             )
           else if (_operatorPois.isEmpty)
             Container(
-              padding: const EdgeInsets.all(32),
+              padding: Responsive.all(32),
               child: Column(
                 children: [
                   Icon(
@@ -1083,20 +1084,20 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     size: 48,
                     color: Colors.grey[400],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Text(
                     AppLocalizations.of(context)!.operatorNoPois,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       color: Colors.grey[600],
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     AppLocalizations.of(context)!.operatorNoPoisMessage,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       color: Colors.grey[500],
                     ),
                     textAlign: TextAlign.center,
@@ -1108,7 +1109,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             Column(
               children: _operatorPois.map((poi) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: Responsive.only(bottom: 12),
                   child: _buildPoiCard(poi),
                 );
               }).toList(),
@@ -1129,26 +1130,26 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         decoration: BoxDecoration(
           color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.grey[200]!),
         ),
         child: Row(
           children: [
             // Image du POI
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
               child: poi.imageUrl.isNotEmpty
                   ? CachedNetworkImage(
                       imageUrl: poi.imageUrl,
-                      width: 80,
-                      height: 80,
+                      width: 80.w,
+                      height: 80.h,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        width: 80,
-                        height: 80,
+                        width: 80.w,
+                        height: 80.h,
                         color: Colors.grey[200],
                         child: const Center(
                           child: CircularProgressIndicator(
@@ -1158,11 +1159,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         ),
                       ),
                       errorWidget: (context, url, error) => Container(
-                        width: 80,
-                        height: 80,
+                        width: 80.w,
+                        height: 80.h,
                         decoration: BoxDecoration(
                           color: const Color(0xFF3860F8).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: const Icon(
                           Icons.place,
@@ -1172,11 +1173,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       ),
                     )
                   : Container(
-                      width: 80,
-                      height: 80,
+                      width: 80.w,
+                      height: 80.h,
                       decoration: BoxDecoration(
                         color: const Color(0xFF3860F8).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: const Icon(
                         Icons.place,
@@ -1185,7 +1186,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       ),
                     ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             // Info du POI
             Expanded(
               child: Column(
@@ -1194,14 +1195,14 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   Text(
                     poi.name ?? AppLocalizations.of(context)!.operatorPlace,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1D2233),
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Row(
                     children: [
                       Icon(
@@ -1209,12 +1210,12 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         size: 14,
                         color: Colors.grey[600],
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
                           poi.region ?? 'Djibouti',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: Colors.grey[600],
                           ),
                           maxLines: 1,
@@ -1224,21 +1225,21 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     ],
                   ),
                   if (poi.categories.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Wrap(
                       spacing: 4,
                       runSpacing: 4,
                       children: poi.categories.take(2).map((category) {
                         return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: const Color(0xFF3860F8).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Text(
                             category.name ?? '',
                             style: const TextStyle(
-                              fontSize: 11,
+                              fontSize: 11.sp,
                               color: Color(0xFF3860F8),
                               fontWeight: FontWeight.w600,
                             ),
@@ -1254,7 +1255,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             GestureDetector(
               onTap: () => _togglePoiFavorite(poi),
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 child: Icon(
                   _poiFavoriteStatus[poi.id] == true
                       ? Icons.favorite

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'fullscreen_image_viewer.dart';
 
@@ -35,7 +36,7 @@ class TourGalleryPage extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 0,
         leading: Container(
-          margin: const EdgeInsets.all(8),
+          margin: Responsive.all(8),
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.4),
             shape: BoxShape.circle,
@@ -51,13 +52,13 @@ class TourGalleryPage extends StatelessWidget {
               child: Text(
                 'Aucune image disponible',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: Colors.grey,
                 ),
               ),
             )
           : SingleChildScrollView(
-              padding: EdgeInsets.only(
+              padding: Responsive.only(
                 top: MediaQuery.of(context).padding.top + kToolbarHeight + 16,
                 left: 16,
                 right: 16,
@@ -85,14 +86,14 @@ class TourGalleryPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => _openFullscreenViewer(context, index),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         child: CachedNetworkImage(
           imageUrl: imageUrls[index],
           fit: BoxFit.cover,
-          height: 400,
+          height: 400.h,
           width: double.infinity,
           placeholder: (context, url) => Container(
-            height: 400,
+            height: 400.h,
             color: Colors.grey[200],
             child: const Center(
               child: CircularProgressIndicator(
@@ -101,7 +102,7 @@ class TourGalleryPage extends StatelessWidget {
             ),
           ),
           errorWidget: (context, url, error) => Container(
-            height: 400,
+            height: 400.h,
             color: Colors.grey[200],
             child: const Icon(Icons.error_outline, size: 48),
           ),
@@ -115,11 +116,11 @@ class TourGalleryPage extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _buildImageTile(context, 0, height: 250),
+          child: _buildImageTile(context, 0, height: 250.h),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8.w),
         Expanded(
-          child: _buildImageTile(context, 1, height: 250),
+          child: _buildImageTile(context, 1, height: 250.h),
         ),
       ],
     );
@@ -129,16 +130,16 @@ class TourGalleryPage extends StatelessWidget {
   Widget _buildThreeImages(BuildContext context) {
     return Column(
       children: [
-        _buildImageTile(context, 0, height: 300),
-        const SizedBox(height: 8),
+        _buildImageTile(context, 0, height: 300.h),
+        SizedBox(height: 8.h),
         Row(
           children: [
             Expanded(
-              child: _buildImageTile(context, 1, height: 180),
+              child: _buildImageTile(context, 1, height: 180.h),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             Expanded(
-              child: _buildImageTile(context, 2, height: 180),
+              child: _buildImageTile(context, 2, height: 180.h),
             ),
           ],
         ),
@@ -151,8 +152,8 @@ class TourGalleryPage extends StatelessWidget {
     return Column(
       children: [
         // Première grande image
-        _buildImageTile(context, 0, height: 300),
-        const SizedBox(height: 8),
+        _buildImageTile(context, 0, height: 300.h),
+        SizedBox(height: 8.h),
 
         // Deux images moyennes si disponibles
         if (imageUrls.length >= 3)
@@ -161,15 +162,15 @@ class TourGalleryPage extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _buildImageTile(context, 1, height: 200),
+                    child: _buildImageTile(context, 1, height: 200.h),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Expanded(
-                    child: _buildImageTile(context, 2, height: 200),
+                    child: _buildImageTile(context, 2, height: 200.h),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
             ],
           ),
 
@@ -177,8 +178,8 @@ class TourGalleryPage extends StatelessWidget {
         if (imageUrls.length >= 4)
           Column(
             children: [
-              _buildImageTile(context, 3, height: 300),
-              const SizedBox(height: 8),
+              _buildImageTile(context, 3, height: 300.h),
+              SizedBox(height: 8.h),
             ],
           ),
 
@@ -206,7 +207,7 @@ class TourGalleryPage extends StatelessWidget {
     return GestureDetector(
       onTap: () => _openFullscreenViewer(context, index),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         child: CachedNetworkImage(
           imageUrl: imageUrls[index],
           fit: BoxFit.cover,

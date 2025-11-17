@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 
@@ -16,7 +17,7 @@ class AboutPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -24,16 +25,16 @@ class AboutPage extends StatelessWidget {
             
             // Logo et titre
             Container(
-              width: 120,
-              height: 120,
+              width: 120.w,
+              height: 120.h,
               decoration: BoxDecoration(
                 color: const Color(0xFF3860F8).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(60),
+                borderRadius: BorderRadius.circular(60.r),
               ),
               child: const Center(
                 child: Text(
                   '🇩🇯',
-                  style: TextStyle(fontSize: 60),
+                  style: TextStyle(fontSize: 60.sp),
                 ),
               ),
             ),
@@ -63,10 +64,10 @@ class AboutPage extends StatelessWidget {
             
             // Description
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: Responsive.all(20),
               decoration: BoxDecoration(
                 color: const Color(0xFF3860F8).withOpacity(0.05),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: const Text(
                 'Visit Djibouti is the official app of the Djibouti Tourism Office. Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.', // TODO: Add translation key
@@ -256,10 +257,10 @@ class AboutPage extends StatelessWidget {
             
             // Copyright
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: Responsive.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: Column(
                 children: [
@@ -294,10 +295,10 @@ class AboutPage extends StatelessWidget {
 
   Widget _buildStatCard(String value, String label, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         children: [
@@ -345,15 +346,15 @@ class AboutPage extends StatelessWidget {
 
   Widget _buildFeatureItem(IconData icon, String title, String description) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: Responsive.only(bottom: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: Responsive.all(8),
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(
               icon,
@@ -391,14 +392,14 @@ class AboutPage extends StatelessWidget {
 
   Widget _buildTechItem(String tech, String description) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: Responsive.only(bottom: 8),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: Responsive.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: const Color(0xFF009639).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(6.r),
             ),
             child: Text(
               tech,
@@ -413,7 +414,7 @@ class AboutPage extends StatelessWidget {
           Expanded(
             child: Text(
               description,
-              style: const TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14.sp),
             ),
           ),
         ],

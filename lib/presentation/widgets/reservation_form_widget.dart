@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/event.dart';
 import '../../core/models/reservation.dart';
@@ -57,10 +58,10 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -68,7 +69,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         children: [
           // Header
           _buildHeader(),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           
           // Form
           Flexible(
@@ -78,13 +79,13 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                 child: Column(
                   children: [
                     _buildItemPreview(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     _buildPeopleField(),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     _buildContactFields(),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     _buildNotesField(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     _buildActionButtons(),
                   ],
                 ),
@@ -103,7 +104,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         Text(
           'Réserver ${_isPoi ? 'ce lieu' : 'cet événement'}',
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -118,28 +119,28 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
 
   Widget _buildItemPreview() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: Responsive.all(12),
       decoration: BoxDecoration(
         color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: Colors.grey[200]!),
       ),
       child: Row(
         children: [
           // Image
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             child: _imageUrl?.isNotEmpty == true
                 ? Image.network(
                     _imageUrl!,
-                    width: 60,
-                    height: 60,
+                    width: 60.w,
+                    height: 60.h,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => _buildPlaceholderImage(),
                   )
                 : _buildPlaceholderImage(),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           
           // Info
           Expanded(
@@ -150,12 +151,12 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                   _title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Row(
                   children: [
                     Icon(
@@ -163,13 +164,13 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                       size: 16,
                       color: Colors.grey[600],
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4.w),
                     Expanded(
                       child: Text(
                         _location,
                         style: TextStyle(
                           color: Colors.grey[600],
-                          fontSize: 14,
+                          fontSize: 14.sp,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -178,7 +179,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                   ],
                 ),
                 if (_isEvent && widget.event!.price > 0) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     widget.event!.priceText,
                     style: const TextStyle(
@@ -197,11 +198,11 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
 
   Widget _buildPlaceholderImage() {
     return Container(
-      width: 60,
-      height: 60,
+      width: 60.w,
+      height: 60.h,
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
       ),
       child: Icon(
         _isPoi ? Icons.place : Icons.event,
@@ -220,7 +221,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         hintText: '1',
         prefixIcon: const Icon(Icons.people),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
       ),
       validator: (value) {
@@ -254,22 +255,22 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         const Text(
           'Informations de contact (optionnel)',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         TextFormField(
           controller: _nameController,
           decoration: InputDecoration(
             labelText: 'Nom complet',
             prefixIcon: const Icon(Icons.person),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         TextFormField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
@@ -277,7 +278,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             labelText: 'Email',
             prefixIcon: const Icon(Icons.email),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) {
@@ -288,7 +289,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             return null;
           },
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         TextFormField(
           controller: _phoneController,
           keyboardType: TextInputType.phone,
@@ -296,7 +297,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             labelText: 'Téléphone',
             prefixIcon: const Icon(Icons.phone),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
         ),
@@ -312,7 +313,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         labelText: 'Notes ou demandes spéciales',
         hintText: 'Allergies alimentaires, besoins spéciaux...',
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
       ),
     );
@@ -325,15 +326,15 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           child: OutlinedButton(
             onPressed: widget.onCancel ?? () => Navigator.of(context).pop(),
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: Responsive.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
             child: const Text('Annuler'),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Expanded(
           flex: 2,
           child: ElevatedButton(
@@ -341,15 +342,15 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: Responsive.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
             child: _isLoading
                 ? const SizedBox(
-                    height: 20,
-                    width: 20,
+                    height: 20.h,
+                    width: 20.w,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

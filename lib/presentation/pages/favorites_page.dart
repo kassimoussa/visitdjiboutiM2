@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/event_service.dart';
@@ -164,10 +165,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 );
               }).toList(),
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: Responsive.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(color: Colors.grey[300]!),
                 ),
                 child: const Icon(Icons.sort, size: 20),
@@ -188,11 +189,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
         child: Row(
           children: [
             _buildTabButton('all', totalCount),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             _buildTabButton('pois', _favoritePois.length),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             _buildTabButton('events', _favoriteEvents.length),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             _buildTabButton('tours', _favoriteTours.length),
           ],
         ),
@@ -206,10 +207,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = tab),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: Responsive.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF3860F8) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
             color: isSelected ? const Color(0xFF3860F8) : Colors.grey[300]!,
           ),
@@ -230,7 +231,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget _buildLoadingState() {
     // Use Shimmer for loading state as well for consistency
     return ListView.separated(
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       itemCount: 5,
       separatorBuilder: (context, index) => SizedBox(height: ResponsiveConstants.mediumSpace),
       itemBuilder: (context, index) => _buildShimmerCard(),
@@ -247,7 +248,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return RefreshIndicator(
       onRefresh: _loadFavorites,
       child: ListView.separated(
-        padding: const EdgeInsets.all(20),
+        padding: Responsive.all(20),
         itemCount: items.length,
         separatorBuilder: (context, index) => SizedBox(height: ResponsiveConstants.mediumSpace),
         itemBuilder: (context, index) {
@@ -352,7 +353,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(40),
+        padding: Responsive.all(40),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -391,9 +392,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3860F8),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding: Responsive.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   elevation: 0,
                 ),
@@ -415,17 +416,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget _buildEmptyState() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(40),
+        padding: Responsive.all(40),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 120,
-                height: 120,
+                width: 120.w,
+                height: 120.h,
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(60),
+                  borderRadius: BorderRadius.circular(60.r),
                 ),
                 child: Icon(
                   Icons.favorite_outline,
@@ -462,9 +463,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3860F8),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  padding: Responsive.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   elevation: 0,
                 ),
@@ -510,7 +511,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           backgroundColor: const Color(0xFFEF4444),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
         ),
       );
@@ -526,7 +527,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           backgroundColor: const Color(0xFFEF4444),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
         ),
       );
@@ -539,7 +540,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       highlightColor: Colors.grey[100]!,
       child: Container(
         width: double.infinity,
-        height: 160,
+        height: 160.h,
         color: Colors.white,
       ),
     );
@@ -558,7 +559,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.1),
@@ -572,30 +573,30 @@ class _FavoritesPageState extends State<FavoritesPage> {
           children: [
             // Image du tour
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16.r)),
               child: tour.featuredImage?.url != null
                   ? Image.network(
                       tour.featuredImage!.url,
-                      height: 200,
+                      height: 200.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
-                          height: 200,
+                          height: 200.h,
                           color: Colors.grey[200],
                           child: const Icon(Icons.tour, size: 64, color: Colors.grey),
                         );
                       },
                     )
                   : Container(
-                      height: 200,
+                      height: 200.h,
                       color: Colors.grey[200],
                       child: const Icon(Icons.tour, size: 64, color: Colors.grey),
                     ),
             ),
             // Contenu
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: Responsive.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -609,35 +610,35 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: const Color(0xFF3860F8).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: Text(
                           tour.type.label,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Color(0xFF3860F8),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: Text(
                           tour.difficulty.label,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: Colors.grey[700],
                             fontWeight: FontWeight.w600,
                           ),
@@ -649,10 +650,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   Row(
                     children: [
                       Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4.w),
                       Text(
                         tour.displayDuration,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                        style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                       ),
                       const Spacer(),
                       Text(
@@ -678,7 +679,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -692,7 +693,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         children: [
           _buildShimmerImagePlaceholder(), // Use the dedicated image placeholder
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: Responsive.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -700,17 +701,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
-                    height: 20,
+                    height: 20.h,
                     width: double.infinity,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
-                    height: 30,
+                    height: 30.h,
                     width: double.infinity,
                     color: Colors.white,
                   ),
@@ -758,16 +759,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   Widget _buildInfoChip(String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: Responsive.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(
         text,
         style: TextStyle(
           color: color,
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -776,10 +777,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   Widget _buildRatingChip(double rating) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: Responsive.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.amber.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -789,12 +790,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
             color: Colors.amber,
             size: 14,
           ),
-          const SizedBox(width: 4),
+          SizedBox(width: 4.w),
           Text(
             rating.toString(),
             style: const TextStyle(
               color: Colors.amber,
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w600,
             ),
           ),

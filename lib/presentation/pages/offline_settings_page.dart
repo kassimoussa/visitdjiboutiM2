@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/connectivity_service.dart';
 import '../../core/services/cache_service.dart';
 import '../../core/services/sync_service.dart';
@@ -61,16 +62,16 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
 
   Widget _buildContent() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildStatusCard(),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildStatsCard(),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildActionsCard(),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildRegionsCard(),
         ],
       ),
@@ -82,7 +83,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -93,7 +94,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                   color: isOnline ? Colors.green : Colors.orange,
                   size: 24,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Text(
                   'Connection status', // TODO: Add translation key
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -102,18 +103,18 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: Responsive.all(12),
               decoration: BoxDecoration(
                 color: isOnline 
                   ? Colors.green.withOpacity(0.1)
                   : Colors.orange.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(
                   color: isOnline ? Colors.green : Colors.orange,
-                  width: 1,
+                  width: 1.w,
                 ),
               ),
               child: Text(
@@ -139,7 +140,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -149,7 +150,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildStatRow('Éléments total', '${_cacheStats!['totalItems'] ?? 0}'),
             _buildStatRow('Points d\'intérêt', '${_cacheStats!['poisCount'] ?? 0}'),
             _buildStatRow('Événements', '${_cacheStats!['eventsCount'] ?? 0}'),
@@ -163,7 +164,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
 
   Widget _buildStatRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: Responsive.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -180,7 +181,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
   Widget _buildActionsCard() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -190,7 +191,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildActionButton(
               icon: Icons.sync,
               title: 'Synchroniser maintenant',
@@ -198,7 +199,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
               onTap: _syncData,
               enabled: _connectivityService.isOnline && !_syncService.isSyncing,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _buildActionButton(
               icon: Icons.download,
               title: 'Télécharger pour hors ligne',
@@ -206,7 +207,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
               onTap: _downloadForOffline,
               enabled: _connectivityService.isOnline && !_isDownloading,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _buildActionButton(
               icon: Icons.clear,
               title: 'Vider le cache',
@@ -231,22 +232,22 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
   }) {
     return InkWell(
       onTap: enabled ? onTap : null,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(8.r),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: Responsive.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
           border: Border.all(color: Colors.grey.shade300),
         ),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: Responsive.all(8),
               decoration: BoxDecoration(
                 color: enabled
                   ? (isDestructive ? Colors.red.withOpacity(0.1) : const Color(0xFF3860F8).withOpacity(0.1))
                   : Colors.grey.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(
                 icon,
@@ -256,7 +257,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 size: 24,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +272,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       color: enabled ? Colors.grey.shade600 : Colors.grey.shade400,
                     ),
                   ),
@@ -280,8 +281,8 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
             ),
             if (!enabled && (title.contains('Synchroniser') || title.contains('Télécharger')))
               const SizedBox(
-                width: 16,
-                height: 16,
+                width: 16.w,
+                height: 16.h,
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
           ],
@@ -295,7 +296,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
     
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -305,15 +306,15 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               'Ces régions peuvent être visitées même sans connexion internet.',
               style: TextStyle(
                 color: Colors.grey.shade600,
-                fontSize: 12,
+                fontSize: 12.sp,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Wrap(
               spacing: 8,
               runSpacing: 8,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/activity.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/activity_service.dart';
@@ -98,13 +99,13 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.error_outline, size: 80, color: Colors.red),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               _errorMessage!,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16.sp),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             ElevatedButton(
               onPressed: _loadActivityDetails,
               child: Text(AppLocalizations.of(context)!.activityDetailRetry),
@@ -151,8 +152,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30.r),
+                          topRight: Radius.circular(30.r),
                         ),
                       ),
                       child: Column(
@@ -160,11 +161,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         children: [
                           // Titre
                           Container(
-                            padding: const EdgeInsets.all(24),
+                            padding: Responsive.all(24),
                             child: Text(
                               _activity!.title,
                               style: const TextStyle(
-                                fontSize: 28,
+                                fontSize: 28.sp,
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
                               ),
@@ -175,11 +176,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           if ((_activity!.description != null && _activity!.description!.trim().isNotEmpty) ||
                               (_activity!.shortDescription != null && _activity!.shortDescription!.trim().isNotEmpty))
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 24),
-                              padding: const EdgeInsets.all(20),
+                              margin: Responsive.symmetric(horizontal: 24),
+                              padding: Responsive.all(20),
                               decoration: BoxDecoration(
                                 color: Colors.grey[50],
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(16.r),
                                 border: Border.all(
                                   color: Colors.grey[200]!,
                                 ),
@@ -190,10 +191,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                   Row(
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.all(8),
+                                        padding: Responsive.all(8),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFF3860F8).withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(8.r),
                                         ),
                                         child: const Icon(
                                           Icons.info_outline,
@@ -201,23 +202,23 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                           size: 20,
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
+                                      SizedBox(width: 12.w),
                                       Text(
                                         AppLocalizations.of(context)!.activityDetailDescription,
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 18.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 16),
+                                  SizedBox(height: 16.h),
                                   Text(
                                     _activity!.description?.trim().isNotEmpty == true
                                         ? _activity!.description!
                                         : _activity!.shortDescription!,
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 16.sp,
                                       color: Colors.grey[700],
                                       height: 1.5,
                                     ),
@@ -229,10 +230,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           // Infos pratiques dans un conteneur blanc avec ombre
                           Container(
                             margin: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-                            padding: const EdgeInsets.all(20),
+                            padding: Responsive.all(20),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(16.r),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.05),
@@ -247,10 +248,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                 Row(
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.all(8),
+                                      padding: Responsive.all(8),
                                       decoration: BoxDecoration(
                                         color: const Color(0xFF3860F8).withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(8.r),
                                       ),
                                       child: const Icon(
                                         Icons.calendar_today,
@@ -258,19 +259,19 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                         size: 20,
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
+                                    SizedBox(width: 12.w),
                                     Text(
                                       AppLocalizations.of(context)!.activityDetailPracticalInfo,
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 16),
+                                SizedBox(height: 16.h),
                                 _buildDetailsSection(),
-                                const SizedBox(height: 16),
+                                SizedBox(height: 16.h),
                                 _buildPracticalInfoGrid(),
                               ],
                             ),
@@ -278,36 +279,36 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
                           // Opérateur dans un conteneur séparé (comme poi_detail)
                           if (_activity!.tourOperator != null) ...[
-                            const SizedBox(height: 16),
+                            SizedBox(height: 16.h),
                             _buildOperatorCard(_activity!.tourOperator!),
                           ],
 
                           // Bouton d'inscription
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24.h),
                           /* Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 24),
+                            margin: Responsive.symmetric(horizontal: 24),
                             child: ElevatedButton(
                               onPressed: _showRegistrationForm,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF3860F8),
                                 minimumSize: const Size(double.infinity, 50),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(12.r),
                                 ),
                               ),
                               child: const Text(
                                 'S\'inscrire maintenant',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 32),
+                          SizedBox(height: 32.h),
                           // Padding pour le bottom bar
-                          const SizedBox(height: 100), */
+                          SizedBox(height: 100.h), */
                         ],
                       ),
                     ),
@@ -340,7 +341,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               ),
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: Responsive.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     children: [
                       Container(
@@ -358,11 +359,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: Responsive.symmetric(horizontal: 16),
                           child: Text(
                             _activity!.title,
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
@@ -435,7 +436,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
     if (!hasImages) {
       return Container(
-        height: 350,
+        height: 350.h,
         color: const Color(0xFFE8D5A3),
         child: const Center(
           child: Icon(
@@ -460,7 +461,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         );
       },
       child: SizedBox(
-        height: 350,
+        height: 350.h,
         width: double.infinity,
         child: Stack(
           children: [
@@ -523,11 +524,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       child: Container(
                         width: isActive ? 12 : 8,
                         height: isActive ? 12 : 8,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        margin: Responsive.symmetric(horizontal: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
-                          border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2) : null,
+                          border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
                         ),
                       ),
                     );
@@ -548,20 +549,20 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailWhatIsIncluded,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         ..._activity!.includes!.map((item) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: Responsive.symmetric(vertical: 4),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Icon(Icons.check_circle, color: Color(0xFF009639), size: 20),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Expanded(
-                child: Text(item, style: const TextStyle(fontSize: 16)),
+                child: Text(item, style: const TextStyle(fontSize: 16.sp)),
               ),
             ],
           ),
@@ -577,14 +578,14 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailWhatToBring,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Text(
           _activity!.whatToBring!,
-          style: const TextStyle(fontSize: 16, height: 1.5),
+          style: const TextStyle(fontSize: 16.sp, height: 1.5),
         ),
       ],
     );
@@ -597,44 +598,44 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailEquipment,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         if (_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailProvided,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF009639)),
+            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Color(0xFF009639)),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           ..._activity!.equipmentProvided!.map((item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: Responsive.symmetric(vertical: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.check, color: Color(0xFF009639), size: 20),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailRequired,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.orange),
+            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.orange),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           ..._activity!.equipmentRequired!.map((item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: Responsive.symmetric(vertical: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.backpack, color: Colors.orange, size: 20),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
@@ -650,44 +651,44 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailPrerequisites,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         if (_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailPhysicalCondition,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           ..._activity!.physicalRequirements!.map((item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: Responsive.symmetric(vertical: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.fitness_center, size: 20, color: Color(0xFF3860F8)),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
         ],
         if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailRequiredCertifications,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           ..._activity!.certificationsRequired!.map((item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: Responsive.symmetric(vertical: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.verified_user, size: 20, color: Colors.orange),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
@@ -698,10 +699,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   Widget _buildInfoContainer() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8).withValues(alpha: 0.04),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -710,8 +711,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           _buildDetailsSection(),
 
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Divider(height: 1, color: Colors.grey.withValues(alpha: 0.2)),
+            padding: Responsive.symmetric(vertical: 24),
+            child: Divider(height: 1.h, color: Colors.grey.withValues(alpha: 0.2)),
           ),
 
           // Informations pratiques
@@ -719,8 +720,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
           if (_buildHasAdditionalSections()) ...[
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              child: Divider(height: 1, color: Colors.grey.withValues(alpha: 0.2)),
+              padding: Responsive.symmetric(vertical: 24),
+              child: Divider(height: 1.h, color: Colors.grey.withValues(alpha: 0.2)),
             ),
             _buildAdditionalSections(),
           ],
@@ -748,27 +749,27 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
         // Includes
         if (_activity!.includes != null && _activity!.includes!.isNotEmpty) ...[
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _buildIncludesSection(),
         ],
 
         // What to Bring
         if (_activity!.whatToBring != null && _activity!.whatToBring!.trim().isNotEmpty) ...[
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _buildWhatToBringSection(),
         ],
 
         // Equipment
         if ((_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ||
             (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty)) ...[
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _buildEquipmentSection(),
         ],
 
         // Requirements
         if ((_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ||
             (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty)) ...[
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _buildRequirementsSection(),
         ],
       ],
@@ -785,13 +786,13 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
         // Weather Warning
         if (_activity!.weatherDependent) ...[
-          if (_activity!.ageRestrictions?.hasRestrictions ?? false) const SizedBox(height: 16),
+          if (_activity!.ageRestrictions?.hasRestrictions ?? false) SizedBox(height: 16.h),
           _buildWeatherWarningSection(),
         ],
 
         // Meeting Point
         if (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty) ...[
-          if ((_activity!.ageRestrictions?.hasRestrictions ?? false) || _activity!.weatherDependent) const SizedBox(height: 16),
+          if ((_activity!.ageRestrictions?.hasRestrictions ?? false) || _activity!.weatherDependent) SizedBox(height: 16.h),
           _buildMeetingPointSection(),
         ],
 
@@ -799,7 +800,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         if (_activity!.additionalInfo != null && _activity!.additionalInfo!.trim().isNotEmpty) ...[
           if ((_activity!.ageRestrictions?.hasRestrictions ?? false) || _activity!.weatherDependent ||
               (_activity!.meetingPointDescription != null && _activity!.meetingPointDescription!.trim().isNotEmpty))
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
           _buildAdditionalInfoSection(),
         ],
       ],
@@ -815,13 +816,13 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           AppLocalizations.of(context)!.activityDetailPrice,
           _activity!.displayPrice,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         _buildInfoRow(
           Icons.access_time,
           AppLocalizations.of(context)!.activityDetailDuration,
           _activity!.displayDuration,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         _buildInfoRow(
           Icons.trending_up,
           AppLocalizations.of(context)!.activityDetailDifficulty,
@@ -833,7 +834,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
+      padding: Responsive.only(bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -842,7 +843,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             size: 18,
             color: Colors.grey[600],
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -850,16 +851,16 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 Text(
                   label,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2.h),
                 Text(
                   value,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: Colors.grey[700],
                     height: 1.4,
                   ),
@@ -887,23 +888,23 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailIncluded,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         ..._activity!.includes!.map((item) => Padding(
-          padding: const EdgeInsets.only(bottom: 6),
+          padding: Responsive.only(bottom: 6),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Icon(Icons.check_circle, color: Color(0xFF009639), size: 18),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   item,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
                 ),
               ),
             ],
@@ -928,40 +929,40 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailEquipment,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         if (_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ...[
-          Text(AppLocalizations.of(context)!.activityDetailProvidedWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
-          const SizedBox(height: 6),
+          Text(AppLocalizations.of(context)!.activityDetailProvidedWithColon, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          SizedBox(height: 6.h),
           ..._activity!.equipmentProvided!.map((item) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: Responsive.only(bottom: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.check, color: Color(0xFF009639), size: 16),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]))),
               ],
             ),
           )),
           if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty)
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
         ],
         if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty) ...[
-          Text(AppLocalizations.of(context)!.activityDetailRequiredWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
-          const SizedBox(height: 6),
+          Text(AppLocalizations.of(context)!.activityDetailRequiredWithColon, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          SizedBox(height: 6.h),
           ..._activity!.equipmentRequired!.map((item) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: Responsive.only(bottom: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.backpack, color: Colors.orange, size: 16),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]))),
               ],
             ),
           )),
@@ -977,40 +978,40 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailPrerequisites,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         if (_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ...[
-          Text(AppLocalizations.of(context)!.activityDetailPhysicalConditionWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
-          const SizedBox(height: 6),
+          Text(AppLocalizations.of(context)!.activityDetailPhysicalConditionWithColon, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          SizedBox(height: 6.h),
           ..._activity!.physicalRequirements!.map((item) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: Responsive.only(bottom: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.fitness_center, size: 16, color: Color(0xFF3860F8)),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]))),
               ],
             ),
           )),
           if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty)
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
         ],
         if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty) ...[
-          Text(AppLocalizations.of(context)!.activityDetailCertificationsWithColon, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey[700])),
-          const SizedBox(height: 6),
+          Text(AppLocalizations.of(context)!.activityDetailCertificationsWithColon, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+          SizedBox(height: 6.h),
           ..._activity!.certificationsRequired!.map((item) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: Responsive.only(bottom: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(Icons.verified_user, size: 16, color: Colors.orange),
-                const SizedBox(width: 8),
-                Expanded(child: Text(item, style: TextStyle(fontSize: 14, color: Colors.grey[700]))),
+                SizedBox(width: 8.w),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]))),
               ],
             ),
           )),
@@ -1021,10 +1022,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   Widget _buildAgeRestrictionsSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: Colors.blue[100]!,
         ),
@@ -1033,10 +1034,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: Responsive.all(8),
             decoration: BoxDecoration(
               color: const Color(0xFF3860F8).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             child: const Icon(
               Icons.person,
@@ -1044,7 +1045,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1052,15 +1053,15 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 Text(
                   AppLocalizations.of(context)!.activityDetailAgeRestrictions,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   _activity!.ageRestrictions!.text,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
                 ),
               ],
             ),
@@ -1072,10 +1073,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   Widget _buildWeatherWarningSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFFFFF3CD),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: Colors.orange[200]!,
         ),
@@ -1083,10 +1084,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: Responsive.all(8),
             decoration: BoxDecoration(
               color: Colors.orange.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(
               Icons.wb_sunny,
@@ -1094,12 +1095,12 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               AppLocalizations.of(context)!.activityDetailWeatherDependent,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.orange[900],
               ),
             ),
@@ -1127,11 +1128,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   Widget _buildOperatorCard(TourOperator operator) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(20),
+      margin: Responsive.symmetric(horizontal: 24),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -1146,31 +1147,31 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           Text(
             AppLocalizations.of(context)!.activityDetailOrganizedBy,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             children: [
               // Logo de l'opérateur
               Container(
-                width: 80,
-                height: 80,
+                width: 80.w,
+                height: 80.h,
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                   border: Border.all(
                     color: Colors.grey[300]!,
-                    width: 1,
+                    width: 1.w,
                   ),
                 ),
                 child: operator.logoUrl.isNotEmpty
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(11),
+                        borderRadius: BorderRadius.circular(11.r),
                         child: Padding(
-                          padding: const EdgeInsets.all(8),
+                          padding: Responsive.all(8),
                           child: Image.network(
                             operator.logoUrl,
                             fit: BoxFit.contain,
@@ -1205,7 +1206,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         ),
                       ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1213,25 +1214,25 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                     Text(
                       operator.name,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: Responsive.symmetric(
                         horizontal: 10,
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF009639).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Text(
                         AppLocalizations.of(context)!.activityDetailCertifiedOperator,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF009639),
                         ),
@@ -1254,22 +1255,22 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailCancellationPolicy,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
           ),
           child: Text(
             _activity!.cancellationPolicy!,
-            style: const TextStyle(fontSize: 16, color: Colors.white, height: 1.5),
+            style: const TextStyle(fontSize: 16.sp, color: Colors.white, height: 1.5),
           ),
         ),
       ],
@@ -1283,7 +1284,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: Responsive.all(8),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
@@ -1294,11 +1295,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 size: 20,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Text(
               AppLocalizations.of(context)!.activityDetailLinks,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -1312,29 +1313,29 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Widget _buildMeetingPoint() {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.location_on, color: Color(0xFF3860F8)),
-                SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Text(
                   AppLocalizations.of(context)!.activityDetailMeetingPoint,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               _activity!.meetingPointDescription!,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16.sp),
             ),
           ],
         ),
@@ -1351,21 +1352,21 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Text(
           AppLocalizations.of(context)!.activityDetailCancellationPolicy,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           decoration: BoxDecoration(
             color: Colors.orange.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             border: Border.all(color: Colors.orange.withOpacity(0.3)),
           ),
           child: Text(
             _activity!.cancellationPolicy!,
-            style: const TextStyle(fontSize: 16, height: 1.5),
+            style: const TextStyle(fontSize: 16.sp, height: 1.5),
           ),
         ),
       ],
@@ -1378,18 +1379,18 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     return Card(
       elevation: 2,
       color: Colors.orange[50],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         child: Row(
           children: [
             Icon(Icons.wb_sunny, color: Colors.orange[700]),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(
               child: Text(
                 'Cette activité est dépendante des conditions météorologiques',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   color: Colors.orange[900],
                   fontWeight: FontWeight.w500,
                 ),
@@ -1405,7 +1406,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
   Widget _buildRegistrationButton() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -1426,12 +1427,12 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.activityDetailFrom,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12.sp),
                   ),
                   Text(
                     _activity!.displayPrice,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF3860F8),
                     ),
@@ -1439,7 +1440,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 ],
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               flex: 2,
               child: ElevatedButton(
@@ -1448,9 +1449,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3860F8),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: Responsive.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   disabledBackgroundColor: Colors.grey,
                   disabledForegroundColor: Colors.white,

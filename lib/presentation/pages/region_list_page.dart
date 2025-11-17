@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/region.dart';
 import '../../core/services/region_service.dart';
 import 'region_detail_page.dart';
@@ -73,13 +74,13 @@ class _RegionListPageState extends State<RegionListPage> {
               size: 64,
               color: Colors.red,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               _errorMessage!,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             ElevatedButton(
               onPressed: _loadRegions,
               child: const Text('Réessayer'),
@@ -99,10 +100,10 @@ class _RegionListPageState extends State<RegionListPage> {
               size: 64,
               color: Colors.grey,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Text(
               'Aucune région disponible',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16.sp),
             ),
           ],
         ),
@@ -112,7 +113,7 @@ class _RegionListPageState extends State<RegionListPage> {
     return RefreshIndicator(
       onRefresh: _loadRegions,
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: _regions.length,
         itemBuilder: (context, index) {
           return _buildRegionCard(_regions[index]);
@@ -123,10 +124,10 @@ class _RegionListPageState extends State<RegionListPage> {
 
   Widget _buildRegionCard(Region region) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: Responsive.only(bottom: 16),
       elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: InkWell(
         onTap: () {
@@ -137,9 +138,9 @@ class _RegionListPageState extends State<RegionListPage> {
             ),
           );
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -147,10 +148,10 @@ class _RegionListPageState extends State<RegionListPage> {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: Responsive.all(12),
                     decoration: BoxDecoration(
                       color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: const Icon(
                       Icons.location_on,
@@ -158,7 +159,7 @@ class _RegionListPageState extends State<RegionListPage> {
                       size: 28,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,15 +167,15 @@ class _RegionListPageState extends State<RegionListPage> {
                         Text(
                           region.name,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           '${region.totalCount} contenu${region.totalCount > 1 ? 's' : ''}',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: Colors.grey[600],
                           ),
                         ),
@@ -190,9 +191,9 @@ class _RegionListPageState extends State<RegionListPage> {
 
               // Statistiques
               if (region.hasContent) ...[
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 const Divider(),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -233,10 +234,10 @@ class _RegionListPageState extends State<RegionListPage> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: Responsive.all(8),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
           child: Icon(
             icon,
@@ -244,18 +245,18 @@ class _RegionListPageState extends State<RegionListPage> {
             size: 24,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Text(
           count.toString(),
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 12.sp,
             color: Colors.grey[600],
           ),
         ),

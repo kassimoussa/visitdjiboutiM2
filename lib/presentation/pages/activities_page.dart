@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/simple_activity_card.dart';
@@ -91,7 +92,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       isScrollControlled: true,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => _buildFiltersSheet(),
     );
@@ -101,12 +102,12 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
     return StatefulBuilder(
       builder: (context, setModalState) {
         return Container(
-          padding: EdgeInsets.only(
+          padding: Responsive.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: Responsive.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +118,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                       const Text(
                         'Filtres',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -142,17 +143,17 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // Région
                   const Text(
                     'Région',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -174,17 +175,17 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // Difficulté
                   const Text(
                     'Difficulté',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -206,7 +207,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // Places disponibles
                   CheckboxListTile(
@@ -223,7 +224,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                     activeColor: const Color(0xFF3860F8),
                     contentPadding: EdgeInsets.zero,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // Bouton Appliquer
                   SizedBox(
@@ -235,22 +236,22 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF3860F8),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: Responsive.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                       ),
                       child: const Text(
                         'Appliquer les filtres',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                 ],
               ),
             ),
@@ -295,7 +296,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
 
   Widget _buildSearchAndFilters() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -317,18 +318,18 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                     hintText: 'Rechercher une activité...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(color: Colors.grey[300]!),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(color: Colors.grey[300]!),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: const BorderSide(color: Color(0xFF3860F8)),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding: Responsive.symmetric(
                       horizontal: 16,
                       vertical: 12,
                     ),
@@ -336,11 +337,11 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   onSubmitted: (_) => _loadActivities(),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFF3860F8),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: IconButton(
                   onPressed: _showFiltersBottomSheet,
@@ -351,7 +352,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             ],
           ),
           if (_hasActiveFilters()) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             _buildActiveFiltersChips(),
           ],
         ],
@@ -414,7 +415,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       onRefresh: _loadActivities,
       color: const Color(0xFF3860F8),
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: _activities.length,
         itemBuilder: (context, index) {
           final activity = _activities[index];
@@ -462,20 +463,20 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             size: 80,
             color: Colors.grey[400],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             'Aucune activité trouvée',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: Colors.grey[600],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             'Essayez de modifier vos filtres',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               color: Colors.grey[500],
             ),
           ),
@@ -494,28 +495,28 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             size: 80,
             color: Colors.red[300],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             'Erreur de chargement',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: Colors.grey[800],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: Responsive.symmetric(horizontal: 40),
             child: Text(
               _errorMessage ?? 'Une erreur est survenue',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.grey[600],
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           ElevatedButton.icon(
             onPressed: _loadActivities,
             icon: const Icon(Icons.refresh, color: Colors.white),
@@ -525,9 +526,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3860F8),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: Responsive.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
           ),

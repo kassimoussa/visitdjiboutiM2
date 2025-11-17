@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/tour.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -61,10 +62,10 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: Responsive.all(20),
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -72,7 +73,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         children: [
           // Header
           _buildHeader(),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           // Form
           Flexible(
@@ -82,17 +83,17 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                 child: Column(
                   children: [
                     _buildTourPreview(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     _buildPeopleField(),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     if (!_isAuthenticated) ...[
                       _buildContactFields(),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                     ],
                     _buildNotesField(),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     _buildTotalSection(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     _buildActionButtons(),
                   ],
                 ),
@@ -111,7 +112,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         Text(
           AppLocalizations.of(context)!.tourRegistrationTitle,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -126,28 +127,28 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
 
   Widget _buildTourPreview() {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: Responsive.all(12),
       decoration: BoxDecoration(
         color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: Colors.grey[200]!),
       ),
       child: Row(
         children: [
           // Image
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             child: widget.tour.hasImages
                 ? Image.network(
                     widget.tour.firstImageUrl,
-                    width: 60,
-                    height: 60,
+                    width: 60.w,
+                    height: 60.h,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => _buildPlaceholderImage(),
                   )
                 : _buildPlaceholderImage(),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
 
           // Info
           Expanded(
@@ -158,12 +159,12 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                   widget.tour.title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 if (widget.tour.displayDateRange != null) ...[
                   Row(
                     children: [
@@ -172,13 +173,13 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                         size: 16,
                         color: Colors.grey[600],
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
                           widget.tour.displayDateRange!,
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -186,7 +187,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                 ],
                 Row(
                   children: [
@@ -195,12 +196,12 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                       size: 16,
                       color: Colors.grey[600],
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4.w),
                     Text(
                       AppLocalizations.of(context)!.tourRegistrationAvailableSpots(widget.tour.availableSpots.toString()),
                       style: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
                     ),
                   ],
@@ -215,11 +216,11 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
 
   Widget _buildPlaceholderImage() {
     return Container(
-      width: 60,
-      height: 60,
+      width: 60.w,
+      height: 60.h,
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
       ),
       child: const Icon(
         Icons.tour,
@@ -236,18 +237,18 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         Text(
           AppLocalizations.of(context)!.tourRegistrationNumberOfParticipants,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         Row(
           children: [
             // Bouton moins
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey[300]!),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: IconButton(
                 onPressed: _numberOfPeople > 1
@@ -265,24 +266,24 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             // Champ de texte
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: Responsive.symmetric(horizontal: 16),
                 child: TextFormField(
                   controller: _peopleController,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                   ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    contentPadding: Responsive.symmetric(vertical: 16),
                     suffix: Text(
                       '(max: $_maxParticipants)',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -311,7 +312,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey[300]!),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: IconButton(
                 onPressed: _numberOfPeople < _maxParticipants
@@ -340,23 +341,23 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         Text(
           AppLocalizations.of(context)!.tourRegistrationContactInfo,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         TextFormField(
           controller: _nameController,
           decoration: InputDecoration(
             labelText: AppLocalizations.of(context)!.tourRegistrationFullName,
             prefixIcon: const Icon(Icons.person),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) => value?.isEmpty ?? true ? AppLocalizations.of(context)!.tourRegistrationNameRequired : null,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         TextFormField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
@@ -364,7 +365,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             labelText: AppLocalizations.of(context)!.tourRegistrationEmail,
             prefixIcon: const Icon(Icons.email),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) {
@@ -375,7 +376,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             return null;
           },
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         TextFormField(
           controller: _phoneController,
           keyboardType: TextInputType.phone,
@@ -383,7 +384,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             labelText: AppLocalizations.of(context)!.tourRegistrationPhone,
             prefixIcon: const Icon(Icons.phone),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             ),
           validator: (value) => value?.isEmpty ?? true ? AppLocalizations.of(context)!.tourRegistrationPhoneRequired : null,
@@ -400,7 +401,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
         labelText: AppLocalizations.of(context)!.tourRegistrationNotes,
         hintText: AppLocalizations.of(context)!.tourRegistrationNotesHint,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
       ),
     );
@@ -408,10 +409,10 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
 
   Widget _buildTotalSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: Responsive.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF3860F8).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: const Color(0xFF3860F8).withOpacity(0.3),
         ),
@@ -425,14 +426,14 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
               Text(
                 AppLocalizations.of(context)!.tourRegistrationTotalToPay,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
                 '$_numberOfPeople × ${widget.tour.displayPrice}',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: Colors.grey[600],
                 ),
               ),
@@ -441,7 +442,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           Text(
             '$_totalAmount ${widget.tour.currency}',
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF3860F8),
             ),
@@ -458,15 +459,15 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           child: OutlinedButton(
             onPressed: widget.onCancel ?? () => Navigator.of(context).pop(),
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: Responsive.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
             child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Expanded(
           flex: 2,
           child: ElevatedButton(
@@ -474,15 +475,15 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: Responsive.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
             child: _isLoading
                 ? const SizedBox(
-                    height: 20,
-                    width: 20,
+                    height: 20.h,
+                    width: 20.w,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

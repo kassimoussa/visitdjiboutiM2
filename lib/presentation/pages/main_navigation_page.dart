@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:vd_gem/core/enums/bottom_nav_tab.dart';
 import 'package:vd_gem/presentation/pages/home_page.dart';
 import 'package:vd_gem/presentation/pages/discover_page.dart';
@@ -69,11 +70,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           unselectedItemColor: const Color(0xFF64748B),
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 12,
+            fontSize: 12.sp,
           ),
           unselectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w500,
-            fontSize: 12,
+            fontSize: 12.sp,
           ),
           elevation: 8,
           backgroundColor: Colors.white,
@@ -95,17 +96,17 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   Widget _buildTabIcon(BottomNavTab tab, bool isActive) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: Responsive.symmetric(vertical: 4),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: Responsive.all(8),
             decoration: BoxDecoration(
               color: isActive
                   ? const Color(0xFF3860F8).withOpacity(0.1)
                   : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: _getIconWidget(tab, isActive),
           ),

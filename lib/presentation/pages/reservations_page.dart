@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:intl/intl.dart';
 import '../../core/models/reservation.dart';
 import '../../core/models/tour_reservation.dart';
@@ -229,7 +230,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       onRefresh: _loadReservations,
       color: const Color(0xFF3860F8),
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: totalCount,
         itemBuilder: (context, index) {
           // D'abord afficher les réservations POI/Event, puis les tours, puis les activités
@@ -269,7 +270,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       onRefresh: _loadReservations,
       color: const Color(0xFF3860F8),
       child: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: Responsive.all(16),
         itemCount: reservations.length,
         itemBuilder: (context, index) {
           final reservation = reservations[index];
@@ -281,14 +282,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
   Widget _buildReservationCard(Reservation reservation) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: Responsive.only(bottom: 16),
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: () => _showReservationDetails(reservation),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -297,10 +298,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _getStatusColor(reservation.status).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(color: _getStatusColor(reservation.status)),
                     ),
                     child: Text(
@@ -313,10 +314,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -326,7 +327,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           size: 14,
                           color: const Color(0xFF3860F8),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           reservation.typeText,
                           style: const TextStyle(
@@ -358,7 +359,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           'N° ${reservation.confirmationNumber}',
                           style: TextStyle(
@@ -371,11 +372,11 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ),
                   if (reservation.reservableImage?.isNotEmpty == true)
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                       child: CachedImageWidget(
                         imageUrl: reservation.reservableImage!,
-                        width: 60,
-                        height: 60,
+                        width: 60.w,
+                        height: 60.h,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -460,14 +461,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             : Colors.red;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: Responsive.only(bottom: 16),
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: () => _showTourReservationDetails(reservation),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -476,10 +477,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: statusColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(color: statusColor),
                     ),
                     child: Text(
@@ -492,10 +493,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -505,7 +506,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           size: 14,
                           color: Color(0xFF3860F8),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           'Tour',
                           style: TextStyle(
@@ -537,7 +538,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           'Réservation #${reservation.id}',
                           style: TextStyle(
@@ -550,11 +551,11 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ),
                   if (tour?.featuredImage?.url != null)
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                       child: CachedImageWidget(
                         imageUrl: tour!.featuredImage!.url,
-                        width: 60,
-                        height: 60,
+                        width: 60.w,
+                        height: 60.h,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -615,14 +616,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             : Colors.red;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: Responsive.only(bottom: 16),
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: () => _showActivityRegistrationDetails(registration),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: Responsive.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -631,10 +632,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: statusColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(color: statusColor),
                     ),
                     child: Text(
@@ -647,10 +648,10 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: const Color(0xFF3860F8).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -660,7 +661,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           size: 14,
                           color: Color(0xFF3860F8),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           'Activité',
                           style: TextStyle(
@@ -692,7 +693,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           'Inscription #${registration.id}',
                           style: TextStyle(
@@ -705,11 +706,11 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                   ),
                   if (registration.activity?.featuredImage?.url != null)
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                       child: CachedImageWidget(
                         imageUrl: registration.activity!.featuredImage!.url,
-                        width: 60,
-                        height: 60,
+                        width: 60.w,
+                        height: 60.h,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -786,7 +787,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: Responsive.symmetric(vertical: 2),
       child: Row(
         children: [
           Icon(
@@ -821,7 +822,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
   Widget _buildErrorState() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: Responsive.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -839,7 +840,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 fontSize: ResponsiveConstants.body1,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             ElevatedButton(
               onPressed: _loadReservations,
               style: ElevatedButton.styleFrom(
@@ -857,7 +858,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
   Widget _buildEmptyState(String message) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: Responsive.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -914,13 +915,13 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
   Widget _buildReservationDetailsModal(Reservation reservation) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: Responsive.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: Responsive.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1003,12 +1004,12 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
   Widget _buildDetailRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: Responsive.symmetric(vertical: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 100,
+            width: 100.w,
             child: Text(
               '$label:',
               style: TextStyle(
@@ -1135,7 +1136,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.7,
@@ -1145,7 +1146,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         builder: (context, scrollController) {
           return SingleChildScrollView(
             controller: scrollController,
-            padding: const EdgeInsets.all(24),
+            padding: Responsive.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1156,7 +1157,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     const Text(
                       'Détails de la réservation',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1205,7 +1206,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Actions
                 if (reservation.canCancel) ...[
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -1216,13 +1217,13 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: Responsive.symmetric(vertical: 16),
                       ),
                       child: const Text('Annuler la réservation'),
                     ),
                   ),
                 ] else if (reservation.status == ReservationStatus.cancelledByUser) ...[
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -1233,7 +1234,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: Responsive.symmetric(vertical: 16),
                       ),
                       child: const Text('Supprimer la réservation'),
                     ),
@@ -1375,7 +1376,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.7,
@@ -1385,7 +1386,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         builder: (context, scrollController) {
           return SingleChildScrollView(
             controller: scrollController,
-            padding: const EdgeInsets.all(24),
+            padding: Responsive.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1396,7 +1397,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     const Text(
                       'Détails de l\'inscription',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1453,7 +1454,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
 
                 // Actions
                 if (registration.canCancel) ...[
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -1464,13 +1465,13 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: Responsive.symmetric(vertical: 16),
                       ),
                       child: const Text('Annuler l\'inscription'),
                     ),
                   ),
                 ] else if (registration.status == RegistrationStatus.cancelledByUser || registration.status == RegistrationStatus.cancelledByOperator) ...[
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -1481,7 +1482,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: Responsive.symmetric(vertical: 16),
                       ),
                       child: const Text('Supprimer l\'inscription'),
                     ),

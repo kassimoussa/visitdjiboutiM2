@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerLoading extends StatelessWidget {
@@ -51,48 +52,48 @@ class ShimmerLoadingCard extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      margin: margin ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: margin ?? Responsive.symmetric(vertical: 8, horizontal: 16),
       child: ShimmerLoading(
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(12),
+            borderRadius: borderRadius ?? BorderRadius.circular(12.r),
           ),
           child: Container(
-            padding: padding ?? const EdgeInsets.all(16),
+            padding: padding ?? Responsive.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 16,
+                  height: 16.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4.r),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Container(
-                  height: 14,
+                  height: 14.h,
                   width: double.infinity * 0.7,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4.r),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Container(
-                  height: 14,
+                  height: 14.h,
                   width: double.infinity * 0.5,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4.r),
                   ),
                 ),
                 const Spacer(),
                 Container(
-                  height: 32,
+                  height: 32.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
               ],
@@ -120,40 +121,40 @@ class ShimmerLoadingListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: padding ?? Responsive.symmetric(horizontal: 16, vertical: 8),
       child: ShimmerLoading(
         child: Row(
           children: [
             // Leading avatar/icon
             Container(
-              width: 48,
-              height: 48,
+              width: 48.w,
+              height: 48.h,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             // Title and subtitle
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: 16,
+                    height: 16.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4.r),
                     ),
                   ),
                   if (hasSubtitle) ...[
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Container(
-                      height: 14,
+                      height: 14.h,
                       width: double.infinity * 0.6,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(4.r),
                       ),
                     ),
                   ],
@@ -162,13 +163,13 @@ class ShimmerLoadingListTile extends StatelessWidget {
             ),
             // Trailing
             if (hasTrailing) ...[
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Container(
-                width: 24,
-                height: 24,
+                width: 24.w,
+                height: 24.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                 ),
               ),
             ],
@@ -208,7 +209,7 @@ class ShimmerLoadingText extends StatelessWidget {
                 : double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4.r),
               ),
             );
           }),
@@ -236,7 +237,7 @@ class ShimmerLoadingGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      padding: padding ?? const EdgeInsets.all(16),
+      padding: padding ?? Responsive.all(16),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         childAspectRatio: aspectRatio,

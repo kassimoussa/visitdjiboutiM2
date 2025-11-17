@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/localization_service.dart';
@@ -249,7 +250,7 @@ class _EventsPageState extends State<EventsPage> {
                     )
                   : null,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(25.r),
                 borderSide: BorderSide.none,
               ),
               filled: true,
@@ -287,7 +288,7 @@ class _EventsPageState extends State<EventsPage> {
                 final isSelected = category.name == _selectedCategory;
 
                 return Container(
-                  margin: const EdgeInsets.only(right: 8),
+                  margin: Responsive.only(right: 8),
                   child: FilterChip(
                     label: Text(category.name),
                     selected: isSelected,
@@ -416,10 +417,10 @@ class _EventsPageState extends State<EventsPage> {
 
   Widget _buildEventCard(Event event) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: Responsive.only(bottom: 12),
       elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
@@ -428,7 +429,7 @@ class _EventsPageState extends State<EventsPage> {
             builder: (context) => EventDetailPage(event: event),
           ),
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -436,18 +437,18 @@ class _EventsPageState extends State<EventsPage> {
             Stack(
               children: [
                 Container(
-                  height: 150,
+                  height: 150.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: const Color(0xFFE8D5A3),
                     borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(12),
+                      top: Radius.circular(12.r),
                     ),
                   ),
                   child: event.featuredImage != null && event.imageUrl.isNotEmpty
                       ? ClipRRect(
                           borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12),
+                            top: Radius.circular(12.r),
                           ),
                           child: Image.network(
                             event.imageUrl,
@@ -485,13 +486,13 @@ class _EventsPageState extends State<EventsPage> {
                   top: 8,
                   left: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: Responsive.symmetric(
                       horizontal: 8,
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
                       color: _getStatusColor(event),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
                       event.getStatusText(context),
@@ -509,13 +510,13 @@ class _EventsPageState extends State<EventsPage> {
                     top: 8,
                     right: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: Responsive.symmetric(
                         horizontal: 8,
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF3860F8),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                       child:  Text(
                         AppLocalizations.of(context)!.eventsPopular,
@@ -597,13 +598,13 @@ class _EventsPageState extends State<EventsPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
 
                   // Date et lieu
                   Row(
                     children: [
                       Icon(Icons.calendar_today, size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
                           event.formattedDateRange ?? event.startDate,
@@ -616,12 +617,12 @@ class _EventsPageState extends State<EventsPage> {
                     ],
                   ),
 
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
 
                   Row(
                     children: [
                       Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
                           event.displayLocation,
@@ -636,7 +637,7 @@ class _EventsPageState extends State<EventsPage> {
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
 
                   // Métadonnées
                   Wrap(
@@ -645,7 +646,7 @@ class _EventsPageState extends State<EventsPage> {
                     children: [
                       // Prix
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: Responsive.symmetric(
                           horizontal: 8,
                           vertical: 4,
                         ),
@@ -653,7 +654,7 @@ class _EventsPageState extends State<EventsPage> {
                           color: event.isFree 
                               ? const Color(0xFF009639).withValues(alpha: 0.1)
                               : const Color(0xFF3860F8).withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Text(
                           event.getPriceText(context),
@@ -669,13 +670,13 @@ class _EventsPageState extends State<EventsPage> {
 
                       // Participants
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: Responsive.symmetric(
                           horizontal: 8,
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.orange.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -685,7 +686,7 @@ class _EventsPageState extends State<EventsPage> {
                               size: 12,
                               color: Colors.orange,
                             ),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4.w),
                             Text(
                               event.getParticipantsText(context),
                               style: const TextStyle(
@@ -701,13 +702,13 @@ class _EventsPageState extends State<EventsPage> {
                       // Catégorie
                       if (event.categories.isNotEmpty)
                         Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: Responsive.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF0072CE).withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Text(
                             event.primaryCategory,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'dart:async';
 import '../../core/services/connectivity_service.dart';
 
@@ -105,7 +106,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
   Widget _buildOfflineBar() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: Responsive.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.orange.shade600,
         boxShadow: [
@@ -125,13 +126,13 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
               color: Colors.white,
               size: 20,
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             const Expanded(
               child: Text(
                 'Mode hors ligne - Données en cache disponibles',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -139,16 +140,16 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
             GestureDetector(
               onTap: _checkConnection,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: Responsive.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: const Text(
                   'Réessayer',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

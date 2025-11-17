@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../../core/models/anonymous_user.dart';
 import '../../../core/services/anonymous_auth_service.dart';
 import '../../../generated/l10n/app_localizations.dart';
@@ -44,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: Responsive.all(24),
           child: Form(
             key: _formKey,
             child: Column(
@@ -109,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
             labelText: AppLocalizations.of(context)!.authName,
             prefixIcon: const Icon(Icons.person_outline),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) {
@@ -133,7 +134,7 @@ class _SignUpPageState extends State<SignUpPage> {
             labelText: AppLocalizations.of(context)!.authEmail,
             prefixIcon: const Icon(Icons.email_outlined),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) {
@@ -161,7 +162,7 @@ class _SignUpPageState extends State<SignUpPage> {
               icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) {
@@ -189,7 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
               icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
           validator: (value) {
@@ -266,16 +267,16 @@ class _SignUpPageState extends State<SignUpPage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF3860F8),
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: Responsive.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
           disabledBackgroundColor: Colors.grey[300],
         ),
         child: _isLoading
             ? const SizedBox(
-                height: 20,
-                width: 20,
+                height: 20.h,
+                width: 20.w,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

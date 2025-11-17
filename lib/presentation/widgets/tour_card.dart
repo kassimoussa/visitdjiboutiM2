@@ -184,11 +184,11 @@ class _TourCardState extends State<TourCard> {
               size: 40,
               color: const Color(0xFF3860F8),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               widget.tour.displayType,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12.sp,
                 color: Colors.grey[600],
                 fontWeight: FontWeight.w500,
               ),

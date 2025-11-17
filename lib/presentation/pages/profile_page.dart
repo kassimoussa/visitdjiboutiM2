@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
 import 'package:vd_gem/core/services/anonymous_auth_service.dart';
@@ -160,20 +161,20 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 CircleAvatar(
-                  radius: 40,
+                  radius: 40.r,
                   backgroundColor: Colors.white.withOpacity(0.2),
                   child: Text(
                     _user?.name.isNotEmpty == true ? _user!.name[0].toUpperCase() : '👤',
                     style: const TextStyle(
-                      fontSize: 32,
+                      fontSize: 32.sp,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Text(
                   _user?.name ?? AppLocalizations.of(context)!.profileUser,
                   style: const TextStyle(
@@ -219,13 +220,13 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 100.w,
+                  height: 100.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.1),
@@ -234,9 +235,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  padding: const EdgeInsets.all(12),
+                  padding: Responsive.all(12),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     child: Image.asset(
                       'assets/images/logo_visitdjibouti.png',
                       fit: BoxFit.contain,
@@ -257,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   AppLocalizations.of(context)!.profileDiscoverDjibouti,
                   style: const TextStyle(
@@ -357,10 +358,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildConversionCard() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.1),
@@ -372,7 +373,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             AppLocalizations.of(context)!.profileCreateAccountBenefits,
             textAlign: TextAlign.center,
@@ -397,9 +398,9 @@ class _ProfilePageState extends State<ProfilePage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3860F8),
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: Responsive.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 elevation: 0,
               ),
@@ -412,7 +413,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
@@ -425,9 +426,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: Responsive.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 side: const BorderSide(color: Color(0xFF3860F8), width: 1.5),
               ),
@@ -526,7 +527,7 @@ class _ProfilePageState extends State<ProfilePage> {
     bool isDestructive = false,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: Responsive.only(bottom: 8),
       child: ListTile(
         leading: Icon(
           icon,
@@ -546,7 +547,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         onTap: onTap,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
     );

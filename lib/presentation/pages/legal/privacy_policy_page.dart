@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../../generated/l10n/app_localizations.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: Responsive.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -22,11 +23,11 @@ class PrivacyPolicyPage extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    width: 80,
-                    height: 80,
+                    width: 80.w,
+                    height: 80.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.1),
@@ -35,9 +36,9 @@ class PrivacyPolicyPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(12),
+                    padding: Responsive.all(12),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.r),
                       child: Image.asset(
                         'assets/images/logo_visitdjibouti.png',
                         fit: BoxFit.contain,
@@ -49,27 +50,27 @@ class PrivacyPolicyPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Text(
                     AppLocalizations.of(context)!.authPrivacyPolicy,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1D2233),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     'Dernière mise à jour : 23 octobre 2025',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       color: Colors.grey[600],
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
 
             // Introduction
             _buildSection(
@@ -179,7 +180,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                   '   Place du 27 Juin, Djibouti',
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
           ],
         ),
       ),
@@ -188,23 +189,23 @@ class PrivacyPolicyPage extends StatelessWidget {
 
   Widget _buildSection({required String title, required String content}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: Responsive.only(bottom: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF3860F8),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           Text(
             content,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 15.sp,
               color: Colors.grey[800],
               height: 1.6,
             ),
