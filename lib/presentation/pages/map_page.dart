@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart' as cluster_manager;
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/connectivity_service.dart';
@@ -14,7 +14,7 @@ import '../../generated/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 
 /// Wrapper pour POI afin de l'utiliser avec ClusterManager
-class PoiClusterItem with ClusterItem {
+class PoiClusterItem with cluster_manager.ClusterItem {
   final Poi poi;
 
   PoiClusterItem(this.poi);
@@ -41,7 +41,7 @@ class _MapPageState extends State<MapPage> {
   final DirectionsService _directionsService = DirectionsService();
 
   // Cluster Manager pour grouper les markers
-  ClusterManager? _clusterManager;
+  cluster_manager.ClusterManager? _clusterManager;
 
   List<Poi> _pois = [];
   List<Poi> _filteredPois = [];
@@ -83,7 +83,7 @@ class _MapPageState extends State<MapPage> {
 
   /// Initialise le cluster manager
   void _initializeClusterManager() {
-    _clusterManager = ClusterManager<PoiClusterItem>(
+    _clusterManager = cluster_manager.ClusterManager<PoiClusterItem>(
       [],
       _updateMarkers,
       markerBuilder: _markerBuilder,
@@ -103,7 +103,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   /// Construit un marker personnalisé
-  Future<Marker> _markerBuilder(Cluster<PoiClusterItem> cluster) async {
+  Future<Marker> _markerBuilder(cluster_manager.Cluster<PoiClusterItem> cluster) async {
     return Marker(
       markerId: MarkerId(cluster.getId()),
       position: cluster.location,
@@ -128,7 +128,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   /// Obtient l'icône du marker (cluster ou POI unique)
-  Future<BitmapDescriptor> _getMarkerIcon(Cluster<PoiClusterItem> cluster) async {
+  Future<BitmapDescriptor> _getMarkerIcon(cluster_manager.Cluster<PoiClusterItem> cluster) async {
     if (cluster.isMultiple) {
       // Créer une icône de cluster avec le nombre de POIs
       return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
