@@ -51,10 +51,8 @@ class LocationService {
         return null;
       }
 
-      // Obtenir la position
-      _currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      // Obtenir la position avec haute précision
+      _currentPosition = await Geolocator.getCurrentPosition();
 
       print('[LOCATION] Position obtenue: ${_currentPosition!.latitude}, ${_currentPosition!.longitude}');
       return _currentPosition;
@@ -90,9 +88,6 @@ class LocationService {
 
   /// Surveille les changements de position en temps réel
   Stream<Position> getPositionStream() {
-    return Geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.high,
-      distanceFilter: 10,
-    );
+    return Geolocator.getPositionStream();
   }
 }
