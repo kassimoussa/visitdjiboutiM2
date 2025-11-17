@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -16,6 +17,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.authResetPassword),
@@ -31,7 +33,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
 
                 // Logo
                 Center(
@@ -65,28 +67,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
 
                 Text(
                   AppLocalizations.of(context)!.authResetPasswordTitle,
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: ResponsiveConstants.headline5,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1D2233),
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: ResponsiveConstants.smallSpace),
 
                 Text(
                   AppLocalizations.of(context)!.authResetPasswordSubtitle,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     color: Colors.grey[600],
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
 
                 // Email field
                 TextFormField(
@@ -110,7 +112,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   },
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
 
                 // Send reset link button
                 SizedBox(
@@ -138,14 +140,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         : Text(
                             AppLocalizations.of(context)!.authSendResetLink,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: ResponsiveConstants.body1,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
 
                 // Back to login
                 Center(

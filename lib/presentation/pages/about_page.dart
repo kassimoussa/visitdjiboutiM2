@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.drawerAbout),
@@ -18,7 +20,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Logo et titre
             Container(
@@ -36,28 +38,28 @@ class AboutPage extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
             
             const Text(
               'Visit Djibouti',
               style: TextStyle(
-                fontSize: 28,
+                fontSize: ResponsiveConstants.headline5,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF3860F8),
               ),
             ),
             
-            const SizedBox(height: 8),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             
             Text(
               'Version 1.0.0',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: ResponsiveConstants.body1,
                 color: Colors.grey[600],
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Description
             Container(
@@ -69,14 +71,14 @@ class AboutPage extends StatelessWidget {
               child: const Text(
                 'Visit Djibouti is the official app of the Djibouti Tourism Office. Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.', // TODO: Add translation key
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Statistiques
             Row(
@@ -89,7 +91,7 @@ class AboutPage extends StatelessWidget {
                     const Color(0xFF3860F8),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: ResponsiveConstants.smallSpace),
                 Expanded(
                   child: _buildStatCard(
                     '100+',
@@ -98,7 +100,7 @@ class AboutPage extends StatelessWidget {
                     const Color(0xFF009639),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: ResponsiveConstants.smallSpace),
                 Expanded(
                   child: _buildStatCard(
                     '6',
@@ -110,7 +112,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Fonctionnalités
             _buildSection(
@@ -144,7 +146,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Équipe
             _buildSection(
@@ -161,7 +163,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
             
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
             
             // Partenaires
             _buildSection(
@@ -180,7 +182,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Technologies utilisées
             _buildSection(
@@ -193,7 +195,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Contact et liens
             _buildSection(
@@ -250,7 +252,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: ResponsiveConstants.extraLargeSpace),
             
             // Copyright
             Container(
@@ -264,17 +266,17 @@ class AboutPage extends StatelessWidget {
                   Text(
                     '© 2024 Office du Tourisme de Djibouti',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: ResponsiveConstants.body2,
                       fontWeight: FontWeight.w500,
                       color: Colors.grey[700],
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: ResponsiveConstants.smallSpace),
                   Text(
                     'Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: ResponsiveConstants.caption,
                       color: Colors.grey[600],
                     ),
                     textAlign: TextAlign.center,
@@ -283,7 +285,7 @@ class AboutPage extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 24),
+            SizedBox(height: ResponsiveConstants.largeSpace),
           ],
         ),
       ),
@@ -300,12 +302,12 @@ class AboutPage extends StatelessWidget {
       child: Column(
         children: [
           Icon(icon, color: color, size: 24),
-          const SizedBox(height: 8),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           Text(
             value,
             style: TextStyle(
               color: color,
-              fontSize: 20,
+              fontSize: ResponsiveConstants.subtitle1,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -313,7 +315,7 @@ class AboutPage extends StatelessWidget {
             label,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: ResponsiveConstants.caption,
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,
@@ -330,12 +332,12 @@ class AboutPage extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: ResponsiveConstants.subtitle1,
             fontWeight: FontWeight.bold,
             color: Color(0xFF3860F8),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
         ...children,
       ],
     );
@@ -359,7 +361,7 @@ class AboutPage extends StatelessWidget {
               size: 20,
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: ResponsiveConstants.mediumSpace),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,15 +369,15 @@ class AboutPage extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: ResponsiveConstants.tinySpace),
                 Text(
                   description,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveConstants.body2,
                     color: Colors.grey[600],
                   ),
                 ),
@@ -402,12 +404,12 @@ class AboutPage extends StatelessWidget {
               tech,
               style: const TextStyle(
                 color: Color(0xFF009639),
-                fontSize: 12,
+                fontSize: ResponsiveConstants.caption,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: ResponsiveConstants.smallSpace),
           Expanded(
             child: Text(
               description,

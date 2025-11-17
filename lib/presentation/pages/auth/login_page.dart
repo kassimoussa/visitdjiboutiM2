@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/services/anonymous_auth_service.dart';
 import '../../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.authLogin),
@@ -36,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
 
                 // Logo
                 Center(
@@ -70,33 +72,33 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
 
                 Text(
                   AppLocalizations.of(context)!.authWelcomeBack,
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: ResponsiveConstants.headline5,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1D2233),
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: ResponsiveConstants.smallSpace),
 
                 Text(
                   AppLocalizations.of(context)!.authSignInSubtitle,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     color: Colors.grey[600],
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
                 
                 // Formulaire
                 _buildForm(),
                 
-                const SizedBox(height: 16),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
                 
                 // Mot de passe oublié
                 Align(
@@ -115,12 +117,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
                 
                 // Bouton de connexion
                 _buildLoginButton(),
 
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
 
                 // Lien vers inscription
                 _buildSignUpLink(),
@@ -157,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
         
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
         
         // Mot de passe
         TextFormField(
@@ -211,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
             : Text(
                 AppLocalizations.of(context)!.authSignIn,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.bold,
                 ),
               ),

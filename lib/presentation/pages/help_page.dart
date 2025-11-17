@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -75,6 +76,7 @@ class _HelpPageState extends State<HelpPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     final filteredFAQ = _selectedCategory == 'Toutes'
         ? _faqItems
         : _faqItems.where((item) => item['category'] == _selectedCategory).toList();
@@ -99,12 +101,12 @@ class _HelpPageState extends State<HelpPage> {
                 const Text(
                   'How can we help you?', // TODO: Add translation key
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: ResponsiveConstants.subtitle1,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF3860F8),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
                 TextField(
                   decoration: InputDecoration(
                     hintText: 'Rechercher dans l\'aide...',
@@ -131,7 +133,7 @@ class _HelpPageState extends State<HelpPage> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                const SizedBox(width: 16),
+                SizedBox(width: ResponsiveConstants.mediumSpace),
                 _buildQuickAction(
                   Icons.chat,
                   'Chat en direct',
@@ -152,7 +154,7 @@ class _HelpPageState extends State<HelpPage> {
                   'Signaler un bug',
                   () => _showBugReport(),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: ResponsiveConstants.mediumSpace),
               ],
             ),
           ),
@@ -189,7 +191,7 @@ class _HelpPageState extends State<HelpPage> {
             ),
           ),
           
-          const SizedBox(height: 8),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           
           // FAQ Liste
           Expanded(
@@ -217,11 +219,11 @@ class _HelpPageState extends State<HelpPage> {
                 const Text(
                   'Vous ne trouvez pas la réponse ?',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   children: [
                     Expanded(
@@ -231,7 +233,7 @@ class _HelpPageState extends State<HelpPage> {
                         label: const Text('Nous contacter'),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: ResponsiveConstants.smallSpace),
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () => _showLiveChat(),
@@ -301,7 +303,7 @@ class _HelpPageState extends State<HelpPage> {
           faq['question'],
           style: const TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 16,
+            fontSize: ResponsiveConstants.body1,
           ),
         ),
         subtitle: Padding(
@@ -316,7 +318,7 @@ class _HelpPageState extends State<HelpPage> {
               faq['category'],
               style: const TextStyle(
                 color: Color(0xFF3860F8),
-                fontSize: 12,
+                fontSize: ResponsiveConstants.caption,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -340,7 +342,7 @@ class _HelpPageState extends State<HelpPage> {
             child: Text(
               faq['answer'],
               style: TextStyle(
-                fontSize: 14,
+                fontSize: ResponsiveConstants.body2,
                 color: Colors.grey[700],
                 height: 1.5,
               ),
@@ -365,7 +367,7 @@ class _HelpPageState extends State<HelpPage> {
                 const Text(
                   'Chat en direct',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: ResponsiveConstants.subtitle1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -376,7 +378,7 @@ class _HelpPageState extends State<HelpPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -392,21 +394,21 @@ class _HelpPageState extends State<HelpPage> {
                       size: 64,
                       color: Color(0xFF3860F8),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: ResponsiveConstants.mediumSpace),
                     const Text(
                       'Chat en direct',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: ResponsiveConstants.subtitle2,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: ResponsiveConstants.smallSpace),
                     Text(
                       'Notre équipe est disponible de 8h à 18h\npour répondre à vos questions en temps réel.',
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey[600]),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: ResponsiveConstants.largeSpace),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -448,11 +450,11 @@ class _HelpPageState extends State<HelpPage> {
               const Text(
                 'Nous contacter',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: ResponsiveConstants.subtitle1,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Sujet',
@@ -461,7 +463,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 maxLines: 4,
                 decoration: InputDecoration(
@@ -471,7 +473,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Votre email (optionnel)',
@@ -480,7 +482,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: ResponsiveConstants.largeSpace),
               Row(
                 children: [
                   Expanded(
@@ -489,7 +491,7 @@ class _HelpPageState extends State<HelpPage> {
                       child: const Text('Annuler'),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: ResponsiveConstants.smallSpace),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -510,7 +512,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
             ],
           ),
         ),
@@ -529,11 +531,11 @@ class _HelpPageState extends State<HelpPage> {
             const Text(
               'Tutoriels vidéo',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: ResponsiveConstants.subtitle1,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             ListTile(
               leading: const Icon(Icons.play_circle, color: Color(0xFF3860F8)),
               title: const Text('Comment utiliser la carte'),
@@ -552,7 +554,7 @@ class _HelpPageState extends State<HelpPage> {
               subtitle: const Text('1 min'),
               onTap: () {},
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
           ],
         ),
       ),
@@ -575,11 +577,11 @@ class _HelpPageState extends State<HelpPage> {
               const Text(
                 'Signaler un problème',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: ResponsiveConstants.subtitle1,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Titre du problème',
@@ -588,7 +590,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 maxLines: 4,
                 decoration: InputDecoration(
@@ -599,7 +601,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: ResponsiveConstants.largeSpace),
               Row(
                 children: [
                   Expanded(
@@ -608,7 +610,7 @@ class _HelpPageState extends State<HelpPage> {
                       child: const Text('Annuler'),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: ResponsiveConstants.smallSpace),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -629,7 +631,7 @@ class _HelpPageState extends State<HelpPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
             ],
           ),
         ),

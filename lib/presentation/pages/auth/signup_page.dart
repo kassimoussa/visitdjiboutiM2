@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/models/anonymous_user.dart';
 import '../../../core/services/anonymous_auth_service.dart';
 import '../../../generated/l10n/app_localizations.dart';
+import '../../core/utils/responsive.dart';
 
 class SignUpPage extends StatefulWidget {
   final bool fromConversion;
@@ -33,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.fromConversion ? AppLocalizations.of(context)!.authRegister : AppLocalizations.of(context)!.authRegister),
@@ -48,47 +50,47 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
                 
                 Text(
                   _authService.isAnonymousUser
                       ? AppLocalizations.of(context)!.authKeepDiscoveries
                       : AppLocalizations.of(context)!.authWelcomeToApp,
                   style:  TextStyle(
-                    fontSize: 28,
+                    fontSize: ResponsiveConstants.headline5,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1D2233),
                   ),
                 ),
                 
-                const SizedBox(height: 8),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 
                 Text(
                   _authService.isAnonymousUser
                       ? AppLocalizations.of(context)!.authCreateAccountDescription
                       : AppLocalizations.of(context)!.appDescription,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     color: Colors.grey[600],
                   ),
                 ),
                 
-                const SizedBox(height: 32),
+                SizedBox(height: ResponsiveConstants.extraLargeSpace),
                 
                 // Formulaire
                 _buildForm(),
                 
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
                 
                 // Conditions d'utilisation
                 _buildTermsCheckbox(),
                 
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
 
                 // Bouton d'inscription
                 _buildSignUpButton(),
 
-                const SizedBox(height: 24),
+                SizedBox(height: ResponsiveConstants.largeSpace),
               ],
             ),
           ),
@@ -121,7 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
         ),
         
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
         
         // Email
         TextFormField(
@@ -145,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
         ),
         
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
         
         // Mot de passe
         TextFormField(
@@ -173,7 +175,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
         ),
         
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
         
         // Confirmation mot de passe
         TextFormField(
@@ -282,7 +284,7 @@ class _SignUpPageState extends State<SignUpPage> {
             : Text(
                 AppLocalizations.of(context)!.authCreateAccount,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -400,7 +402,7 @@ class _SignUpPageState extends State<SignUpPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(message),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             const Text(
               'Voulez-vous essayer une inscription normale ? Vous devrez rajouter vos favoris manuellement.',
               style: TextStyle(fontWeight: FontWeight.w500),
