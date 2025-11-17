@@ -12,6 +12,7 @@ import '../../generated/l10n/app_localizations.dart';
 import 'region_list_page.dart';
 import '../../core/utils/retry_helper.dart';
 import '../widgets/error_state_widget.dart';
+import '../../core/utils/responsive.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -323,6 +324,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
 
@@ -330,7 +332,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
       children: [
         // Barre de recherche
         Container(
-          padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+          padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
           child: TextField(
             controller: _searchController,
             onChanged: (_) => _onSearchChanged(),
@@ -361,7 +363,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
         // Bouton Explorer par région
         Container(
-          margin: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
+          margin: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
           child: Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -378,7 +380,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               },
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   gradient: const LinearGradient(
@@ -390,7 +392,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(ResponsiveConstants.smallSpace),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(10),
@@ -401,7 +403,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         size: 28,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: ResponsiveConstants.mediumSpace),
                     const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,7 +439,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
         ),
 
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
 
         // Badges de filtrage par catégorie parente
         if (_categories.isNotEmpty)
@@ -471,7 +473,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             ),
           ),
 
-        const SizedBox(height: 8),
+        SizedBox(height: ResponsiveConstants.smallSpace),
 
         // Contenu principal
         Expanded(
@@ -490,7 +492,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             const CircularProgressIndicator(
               color: Color(0xFF3860F8),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(AppLocalizations.of(context)!.commonLoading),
           ],
         ),
@@ -515,7 +517,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               size: 64,
               color: Colors.grey[400],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(
               _allPois.isEmpty 
                 ? 'Aucun point d\'intérêt disponible'
