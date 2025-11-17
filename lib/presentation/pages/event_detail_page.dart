@@ -12,6 +12,7 @@ import '../widgets/reservation_form_widget.dart';
 import '../widgets/contact_operator_button.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'event_gallery_page.dart';
+import '../../core/utils/responsive.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Event event;
@@ -279,6 +280,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     if (_isLoading && _eventDetails == null) {
       return Scaffold(
         body: Stack(
@@ -394,7 +396,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             child: Text(
                               event.title ?? AppLocalizations.of(context)!.commonEvent,
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: ResponsiveConstants.subtitle2,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
                               ),
@@ -422,7 +424,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             },
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: ResponsiveConstants.smallSpace),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.1),
@@ -603,13 +605,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
           Text(
             event.title ?? AppLocalizations.of(context)!.commonUnknownEvent,
             style: const TextStyle(
-              fontSize: 28,
+              fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1A1A1A),
             ),
           ),
           
-          const SizedBox(height: 12),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           
           Row(
             children: [
@@ -618,13 +620,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 size: 16,
                 color: Colors.grey[600],
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveConstants.smallSpace),
               Expanded(
                 child: Text(
                   _formatEventDate(event),
                   style: TextStyle(
                     color: Colors.grey[700],
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -639,7 +641,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   event.statusText,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: ResponsiveConstants.caption,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -647,7 +649,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ],
           ),
           
-          const SizedBox(height: 12),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           
           Row(
             children: [
@@ -656,13 +658,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 size: 16,
                 color: Colors.grey[600],
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveConstants.smallSpace),
               Expanded(
                 child: Text(
                   event.displayLocation,
                   style: TextStyle(
                     color: Colors.grey[700],
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -670,7 +672,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ],
           ),
           
-          const SizedBox(height: 12),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           
           Row(
             children: [
@@ -679,7 +681,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 size: 16,
                 color: Colors.grey[600],
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveConstants.smallSpace),
               Text(
                 event.priceText,
                 style: TextStyle(
@@ -807,7 +809,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 size: 20,
                 color: Color(0xFF3860F8),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveConstants.smallSpace),
               Text(
                 // Si maxParticipants est null ou 0 (illimité), afficher seulement le nombre d'inscrits
                 (event.maxParticipants == null || event.maxParticipants == 0)
@@ -834,7 +836,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: ResponsiveConstants.mediumSpace),
 
         SizedBox(
           width: double.infinity,
@@ -871,7 +873,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         : Icons.schedule,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: ResponsiveConstants.smallSpace),
                 ],
                 Text(
                   _hasActiveReservation
@@ -882,7 +884,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           ? AppLocalizations.of(context)!.eventDetailReserveEvent
                           : AppLocalizations.of(context)!.eventDetailReservationsClosed),
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -911,7 +913,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             child: Row(
               children: [
                 const Icon(Icons.warning, color: Colors.orange, size: 20),
-                const SizedBox(width: 8),
+                SizedBox(width: ResponsiveConstants.smallSpace),
                 Expanded(
                   child: Text(
                     AppLocalizations.of(context)!.eventDetailDetailsUnavailable,
@@ -966,13 +968,13 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   Text(
                     AppLocalizations.of(context)!.commonDescription,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: ResponsiveConstants.subtitle2,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: ResponsiveConstants.mediumSpace),
               Text(
                 (event.description?.isNotEmpty ?? false) ? event.description! : (event.shortDescription ?? ''),
                 style: TextStyle(
@@ -1097,27 +1099,27 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 child: Text(
                   AppLocalizations.of(context)!.commonInformations,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: ResponsiveConstants.mediumSpace),
 
           _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, event.formattedDateRange ?? event.startDate),
-          const SizedBox(height: 12),
+          SizedBox(height: ResponsiveConstants.smallSpace),
 
           _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.eventDetailVenue, event.displayLocation),
 
           if (!event.isFree) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.priceText),
           ],
 
           if (event.categories.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             _buildInfoRow(Icons.category, AppLocalizations.of(context)!.commonCategory, event.primaryCategory),
           ],
         ],
@@ -1144,7 +1146,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 Text(
                   label,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveConstants.body2,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
                   ),
@@ -1153,7 +1155,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 Text(
                   value,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: ResponsiveConstants.body2,
                     color: Colors.grey[700],
                     height: 1.4,
                   ),
@@ -1203,14 +1205,14 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 child: Text(
                   AppLocalizations.of(context)!.commonLocation,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: ResponsiveConstants.mediumSpace),
           Container(
             width: double.infinity,
             height: 250,
@@ -1246,7 +1248,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: ResponsiveConstants.mediumSpace),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1263,7 +1265,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     const Text(
                       'Adresse',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: ResponsiveConstants.body2,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
                       ),
@@ -1272,7 +1274,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     Text(
                       event.displayLocation,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: ResponsiveConstants.body2,
                         color: Colors.grey[700],
                         height: 1.4,
                       ),
@@ -1283,7 +1285,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             ],
           ),
           if (event.latitude != null && event.longitude != null) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: ResponsiveConstants.smallSpace),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1300,7 +1302,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       Text(
                         AppLocalizations.of(context)!.commonCoordinates,
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: ResponsiveConstants.body2,
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
                         ),
@@ -1309,7 +1311,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       Text(
                         '${event.latitude!.toStringAsFixed(4)}, ${event.longitude!.toStringAsFixed(4)}',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: ResponsiveConstants.body2,
                           color: Colors.grey[700],
                           height: 1.4,
                         ),
@@ -1435,17 +1437,17 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                         },
                       ),
                       
-                      const SizedBox(height: 16),
+                      SizedBox(height: ResponsiveConstants.mediumSpace),
                       
                       if (_requiresGuestInfo) ...[
                         Text(
                           localizations.eventDetailContactInfo,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: ResponsiveConstants.smallSpace),
                         
                         TextFormField(
                           controller: _nameController,
@@ -1460,7 +1462,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           },
                         ),
                         
-                        const SizedBox(height: 16),
+                        SizedBox(height: ResponsiveConstants.mediumSpace),
                         
                         TextFormField(
                           controller: _emailController,
@@ -1479,7 +1481,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           },
                         ),
                         
-                        const SizedBox(height: 16),
+                        SizedBox(height: ResponsiveConstants.mediumSpace),
                         
                         TextFormField(
                           controller: _phoneController,
@@ -1495,7 +1497,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           },
                         ),
                         
-                        const SizedBox(height: 16),
+                        SizedBox(height: ResponsiveConstants.mediumSpace),
                       ],
                       
                       TextFormField(
@@ -1527,14 +1529,14 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                               Text(
                                 localizations.eventDetailTotalToPay,
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: ResponsiveConstants.body1,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
                                 widget.event.priceText,
                                 style: const TextStyle(
-                                  fontSize: 18,
+                                  fontSize: ResponsiveConstants.subtitle2,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFF3860F8),
                                 ),
@@ -1569,7 +1571,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                               : Text(
                                   localizations.eventDetailConfirmRegistration,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: ResponsiveConstants.body1,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
