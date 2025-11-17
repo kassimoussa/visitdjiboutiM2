@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/connectivity_service.dart';
+import '../../core/services/location_service.dart';
+import '../../core/services/directions_service.dart';
+import '../../core/utils/map_marker_helper.dart';
 import 'poi_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
+import 'package:geolocator/geolocator.dart';
+
+/// Wrapper pour POI afin de l'utiliser avec ClusterManager
+class PoiClusterItem with ClusterItem {
+  final Poi poi;
+
+  PoiClusterItem(this.poi);
+
+  @override
+  LatLng get location => LatLng(poi.latitude, poi.longitude);
+
+  @override
+  String get geohash => '';
+}
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -17,13 +35,26 @@ class _MapPageState extends State<MapPage> {
   GoogleMapController? _mapController;
   final PoiService _poiService = PoiService();
   final ConnectivityService _connectivityService = ConnectivityService();
+  final LocationService _locationService = LocationService();
+  final DirectionsService _directionsService = DirectionsService();
+
+  // Cluster Manager pour grouper les markers
+  ClusterManager? _clusterManager;
 
   List<Poi> _pois = [];
   List<Poi> _filteredPois = [];
   Set<Marker> _markers = {};
+  Set<Polyline> _polylines = {};
   bool _isLoading = true;
   bool _showNearbyList = false;
   final TextEditingController _searchController = TextEditingController();
+
+  // Position de l'utilisateur
+  Position? _userPosition;
+  bool _isLocatingUser = false;
+
+  // POI sélectionné pour les directions
+  Poi? _selectedPoiForDirections;
 
   // Coordonnées centrées sur le pays de Djibouti
   static const CameraPosition _initialPosition = CameraPosition(
@@ -34,13 +65,143 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
+    _initializeClusterManager();
     _loadPois();
+    _getUserLocation();
   }
-  
+
   @override
   void dispose() {
     _searchController.dispose();
+    _mapController?.dispose();
     super.dispose();
+  }
+
+  /// Initialise le cluster manager
+  void _initializeClusterManager() {
+    _clusterManager = ClusterManager<PoiClusterItem>(
+      [],
+      _updateMarkers,
+      markerBuilder: _markerBuilder,
+      levels: [1, 4.25, 6.75, 8.25, 11.5, 14.5, 16.0, 16.5, 20.0],
+      extraPercent: 0.2,
+      stopClusteringZoom: 17.0,
+    );
+  }
+
+  /// Met à jour les markers affichés
+  void _updateMarkers(Set<Marker> markers) {
+    if (mounted) {
+      setState(() {
+        _markers = markers;
+      });
+    }
+  }
+
+  /// Construit un marker personnalisé
+  Future<Marker> _markerBuilder(Cluster<PoiClusterItem> cluster) async {
+    return Marker(
+      markerId: MarkerId(cluster.getId()),
+      position: cluster.location,
+      onTap: () {
+        if (cluster.isMultiple) {
+          // C'est un cluster, zoomer dessus
+          _mapController?.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: cluster.location,
+                zoom: (_mapController!.cameraPosition?.zoom ?? 8.0) + 2,
+              ),
+            ),
+          );
+        } else {
+          // C'est un POI unique, afficher le bottom sheet
+          _showPoiBottomSheet(cluster.items.first.poi);
+        }
+      },
+      icon: await _getMarkerIcon(cluster),
+    );
+  }
+
+  /// Obtient l'icône du marker (cluster ou POI unique)
+  Future<BitmapDescriptor> _getMarkerIcon(Cluster<PoiClusterItem> cluster) async {
+    if (cluster.isMultiple) {
+      // Créer une icône de cluster avec le nombre de POIs
+      return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+    } else {
+      // Créer une icône personnalisée basée sur la catégorie
+      final poi = cluster.items.first.poi;
+      return await MapMarkerHelper.createCustomMarkerIcon(
+        category: poi.primaryCategory,
+        size: 120,
+      );
+    }
+  }
+
+  /// Obtient la position de l'utilisateur
+  Future<void> _getUserLocation() async {
+    setState(() {
+      _isLocatingUser = true;
+    });
+
+    try {
+      final position = await _locationService.getCurrentPosition();
+
+      if (position != null && mounted) {
+        setState(() {
+          _userPosition = position;
+          _isLocatingUser = false;
+        });
+        print('[MAP] Position utilisateur obtenue: ${position.latitude}, ${position.longitude}');
+      } else {
+        setState(() {
+          _isLocatingUser = false;
+        });
+      }
+    } catch (e) {
+      print('[MAP] Erreur lors de l\'obtention de la position: $e');
+      setState(() {
+        _isLocatingUser = false;
+      });
+    }
+  }
+
+  /// Centre la carte sur la position de l'utilisateur
+  Future<void> _centerOnUserLocation() async {
+    if (_userPosition != null && _mapController != null) {
+      _mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(_userPosition!.latitude, _userPosition!.longitude),
+            zoom: 14.0,
+          ),
+        ),
+      );
+    } else {
+      // Demander la position si non disponible
+      await _getUserLocation();
+
+      if (_userPosition != null && _mapController != null) {
+        _mapController!.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(_userPosition!.latitude, _userPosition!.longitude),
+              zoom: 14.0,
+            ),
+          ),
+        );
+      } else {
+        // Afficher un message si la position n'est pas disponible
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.mapLocationPermissionDenied),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      }
+    }
   }
   
   Future<void> _loadPois() async {
@@ -48,23 +209,28 @@ class _MapPageState extends State<MapPage> {
       setState(() {
         _isLoading = true;
       });
-      
+
       final response = await _poiService.getPois(useCache: false);
-      
+
       if (response.success && response.data != null) {
         final pois = response.data!.pois;
-        
+
+        // Créer les items de cluster
+        final clusterItems = pois.map((poi) => PoiClusterItem(poi)).toList();
+
+        // Mettre à jour le cluster manager
+        _clusterManager?.setItems(clusterItems);
+
         setState(() {
           _pois = pois;
           _filteredPois = pois;
-          _markers = _createMarkers(pois);
           _isLoading = false;
         });
       } else {
         setState(() {
           _isLoading = false;
         });
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -78,7 +244,7 @@ class _MapPageState extends State<MapPage> {
       setState(() {
         _isLoading = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -88,25 +254,6 @@ class _MapPageState extends State<MapPage> {
         );
       }
     }
-  }
-  
-  Set<Marker> _createMarkers(List<Poi> pois) {
-    return pois.map((poi) {
-      return Marker(
-        markerId: MarkerId(poi.id.toString()),
-        position: LatLng(poi.latitude, poi.longitude),
-        infoWindow: InfoWindow(
-          title: poi.name ?? AppLocalizations.of(context)!.mapUnknownPlace,
-          snippet: poi.primaryCategory,
-          onTap: () {
-            _navigateToPoiDetail(poi);
-          },
-        ),
-        onTap: () {
-          _showPoiBottomSheet(poi);
-        },
-      );
-    }).toSet();
   }
   
   void _navigateToPoiDetail(Poi poi) {
@@ -129,7 +276,10 @@ class _MapPageState extends State<MapPage> {
                  (poi.shortDescription ?? '').toLowerCase().contains(query.toLowerCase());
         }).toList();
       }
-      _markers = _createMarkers(_filteredPois);
+
+      // Mettre à jour le cluster manager avec les POIs filtrés
+      final clusterItems = _filteredPois.map((poi) => PoiClusterItem(poi)).toList();
+      _clusterManager?.setItems(clusterItems);
     });
   }
 
@@ -239,16 +389,10 @@ class _MapPageState extends State<MapPage> {
                   child: OutlinedButton.icon(
                     onPressed: () {
                       Navigator.pop(context);
-                      // Carte désactivée temporairement
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Carte temporairement indisponible'),
-                          backgroundColor: Colors.orange,
-                        ),
-                      );
+                      _showDirectionsOptions(poi);
                     },
-                    icon: const Icon(Icons.center_focus_strong),
-                    label: const Text('Centrer'),
+                    icon: const Icon(Icons.directions),
+                    label: const Text('Itinéraire'),
                   ),
                 ),
               ],
@@ -257,6 +401,187 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
     );
+  }
+
+  /// Affiche les options de directions pour un POI
+  void _showDirectionsOptions(Poi poi) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Obtenir un itinéraire',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Vers: ${poi.name}',
+              style: const TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.navigation, color: Color(0xFF3860F8)),
+              title: const Text('Ouvrir dans Google Maps'),
+              subtitle: const Text('Navigation GPS en temps réel'),
+              onTap: () async {
+                Navigator.pop(context);
+                final success = await _directionsService.openGoogleMapsDirections(
+                  destination: LatLng(poi.latitude, poi.longitude),
+                  destinationName: poi.name,
+                );
+
+                if (!success && mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Impossible d\'ouvrir Google Maps'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.map, color: Color(0xFF3860F8)),
+              title: const Text('Afficher sur la carte'),
+              subtitle: const Text('Itinéraire dans l\'application'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _showDirectionsOnMap(poi);
+              },
+            ),
+            if (_userPosition != null) ...[
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline, size: 16, color: Colors.grey),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Distance: ${_locationService.formatDistance(
+                          _locationService.calculateDistance(
+                            _userPosition!.latitude,
+                            _userPosition!.longitude,
+                            poi.latitude,
+                            poi.longitude,
+                          ),
+                        )}',
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Affiche l'itinéraire sur la carte
+  Future<void> _showDirectionsOnMap(Poi poi) async {
+    if (_userPosition == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Position non disponible. Veuillez activer la géolocalisation.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    // Afficher un indicateur de chargement
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Calcul de l\'itinéraire...'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    // Obtenir les directions
+    final result = await _directionsService.getDirections(
+      origin: LatLng(_userPosition!.latitude, _userPosition!.longitude),
+      destination: LatLng(poi.latitude, poi.longitude),
+    );
+
+    // Fermer le dialog
+    if (mounted) {
+      Navigator.pop(context);
+    }
+
+    if (result != null && mounted) {
+      // Créer la polyline
+      final polyline = _directionsService.createPolyline(
+        id: 'route_to_${poi.id}',
+        points: result.points,
+      );
+
+      setState(() {
+        _polylines = {polyline};
+        _selectedPoiForDirections = poi;
+      });
+
+      // Ajuster la caméra pour afficher tout l'itinéraire
+      final bounds = _directionsService.calculateBounds(result.points);
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 50),
+      );
+
+      // Afficher les infos de l'itinéraire
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Distance: ${result.distance} • Durée: ${result.duration}'),
+          backgroundColor: const Color(0xFF3860F8),
+          action: SnackBarAction(
+            label: 'Effacer',
+            textColor: Colors.white,
+            onPressed: () {
+              setState(() {
+                _polylines.clear();
+                _selectedPoiForDirections = null;
+              });
+            },
+          ),
+          duration: const Duration(seconds: 10),
+        ),
+      );
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Impossible de calculer l\'itinéraire'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Widget _buildGoogleMapView() {
@@ -302,8 +627,16 @@ class _MapPageState extends State<MapPage> {
             : GoogleMap(
                 initialCameraPosition: _initialPosition,
                 markers: _markers,
+                polylines: _polylines,
                 onMapCreated: (GoogleMapController controller) {
                   _mapController = controller;
+                  _clusterManager?.setMapId(controller.mapId);
+                },
+                onCameraMove: (CameraPosition position) {
+                  _clusterManager?.onCameraMove(position);
+                },
+                onCameraIdle: () {
+                  _clusterManager?.updateMap();
                 },
                 mapType: MapType.normal,
                 myLocationEnabled: true,
@@ -477,14 +810,18 @@ class _MapPageState extends State<MapPage> {
               const SizedBox(height: 8),
               FloatingActionButton.small(
                 heroTag: 'location',
-                onPressed: () {
-                  _mapController?.animateCamera(
-                    CameraUpdate.newCameraPosition(_initialPosition),
-                  );
-                },
-                backgroundColor: Colors.white,
+                onPressed: _centerOnUserLocation,
+                backgroundColor: _isLocatingUser
+                    ? Colors.grey.shade300
+                    : Colors.white,
                 foregroundColor: const Color(0xFF3860F8),
-                child: const Icon(Icons.my_location),
+                child: _isLocatingUser
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.my_location),
               ),
               const SizedBox(height: 8),
               FloatingActionButton.small(

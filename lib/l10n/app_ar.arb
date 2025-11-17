@@ -256,6 +256,7 @@
 
   "mapTitle": "الخريطة",
   "mapUnknownPlace": "مكان غير معروف",
+  "mapLocationPermissionDenied": "تم رفض إذن الموقع. يرجى تفعيله في الإعدادات.",
 
   "navigationHome": "الرئيسية",
   "navigationDiscover": "اكتشف",

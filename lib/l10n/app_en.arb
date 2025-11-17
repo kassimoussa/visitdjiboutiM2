@@ -255,6 +255,7 @@
 
   "mapTitle": "Map",
   "mapUnknownPlace": "Unknown place",
+  "mapLocationPermissionDenied": "Location permission denied. Please enable it in settings.",
 
   "navigationHome": "Home",
   "navigationDiscover": "Discover",

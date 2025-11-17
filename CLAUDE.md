@@ -58,6 +58,8 @@ The app follows a layered architecture pattern:
 - `FavoritesService` - User favorites management
 - `AnonymousAuthService` - Anonymous authentication flow
 - `ReviewService` - Review and rating system for POIs
+- `LocationService` - **NEW** Geolocation with geolocator package (permissions, position tracking, distance calculation)
+- `DirectionsService` - **NEW** Google Directions API integration (routes, polylines, Google Maps navigation)
 
 ### Navigation Architecture
 **Main Structure**: `MainNavigationPage` with bottom navigation using `IndexedStack`
@@ -66,7 +68,7 @@ The app follows a layered architecture pattern:
 - Home - Tourism highlights
 - Discover - POIs exploration with category filtering
 - Events - Event calendar and registration system
-- Map - Google Maps integration (placeholder)
+- Map - **Advanced Google Maps** with clustering, custom markers, geolocation, and directions
 - Favorites - Saved places with modern card design
 
 **Additional Navigation**: `AppDrawer` with profile access and settings
@@ -99,10 +101,18 @@ All models use `json_annotation` for serialization:
 - Event registration system
 - Favorites management
 - Review and rating system for POIs
+- **Advanced Google Maps Integration** with:
+  - Marker clustering for performance (google_maps_cluster_manager)
+  - Custom category-based marker icons (color-coded by POI type)
+  - Geolocation with real-time user position
+  - Directions and route display with polylines
+  - Integration with Google Maps app for turn-by-turn navigation
+  - Distance calculation from user position
+  - Search and filter POIs on map
+  - Offline map fallback with cached POIs
 - Modern Material Design 3 UI
 
 **In Development**:
-- Google Maps integration with POI markers
 - Activity system (similar to events)
 
 ## API Endpoints
@@ -146,6 +156,9 @@ Backend organized in categories (see `ApiConstants`):
 
 **Maps & External**:
 - `google_maps_flutter: ^2.5.0` - Google Maps integration
+- `google_maps_cluster_manager: ^3.0.0` - **NEW** Marker clustering for performance
+- `geolocator: ^12.0.0` - **NEW** Geolocation and permissions management
+- `flutter_polyline_points: ^2.0.0` - **NEW** Polyline decoding for directions
 - `url_launcher: ^6.2.0` - External URL handling
 
 **UI & Performance**:
@@ -303,6 +316,83 @@ Complete review and rating system for Points of Interest:
 - Better display of helpful count: only shows number when > 0
 - Button wrapped in `Flexible` to prevent BoxConstraints errors
 - Mounted checks for async operations to prevent state updates after disposal
+
+### Google Maps Advanced Integration
+Complete Google Maps implementation with advanced features:
+
+**Architecture Components:**
+1. **LocationService** (`lib/core/services/location_service.dart`)
+   - Geolocator integration for user position
+   - Permission management (runtime requests)
+   - Distance calculation between coordinates
+   - Real-time position streaming
+   - Distance formatting (meters/kilometers)
+
+2. **DirectionsService** (`lib/core/services/directions_service.dart`)
+   - Google Directions API integration
+   - Polyline creation for route display
+   - Integration with Google Maps app for navigation
+   - Route bounds calculation for camera positioning
+   - Supports opening external Google Maps with directions
+
+3. **MapMarkerHelper** (`lib/core/utils/map_marker_helper.dart`)
+   - Custom marker icon generation
+   - Category-based color coding (15+ categories)
+   - Icon mapping per POI type (beach, museum, restaurant, etc.)
+   - Marker caching for performance
+
+**Map Features:**
+- **Marker Clustering**: Uses `google_maps_cluster_manager` to group nearby POIs
+  - Automatic clustering based on zoom level
+  - Stops clustering at zoom 17+ for individual markers
+  - Tap cluster to zoom in, tap marker for POI details
+
+- **Custom Markers**: Color-coded icons by category
+  - Beach (Cyan), Museum (Purple), Restaurant (Orange), etc.
+  - Dynamically generated with Canvas API
+  - Cached to prevent regeneration
+
+- **Geolocation**:
+  - "Center on Me" button with loading state
+  - Automatic position request on map load
+  - Permission dialogs (Android/iOS)
+  - Fallback to Djibouti center if denied
+
+- **Directions & Navigation**:
+  - In-app route display with polylines
+  - Distance and duration display
+  - "Open in Google Maps" for turn-by-turn navigation
+  - Clear route button in SnackBar
+
+- **Search & Filter**:
+  - Real-time POI search on map
+  - Filter by category
+  - Updates clusters dynamically
+
+- **Offline Support**:
+  - Fallback to cached POIs list when offline
+  - Warning message when network unavailable
+
+**Permissions Required:**
+- Android: `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`, `ACCESS_BACKGROUND_LOCATION`
+- iOS: `NSLocationWhenInUseUsageDescription`, `NSLocationAlwaysAndWhenInUseUsageDescription`
+
+**API Configuration:**
+- Google Maps API Key in `AndroidManifest.xml` and iOS `Info.plist`
+- Google Directions API Key in `DirectionsService` (configurable)
+
+**UI/UX:**
+- Bottom sheet for POI details with "Directions" button
+- Loading indicators for position and route calculation
+- Distance display from user position
+- Smooth camera animations
+- Toggle nearby list/map view
+
+**Performance Optimizations:**
+- Marker clustering reduces number of visible markers
+- Icon caching prevents redundant Canvas operations
+- ClusterManager updates only on camera idle
+- Polyline cleared when not needed
 
 ### Code Generation
 Models use `json_serializable` - run `dart run build_runner build` after model changes.

@@ -256,6 +256,7 @@
 
   "mapTitle": "Carte",
   "mapUnknownPlace": "Lieu inconnu",
+  "mapLocationPermissionDenied": "Permission de localisation refusée. Veuillez l'activer dans les paramètres.",
 
   "navigationHome": "Accueil",
   "navigationDiscover": "Découvrir",

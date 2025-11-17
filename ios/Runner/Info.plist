@@ -46,8 +46,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>Visit Djibouti a besoin d'accéder à votre position pour afficher les points d'intérêt à proximité et vous fournir des itinéraires.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>Visit Djibouti a besoin d'accéder à votre position pour afficher les points d'intérêt à proximité et vous fournir des itinéraires.</string>
 </dict>
 </plist>
