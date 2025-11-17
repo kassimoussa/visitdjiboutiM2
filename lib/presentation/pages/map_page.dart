@@ -103,7 +103,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   /// Construit un marker personnalisé
-  Future<Marker> _markerBuilder(cluster_manager.Cluster<PoiClusterItem> cluster) async {
+  Future<Marker> _markerBuilder(dynamic clusterData) async {
+    final cluster = clusterData as cluster_manager.Cluster<PoiClusterItem>;
     return Marker(
       markerId: MarkerId(cluster.getId()),
       position: cluster.location,
