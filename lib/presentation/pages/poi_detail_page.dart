@@ -13,6 +13,7 @@ import '../widgets/contact_operator_button.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'tour_operator_detail_page.dart';
 import 'poi_gallery_page.dart';
+import '../../core/utils/responsive.dart';
 
 class PoiDetailPage extends StatefulWidget {
   final Poi poi;
@@ -164,6 +165,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     if (_isLoading) {
       return Scaffold(
         body: Stack(
@@ -212,7 +214,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   Text(
                     _errorMessage!,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: ResponsiveConstants.body1,
                       color: Colors.grey[600],
                     ),
                     textAlign: TextAlign.center,
@@ -366,7 +368,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             child: Text(
                               poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: ResponsiveConstants.subtitle2,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
                               ),
@@ -396,7 +398,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             },
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: ResponsiveConstants.smallSpace),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.1),
@@ -607,7 +609,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           Text(
             poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
             style: const TextStyle(
-              fontSize: 28,
+              fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               height: 1.2,
             ),
@@ -821,7 +823,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             AppLocalizations.of(context)!.commonAddress,
             poi.displayAddress,
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           _buildInfoRow(
             Icons.my_location,
             AppLocalizations.of(context)!.commonCoordinates,
@@ -871,7 +873,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         Text(
                           poi.name ?? 'Lieu',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -990,7 +992,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         Text(
                           poi.name ?? 'Lieu',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -1082,7 +1084,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     color: Color(0xFF009639),
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: ResponsiveConstants.smallSpace),
                   Text(
                     AppLocalizations.of(context)!.commonReservationsAccepted,
                     style: TextStyle(
@@ -1237,7 +1239,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       Text(
                         operator.name ?? 'Opérateur',
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1261,7 +1263,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ),
             // Boutons de contact si disponibles
             if (operator.hasPhone || operator.hasEmail) ...[
-              const SizedBox(height: 12),
+              SizedBox(height: ResponsiveConstants.smallSpace),
               Row(
                 children: [
                   if (operator.hasPhone)
@@ -1281,7 +1283,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       ),
                     ),
                   if (operator.hasPhone && operator.hasEmail)
-                    const SizedBox(width: 8),
+                    SizedBox(width: ResponsiveConstants.smallSpace),
                   if (operator.hasEmail)
                     Expanded(
                       child: ElevatedButton.icon(
@@ -1557,7 +1559,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
