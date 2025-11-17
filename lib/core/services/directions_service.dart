@@ -12,9 +12,9 @@ class DirectionsService {
 
   final PolylinePoints _polylinePoints = PolylinePoints();
 
-  // Note: Pour une utilisation en production, utilisez votre clé API Google
-  // et stockez-la de manière sécurisée (par exemple dans .env)
-  static const String _googleApiKey = 'YOUR_GOOGLE_API_KEY';
+  // Clé API Google Maps pour les directions
+  // Note: En production, stockez cette clé de manière sécurisée
+  static const String _googleApiKey = 'AIzaSyDiqD-Nz7pM1gfOYvqKn0VNjVN1D1PODdk';
 
   /// Obtient l'itinéraire entre deux points
   Future<DirectionsResult?> getDirections({
