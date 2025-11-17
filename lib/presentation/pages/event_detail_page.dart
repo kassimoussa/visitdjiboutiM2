@@ -785,51 +785,74 @@ class _EventDetailPageState extends State<EventDetailPage> {
         ),
       );
     }
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (event.maxParticipants != null) ...[
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: const Color(0xFF3860F8).withOpacity(0.3),
-              ),
+        // Afficher le conteneur des participants
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF3860F8).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: const Color(0xFF3860F8).withOpacity(0.3),
             ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.people,
-                  size: 20,
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.people,
+                size: 20,
+                color: Color(0xFF3860F8),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                // Si maxParticipants est null ou 0 (illimité), afficher seulement le nombre d'inscrits
+                (event.maxParticipants == null || event.maxParticipants == 0)
+                    ? '${event.currentParticipants ?? 0} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}'
+                    : '${event.currentParticipants}/${event.maxParticipants} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}',
+                style: const TextStyle(
                   color: Color(0xFF3860F8),
+                  fontWeight: FontWeight.w500,
                 ),
-                const SizedBox(width: 8),
+              ),
+              const Spacer(),
+              // Afficher les places restantes seulement si maxParticipants > 0
+              if (event.maxParticipants != null &&
+                  event.maxParticipants! > 0 &&
+                  event.availableSpots != null &&
+                  event.availableSpots! > 0)
                 Text(
-                  '${event.currentParticipants}/${event.maxParticipants} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}',
-                  style: const TextStyle(
-                    color: Color(0xFF3860F8),
+                  '${event.availableSpots} ${AppLocalizations.of(context)!.eventDetailSpotsRemaining}',
+                  style: TextStyle(
+                    color: event.availableSpots! < 10 ? Colors.orange : Colors.green,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const Spacer(),
-                if (event.availableSpots != null && event.availableSpots! > 0)
-                  Text(
-                    '${event.availableSpots} ${AppLocalizations.of(context)!.eventDetailSpotsRemaining}',
-                    style: TextStyle(
-                      color: event.availableSpots! < 10 ? Colors.orange : Colors.green,
-                      fontWeight: FontWeight.w500,
+              // Si illimité, afficher un badge "Illimité"
+              if (event.maxParticipants == null || event.maxParticipants == 0)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF009639),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Illimité',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
-          const SizedBox(height: 16),
-        ],
-        
+        ),
+        const SizedBox(height: 16),
+
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
