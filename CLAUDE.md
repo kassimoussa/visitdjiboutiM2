@@ -397,6 +397,55 @@ Complete Google Maps implementation with advanced features:
 ### Code Generation
 Models use `json_serializable` - run `dart run build_runner build` after model changes.
 
+### Error Handling and Retry Logic
+
+Complete error handling system with retry logic and user-friendly error messages:
+
+**Error Handling Components** (`lib/presentation/widgets/error_state_widget.dart`):
+- `ErrorStateWidget` - Reusable error display widget with retry button
+- `ErrorSnackBar` - Enhanced snackbars (error, success, warning, info)
+- `ErrorDialog` - Error dialogs with retry options
+
+**Factory Constructors**:
+- `ErrorStateWidget.connection()` - Connection errors
+- `ErrorStateWidget.loading()` - Loading errors
+- `ErrorStateWidget.generic()` - Generic errors
+- `ErrorStateWidget.permission()` - Permission errors
+- `ErrorStateWidget.timeout()` - Timeout errors
+
+**Retry Helper** (`lib/core/utils/retry_helper.dart`):
+- Automatic retry with exponential backoff
+- Configurable max attempts (default: 3)
+- Smart error detection (network, server, timeout)
+- Readable error messages from DioException
+
+**Usage Example**:
+```dart
+// Automatic retry for API calls
+try {
+  final result = await RetryHelper.apiCall(
+    apiRequest: () => _poiService.getPois(),
+    maxAttempts: 3,
+    operationName: "Loading POIs",
+  );
+} catch (e) {
+  ErrorSnackBar.show(
+    context,
+    message: RetryHelper.getErrorMessage(e),
+    onRetry: _loadData,
+  );
+}
+```
+
+**Features**:
+- Exponential backoff: 1s → 2s → 4s → 8s (max 10s)
+- Automatic retry for: timeouts, connection errors, server errors (5xx)
+- Skip retry for: cancelled requests, client errors (4xx), certificate errors
+- Comprehensive logging with `[RETRY]` tags
+- Error message localization (FR/EN/AR)
+
+**Documentation**: See `ERROR_HANDLING_GUIDE.md` for complete guide with examples.
+
 ### Testing Strategy
 - Widget tests in `test/widget_test.dart`
 - Services can be unit tested independently
