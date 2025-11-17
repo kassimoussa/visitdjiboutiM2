@@ -10,6 +10,7 @@ import 'event_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/retry_helper.dart';
 import '../widgets/error_state_widget.dart';
+import '../../core/utils/responsive.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key});
@@ -223,6 +224,7 @@ class _EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
 
@@ -230,7 +232,7 @@ class _EventsPageState extends State<EventsPage> {
       children: [
         // Barre de recherche
         Container(
-          padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+          padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
           child: TextField(
             controller: _searchController,
             onChanged: (_) => _onSearchChanged(),
@@ -259,14 +261,14 @@ class _EventsPageState extends State<EventsPage> {
         // Filtres par statut
         Container(
           height: isSmallScreen ? 45 : 50,
-          padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
+          padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
               _buildStatusChip(AppLocalizations.of(context)!.eventsAll, 'all'),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveConstants.smallSpace),
               _buildStatusChip(AppLocalizations.of(context)!.eventsUpcoming, 'upcoming'),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveConstants.smallSpace),
               _buildStatusChip(AppLocalizations.of(context)!.eventsOngoing, 'ongoing'),
             ],
           ),
@@ -276,7 +278,7 @@ class _EventsPageState extends State<EventsPage> {
         if (_categories.isNotEmpty)
           Container(
             height: isSmallScreen ? 45 : 50,
-            padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
+            padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: _categories.length,
@@ -301,7 +303,7 @@ class _EventsPageState extends State<EventsPage> {
             ),
           ),
 
-        const SizedBox(height: 8),
+        SizedBox(height: ResponsiveConstants.smallSpace),
 
         // Contenu principal
         Expanded(
@@ -334,7 +336,7 @@ class _EventsPageState extends State<EventsPage> {
             const CircularProgressIndicator(
               color: Color(0xFF3860F8),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(AppLocalizations.of(context)!.commonLoading),
           ],
         ),
@@ -359,12 +361,12 @@ class _EventsPageState extends State<EventsPage> {
               size: 64,
               color: Colors.grey[400],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(
               AppLocalizations.of(context)!.eventsNoEventsFound,
               style: TextStyle(
                 color: Colors.grey[600],
-                fontSize: 16,
+                fontSize: ResponsiveConstants.body1,
               ),
             ),
             if (_searchController.text.isNotEmpty || _selectedCategory != 'Tous' || _selectedStatus != 'upcoming')
@@ -386,7 +388,7 @@ class _EventsPageState extends State<EventsPage> {
       onRefresh: _refreshEvents,
       color: const Color(0xFF3860F8),
       child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 12 : 16),
+        padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
         itemCount: _events.length + (_hasMorePages ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= _events.length) {
@@ -396,7 +398,7 @@ class _EventsPageState extends State<EventsPage> {
               Future.microtask(() => _loadEvents(loadMore: true));
             }
             return Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
               child: const Center(
                 child: CircularProgressIndicator(
                   color: Color(0xFF3860F8),
@@ -495,7 +497,7 @@ class _EventsPageState extends State<EventsPage> {
                       event.getStatusText(context),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -519,7 +521,7 @@ class _EventsPageState extends State<EventsPage> {
                         AppLocalizations.of(context)!.eventsPopular,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: ResponsiveConstants.caption,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -530,7 +532,7 @@ class _EventsPageState extends State<EventsPage> {
 
             // Contenu
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -541,7 +543,7 @@ class _EventsPageState extends State<EventsPage> {
                         child: Text(
                           event.title,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: ResponsiveConstants.subtitle2,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -582,14 +584,14 @@ class _EventsPageState extends State<EventsPage> {
                     ],
                   ),
 
-                  const SizedBox(height: 8),
+                  SizedBox(height: ResponsiveConstants.smallSpace),
 
                   // Description
                   Text(
                     event.shortDescription,
                     style: TextStyle(
                       color: Colors.grey[700],
-                      fontSize: 14,
+                      fontSize: ResponsiveConstants.body2,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -607,7 +609,7 @@ class _EventsPageState extends State<EventsPage> {
                           event.formattedDateRange ?? event.startDate,
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                           ),
                         ),
                       ),
@@ -625,7 +627,7 @@ class _EventsPageState extends State<EventsPage> {
                           event.displayLocation,
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -659,7 +661,7 @@ class _EventsPageState extends State<EventsPage> {
                             color: event.isFree 
                                 ? const Color(0xFF009639)
                                 : const Color(0xFF3860F8),
-                            fontSize: 12,
+                            fontSize: ResponsiveConstants.caption,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -688,7 +690,7 @@ class _EventsPageState extends State<EventsPage> {
                               event.getParticipantsText(context),
                               style: const TextStyle(
                                 color: Colors.orange,
-                                fontSize: 12,
+                                fontSize: ResponsiveConstants.caption,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -711,7 +713,7 @@ class _EventsPageState extends State<EventsPage> {
                             event.primaryCategory,
                             style: const TextStyle(
                               color: Color(0xFF0072CE),
-                              fontSize: 12,
+                              fontSize: ResponsiveConstants.caption,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
