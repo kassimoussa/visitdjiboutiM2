@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main_navigation_page.dart';
+import '../../../core/utils/responsive.dart';
 
 class LanguageRestartPage extends StatefulWidget {
   const LanguageRestartPage({super.key});
@@ -41,7 +42,7 @@ class _LanguageRestartPageState extends State<LanguageRestartPage> {
             ],
           ),
         ),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
 import 'package:vd_gem/core/services/anonymous_auth_service.dart';
@@ -167,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundColor: Colors.white.withOpacity(0.2),
                   child: Text(
                     _user?.name.isNotEmpty == true ? _user!.name[0].toUpperCase() : '👤',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 32.sp,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -177,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 12.h),
                 Text(
                   _user?.name ?? AppLocalizations.of(context)!.profileUser,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: ResponsiveConstants.headline6,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -252,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: ResponsiveConstants.mediumSpace),
                 Text(
                   AppLocalizations.of(context)!.authWelcomeToApp,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: ResponsiveConstants.headline6,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -261,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 4.h),
                 Text(
                   AppLocalizations.of(context)!.profileDiscoverDjibouti,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: ResponsiveConstants.body1,
                     color: Colors.white70,
                   ),
@@ -406,7 +405,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 AppLocalizations.of(context)!.authCreateAccount,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.w600,
                 ),
@@ -434,7 +433,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 AppLocalizations.of(context)!.authLogin,
-                style: const TextStyle(
+                style:  TextStyle(
                   color: Color(0xFF3860F8),
                   fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.w600,

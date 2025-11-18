@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
@@ -222,7 +222,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         Expanded(
                           child: Text(
                             operator.name,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF1D2233),
@@ -415,7 +415,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   children: [
                     Text(
                       operator.name,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1D2233),
@@ -621,7 +621,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
             children: [
               Text(
                 label,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
@@ -733,7 +733,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
           ),
           SizedBox(height: 16.h),
           if (_isLoadingTours)
-            const Center(
+             Center(
               child: Padding(
                 padding: Responsive.all(32),
                 child: CircularProgressIndicator(
@@ -827,12 +827,12 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 Container(
                   height: 120.h,
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12.r)),
+                    borderRadius:  BorderRadius.vertical(top: Radius.circular(12.r)),
                     color: Colors.grey[200],
                   ),
                   child: tour.hasImages
                       ? ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12.r)),
+                          borderRadius:  BorderRadius.vertical(top: Radius.circular(12.r)),
                           child: Image.network(
                             tour.firstImageUrl,
                             fit: BoxFit.cover,
@@ -852,7 +852,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       : Container(
                           decoration: BoxDecoration(
                             color: const Color(0xFF3860F8).withOpacity(0.1),
-                            borderRadius: const BorderRadius.vertical(top: Radius.circular(12.r)),
+                            borderRadius:  BorderRadius.vertical(top: Radius.circular(12.r)),
                           ),
                           child: const Center(
                             child: Icon(
@@ -907,7 +907,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     // Titre
                     Text(
                       tour.title,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1D2233),
@@ -929,7 +929,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                           ),
                           child: Text(
                             tour.type.label,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontSize: 10.sp,
                               color: Color(0xFF3860F8),
                               fontWeight: FontWeight.w600,
@@ -988,7 +988,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         SizedBox(width: 4.w),
                         Text(
                           tour.displayPrice,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF009639),
@@ -1056,7 +1056,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
               SizedBox(width: 8.w),
               Text(
                 AppLocalizations.of(context)!.operatorPoisServed,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1D2233),
@@ -1066,7 +1066,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
           ),
           SizedBox(height: 16.h),
           if (_isLoadingTours)
-            const Center(
+             Center(
               child: Padding(
                 padding: Responsive.all(32),
                 child: CircularProgressIndicator(
@@ -1194,7 +1194,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 children: [
                   Text(
                     poi.name ?? AppLocalizations.of(context)!.operatorPlace,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1D2233),
@@ -1238,7 +1238,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                           ),
                           child: Text(
                             category.name ?? '',
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontSize: 11.sp,
                               color: Color(0xFF3860F8),
                               fontWeight: FontWeight.w600,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 
@@ -118,7 +118,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24.r),
@@ -146,7 +146,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                         children: [
                           Text(
                             _isEditing ? 'Modifier votre avis' : 'Écrire un avis',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.bold,
                             ),
@@ -171,7 +171,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 SizedBox(height: 24.h),
 
                 // Sélection de la note
-                const Text(
+                Text(
                   'Votre note *',
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -203,7 +203,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 SizedBox(height: 24.h),
 
                 // Titre (optionnel)
-                const Text(
+                Text(
                   'Titre (optionnel)',
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -220,7 +220,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: Color(0xFF3860F8),
                         width: 2.w,
                       ),
@@ -231,7 +231,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                 SizedBox(height: 16.h),
 
                 // Commentaire (optionnel)
-                const Text(
+                Text(
                   'Votre avis (optionnel)',
                   style: TextStyle(
                     fontSize: 16.sp,
@@ -248,7 +248,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: Color(0xFF3860F8),
                         width: 2.w,
                       ),
@@ -273,7 +273,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Annuler',
                           style: TextStyle(
                             color: Color(0xFF3860F8),
@@ -296,7 +296,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                           ),
                         ),
                         child: _isSubmitting
-                            ? const SizedBox(
+                            ? SizedBox(
                                 height: 20.h,
                                 width: 20.w,
                                 child: CircularProgressIndicator(
@@ -306,7 +306,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
                               )
                             : Text(
                                 _isEditing ? 'Modifier' : 'Publier',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                 ),

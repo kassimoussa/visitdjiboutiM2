@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../core/models/region.dart';
 import '../../core/services/region_service.dart';
 import 'region_detail_page.dart';
@@ -77,7 +77,7 @@ class _RegionListPageState extends State<RegionListPage> {
             SizedBox(height: 16.h),
             Text(
               _errorMessage!,
-              style: const TextStyle(fontSize: 16.sp),
+              style:  TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -91,7 +91,7 @@ class _RegionListPageState extends State<RegionListPage> {
     }
 
     if (_regions.isEmpty) {
-      return const Center(
+      return  Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -166,7 +166,7 @@ class _RegionListPageState extends State<RegionListPage> {
                       children: [
                         Text(
                           region.name,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -248,7 +248,7 @@ class _RegionListPageState extends State<RegionListPage> {
         SizedBox(height: 8.h),
         Text(
           count.toString(),
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),

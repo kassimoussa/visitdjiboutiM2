@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/favorites_service.dart';
 import '../pages/poi_detail_page.dart';

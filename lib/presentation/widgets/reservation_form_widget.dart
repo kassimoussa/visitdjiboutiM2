@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/event.dart';
 import '../../core/models/reservation.dart';
@@ -59,7 +59,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: Responsive.all(20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -103,7 +103,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       children: [
         Text(
           'Réserver ${_isPoi ? 'ce lieu' : 'cet événement'}',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -149,7 +149,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
               children: [
                 Text(
                   _title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.sp,
                   ),
@@ -252,7 +252,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Informations de contact (optionnel)',
           style: TextStyle(
             fontSize: 16.sp,
@@ -348,7 +348,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
               ),
             ),
             child: _isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 20.h,
                     width: 20.w,
                     child: CircularProgressIndicator(

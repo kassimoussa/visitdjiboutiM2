@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:vd_gem/core/enums/bottom_nav_tab.dart';
 import 'package:vd_gem/presentation/pages/home_page.dart';
 import 'package:vd_gem/presentation/pages/discover_page.dart';
@@ -68,11 +68,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           },
           selectedItemColor: const Color(0xFF3860F8),
           unselectedItemColor: const Color(0xFF64748B),
-          selectedLabelStyle: const TextStyle(
+          selectedLabelStyle:  TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 12.sp,
           ),
-          unselectedLabelStyle: const TextStyle(
+          unselectedLabelStyle:  TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 12.sp,
           ),

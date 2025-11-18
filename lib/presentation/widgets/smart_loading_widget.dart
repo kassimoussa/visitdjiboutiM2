@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/utils/responsive.dart';
 
 class SmartLoadingWidget extends StatefulWidget {

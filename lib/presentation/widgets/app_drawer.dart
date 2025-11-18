@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:flutter/material.dart'; 
 // import 'package:vd_gem/presentation/pages/settings_page.dart'; // Hidden temporarily
 import 'package:vd_gem/presentation/pages/about_page.dart';
 import 'package:vd_gem/presentation/pages/help_page.dart';
@@ -154,7 +153,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.appTitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: ResponsiveConstants.subtitle1,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -162,7 +161,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     ),
                     Text(
                       AppLocalizations.of(context)!.appDescription,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: ResponsiveConstants.body2,
                         color: Colors.white70,
                       ),
@@ -242,7 +241,7 @@ class _AppDrawerState extends State<AppDrawer> {
             backgroundColor: Colors.white.withOpacity(0.2),
             child: Text(
               user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : '👤',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: ResponsiveConstants.body2,
@@ -256,7 +255,7 @@ class _AppDrawerState extends State<AppDrawer> {
               children: [
                 Text(
                   user?.name ?? AppLocalizations.of(context)!.drawerGuest,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                     fontSize: ResponsiveConstants.body2,
@@ -311,7 +310,7 @@ class _AppDrawerState extends State<AppDrawer> {
         ),
         title: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveConstants.body1,
           ),

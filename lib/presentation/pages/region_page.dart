@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/poi_list_response.dart';
@@ -97,7 +96,7 @@ class _RegionPageState extends State<RegionPage> {
               ),
               child: Text(
                 '${_regionPois.length} ${_regionPois.length <= 1 ? 'lieu' : 'lieux'}',
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
@@ -185,7 +184,7 @@ class _RegionPageState extends State<RegionPage> {
               ),
               child: Text(
                 widget.regionEmoji,
-                style: const TextStyle(fontSize: 48.sp),
+                style:  TextStyle(fontSize: 48.sp),
               ),
             ),
             SizedBox(height: ResponsiveConstants.largeSpace),

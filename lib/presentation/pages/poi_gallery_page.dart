@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'fullscreen_image_viewer.dart';
 
@@ -48,7 +48,7 @@ class PoiGalleryPage extends StatelessWidget {
         ),
       ),
       body: imageUrls.isEmpty
-          ? const Center(
+          ?  Center(
               child: Text(
                 'Aucune image disponible',
                 style: TextStyle(

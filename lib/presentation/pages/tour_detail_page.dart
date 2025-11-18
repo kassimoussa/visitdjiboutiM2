@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
@@ -211,7 +211,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
             Text(
               _errorMessage!,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16.sp),
+              style:  TextStyle(fontSize: 16.sp),
             ),
             SizedBox(height: 16.h),
             ElevatedButton(
@@ -238,7 +238,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   Transform.translate(
                     offset: const Offset(0, -30),
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration:  BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30.r),
@@ -346,7 +346,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                           padding: Responsive.symmetric(horizontal: 16),
                           child: Text(
                             tour.title,
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
@@ -567,7 +567,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
       padding: Responsive.all(24),
       child: Text(
         tour.title,
-        style: const TextStyle(
+        style:  TextStyle(
           fontSize: 28.sp,
           fontWeight: FontWeight.bold,
           height: 1.2,
@@ -606,7 +606,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
               SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.tourDescription,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -710,7 +710,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
@@ -768,7 +768,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
               SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.tourHighlights,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -836,7 +836,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
               SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.tourWhatToBring,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -1141,7 +1141,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   children: [
                     Text(
                       operator.name,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -1217,7 +1217,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
               SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.tourPhotoGallery,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -1291,7 +1291,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                   ),
                   Text(
                     tour.displayPrice,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF3860F8),

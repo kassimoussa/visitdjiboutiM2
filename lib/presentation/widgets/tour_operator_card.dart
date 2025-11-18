@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:vd_gem/core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/tour_operator.dart';
@@ -65,7 +65,7 @@ class TourOperatorCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       operator.name ?? 'Opérateur inconnu',
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),

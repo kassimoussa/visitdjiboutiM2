@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/simple_activity_card.dart';
 import '../../core/models/simple_activity.dart';
+import '../../../core/utils/responsive.dart';
 
 class ActivitiesPage extends StatefulWidget {
   final bool showFeaturedOnly;
@@ -91,7 +91,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => _buildFiltersSheet(),
@@ -115,7 +115,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Filtres',
                         style: TextStyle(
                           fontSize: 20.sp,
@@ -146,7 +146,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   SizedBox(height: 20.h),
 
                   // Région
-                  const Text(
+                  Text(
                     'Région',
                     style: TextStyle(
                       fontSize: 16.sp,
@@ -178,7 +178,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   SizedBox(height: 20.h),
 
                   // Difficulté
-                  const Text(
+                  Text(
                     'Difficulté',
                     style: TextStyle(
                       fontSize: 16.sp,
@@ -241,7 +241,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Appliquer les filtres',
                         style: TextStyle(
                           fontSize: 16.sp,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'fullscreen_image_viewer.dart';
 
@@ -42,13 +42,13 @@ class TourGalleryPage extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
       ),
       body: imageUrls.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
                 'Aucune image disponible',
                 style: TextStyle(
@@ -95,7 +95,7 @@ class TourGalleryPage extends StatelessWidget {
           placeholder: (context, url) => Container(
             height: 400.h,
             color: Colors.grey[200],
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(
                 color: Color(0xFF3860F8),
               ),
@@ -104,7 +104,7 @@ class TourGalleryPage extends StatelessWidget {
           errorWidget: (context, url, error) => Container(
             height: 400.h,
             color: Colors.grey[200],
-            child: const Icon(Icons.error_outline, size: 48),
+            child: Icon(Icons.error_outline, size: 48),
           ),
         ),
       ),
@@ -187,8 +187,8 @@ class TourGalleryPage extends StatelessWidget {
         if (imageUrls.length > 4)
           GridView.builder(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
@@ -216,7 +216,7 @@ class TourGalleryPage extends StatelessWidget {
           placeholder: (context, url) => Container(
             height: height,
             color: Colors.grey[200],
-            child: const Center(
+            child: Center(
               child: CircularProgressIndicator(
                 strokeWidth: 2,
                 color: Color(0xFF3860F8),
@@ -226,7 +226,7 @@ class TourGalleryPage extends StatelessWidget {
           errorWidget: (context, url, error) => Container(
             height: height,
             color: Colors.grey[200],
-            child: const Icon(
+            child: Icon(
               Icons.broken_image_outlined,
               color: Colors.grey,
               size: 32,

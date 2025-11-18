@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../core/services/image_preloader_service.dart';
 import 'offline_settings_page.dart';
 import '../../generated/l10n/app_localizations.dart';
@@ -430,7 +430,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+             Text(
               'Choisir la langue',
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
@@ -447,7 +447,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildLanguageOption(String flag, String name, String value) {
     final isSelected = _selectedLanguage == value;
     return ListTile(
-      leading: Text(flag, style: const TextStyle(fontSize: 24.sp)),
+      leading: Text(flag, style:  TextStyle(fontSize: 24.sp)),
       title: Text(name),
       trailing: isSelected 
           ? const Icon(Icons.check, color: Color(0xFF3860F8))
@@ -469,7 +469,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+             Text(
               'Région préférée',
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),

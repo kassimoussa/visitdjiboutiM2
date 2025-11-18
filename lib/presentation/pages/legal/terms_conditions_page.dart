@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../generated/l10n/app_localizations.dart';
 
 class TermsConditionsPage extends StatelessWidget {
@@ -54,7 +54,7 @@ class TermsConditionsPage extends StatelessWidget {
                   Text(
                     AppLocalizations.of(context)!.authTermsAndConditions,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1D2233),
@@ -239,7 +239,7 @@ class TermsConditionsPage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF3860F8),

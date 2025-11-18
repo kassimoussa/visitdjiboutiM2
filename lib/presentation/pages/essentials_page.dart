@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/essentials_service.dart';
 import '../../core/models/organization.dart';
@@ -8,7 +8,7 @@ import '../../core/models/api_response.dart';
 import '../../generated/l10n/app_localizations.dart';
 
 class EssentialsPage extends StatefulWidget {
-  const EssentialsPage({super.key});
+   const EssentialsPage({super.key});
 
   @override
   State<EssentialsPage> createState() => _EssentialsPageState();
@@ -81,14 +81,14 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.essentialsTitle),
-        backgroundColor: const Color(0xFF3860F8),
+        backgroundColor:  Color(0xFF3860F8),
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           indicatorColor: Colors.white,
-          tabs: const [
+          tabs:  [
             Tab(icon: Icon(Icons.info), text: 'Organisation'),
             Tab(icon: Icon(Icons.link), text: 'Liens Utiles'),
           ],
@@ -107,7 +107,7 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
 
   Widget _buildOrganizationTab() {
     if (_isLoadingOrg) {
-      return const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)));
+      return  Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)));
     }
 
     if (_organization == null) {
@@ -135,14 +135,14 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
             children: [
               Text(
                 _organization!.name,
-                style: const TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                style:  TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12.h),
               Text(
                 _organization!.description,
                 style: TextStyle(fontSize: 16.sp, color: Colors.grey[700]),
               ),
-              const Divider(height: 32.h),
+               Divider(height: 32.h),
               _buildContactItem(Icons.location_on, 'Adresse', _organization!.address),
               _buildContactItem(Icons.phone, 'Téléphone', _organization!.phone),
               _buildContactItem(Icons.email, AppLocalizations.of(context)!.embassiesEmail, _organization!.email),
@@ -153,10 +153,10 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () => _launchPhone(_organization!.phone),
-                      icon: const Icon(Icons.phone),
+                      icon:  Icon(Icons.phone),
                       label: Text(AppLocalizations.of(context)!.embassiesCall),
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: const Color(0xFF3860F8), 
+                        backgroundColor:  Color(0xFF3860F8), 
                         foregroundColor: Colors.white,
                       ),
                     ),
@@ -165,10 +165,10 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () => _launchEmail(_organization!.email),
-                      icon: const Icon(Icons.email),
+                      icon:  Icon(Icons.email),
                       label: Text(AppLocalizations.of(context)!.embassiesEmail),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFF3860F8),
+                        foregroundColor:  Color(0xFF3860F8),
                       ),
                     ),
                   ),
@@ -183,7 +183,7 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
 
   Widget _buildExternalLinksTab() {
     if (_isLoadingLinks) {
-      return const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)));
+      return  Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)));
     }
 
     if (_externalLinks.isEmpty) {
@@ -213,9 +213,9 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
               backgroundColor: _getPlatformColor(link.color),
               child: Icon(_getPlatformIcon(link.platform), color: Colors.white),
             ),
-            title: Text(link.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(link.name, style:  TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Text('${link.platform.toUpperCase()} • ${link.domain}'),
-            trailing: const Icon(Icons.open_in_new),
+            trailing:  Icon(Icons.open_in_new),
             onTap: () => _launchWebsite(link.url),
           ),
         );
@@ -229,14 +229,14 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: const Color(0xFF3860F8)),
+          Icon(icon, size: 20, color:  Color(0xFF3860F8)),
           SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(fontSize: 12.sp, color: Colors.grey)),
-                Text(value, style: const TextStyle(fontSize: 14.sp)),
+                Text(label, style:  TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                Text(value, style:  TextStyle(fontSize: 14.sp)),
               ],
             ),
           ),
@@ -293,17 +293,17 @@ class _EssentialsPageState extends State<EssentialsPage> with SingleTickerProvid
   Color _getPlatformColor(String color) {
     switch (color.toLowerCase()) {
       case 'primary':
-        return const Color(0xFF3860F8);
+        return  Color(0xFF3860F8);
       case 'danger':
-        return const Color(0xFFDC3545);
+        return  Color(0xFFDC3545);
       case 'info':
-        return const Color(0xFF17A2B8);
+        return  Color(0xFF17A2B8);
       case 'success':
-        return const Color(0xFF28A745);
+        return  Color(0xFF28A745);
       case 'warning':
-        return const Color(0xFFFFC107);
+        return  Color(0xFFFFC107);
       default:
-        return const Color(0xFF3860F8);
+        return  Color(0xFF3860F8);
     }
   }
 

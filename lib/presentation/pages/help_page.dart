@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 
@@ -99,7 +98,7 @@ class _HelpPageState extends State<HelpPage> {
             ),
             child: Column(
               children: [
-                const Text(
+               Text(
                   'How can we help you?', // TODO: Add translation key
                   style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle1,
@@ -217,7 +216,7 @@ class _HelpPageState extends State<HelpPage> {
             ),
             child: Column(
               children: [
-                const Text(
+               Text(
                   'Vous ne trouvez pas la réponse ?',
                   style: TextStyle(
                     fontSize: ResponsiveConstants.body1,
@@ -281,7 +280,7 @@ class _HelpPageState extends State<HelpPage> {
             Flexible(
               child: Text(
                 label,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -302,7 +301,7 @@ class _HelpPageState extends State<HelpPage> {
       child: ExpansionTile(
         title: Text(
           faq['question'],
-          style: const TextStyle(
+          style:  TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: ResponsiveConstants.body1,
           ),
@@ -317,7 +316,7 @@ class _HelpPageState extends State<HelpPage> {
             ),
             child: Text(
               faq['category'],
-              style: const TextStyle(
+              style:  TextStyle(
                 color: Color(0xFF3860F8),
                 fontSize: ResponsiveConstants.caption,
                 fontWeight: FontWeight.w500,
@@ -365,7 +364,7 @@ class _HelpPageState extends State<HelpPage> {
           children: [
             Row(
               children: [
-                const Text(
+               Text(
                   'Chat en direct',
                   style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle1,
@@ -396,7 +395,7 @@ class _HelpPageState extends State<HelpPage> {
                       color: Color(0xFF3860F8),
                     ),
                     SizedBox(height: ResponsiveConstants.mediumSpace),
-                    const Text(
+                   Text(
                       'Chat en direct',
                       style: TextStyle(
                         fontSize: ResponsiveConstants.subtitle2,
@@ -448,7 +447,7 @@ class _HelpPageState extends State<HelpPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+               Text(
                 'Nous contacter',
                 style: TextStyle(
                   fontSize: ResponsiveConstants.subtitle1,
@@ -529,7 +528,7 @@ class _HelpPageState extends State<HelpPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+             Text(
               'Tutoriels vidéo',
               style: TextStyle(
                 fontSize: ResponsiveConstants.subtitle1,
@@ -575,7 +574,7 @@ class _HelpPageState extends State<HelpPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+               Text(
                 'Signaler un problème',
                 style: TextStyle(
                   fontSize: ResponsiveConstants.subtitle1,

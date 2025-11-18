@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/tour_service.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/models/anonymous_user.dart';
 import '../pages/auth/signup_page.dart';
 
@@ -68,7 +68,7 @@ class ConversionPrompt extends StatelessWidget {
 
   Widget _buildBottomSheet(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -101,7 +101,7 @@ class ConversionPrompt extends StatelessWidget {
           
           Text(
             trigger.message,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1D2233),
@@ -145,7 +145,7 @@ class ConversionPrompt extends StatelessWidget {
                   ),
                   child: Text(
                     trigger.buttonText,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -184,7 +184,7 @@ class ConversionPrompt extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Avec un compte, vous pourrez :',
             style: TextStyle(
               fontSize: 14.sp,
@@ -374,7 +374,7 @@ class SubtleConversionBanner extends StatelessWidget {
               children: [
                 Text(
                   trigger.message,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF1D2233),
@@ -405,7 +405,7 @@ class SubtleConversionBanner extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-            child: const Text(
+            child: Text(
               'Créer',
               style: TextStyle(fontSize: 12.sp),
             ),

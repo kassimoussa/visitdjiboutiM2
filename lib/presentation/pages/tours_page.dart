@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:flutter/material.dart'; 
 import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
@@ -298,7 +297,7 @@ class _ToursPageState extends State<ToursPage> {
       itemCount: 5,
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.only(bottom: ResponsiveConstants.mediumSpace),
-        child: const ShimmerLoading(
+        child: ShimmerLoading(
           child: Card(
             child: SizedBox(height: 200.h),
           ),
@@ -361,7 +360,7 @@ class _ToursPageState extends State<ToursPage> {
         itemCount: _filteredTours.length + (_isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == _filteredTours.length) {
-            return const Center(
+            return  Center(
               child: Padding(
                 padding: Responsive.all(16),
                 child: CircularProgressIndicator(color: Color(0xFF3860F8)),
@@ -383,7 +382,7 @@ class _ToursPageState extends State<ToursPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape:  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
@@ -402,7 +401,7 @@ class _ToursPageState extends State<ToursPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Filtres',
                           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                         ),
@@ -512,7 +511,7 @@ class _ToursPageState extends State<ToursPage> {
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+          style:  TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
         ),
         SizedBox(height: 8.h),
         child,

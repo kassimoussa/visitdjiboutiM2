@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 
 /// Widget pour afficher un état d'erreur avec possibilité de réessayer
 class ErrorStateWidget extends StatelessWidget {
@@ -115,7 +115,7 @@ class ErrorStateWidget extends StatelessWidget {
             // Titre
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1D2233),
@@ -185,7 +185,7 @@ class ErrorSnackBar {
             if (title != null) ...[
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
                 ),
@@ -322,7 +322,7 @@ class ErrorDialog {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(fontSize: 18.sp),
+                style: TextStyle(fontSize: 18.sp),
               ),
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../core/utils/responsive.dart';
 
 class CachedImageWidget extends StatelessWidget {
   final String imageUrl;
@@ -73,7 +74,7 @@ class CachedImageWidget extends StatelessWidget {
         color: Colors.grey[200],
         borderRadius: borderRadius,
       ),
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +109,7 @@ class CachedImageWidget extends StatelessWidget {
         color: Colors.grey[300],
         borderRadius: borderRadius,
       ),
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

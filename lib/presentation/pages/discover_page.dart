@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../core/services/poi_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/cache_service.dart';
@@ -12,9 +12,7 @@ import '../widgets/poi_card.dart';
 import '../../generated/l10n/app_localizations.dart';
 import 'region_list_page.dart';
 import '../../core/utils/retry_helper.dart';
-import '../widgets/error_state_widget.dart';
-import '../../core/utils/responsive.dart';
-
+import '../widgets/error_state_widget.dart'; 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
 
@@ -405,7 +403,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       ),
                     ),
                     SizedBox(width: ResponsiveConstants.mediumSpace),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/essentials_service.dart';
 import '../../core/models/embassy.dart';
@@ -217,7 +217,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               Text(
                 emptyMessage,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -254,11 +254,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: ExpansionTile(
         tilePadding: Responsive.symmetric(horizontal: 16, vertical: 8),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        childrenPadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
         leading: _buildCountryFlag(embassy.countryCode),
         title: Text(
           embassy.name,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
           ),
@@ -313,20 +313,20 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
       width: 50.w,
       height: 50.h,
       decoration: BoxDecoration(
-        color: const Color(0xFF3860F8),
+        color: Color(0xFF3860F8),
         borderRadius: BorderRadius.circular(25.r),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF3860F8).withOpacity(0.3),
+            color: Color(0xFF3860F8).withOpacity(0.3),
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
       child: Center(
         child: Text(
           countryCode,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 14.sp,
@@ -382,7 +382,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () => _launchPhone(embassy.primaryPhone),
-                  icon: const Icon(Icons.phone, size: 18),
+                  icon: Icon(Icons.phone, size: 18),
                   label: Text(AppLocalizations.of(context)!.embassiesCall),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
@@ -399,10 +399,10 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () => _launchEmail(embassy.primaryEmail),
-                  icon: const Icon(Icons.email, size: 18),
+                  icon: Icon(Icons.email, size: 18),
                   label: Text(AppLocalizations.of(context)!.embassiesEmail),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3860F8),
+                    backgroundColor: Color(0xFF3860F8),
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -415,10 +415,10 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _launchWebsite(embassy.website!),
-                  icon: const Icon(Icons.language, size: 18),
+                  icon: Icon(Icons.language, size: 18),
                   label: Text(AppLocalizations.of(context)!.embassiesWebsite),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF3860F8),
+                    foregroundColor: Color(0xFF3860F8),
                   ),
                 ),
               ),
@@ -435,13 +435,13 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
         Container(
           padding: Responsive.all(6),
           decoration: BoxDecoration(
-            color: const Color(0xFF3860F8).withOpacity(0.1),
+            color: Color(0xFF3860F8).withOpacity(0.1),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Icon(
             icon,
             size: 18,
-            color: const Color(0xFF3860F8),
+            color: Color(0xFF3860F8),
           ),
         ),
         SizedBox(width: 12.w),
@@ -451,7 +451,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
             children: [
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12.sp,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
@@ -460,7 +460,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               SizedBox(height: 2.h),
               Text(
                 value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/event_service.dart';
@@ -143,7 +142,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         children: [
           Text(
             AppLocalizations.of(context)!.favoritesTitle,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1D2233),
@@ -366,7 +365,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               SizedBox(height: ResponsiveConstants.mediumSpace),
               Text(
                 message,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: ResponsiveConstants.subtitle2,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF1A1A1A),
@@ -400,7 +399,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 ),
               child: Text(
                 AppLocalizations.of(context)!.discoverTitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: ResponsiveConstants.body1,
                   fontWeight: FontWeight.w600,
                 ),
@@ -437,7 +436,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               SizedBox(height: ResponsiveConstants.extraLargeSpace),
               Text(
                 AppLocalizations.of(context)!.favoritesEmpty,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: ResponsiveConstants.headline6,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF1A1A1A),
@@ -471,7 +470,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.discoverTitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
@@ -573,7 +572,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           children: [
             // Image du tour
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16.r)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
               child: tour.featuredImage?.url != null
                   ? Image.network(
                       tour.featuredImage!.url,
@@ -602,7 +601,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 children: [
                   Text(
                     tour.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: ResponsiveConstants.subtitle2,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1D2233),
@@ -621,7 +620,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         ),
                         child: Text(
                           tour.type.label,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12.sp,
                             color: Color(0xFF3860F8),
                             fontWeight: FontWeight.w600,
@@ -658,7 +657,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       const Spacer(),
                       Text(
                         tour.displayPrice,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF009639),
@@ -793,7 +792,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           SizedBox(width: 4.w),
           Text(
             rating.toString(),
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.amber,
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/tour.dart';
 import '../../core/services/tour_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -63,7 +63,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: Responsive.all(20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -111,7 +111,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
       children: [
         Text(
           AppLocalizations.of(context)!.tourRegistrationTitle,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -157,7 +157,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
               children: [
                 Text(
                   widget.tour.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.sp,
                   ),
@@ -236,7 +236,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
       children: [
         Text(
           AppLocalizations.of(context)!.tourRegistrationNumberOfParticipants,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
@@ -271,7 +271,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
                   controller: _peopleController,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                   ),
@@ -340,7 +340,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
       children: [
         Text(
           AppLocalizations.of(context)!.tourRegistrationContactInfo,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
@@ -425,7 +425,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
             children: [
               Text(
                 AppLocalizations.of(context)!.tourRegistrationTotalToPay,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -441,7 +441,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
           ),
           Text(
             '$_totalAmount ${widget.tour.currency}',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF3860F8),
@@ -481,7 +481,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
               ),
             ),
             child: _isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 20.h,
                     width: 20.w,
                     child: CircularProgressIndicator(

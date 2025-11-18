@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 import 'dart:async';
 import '../../core/services/connectivity_service.dart';
 
@@ -127,7 +127,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
               size: 20,
             ),
             SizedBox(width: 8.w),
-            const Expanded(
+            Expanded(
               child: Text(
                 'Mode hors ligne - Données en cache disponibles',
                 style: TextStyle(
@@ -145,7 +145,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: const Text(
+                child: Text(
                   'Réessayer',
                   style: TextStyle(
                     color: Colors.white,

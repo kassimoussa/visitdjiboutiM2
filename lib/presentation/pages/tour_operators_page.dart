@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/services/tour_operator_service.dart';
 import '../../core/models/tour_operator.dart';
@@ -124,7 +124,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                             ),
                           ),
                           SizedBox(height: 20.h),
-                          const Text(
+                           Text(
                             'Aucun opérateur disponible',
                             style: TextStyle(
                               fontSize: 18.sp,
@@ -157,7 +157,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                               SizedBox(width: 12.w),
                               Text(
                                 '${_operators.length} partenaire${_operators.length > 1 ? 's' : ''} local${_operators.length > 1 ? 'aux' : ''}',
-                                style: const TextStyle(
+                                style:  TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF1D2233),
@@ -282,7 +282,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           Expanded(
                             child: Text(
                               operator.name,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF1D2233),
@@ -298,7 +298,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                                 color: const Color(0xFF009639),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
-                              child: const Text(
+                              child:  Text(
                                 'Recommandé',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -363,7 +363,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
           SizedBox(width: 4.w),
           Text(
             label,
-            style: const TextStyle(
+            style:  TextStyle(
               fontSize: 11.sp,
               color: Color(0xFF3860F8),
               fontWeight: FontWeight.w500,

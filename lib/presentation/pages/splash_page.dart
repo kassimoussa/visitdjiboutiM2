@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../../core/services/image_preloader_service.dart';
 import 'main_navigation_page.dart';
+import '../../../core/utils/responsive.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -274,7 +275,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             opacity: _fadeAnimation,
                             child: Text(
                               _currentStatus,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 color: Color(0xFF6B7280),
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -296,7 +297,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             ),
                           ),
                           SizedBox(height: 12.h),
-                          const Text(
+                           Text(
                             'Prêt !',
                             style: TextStyle(
                               color: Color(0xFF009639),
@@ -342,7 +343,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                                 ),
                               ),
                               SizedBox(width: 12.w),
-                              const Text(
+                               Text(
                                 'République de Djibouti',
                                 style: TextStyle(
                                   color: Color(0xFF6B7280),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/event.dart';
 import '../../core/models/event_registration.dart';
@@ -215,7 +214,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => _RegistrationBottomSheet(
@@ -330,7 +329,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     Transform.translate(
                       offset: const Offset(0, -30),
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.r),
@@ -396,7 +395,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                             padding: Responsive.symmetric(horizontal: 16),
                             child: Text(
                               event.title ?? AppLocalizations.of(context)!.commonEvent,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: ResponsiveConstants.subtitle2,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
@@ -605,7 +604,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         children: [
           Text(
             event.title ?? AppLocalizations.of(context)!.commonUnknownEvent,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1A1A1A),
@@ -640,7 +639,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
                 child: Text(
                   event.statusText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: ResponsiveConstants.caption,
                     fontWeight: FontWeight.w600,
@@ -884,7 +883,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       : (event.canRegister
                           ? AppLocalizations.of(context)!.eventDetailReserveEvent
                           : AppLocalizations.of(context)!.eventDetailReservationsClosed),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
@@ -968,7 +967,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   SizedBox(width: 12.w),
                   Text(
                     AppLocalizations.of(context)!.commonDescription,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: ResponsiveConstants.subtitle2,
                       fontWeight: FontWeight.bold,
                     ),
@@ -1099,7 +1098,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.commonInformations,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1146,7 +1145,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.body2,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
@@ -1205,7 +1204,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.commonLocation,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1263,7 +1262,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Adresse',
                       style: TextStyle(
                         fontSize: ResponsiveConstants.body2,
@@ -1302,7 +1301,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     children: [
                       Text(
                         AppLocalizations.of(context)!.commonCoordinates,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: ResponsiveConstants.body2,
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
@@ -1375,7 +1374,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
       expand: false,
       builder: (context, scrollController) {
         return Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
           ),
@@ -1398,7 +1397,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                     Expanded(
                       child: Text(
                         '${AppLocalizations.of(context)!.eventDetailRegistration} - ${widget.event.title ?? AppLocalizations.of(context)!.commonEvent}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1536,7 +1535,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                               ),
                               Text(
                                 widget.event.priceText,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: ResponsiveConstants.subtitle2,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFF3860F8),
@@ -1561,7 +1560,7 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                             ),
                           ),
                           child: _isLoading
-                              ? const SizedBox(
+                              ? SizedBox(
                                   height: 20.h,
                                   width: 20.w,
                                   child: CircularProgressIndicator(

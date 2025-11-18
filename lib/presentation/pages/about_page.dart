@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 
@@ -28,10 +27,10 @@ class AboutPage extends StatelessWidget {
               width: 120.w,
               height: 120.h,
               decoration: BoxDecoration(
-                color: const Color(0xFF3860F8).withOpacity(0.1),
+                color: Color(0xFF3860F8).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(60.r),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   '🇩🇯',
                   style: TextStyle(fontSize: 60.sp),
@@ -41,7 +40,7 @@ class AboutPage extends StatelessWidget {
             
             SizedBox(height: ResponsiveConstants.largeSpace),
             
-            const Text(
+            Text(
               'Visit Djibouti',
               style: TextStyle(
                 fontSize: ResponsiveConstants.headline5,
@@ -69,7 +68,7 @@ class AboutPage extends StatelessWidget {
                 color: const Color(0xFF3860F8).withOpacity(0.05),
                 borderRadius: BorderRadius.circular(12.r),
               ),
-              child: const Text(
+              child: Text(
                 'Visit Djibouti is the official app of the Djibouti Tourism Office. Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.', // TODO: Add translation key
                 style: TextStyle(
                   fontSize: ResponsiveConstants.body1,
@@ -332,7 +331,7 @@ class AboutPage extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: ResponsiveConstants.subtitle1,
             fontWeight: FontWeight.bold,
             color: Color(0xFF3860F8),
@@ -369,7 +368,7 @@ class AboutPage extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
                   ),
@@ -403,7 +402,7 @@ class AboutPage extends StatelessWidget {
             ),
             child: Text(
               tech,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFF009639),
                 fontSize: ResponsiveConstants.caption,
                 fontWeight: FontWeight.bold,
@@ -414,7 +413,7 @@ class AboutPage extends StatelessWidget {
           Expanded(
             child: Text(
               description,
-              style: const TextStyle(fontSize: 14.sp),
+              style: TextStyle(fontSize: 14.sp),
             ),
           ),
         ],

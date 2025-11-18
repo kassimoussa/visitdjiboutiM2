@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../../generated/l10n/app_localizations.dart';
-import '../../core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -72,7 +71,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
                 Text(
                   AppLocalizations.of(context)!.authResetPasswordTitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.headline5,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1D2233),
@@ -130,7 +129,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       disabledBackgroundColor: Colors.grey[300],
                     ),
                     child: _isLoading
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 20.h,
                             width: 20.w,
                             child: CircularProgressIndicator(
@@ -140,7 +139,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           )
                         : Text(
                             AppLocalizations.of(context)!.authSendResetLink,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: ResponsiveConstants.body1,
                               fontWeight: FontWeight.bold,
                             ),

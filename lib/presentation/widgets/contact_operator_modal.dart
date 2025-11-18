@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/services/comment_service.dart';
 
 /// Modal pour contacter un opérateur/administration
@@ -31,7 +31,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -61,7 +61,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 Expanded(
                   child: Text(
                     'Contacter ${widget.operatorName ?? 'l\'opérateur'}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -76,7 +76,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
             SizedBox(height: 24.h),
 
             // Type de message
-            const Text(
+            Text(
               'Type de message',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -88,7 +88,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
             SizedBox(height: 24.h),
 
             // Message
-            const Text(
+            Text(
               'Votre message',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -111,7 +111,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: const BorderSide(color: Color(0xFF3860F8), width: 2.w),
+                  borderSide: BorderSide(color: Color(0xFF3860F8), width: 2.w),
                 ),
                 filled: true,
                 fillColor: Colors.grey[50],
@@ -156,7 +156,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                       ),
                     ),
                     child: _isSubmitting
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 20.h,
                             width: 20.w,
                             child: CircularProgressIndicator(
@@ -164,7 +164,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text('Envoyer'),
+                        : Text('Envoyer'),
                   ),
                 ),
               ],

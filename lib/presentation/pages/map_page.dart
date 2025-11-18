@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
 import '../../core/services/poi_service.dart';
@@ -323,7 +322,7 @@ class _MapPageState extends State<MapPage> {
                     children: [
                       Text(
                         poi.name,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontSize: ResponsiveConstants.subtitle2,
                           fontWeight: FontWeight.bold,
                         ),
@@ -335,7 +334,7 @@ class _MapPageState extends State<MapPage> {
                       if (poi.shortDescription?.isNotEmpty == true)
                         Text(
                           poi.shortDescription!,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey,
                           ),
@@ -401,7 +400,7 @@ class _MapPageState extends State<MapPage> {
           children: [
             Text(
               'Obtenir un itinéraire',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -459,7 +458,7 @@ class _MapPageState extends State<MapPage> {
                             poi.longitude,
                           ),
                         )}',
-                        style: const TextStyle(fontSize: 12.sp, color: Colors.grey),
+                        style:  TextStyle(fontSize: 12.sp, color: Colors.grey),
                       ),
                     ),
                   ],
@@ -488,7 +487,7 @@ class _MapPageState extends State<MapPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const Center(
+      builder: (context) =>  Center(
         child: Card(
           child: Padding(
             padding: Responsive.all(16),
@@ -574,7 +573,7 @@ class _MapPageState extends State<MapPage> {
                     ],
                   ),
                 ),
-                child: const Center(
+                child:  Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -660,7 +659,7 @@ class _MapPageState extends State<MapPage> {
             right: 0,
             child: Container(
               height: MediaQuery.of(context).size.height * (isSmallScreen ? 0.45 : 0.4),
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(20.r),
@@ -684,7 +683,7 @@ class _MapPageState extends State<MapPage> {
                     padding: Responsive.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                        const Text(
+                         Text(
                           'POIs à proximité',
                           style: TextStyle(
                             fontSize: ResponsiveConstants.subtitle2,
@@ -779,7 +778,7 @@ class _MapPageState extends State<MapPage> {
                     : Colors.white,
                 foregroundColor: const Color(0xFF3860F8),
                 child: _isLocatingUser
-                    ? const SizedBox(
+                    ?  SizedBox(
                         width: 20.w,
                         height: 20.h,
                         child: CircularProgressIndicator(strokeWidth: 2),
@@ -832,7 +831,7 @@ class _MapPageState extends State<MapPage> {
                 SizedBox(height: 12.h),
                 Text(
                   AppLocalizations.of(context)!.mapTitle,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF3860F8),
@@ -925,7 +924,7 @@ class _MapPageState extends State<MapPage> {
           width: double.infinity,
           padding: Responsive.all(16),
           color: Colors.orange.withOpacity(0.1),
-          child: const Row(
+          child:  Row(
             children: [
               Icon(Icons.wifi_off, color: Colors.orange),
               SizedBox(width: 8.w),
@@ -956,7 +955,7 @@ class _MapPageState extends State<MapPage> {
                     children: [
                       const Icon(Icons.map_outlined, size: 64, color: Colors.grey),
                       SizedBox(height: 16.h),
-                      const Text(
+                      Text(
                         'Aucune donnée de carte disponible hors ligne',
                         style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),

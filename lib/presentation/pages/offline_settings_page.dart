@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../core/services/connectivity_service.dart';
 import '../../core/services/cache_service.dart';
 import '../../core/services/sync_service.dart';
@@ -280,7 +280,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
               ),
             ),
             if (!enabled && (title.contains('Synchroniser') || title.contains('Télécharger')))
-              const SizedBox(
+               SizedBox(
                 width: 16.w,
                 height: 16.h,
                 child: CircularProgressIndicator(strokeWidth: 2),

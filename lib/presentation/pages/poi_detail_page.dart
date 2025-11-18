@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 // Google Maps import - utilisé seulement sur Android
@@ -276,7 +275,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     Transform.translate(
                       offset: const Offset(0, -30),
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration:  BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.r),
@@ -368,7 +367,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             padding: Responsive.symmetric(horizontal: 16),
                             child: Text(
                               poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontSize: ResponsiveConstants.subtitle2,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
@@ -609,7 +608,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         children: [
           Text(
             poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
-            style: const TextStyle(
+            style:  TextStyle(
               fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               height: 1.2,
@@ -641,7 +640,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 SizedBox(width: 4.w),
                 Text(
                   '${poi.favoritesCount}',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 14.sp,
                     color: Colors.pink,
                     fontWeight: FontWeight.w500,
@@ -873,7 +872,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         SizedBox(height: 8.h),
                         Text(
                           poi.name ?? 'Lieu',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -992,7 +991,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         SizedBox(height: 8.h),
                         Text(
                           poi.name ?? 'Lieu',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -1125,7 +1124,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ),
             child: Text(
               category.name ?? AppLocalizations.of(context)!.commonCategory,
-              style: const TextStyle(
+              style:  TextStyle(
                 color: Color(0xFF3860F8),
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
@@ -1239,7 +1238,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     children: [
                       Text(
                         operator.name ?? 'Opérateur',
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1476,7 +1475,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           SizedBox(width: 8.w),
           Text(
             title,
-            style: const TextStyle(
+            style:  TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14.sp,
               color: Color(0xFF3860F8),
@@ -1559,7 +1558,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1601,7 +1600,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,

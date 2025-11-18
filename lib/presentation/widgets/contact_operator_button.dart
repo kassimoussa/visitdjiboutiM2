@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 import 'contact_operator_modal.dart';
 
 /// Bouton pour contacter un opérateur/administration

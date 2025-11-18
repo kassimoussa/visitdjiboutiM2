@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/models/category.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -231,7 +231,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
           height: _animationController.value * 300,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20.r)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
@@ -241,7 +241,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
             ],
           ),
           child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20.r)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
             child: Column(
               children: [
                 // Handle bar
@@ -260,7 +260,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget>
                   padding: Responsive.all(16),
                   child: Row(
                     children: [
-                      const Text(
+                      Text(
                         'Filtrer par catégorie',
                         style: TextStyle(
                           fontSize: 18.sp,

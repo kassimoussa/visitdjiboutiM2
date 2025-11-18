@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../core/models/activity.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/activity_service.dart';
@@ -98,12 +98,12 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, size: 80, color: Colors.red),
+            Icon(Icons.error_outline, size: 80, color: Colors.red),
             SizedBox(height: 16.h),
             Text(
               _errorMessage!,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16.sp),
+              style: TextStyle(fontSize: 16.sp),
             ),
             SizedBox(height: 20.h),
             ElevatedButton(
@@ -149,7 +149,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   Transform.translate(
                     offset: const Offset(0, -30), // Remonte de 30px sur l'image
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30.r),
@@ -164,7 +164,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                             padding: Responsive.all(24),
                             child: Text(
                               _activity!.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 28.sp,
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
@@ -362,7 +362,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           padding: Responsive.symmetric(horizontal: 16),
                           child: Text(
                             _activity!.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
@@ -548,7 +548,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.activityDetailWhatIsIncluded,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -562,7 +562,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               const Icon(Icons.check_circle, color: Color(0xFF009639), size: 20),
               SizedBox(width: 8.w),
               Expanded(
-                child: Text(item, style: const TextStyle(fontSize: 16.sp)),
+                child: Text(item, style: TextStyle(fontSize: 16.sp)),
               ),
             ],
           ),
@@ -577,7 +577,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.activityDetailWhatToBring,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -585,7 +585,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         SizedBox(height: 8.h),
         Text(
           _activity!.whatToBring!,
-          style: const TextStyle(fontSize: 16.sp, height: 1.5),
+          style: TextStyle(fontSize: 16.sp, height: 1.5),
         ),
       ],
     );
@@ -597,7 +597,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.activityDetailEquipment,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -606,7 +606,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         if (_activity!.equipmentProvided != null && _activity!.equipmentProvided!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailProvided,
-            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Color(0xFF009639)),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Color(0xFF009639)),
           ),
           SizedBox(height: 8.h),
           ..._activity!.equipmentProvided!.map((item) => Padding(
@@ -616,7 +616,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               children: [
                 const Icon(Icons.check, color: Color(0xFF009639), size: 20),
                 SizedBox(width: 8.w),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
@@ -625,7 +625,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         if (_activity!.equipmentRequired != null && _activity!.equipmentRequired!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailRequired,
-            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.orange),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.orange),
           ),
           SizedBox(height: 8.h),
           ..._activity!.equipmentRequired!.map((item) => Padding(
@@ -635,7 +635,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               children: [
                 const Icon(Icons.backpack, color: Colors.orange, size: 20),
                 SizedBox(width: 8.w),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
@@ -650,7 +650,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.activityDetailPrerequisites,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -659,7 +659,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         if (_activity!.physicalRequirements != null && _activity!.physicalRequirements!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailPhysicalCondition,
-            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 8.h),
           ..._activity!.physicalRequirements!.map((item) => Padding(
@@ -669,7 +669,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               children: [
                 const Icon(Icons.fitness_center, size: 20, color: Color(0xFF3860F8)),
                 SizedBox(width: 8.w),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
@@ -678,7 +678,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         if (_activity!.certificationsRequired != null && _activity!.certificationsRequired!.isNotEmpty) ...[
           Text(
             AppLocalizations.of(context)!.activityDetailRequiredCertifications,
-            style: const TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 8.h),
           ..._activity!.certificationsRequired!.map((item) => Padding(
@@ -688,7 +688,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               children: [
                 const Icon(Icons.verified_user, size: 20, color: Colors.orange),
                 SizedBox(width: 8.w),
-                Expanded(child: Text(item, style: const TextStyle(fontSize: 16.sp))),
+                Expanded(child: Text(item, style: TextStyle(fontSize: 16.sp))),
               ],
             ),
           )),
@@ -850,7 +850,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
@@ -1213,7 +1213,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   children: [
                     Text(
                       operator.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -1254,7 +1254,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.activityDetailCancellationPolicy,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -1270,7 +1270,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           ),
           child: Text(
             _activity!.cancellationPolicy!,
-            style: const TextStyle(fontSize: 16.sp, color: Colors.white, height: 1.5),
+            style: TextStyle(fontSize: 16.sp, color: Colors.white, height: 1.5),
           ),
         ),
       ],
@@ -1325,7 +1325,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 SizedBox(width: 8.w),
                 Text(
                   AppLocalizations.of(context)!.activityDetailMeetingPoint,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1335,7 +1335,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             SizedBox(height: 8.h),
             Text(
               _activity!.meetingPointDescription!,
-              style: const TextStyle(fontSize: 16.sp),
+              style: TextStyle(fontSize: 16.sp),
             ),
           ],
         ),
@@ -1351,7 +1351,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       children: [
         Text(
           AppLocalizations.of(context)!.activityDetailCancellationPolicy,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -1366,7 +1366,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           ),
           child: Text(
             _activity!.cancellationPolicy!,
-            style: const TextStyle(fontSize: 16.sp, height: 1.5),
+            style: TextStyle(fontSize: 16.sp, height: 1.5),
           ),
         ),
       ],
@@ -1431,7 +1431,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                   ),
                   Text(
                     _activity!.displayPrice,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF3860F8),

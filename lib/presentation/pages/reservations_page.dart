@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import 'package:intl/intl.dart';
 import '../../core/models/reservation.dart';
 import '../../core/models/tour_reservation.dart';
@@ -330,7 +329,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         SizedBox(width: 4.w),
                         Text(
                           reservation.typeText,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             color: Color(0xFF3860F8),
                             fontSize: ResponsiveConstants.caption,
                             fontWeight: FontWeight.bold,
@@ -352,7 +351,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       children: [
                         Text(
                           reservation.reservableName ?? 'Nom non disponible',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -405,7 +404,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                     Text(
                       reservation.priceText,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
                         fontSize: ResponsiveConstants.body1,
@@ -500,7 +499,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children:  [
                         Icon(
                           Icons.tour,
                           size: 14,
@@ -531,7 +530,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       children: [
                         Text(
                           tour?.title ?? 'Tour non disponible',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -655,7 +654,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children:  [
                         Icon(
                           Icons.hiking,
                           size: 14,
@@ -686,7 +685,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                       children: [
                         Text(
                           registration.activity?.title ?? 'Activité',
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -738,7 +737,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     ),
                     Text(
                       registration.displayPrice,
-                      style: const TextStyle(
+                      style:  TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
                         fontSize: ResponsiveConstants.body1,
@@ -806,7 +805,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: ResponsiveConstants.body2,
                 fontWeight: FontWeight.w500,
               ),
@@ -871,7 +870,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: ResponsiveConstants.subtitle2,
                 fontWeight: FontWeight.bold,
               ),
@@ -930,7 +929,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                 Text(
                   'Détails de la réservation',
                   style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle2,
@@ -1021,7 +1020,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: ResponsiveConstants.body2,
                 fontWeight: FontWeight.w500,
               ),
@@ -1135,7 +1134,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape:  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
@@ -1154,7 +1153,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                     Text(
                       'Détails de la réservation',
                       style: TextStyle(
                         fontSize: 20.sp,
@@ -1375,7 +1374,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape:  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
@@ -1394,7 +1393,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                     Text(
                       'Détails de l\'inscription',
                       style: TextStyle(
                         fontSize: 20.sp,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/services/localization_service.dart';
@@ -441,13 +440,13 @@ class _EventsPageState extends State<EventsPage> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: const Color(0xFFE8D5A3),
-                    borderRadius: const BorderRadius.vertical(
+                    borderRadius: BorderRadius.vertical(
                       top: Radius.circular(12.r),
                     ),
                   ),
                   child: event.featuredImage != null && event.imageUrl.isNotEmpty
                       ? ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
+                          borderRadius: BorderRadius.vertical(
                             top: Radius.circular(12.r),
                           ),
                           child: Image.network(
@@ -496,7 +495,7 @@ class _EventsPageState extends State<EventsPage> {
                     ),
                     child: Text(
                       event.getStatusText(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.bold,
@@ -543,7 +542,7 @@ class _EventsPageState extends State<EventsPage> {
                       Expanded(
                         child: Text(
                           event.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: ResponsiveConstants.subtitle2,
                             fontWeight: FontWeight.bold,
                           ),
@@ -689,7 +688,7 @@ class _EventsPageState extends State<EventsPage> {
                             SizedBox(width: 4.w),
                             Text(
                               event.getParticipantsText(context),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.orange,
                                 fontSize: ResponsiveConstants.caption,
                                 fontWeight: FontWeight.w500,
@@ -712,7 +711,7 @@ class _EventsPageState extends State<EventsPage> {
                           ),
                           child: Text(
                             event.primaryCategory,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Color(0xFF0072CE),
                               fontSize: ResponsiveConstants.caption,
                               fontWeight: FontWeight.w500,

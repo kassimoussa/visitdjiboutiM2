@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../../core/utils/responsive.dart';
 import '../../core/services/region_service.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
@@ -114,7 +114,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
             SizedBox(height: 16.h),
             Text(
               _errorMessage!,
-              style: const TextStyle(fontSize: 16.sp),
+              style: TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -140,7 +140,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
             SizedBox(height: 16.h),
             Text(
               'Aucun contenu disponible pour ${widget.regionName}',
-              style: const TextStyle(fontSize: 16.sp),
+              style:  TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
           ],
@@ -240,7 +240,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
           SizedBox(height: 16.h),
           Text(
             message,
-            style: const TextStyle(fontSize: 16.sp),
+            style: TextStyle(fontSize: 16.sp),
             textAlign: TextAlign.center,
           ),
         ],

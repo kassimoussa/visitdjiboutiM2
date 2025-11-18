@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
@@ -114,7 +114,7 @@ class _ActivityRegistrationFormWidgetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -183,7 +183,7 @@ class _ActivityRegistrationFormWidgetState
                       ),
                       child: Text(
                         '$_numberOfPeople',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -198,7 +198,7 @@ class _ActivityRegistrationFormWidgetState
                     const Spacer(),
                     Text(
                       AppLocalizations.of(context)!.activityRegistrationTotal((_numberOfPeople * widget.activity.price).toString()),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3860F8),
@@ -360,7 +360,7 @@ class _ActivityRegistrationFormWidgetState
                       ),
                     ),
                     child: _isSubmitting
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 20.h,
                             width: 20.w,
                             child: CircularProgressIndicator(

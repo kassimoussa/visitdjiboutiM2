@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
 import '../../../core/services/anonymous_auth_service.dart';
 import '../../../core/models/anonymous_user.dart';
 import '../../../core/utils/responsive.dart';
@@ -247,7 +246,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
-              borderSide: const BorderSide(color: Color(0xFF3860F8), width: 2.w),
+              borderSide: BorderSide(color: Color(0xFF3860F8), width: 2.w),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
