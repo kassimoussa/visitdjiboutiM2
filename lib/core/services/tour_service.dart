@@ -2,6 +2,8 @@ import '../api/api_client.dart';
 import '../api/api_constants.dart';
 import '../models/tour.dart';
 import '../models/tour_reservation.dart';
+import 'cache_service.dart';
+import 'connectivity_service.dart';
 
 class TourService {
   static final TourService _instance = TourService._internal();
@@ -9,6 +11,8 @@ class TourService {
   TourService._internal();
 
   final ApiClient _apiClient = ApiClient();
+  final CacheService _cacheService = CacheService();
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   Future<TourListResponse> getTours({
     String? search,
@@ -143,16 +147,62 @@ class TourService {
   Future<TourListResponse> getFeaturedTours({
     int limit = 10,
     int page = 1,
+    bool useCache = true,
   }) async {
-    print('[TOUR SERVICE] Récupération tours featured (limit: $limit)');
+    print('[TOUR SERVICE] Récupération tours featured (limit: $limit, useCache: $useCache)');
 
-    return getTours(
-      featured: true,
-      perPage: limit,
-      page: page,
-      sortBy: 'created_at',
-      sortOrder: 'desc',
-    );
+    try {
+      // Vérifier le cache d'abord si hors ligne ou cache activé
+      final shouldUseCache = _connectivityService.isOffline || (useCache && page == 1);
+
+      if (shouldUseCache) {
+        final cachedTours = await _cacheService.getCachedTours();
+        if (cachedTours != null) {
+          final cacheMessage = _connectivityService.isOffline
+              ? 'Mode hors ligne - Tours depuis le cache'
+              : 'Tours chargés depuis le cache';
+          print('[TOUR SERVICE] $cacheMessage');
+
+          final tours = cachedTours.map((json) => Tour.fromJson(json)).toList();
+          return TourListResponse(
+            success: true,
+            message: cacheMessage,
+            data: TourListData(tours: tours.take(limit).toList()),
+          );
+        }
+      }
+
+      // Si hors ligne et pas de cache, retourner erreur spécifique
+      if (_connectivityService.isOffline) {
+        return TourListResponse(
+          success: false,
+          message: 'Mode hors ligne - Aucune donnée en cache disponible. Connectez-vous pour télécharger les données.',
+          data: TourListData(tours: []),
+        );
+      }
+
+      // Appel API
+      final response = await getTours(
+        featured: true,
+        perPage: limit,
+        page: page,
+        sortBy: 'created_at',
+        sortOrder: 'desc',
+      );
+
+      // Mettre en cache les résultats pour la première page
+      if (useCache && page == 1 && response.success && response.data.tours.isNotEmpty) {
+        await _cacheService.cacheTours(
+          response.data.tours.map((tour) => tour.toJson()).toList(),
+        );
+        print('[TOUR SERVICE] ${response.data.tours.length} tours mis en cache');
+      }
+
+      return response;
+    } catch (e) {
+      print('[TOUR SERVICE] Erreur lors du chargement des tours featured: $e');
+      rethrow;
+    }
   }
 
   /// Créer une réservation pour un tour

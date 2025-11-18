@@ -210,6 +210,32 @@ class CacheService {
     );
   }
 
+  /// Cache des tours
+  Future<void> cacheTours(List<dynamic> tours) async {
+    await cacheData(
+      CacheKeys.featuredTours,
+      tours,
+    );
+  }
+
+  /// Récupère les tours mis en cache
+  Future<List<dynamic>?> getCachedTours() async {
+    return getCachedData<List<dynamic>>(CacheKeys.featuredTours);
+  }
+
+  /// Cache des activités
+  Future<void> cacheActivities(List<dynamic> activities) async {
+    await cacheData(
+      CacheKeys.featuredActivities,
+      activities,
+    );
+  }
+
+  /// Récupère les activités mises en cache
+  Future<List<dynamic>?> getCachedActivities() async {
+    return getCachedData<List<dynamic>>(CacheKeys.featuredActivities);
+  }
+
   // Nettoyage du cache
   Future<void> clearExpiredCache() async {
     final prefs = await SharedPreferences.getInstance();
