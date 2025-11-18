@@ -117,6 +117,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonAll => 'Tout';
 
   @override
+  String get commonAllFeminine => 'Toute';
+
+  @override
+  String get commonApplyFilters => 'Appliquer les filtres';
+
+  @override
   String get commonCancel => 'Annuler';
 
   @override
@@ -124,6 +130,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonCategory => 'Catégorie';
+
+  @override
+  String get commonClearAll => 'Tout effacer';
 
   @override
   String get commonConnectionError => 'Erreur de connexion';
@@ -150,6 +159,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonDiscoverPlace => 'Découvrir ce lieu';
 
   @override
+  String get commonEdit => 'Modifier';
+
+  @override
   String get commonEmail => 'Email';
 
   @override
@@ -172,6 +184,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonFieldRequired => 'Ce champ est requis';
+
+  @override
+  String get commonFilters => 'Filtres';
 
   @override
   String get commonExploreOnSite => 'Explorer sur place';
@@ -214,7 +229,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonReservePlace => 'Réserver';
 
   @override
+  String get commonReset => 'Réinitialiser';
+
+  @override
   String get commonRetry => 'Réessayer';
+
+  @override
+  String get commonSave => 'Sauvegarder';
 
   @override
   String get commonSeeAll => 'Voir tout';
@@ -239,59 +260,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonVisitorTips => 'Conseils aux visiteurs';
-
-  @override
-  String get errorConnectionTitle => 'Erreur de connexion';
-
-  @override
-  String get errorConnectionMessage =>
-      'Impossible de se connecter au serveur. Vérifiez votre connexion internet.';
-
-  @override
-  String get errorLoadingTitle => 'Erreur de chargement';
-
-  @override
-  String errorLoadingMessage(Object resourceName) {
-    return 'Impossible de charger $resourceName. Veuillez réessayer.';
-  }
-
-  @override
-  String get errorGenericTitle => 'Une erreur est survenue';
-
-  @override
-  String get errorGenericMessage =>
-      'Une erreur inattendue s\'est produite. Veuillez réessayer.';
-
-  @override
-  String get errorPermissionTitle => 'Permission requise';
-
-  @override
-  String errorPermissionMessage(Object permissionName) {
-    return 'L\'application a besoin de la permission $permissionName pour fonctionner.';
-  }
-
-  @override
-  String get errorTimeoutTitle => 'Délai d\'attente dépassé';
-
-  @override
-  String get errorTimeoutMessage =>
-      'La requête a pris trop de temps. Veuillez réessayer.';
-
-  @override
-  String get errorOpenSettings => 'Ouvrir les paramètres';
-
-  @override
-  String get errorNoDataTitle => 'Aucun résultat';
-
-  @override
-  String get errorNoDataMessage => 'Aucune donnée disponible pour le moment.';
-
-  @override
-  String get errorServerTitle => 'Erreur serveur';
-
-  @override
-  String get errorServerMessage =>
-      'Le serveur rencontre des difficultés. Veuillez réessayer plus tard.';
 
   @override
   String get commonWebsite => 'Site web';
@@ -643,10 +611,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mapUnknownPlace => 'Lieu inconnu';
 
   @override
-  String get mapLocationPermissionDenied =>
-      'Permission de localisation refusée. Veuillez l\'activer dans les paramètres.';
-
-  @override
   String get navigationHome => 'Accueil';
 
   @override
@@ -747,6 +711,15 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get poiNoContact => 'Aucune information de contact disponible';
+
+  @override
+  String get poiTourOperatorsTitle => 'Opérateurs touristiques';
+
+  @override
+  String get poiLicensedOperator => 'Opérateur agréé';
+
+  @override
   String get profileAboutApp => 'À propos de l\'application';
 
   @override
@@ -832,7 +805,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String reservationsCancelled(int count) {
-    return 'Annulées ($count)';
+    return 'Réservation annulée';
   }
 
   @override
@@ -857,6 +830,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reservationsNonePending => 'Aucune réservation en attente';
+
+  @override
+  String get reservationsTabAll => 'Toutes';
+
+  @override
+  String get reservationsTabConfirmed => 'Confirmées';
+
+  @override
+  String get reservationsTabPending => 'En attente';
+
+  @override
+  String get reservationsTabCancelled => 'Annulées';
 
   @override
   String reservationsPending(int count) {
@@ -988,6 +973,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourWhatToBring => 'Quoi apporter';
+
+  @override
+  String get tourUnknownOperator => 'Opérateur inconnu';
+
+  @override
+  String get tourWebsite => 'Site web';
+
+  @override
+  String get toursSearchHint => 'Rechercher un tour...';
+
+  @override
+  String toursNotFound(String query) {
+    return 'Aucun tour trouvé pour \"$query\"';
+  }
+
+  @override
+  String get toursTourType => 'Type de tour';
+
+  @override
+  String get toursSelectType => 'Sélectionner un type';
+
+  @override
+  String get toursDifficulty => 'Difficulté';
+
+  @override
+  String get toursTourOperator => 'Opérateur touristique';
+
+  @override
+  String get toursSelectOperator => 'Sélectionner un opérateur';
 
   @override
   String get homeRegionDjibouti => 'Djibouti';
@@ -1311,4 +1325,1139 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourRegistrationErrorMessage => 'Erreur lors de l\'inscription';
+
+  @override
+  String get helpFaqQuestion1 => 'Comment réserver un événement ?';
+
+  @override
+  String get helpFaqAnswer1 =>
+      'Allez dans l\'onglet Événements, sélectionnez un événement qui vous intéresse, puis appuyez sur \"S\'inscrire\". Vous pouvez gérer vos réservations dans votre profil.';
+
+  @override
+  String get helpFaqQuestion2 =>
+      'Puis-je utiliser l\'app sans connexion Internet ?';
+
+  @override
+  String get helpFaqAnswer2 =>
+      'Oui ! Activez le mode hors ligne dans les paramètres pour télécharger les données essentielles. Les cartes peuvent également être téléchargées pour une utilisation offline.';
+
+  @override
+  String get helpFaqQuestion3 => 'Comment ajouter un lieu en favoris ?';
+
+  @override
+  String get helpFaqAnswer3 =>
+      'Sur la page de détail d\'un POI, appuyez sur l\'icône cœur. Vous retrouverez tous vos favoris dans votre profil.';
+
+  @override
+  String get helpFaqQuestion4 => 'L\'app est-elle gratuite ?';
+
+  @override
+  String get helpFaqAnswer4 =>
+      'Oui, Visit Djibouti est entièrement gratuite. Certains événements peuvent avoir un coût, mais l\'application elle-même ne nécessite aucun paiement.';
+
+  @override
+  String get helpFaqQuestion5 => 'Comment changer la langue de l\'interface ?';
+
+  @override
+  String get helpFaqAnswer5 =>
+      'Allez dans Paramètres > Langue et sélectionnez votre langue préférée (Français, English, العربية).';
+
+  @override
+  String get helpFaqQuestion6 => 'Les informations sont-elles mises à jour ?';
+
+  @override
+  String get helpFaqAnswer6 =>
+      'Oui, notre équipe met à jour régulièrement les informations sur les POIs et événements. Assurez-vous d\'avoir une connexion Internet pour recevoir les dernières données.';
+
+  @override
+  String get helpFaqQuestion7 => 'Comment signaler un problème avec un lieu ?';
+
+  @override
+  String get helpFaqAnswer7 =>
+      'Utilisez la fonction \"Commentaires\" dans le menu principal pour nous signaler tout problème. Votre feedback nous aide à améliorer l\'application.';
+
+  @override
+  String get helpCategoryAll => 'Toutes';
+
+  @override
+  String get helpCategoryNavigation => 'Navigation';
+
+  @override
+  String get helpCategoryEvents => 'Événements';
+
+  @override
+  String get helpCategoryUsage => 'Utilisation';
+
+  @override
+  String get helpCategoryFavorites => 'Favoris';
+
+  @override
+  String get helpCategoryGeneral => 'Général';
+
+  @override
+  String get helpCategorySettings => 'Paramètres';
+
+  @override
+  String get helpCategoryContent => 'Contenu';
+
+  @override
+  String get helpCategorySupport => 'Support';
+
+  @override
+  String get helpTitle => 'Comment pouvons-nous vous aider ?';
+
+  @override
+  String get helpSearchPlaceholder => 'Rechercher dans l\'aide...';
+
+  @override
+  String get helpLiveChat => 'Chat en direct';
+
+  @override
+  String get helpContactUs => 'Nous contacter';
+
+  @override
+  String get helpTutorials => 'Tutoriels';
+
+  @override
+  String get helpReportBug => 'Signaler un bug';
+
+  @override
+  String get helpCantFindAnswer => 'Vous ne trouvez pas la réponse ?';
+
+  @override
+  String get helpLiveChatTitle => 'Chat en direct';
+
+  @override
+  String get helpLiveChatInfo =>
+      'Notre équipe est disponible de 8h à 18h\npour répondre à vos questions en temps réel.';
+
+  @override
+  String get helpLiveChatConnecting => 'Connexion au chat en cours...';
+
+  @override
+  String get helpStartChat => 'Démarrer le chat';
+
+  @override
+  String get helpContactUsTitle => 'Nous contacter';
+
+  @override
+  String get helpContactSubject => 'Sujet';
+
+  @override
+  String get helpContactMessage => 'Votre message';
+
+  @override
+  String get helpContactEmail => 'Votre email (optionnel)';
+
+  @override
+  String get helpMessageSent => 'Message envoyé avec succès !';
+
+  @override
+  String get helpSend => 'Envoyer';
+
+  @override
+  String get helpTutorialsTitle => 'Tutoriels vidéo';
+
+  @override
+  String get helpTutorialMap => 'Comment utiliser la carte';
+
+  @override
+  String get helpTutorialMapDuration => '3 min';
+
+  @override
+  String get helpTutorialReserve => 'Réserver un événement';
+
+  @override
+  String get helpTutorialReserveDuration => '2 min';
+
+  @override
+  String get helpTutorialFavorites => 'Gérer ses favoris';
+
+  @override
+  String get helpTutorialFavoritesDuration => '1 min';
+
+  @override
+  String get helpReportBugTitle => 'Signaler un problème';
+
+  @override
+  String get helpBugTitle => 'Titre du problème';
+
+  @override
+  String get helpBugDescription => 'Décrivez le problème rencontré...';
+
+  @override
+  String get helpBugReported => 'Rapport de bug envoyé !';
+
+  @override
+  String get helpReport => 'Signaler';
+
+  @override
+  String get reservationsEmptyMessage =>
+      'Explorez nos lieux et événements pour faire votre première réservation!';
+
+  @override
+  String get reservationsDetailsTitle => 'Détails de la réservation';
+
+  @override
+  String reservationsCancelConfirm(String confirmationNumber) {
+    return 'Êtes-vous sûr de vouloir annuler la réservation n°$confirmationNumber?';
+  }
+
+  @override
+  String get reservationsNo => 'Non';
+
+  @override
+  String get reservationsYesCancel => 'Oui, annuler';
+
+  @override
+  String get reservationsCancelError => 'Erreur lors de l\'annulation';
+
+  @override
+  String reservationsDeleteConfirm(String confirmationNumber) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement la réservation n°$confirmationNumber?\n\nCette action est irréversible.';
+  }
+
+  @override
+  String get reservationsYesDelete => 'Oui, supprimer';
+
+  @override
+  String get reservationsDeleted => 'Réservation supprimée';
+
+  @override
+  String get reservationsDeleteError => 'Erreur lors de la suppression';
+
+  @override
+  String get reservationsRegistrationDetailsTitle =>
+      'Détails de l\'inscription';
+
+  @override
+  String get reservationsRegistrationCancelTitle => 'Annuler l\'inscription';
+
+  @override
+  String get reservationsRegistrationCancelConfirm =>
+      'Êtes-vous sûr de vouloir annuler cette inscription ? Son statut passera à \"Annulé\".';
+
+  @override
+  String reservationsRegistrationDeleteConfirm(String id) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement l\'inscription #$id? Cette action est irréversible.';
+  }
+
+  @override
+  String get reservationsRegistrationCancelled => 'Inscription annulée';
+
+  @override
+  String get reservationsRegistrationDeleted => 'Inscription supprimée';
+
+  @override
+  String get reservationsRegistrationCancelError =>
+      'Erreur lors de l\'annulation';
+
+  @override
+  String get reservationsRegistrationDeleteError =>
+      'Erreur lors de la suppression';
+
+  @override
+  String get reservationsNameNotAvailable => 'Nom non disponible';
+
+  @override
+  String get reservationsTime => 'Heure';
+
+  @override
+  String get reservationsPeople => 'Personnes';
+
+  @override
+  String get reservationsLocation => 'Lieu';
+
+  @override
+  String get reservationsTotal => 'Total:';
+
+  @override
+  String get commonDelete => 'Supprimer';
+
+  @override
+  String get reservationsTour => 'Tour';
+
+  @override
+  String get reservationsNumber => 'Réservation #';
+
+  @override
+  String get reservationsDates => 'Dates';
+
+  @override
+  String get reservationsParticipants => 'Participants';
+
+  @override
+  String get reservationsNotes => 'Notes';
+
+  @override
+  String get reservationsActivity => 'Activité';
+
+  @override
+  String get reservationsRegistrationNumber => 'Inscription #';
+
+  @override
+  String get reservationsPreferredDate => 'Date préférée';
+
+  @override
+  String get reservationsRequirements => 'Exigences';
+
+  @override
+  String get reservationsConfirmationNumber => 'Numéro';
+
+  @override
+  String get reservationsPlaceOrEvent => 'Lieu/Événement';
+
+  @override
+  String get reservationsType => 'Type';
+
+  @override
+  String get reservationsStatus => 'Statut';
+
+  @override
+  String get reservationsCancelThisReservation => 'Annuler cette réservation';
+
+  @override
+  String get reservationsDeleteThisReservation => 'Supprimer cette réservation';
+
+  @override
+  String get reservationsCreatedAt => 'Créée le';
+
+  @override
+  String get reservationsUpdatedAt => 'Mise à jour';
+
+  @override
+  String get reservationsCancelButton => 'Annuler la réservation';
+
+  @override
+  String get reservationsDeleteButton => 'Supprimer la réservation';
+
+  @override
+  String get reservationsMedicalConditions => 'Conditions médicales';
+
+  @override
+  String get reservationsTotalPrice => 'Prix total';
+
+  @override
+  String get reservationsConfirmedAt => 'Confirmée le';
+
+  @override
+  String get reservationsCancelledAt => 'Annulée le';
+
+  @override
+  String get reservationsRegistrationCancelButton => 'Annuler l\'inscription';
+
+  @override
+  String get reservationsRegistrationDeleteButton => 'Supprimer l\'inscription';
+
+  @override
+  String get reservationsRegistrationDeleteTitle => 'Supprimer l\'inscription';
+
+  @override
+  String get reservationsName => 'Nom';
+
+  @override
+  String reservationsError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get reservationsStatusPending => 'En attente';
+
+  @override
+  String get reservationsStatusConfirmed => 'Confirmée';
+
+  @override
+  String get reservationsStatusCancelled => 'Annulée';
+
+  @override
+  String get reservationsStatusUnknown => 'Inconnue';
+
+  @override
+  String get reservationsTypePoi => 'Lieu';
+
+  @override
+  String get reservationsTypeEvent => 'Événement';
+
+  @override
+  String get settingsLanguageFrench => 'Français';
+
+  @override
+  String get settingsRegionAll => 'Toutes les régions';
+
+  @override
+  String get settingsCacheSizeCalculating => 'Calcul en cours...';
+
+  @override
+  String get settingsChooseLanguage => 'Choisir la langue';
+
+  @override
+  String get settingsLanguageFrenchFlag => '🇫🇷';
+
+  @override
+  String get settingsLanguageEnglishFlag => '🇬🇧';
+
+  @override
+  String get settingsLanguageArabicFlag => '🇸🇦';
+
+  @override
+  String get settingsPreferredRegionTitle => 'Région préférée';
+
+  @override
+  String get settingsRegionDjibouti => 'Djibouti';
+
+  @override
+  String get settingsRegionTadjourah => 'Tadjourah';
+
+  @override
+  String get settingsRegionAliSabieh => 'Ali Sabieh';
+
+  @override
+  String get settingsRegionDikhil => 'Dikhil';
+
+  @override
+  String get settingsRegionObock => 'Obock';
+
+  @override
+  String get settingsRegionArta => 'Arta';
+
+  @override
+  String get settingsLocationPermissionTitle => 'Autoriser la géolocalisation';
+
+  @override
+  String get settingsLocationPermissionMessage =>
+      'Visit Djibouti souhaite accéder à votre position pour vous montrer les points d\'intérêt proches de vous.';
+
+  @override
+  String get settingsLater => 'Plus tard';
+
+  @override
+  String get settingsAllow => 'Autoriser';
+
+  @override
+  String get settingsLocationEnabled => 'Géolocalisation activée';
+
+  @override
+  String get settingsOfflineModeTitle => 'Mode hors ligne';
+
+  @override
+  String get settingsOfflineModeMessage =>
+      'Le téléchargement des données pour le mode hors ligne consommera environ 50 MB. Voulez-vous continuer ?';
+
+  @override
+  String get settingsDownloading => 'Téléchargement des données en cours...';
+
+  @override
+  String get settingsDownload => 'Télécharger';
+
+  @override
+  String get settingsClearCacheTitle => 'Vider le cache';
+
+  @override
+  String settingsClearCacheMessage(String size) {
+    return 'Cette action supprimera toutes les images en cache ($size). Elles seront retéléchargées lors du prochain usage.';
+  }
+
+  @override
+  String get settingsCacheCleared => 'Cache vidé avec succès';
+
+  @override
+  String settingsClearCacheError(String error) {
+    return 'Erreur lors du vidage: $error';
+  }
+
+  @override
+  String get settingsClear => 'Vider';
+
+  @override
+  String get settingsOfflineMapsTitle => 'Cartes hors ligne';
+
+  @override
+  String get settingsOfflineMapsMessage =>
+      'Télécharger les cartes de Djibouti pour les utiliser sans connexion Internet (200 MB).';
+
+  @override
+  String get settingsMapsDownloadStarted => 'Téléchargement des cartes démarré';
+
+  @override
+  String get settingsPrivacyTitle => 'Confidentialité';
+
+  @override
+  String get settingsPrivacyMessage =>
+      'Visit Djibouti respecte votre vie privée. Nous collectons uniquement les données nécessaires au fonctionnement de l\'application : localisation pour les POIs proches, préférences utilisateur, et données de réservation.\n\nVos données ne sont jamais partagées avec des tiers sans votre consentement.';
+
+  @override
+  String get settingsUnderstood => 'Compris';
+
+  @override
+  String get settingsTermsTitle => 'Conditions d\'utilisation';
+
+  @override
+  String get settingsTermsMessage =>
+      'En utilisant Visit Djibouti, vous acceptez nos conditions d\'utilisation. Cette application est fournie par l\'Office du Tourisme de Djibouti pour promouvoir le tourisme local.\n\nL\'utilisation est gratuite et les informations sont mises à jour régulièrement.';
+
+  @override
+  String get settingsClose => 'Fermer';
+
+  @override
+  String get settingsBackupTitle => 'Sauvegarder';
+
+  @override
+  String get settingsBackupMessage =>
+      'Sauvegarder vos favoris, réservations et préférences dans le cloud ?';
+
+  @override
+  String get settingsBackupSuccess => 'Sauvegarde réussie';
+
+  @override
+  String get settingsSave => 'Sauvegarder';
+
+  @override
+  String get settingsResetTitle => 'Restaurer paramètres';
+
+  @override
+  String get settingsResetMessage =>
+      'Cette action remettra tous les paramètres par défaut. Vos favoris et réservations seront conservés.';
+
+  @override
+  String get settingsResetSuccess => 'Paramètres restaurés';
+
+  @override
+  String get settingsRestore => 'Restaurer';
+
+  @override
+  String get offlineStatusOnline =>
+      'En ligne - Toutes les fonctionnalités disponibles';
+
+  @override
+  String get offlineStatusOffline => 'Hors ligne - Mode cache activé';
+
+  @override
+  String get offlineDataTitle => 'Données hors ligne';
+
+  @override
+  String get offlineTotalItems => 'Éléments total';
+
+  @override
+  String get offlinePois => 'Points d\'intérêt';
+
+  @override
+  String get offlineEvents => 'Événements';
+
+  @override
+  String get offlineFavorites => 'Favoris';
+
+  @override
+  String get offlineCacheSize => 'Taille du cache';
+
+  @override
+  String get offlineActionsTitle => 'Actions';
+
+  @override
+  String get offlineSyncNow => 'Synchroniser maintenant';
+
+  @override
+  String get offlineSyncNowSubtitle =>
+      'Mettre à jour les données depuis le serveur';
+
+  @override
+  String get offlineDownloadForOffline => 'Télécharger pour hors ligne';
+
+  @override
+  String get offlineDownloadForOfflineSubtitle =>
+      'Télécharger toutes les données importantes';
+
+  @override
+  String get offlineClearCache => 'Vider le cache';
+
+  @override
+  String get offlineClearCacheSubtitle =>
+      'Supprimer toutes les données mises en cache';
+
+  @override
+  String get reviewFormPleaseRate => 'Veuillez sélectionner une note';
+
+  @override
+  String get reviewFormUpdated => 'Avis modifié avec succès';
+
+  @override
+  String get reviewFormPublished => 'Avis publié avec succès';
+
+  @override
+  String reviewFormError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get reviewFormEditTitle => 'Modifier votre avis';
+
+  @override
+  String get reviewFormWriteTitle => 'Écrire un avis';
+
+  @override
+  String get reviewFormYourRating => 'Votre note *';
+
+  @override
+  String get reviewFormTitle => 'Titre (optionnel)';
+
+  @override
+  String get reviewFormTitleHint => 'Résumez votre expérience';
+
+  @override
+  String get reviewFormComment => 'Votre avis (optionnel)';
+
+  @override
+  String get reviewFormCommentHint => 'Partagez votre expérience en détail...';
+
+  @override
+  String get reviewFormUpdate => 'Modifier';
+
+  @override
+  String get reviewFormPublish => 'Publier';
+
+  @override
+  String get reviewsBeFirst => 'Soyez le premier à donner votre avis';
+
+  @override
+  String get reviewsNoReviewsYet => 'Aucun avis pour le moment';
+
+  @override
+  String get reviewsClickToReview => 'Cliquez pour laisser un avis';
+
+  @override
+  String get reviewsTitle => 'Avis';
+
+  @override
+  String reviewsCount(int count) {
+    return '$count avis';
+  }
+
+  @override
+  String get reviewsLoadMore => 'Voir plus d\'avis';
+
+  @override
+  String get reviewsOperatorResponse => 'Réponse de l\'établissement';
+
+  @override
+  String get reviewsHelpful => 'Utile';
+
+  @override
+  String reviewsLoadError(String error) {
+    return 'Erreur chargement avis: $error';
+  }
+
+  @override
+  String get reviewsVotedHelpful => 'Merci pour votre vote !';
+
+  @override
+  String reviewsVoteError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get reviewsDeleteTitle => 'Supprimer l\'avis';
+
+  @override
+  String get reviewsDeleteConfirm =>
+      'Êtes-vous sûr de vouloir supprimer cet avis ?';
+
+  @override
+  String get reviewsDelete => 'Supprimer';
+
+  @override
+  String get reviewsDeleted => 'Avis supprimé';
+
+  @override
+  String reviewsDeleteError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get reviewsSectionTitle => 'Avis';
+
+  @override
+  String get reviewsWriteReview => 'Écrire un avis';
+
+  @override
+  String reservationFormTitle(String type) {
+    return 'Réserver $type';
+  }
+
+  @override
+  String get reservationFormTitlePoi => 'ce lieu';
+
+  @override
+  String get reservationFormTitleEvent => 'cet événement';
+
+  @override
+  String get reservationFormNumberOfPeople => 'Nombre de personnes *';
+
+  @override
+  String get reservationFormNumberOfPeopleHint => '1';
+
+  @override
+  String get reservationFormNumberRequired => 'Nombre de personnes requis';
+
+  @override
+  String get reservationFormMinOnePerson => 'Minimum 1 personne';
+
+  @override
+  String reservationFormMaxPeople(String available) {
+    return 'Maximum $available places disponibles';
+  }
+
+  @override
+  String get reservationFormContactInfo =>
+      'Informations de contact (optionnel)';
+
+  @override
+  String get reservationFormFullName => 'Nom complet';
+
+  @override
+  String get reservationFormEmailInvalid => 'Email invalide';
+
+  @override
+  String get reservationFormPhone => 'Téléphone';
+
+  @override
+  String get reservationFormNotes => 'Notes ou demandes spéciales';
+
+  @override
+  String get reservationFormNotesHint =>
+      'Allergies alimentaires, besoins spéciaux...';
+
+  @override
+  String get reservationFormConfirm => 'Confirmer la réservation';
+
+  @override
+  String get reservationFormSuccess => 'Réservation créée avec succès!';
+
+  @override
+  String get reservationFormError => 'Erreur lors de la réservation';
+
+  @override
+  String contactOperatorTitle(String name) {
+    return 'Contacter $name';
+  }
+
+  @override
+  String get contactOperatorTitleDefault => 'l\'opérateur';
+
+  @override
+  String get contactOperatorMessageType => 'Type de message';
+
+  @override
+  String get contactOperatorYourMessage => 'Votre message';
+
+  @override
+  String get contactOperatorMessageHint => 'Écrivez votre message ici...';
+
+  @override
+  String get contactOperatorMessageRequired => 'Veuillez écrire un message';
+
+  @override
+  String get contactOperatorMessageTooShort =>
+      'Le message doit contenir au moins 3 caractères';
+
+  @override
+  String get contactOperatorTypeQuestion => 'Question';
+
+  @override
+  String get contactOperatorTypeReport => 'Signalement';
+
+  @override
+  String get contactOperatorTypeSuggestion => 'Suggestion';
+
+  @override
+  String get contactOperatorPrefixQuestion => '❓ Question: ';
+
+  @override
+  String get contactOperatorPrefixReport => '⚠️ Signalement: ';
+
+  @override
+  String get contactOperatorPrefixSuggestion => '💡 Suggestion: ';
+
+  @override
+  String contactOperatorMessageSent(String name) {
+    return 'Message envoyé avec succès à $name';
+  }
+
+  @override
+  String get contactOperatorMessageSentDefault => 'l\'opérateur';
+
+  @override
+  String contactOperatorSendError(String error) {
+    return 'Erreur lors de l\'envoi: $error';
+  }
+
+  @override
+  String get tourOperatorUnknown => 'Opérateur inconnu';
+
+  @override
+  String get tourOperatorCallButton => 'Appeler';
+
+  @override
+  String get tourOperatorWebsiteButton => 'Site web';
+
+  @override
+  String get poiOperatorsServingTitle => 'Opérateurs desservant ce lieu';
+
+  @override
+  String get activitiesSearchHint => 'Rechercher une activité...';
+
+  @override
+  String get toursSelectDifficulty => 'Sélectionner une difficulté';
+
+  @override
+  String get termsLastUpdated => 'Dernière mise à jour : 23 octobre 2025';
+
+  @override
+  String get termsSection1Title => '1. Acceptation des conditions';
+
+  @override
+  String get termsSection1Content =>
+      'En utilisant l\'application Visit Djibouti (ci-après \"l\'Application\"), vous acceptez d\'être lié par les présentes conditions d\'utilisation. Si vous n\'acceptez pas ces conditions, veuillez ne pas utiliser l\'Application.';
+
+  @override
+  String get termsSection2Title => '2. Description des services';
+
+  @override
+  String get termsSection2Content =>
+      'Visit Djibouti est une application mobile dédiée à la promotion du tourisme à Djibouti. L\'Application fournit:\n\n• Des informations sur les points d\'intérêt touristiques\n• Un calendrier d\'événements culturels et touristiques\n• Un système de réservation pour certains services\n• Des fonctionnalités de favoris et de planification de voyage\n• Des cartes interactives et des outils de navigation\n• Des informations pratiques sur le pays';
+
+  @override
+  String get termsSection3Title => '3. Compte utilisateur';
+
+  @override
+  String get termsSection3Content =>
+      'L\'utilisation de certaines fonctionnalités nécessite la création d\'un compte. Vous êtes responsable:\n\n• De la confidentialité de vos identifiants\n• De toutes les activités effectuées via votre compte\n• De l\'exactitude des informations fournies\n• De nous informer immédiatement en cas d\'utilisation non autorisée';
+
+  @override
+  String get termsSection4Title => '4. Utilisation acceptable';
+
+  @override
+  String get termsSection4Content =>
+      'Vous vous engagez à:\n\n• Utiliser l\'Application uniquement à des fins légales\n• Ne pas publier de contenu offensant ou illégal\n• Respecter les droits d\'autrui\n• Ne pas tenter de perturber le fonctionnement de l\'Application\n• Ne pas utiliser de robots ou de scripts automatisés\n• Ne pas collecter les données d\'autres utilisateurs';
+
+  @override
+  String get termsSection5Title => '5. Propriété intellectuelle';
+
+  @override
+  String get termsSection5Content =>
+      'Tous les contenus de l\'Application (textes, images, logos, graphiques) sont protégés par les lois sur la propriété intellectuelle et appartiennent à l\'Office du Tourisme de Djibouti ou à ses partenaires.';
+
+  @override
+  String get termsSection6Title => '6. Réservations et paiements';
+
+  @override
+  String get termsSection6Content =>
+      'L\'Application permet de réserver certains services touristiques:\n\n• Les réservations sont soumises à disponibilité\n• Les prix affichés sont indicatifs et peuvent varier\n• Les conditions d\'annulation varient selon le prestataire\n• L\'Office du Tourisme agit comme intermédiaire\n• Nous ne sommes pas responsables des services fournis par des tiers';
+
+  @override
+  String get termsSection7Title => '7. Limitation de responsabilité';
+
+  @override
+  String get termsSection7Content =>
+      'L\'Office du Tourisme de Djibouti:\n\n• S\'efforce de fournir des informations exactes mais ne garantit pas leur exhaustivité\n• N\'est pas responsable des services fournis par des tiers\n• Ne peut être tenu responsable des dommages indirects\n• Se réserve le droit de modifier ou interrompre les services sans préavis\n• N\'est pas responsable des problèmes techniques ou de connexion';
+
+  @override
+  String get termsSection8Title => '8. Contenu utilisateur';
+
+  @override
+  String get termsSection8Content =>
+      'En publiant du contenu (avis, commentaires, photos):\n\n• Vous conservez vos droits de propriété intellectuelle\n• Vous nous accordez une licence d\'utilisation gratuite et mondiale\n• Vous garantissez que le contenu ne viole aucun droit\n• Nous nous réservons le droit de modérer ou supprimer tout contenu inapproprié';
+
+  @override
+  String get termsSection9Title => '9. Liens vers des sites tiers';
+
+  @override
+  String get termsSection9Content =>
+      'L\'Application peut contenir des liens vers des sites web tiers. Ces liens sont fournis pour votre commodité, mais nous n\'avons aucun contrôle sur ces sites et n\'assumons aucune responsabilité quant à leur contenu.';
+
+  @override
+  String get termsSection10Title => '10. Modifications du service';
+
+  @override
+  String get termsSection10Content =>
+      'Nous nous réservons le droit de:\n\n• Modifier ou interrompre tout ou partie de l\'Application\n• Ajouter ou retirer des fonctionnalités\n• Changer les prix ou conditions d\'accès';
+
+  @override
+  String get termsSection11Title => '11. Résiliation';
+
+  @override
+  String get termsSection11Content =>
+      'Nous pouvons suspendre ou résilier votre accès à l\'Application en cas de:\n\n• Violation des présentes conditions\n• Comportement frauduleux ou abusif\n• Demande des autorités compétentes\n• Inactivité prolongée';
+
+  @override
+  String get termsSection12Title => '12. Droit applicable';
+
+  @override
+  String get termsSection12Content =>
+      'Ces conditions sont régies par le droit djiboutien. Tout litige sera soumis à la compétence exclusive des tribunaux de Djibouti.';
+
+  @override
+  String get termsSection13Title => '13. Modifications des conditions';
+
+  @override
+  String get termsSection13Content =>
+      'Nous pouvons modifier ces conditions à tout moment. Les modifications seront publiées dans l\'Application et prendront effet immédiatement. Votre utilisation continue de l\'Application constitue votre acceptation des conditions modifiées.';
+
+  @override
+  String get termsSection14Title => '14. Contact';
+
+  @override
+  String get termsSection14Content =>
+      'Pour toute question concernant ces conditions d\'utilisation, contactez-nous:\n\nOffice du Tourisme de Djibouti\nEmail: info@visitdjibouti.dj\nTéléphone: +253 XXX XXX';
+
+  @override
+  String get activitiesTitle => 'Activités';
+
+  @override
+  String get activitiesPopular => 'Activités populaires';
+
+  @override
+  String get activitiesDifficulty => 'Difficulté';
+
+  @override
+  String get activitiesRegion => 'Région';
+
+  @override
+  String get activitiesAvailableSpotsOnly =>
+      'Seulement avec places disponibles';
+
+  @override
+  String get activitiesAvailableSpots => 'Places disponibles';
+
+  @override
+  String get activitiesNoActivitiesFound => 'Aucune activité trouvée';
+
+  @override
+  String get activitiesTryModifyingFilters => 'Essayez de modifier vos filtres';
+
+  @override
+  String get personalInfoUser => 'Utilisateur';
+
+  @override
+  String get personalInfoVerifiedAccount => 'Compte vérifié';
+
+  @override
+  String get personalInfoBasicInfo => 'Informations de base';
+
+  @override
+  String get personalInfoFullName => 'Nom complet';
+
+  @override
+  String get personalInfoNameRequired => 'Le nom est obligatoire';
+
+  @override
+  String get personalInfoNameMinLength =>
+      'Le nom doit contenir au moins 2 caractères';
+
+  @override
+  String get personalInfoEmail => 'Adresse e-mail';
+
+  @override
+  String get personalInfoEmailRequired => 'L\'adresse e-mail est obligatoire';
+
+  @override
+  String get personalInfoEmailInvalid => 'Adresse e-mail invalide';
+
+  @override
+  String get personalInfoPhoneOptional => 'Téléphone (optionnel)';
+
+  @override
+  String get personalInfoProfileUpdated => 'Profil mis à jour avec succès';
+
+  @override
+  String get personalInfoUpdateError => 'Erreur lors de la mise à jour';
+
+  @override
+  String personalInfoError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get securityChangePassword => 'Changer le mot de passe';
+
+  @override
+  String get securityCurrentPassword => 'Mot de passe actuel';
+
+  @override
+  String get securityCurrentPasswordRequired =>
+      'Le mot de passe actuel est obligatoire';
+
+  @override
+  String get securityNewPassword => 'Nouveau mot de passe';
+
+  @override
+  String get securityNewPasswordRequired =>
+      'Le nouveau mot de passe est obligatoire';
+
+  @override
+  String get securityPasswordMinLength =>
+      'Le mot de passe doit contenir au moins 8 caractères';
+
+  @override
+  String get securityConfirmPassword => 'Confirmer le nouveau mot de passe';
+
+  @override
+  String get securityConfirmPasswordRequired =>
+      'La confirmation est obligatoire';
+
+  @override
+  String get securityPasswordMismatch =>
+      'Les mots de passe ne correspondent pas';
+
+  @override
+  String get securityPasswordChanged => 'Mot de passe modifié avec succès';
+
+  @override
+  String get securityPasswordChangeError =>
+      'Erreur lors du changement de mot de passe';
+
+  @override
+  String securityError(String error) {
+    return 'Erreur: $error';
+  }
+
+  @override
+  String get aboutAppName => 'Visit Djibouti';
+
+  @override
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get aboutDescription =>
+      'Visit Djibouti est l\'application officielle de l\'Agence Nationale du Tourisme de Djibouti (ANT). Découvrez les merveilles de notre pays : des paysages lunaires du Lac Assal aux récifs coralliens des Îles Moucha, en passant par les marchés animés de Djibouti-ville.';
+
+  @override
+  String get aboutOrganization => 'ANT - Agence Nationale du Tourisme';
+
+  @override
+  String get aboutOrganizationFull =>
+      'Agence Nationale du Tourisme de Djibouti';
+
+  @override
+  String get aboutOrganizationDescription =>
+      'Organisme officiel de promotion et développement touristique';
+
+  @override
+  String get aboutStatsPois => 'Points d\'Intérêt';
+
+  @override
+  String get aboutStatsEvents => 'Événements';
+
+  @override
+  String get aboutStatsRegions => 'Régions';
+
+  @override
+  String get aboutFeaturesTitle => 'Fonctionnalités';
+
+  @override
+  String get aboutFeatureDiscoverTitle => 'Découvrir';
+
+  @override
+  String get aboutFeatureDiscoverDesc =>
+      'Plus de 50 points d\'intérêt avec photos et descriptions détaillées';
+
+  @override
+  String get aboutFeatureEventsTitle => 'Événements';
+
+  @override
+  String get aboutFeatureEventsDesc =>
+      'Calendrier complet des événements culturels et touristiques';
+
+  @override
+  String get aboutFeatureMapsTitle => 'Cartes interactives';
+
+  @override
+  String get aboutFeatureMapsDesc =>
+      'Navigation GPS et localisation des POIs proches de vous';
+
+  @override
+  String get aboutFeatureFavoritesTitle => 'Favoris';
+
+  @override
+  String get aboutFeatureFavoritesDesc =>
+      'Sauvegardez vos lieux préférés et planifiez vos visites';
+
+  @override
+  String get aboutFeatureOfflineTitle => 'Mode hors ligne';
+
+  @override
+  String get aboutFeatureOfflineDesc =>
+      'Accédez aux informations même sans connexion Internet';
+
+  @override
+  String get aboutDevelopedByTitle => 'Développé par';
+
+  @override
+  String get aboutPartnersTitle => 'Partenaires';
+
+  @override
+  String get aboutPartnerMinistry => 'Ministère du Commerce et du Tourisme';
+
+  @override
+  String get aboutPartnerMinistryDesc => 'République de Djibouti';
+
+  @override
+  String get aboutPartnerHotels => 'Association des Hôteliers';
+
+  @override
+  String get aboutPartnerHotelsDesc => 'Secteur privé du tourisme';
+
+  @override
+  String get aboutTechnologiesTitle => 'Technologies';
+
+  @override
+  String get aboutTechFlutter => 'Framework mobile multiplateforme';
+
+  @override
+  String get aboutTechDart => 'Langage de programmation moderne';
+
+  @override
+  String get aboutTechLaravel => 'API Backend robuste et sécurisée';
+
+  @override
+  String get aboutTechMaps => 'Cartographie et géolocalisation';
+
+  @override
+  String get aboutContactTitle => 'Contact & Liens';
+
+  @override
+  String get aboutContactWebsite => 'Site web officiel';
+
+  @override
+  String get aboutContactEmail => 'Email';
+
+  @override
+  String get aboutContactPhone => 'Téléphone';
+
+  @override
+  String get aboutContactAddress => 'Adresse';
+
+  @override
+  String get aboutContactAddressValue => 'Place du 27 Juin, Djibouti-ville';
+
+  @override
+  String aboutCopyright(String year) {
+    return '© $year Agence Nationale du Tourisme de Djibouti';
+  }
+
+  @override
+  String get aboutCopyrightDescription =>
+      'Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.';
+
+  @override
+  String get aboutOpeningWebsite => 'Ouverture du site web...';
+
+  @override
+  String get aboutOpeningEmail => 'Ouverture de l\'application email...';
+
+  @override
+  String get aboutOpeningPhone => 'Ouverture de l\'application téléphone...';
+
+  @override
+  String get aboutOpeningMap => 'Ouverture de la carte...';
 }

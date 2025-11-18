@@ -46,9 +46,12 @@
 
   "commonAddress": "العنوان",
   "commonAll": "الكل",
+  "commonAllFeminine": "كل",
+  "commonApplyFilters": "تطبيق الفلاتر",
   "commonCancel": "إلغاء",
   "commonCategories": "الفئات",
   "commonCategory": "الفئة",
+  "commonClearAll": "مسح الكل",
   "commonConnectionError": "خطأ في الاتصال",
   "commonContact": "اتصل",
   "commonCoordinates": "الإحداثيات",
@@ -57,6 +60,7 @@
   "commonDate": "التاريخ",
   "commonDescription": "الوصف",
   "commonDiscoverPlace": "اكتشف هذا المكان",
+  "commonEdit": "تعديل",
   "commonEmail": "البريد الإلكتروني",
   "commonEntryPrice": "سعر الدخول",
   "commonError": "خطأ",
@@ -65,6 +69,7 @@
   "commonErrorUnexpected": "خطأ غير متوقع",
   "commonEvent": "حدث",
   "commonFieldRequired": "هذا الحقل مطلوب",
+  "commonFilters": "الفلاتر",
   "commonExploreOnSite": "استكشف في الموقع",
   "commonInformations": "معلومات",
   "commonLoading": "جاري التحميل...",
@@ -78,7 +83,9 @@
   "commonPracticalInfo": "معلومات عملية",
   "commonReservationsAccepted": "يقبل الحجوزات",
   "commonReservePlace": "احجز",
+  "commonReset": "إعادة تعيين",
   "commonRetry": "إعادة المحاولة",
+  "commonSave": "حفظ",
   "commonSeeAll": "عرض الكل",
   "commonSharedFrom": "مشارك من زيارة جيبوتي",
   "commonSharePlace": "شارك هذا المكان",
@@ -87,22 +94,6 @@
   "commonUnknownEvent": "حدث غير معروف",
   "commonUnknownPlace": "مكان غير معروف",
   "commonVisitorTips": "نصائح للزوار",
-
-  "errorConnectionTitle": "خطأ في الاتصال",
-  "errorConnectionMessage": "غير قادر على الاتصال بالخادم. تحقق من اتصالك بالإنترنت.",
-  "errorLoadingTitle": "خطأ في التحميل",
-  "errorLoadingMessage": "غير قادر على تحميل {resourceName}. يرجى المحاولة مرة أخرى.",
-  "errorGenericTitle": "حدث خطأ",
-  "errorGenericMessage": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
-  "errorPermissionTitle": "الإذن مطلوب",
-  "errorPermissionMessage": "يحتاج التطبيق إلى إذن {permissionName} للعمل.",
-  "errorTimeoutTitle": "انتهت المهلة",
-  "errorTimeoutMessage": "استغرق الطلب وقتًا طويلاً. يرجى المحاولة مرة أخرى.",
-  "errorOpenSettings": "فتح الإعدادات",
-  "errorNoDataTitle": "لا توجد نتائج",
-  "errorNoDataMessage": "لا توجد بيانات متاحة في الوقت الحالي.",
-  "errorServerTitle": "خطأ في الخادم",
-  "errorServerMessage": "يواجه الخادم صعوبات. يرجى المحاولة مرة أخرى لاحقًا.",
   "commonWebsite": "الموقع الإلكتروني",
 
   "discoverSearchHint": "ابحث عن الأماكن...",
@@ -272,7 +263,6 @@
 
   "mapTitle": "الخريطة",
   "mapUnknownPlace": "مكان غير معروف",
-  "mapLocationPermissionDenied": "تم رفض إذن الموقع. يرجى تفعيله في الإعدادات.",
 
   "navigationHome": "الرئيسية",
   "navigationDiscover": "اكتشف",
@@ -334,6 +324,10 @@
       }
     }
   },
+
+  "poiNoContact": "لا توجد معلومات اتصال متاحة",
+  "poiTourOperatorsTitle": "منظمو الرحلات السياحية",
+  "poiLicensedOperator": "مشغل مرخص",
 
   "profileAboutApp": "حول التطبيق",
   "profileComingSoon": "قريبا",
@@ -408,6 +402,10 @@
   "reservationsNoneCancelled": "لا توجد حجوزات ملغاة",
   "reservationsNoneConfirmed": "لا توجد حجوزات مؤكدة",
   "reservationsNonePending": "لا توجد حجوزات معلقة",
+  "reservationsTabAll": "الكل",
+  "reservationsTabConfirmed": "مؤكدة",
+  "reservationsTabPending": "قيد الانتظار",
+  "reservationsTabCancelled": "ملغاة",
 
   "reservationsPending": "قيد الانتظار ({count})",
   "@reservationsPending": {
@@ -471,6 +469,22 @@
   "tourRetry": "إعادة المحاولة",
   "tourViewOnMap": "عرض على الخريطة",
   "tourWhatToBring": "ماذا تحضر",
+  "tourUnknownOperator": "مشغل غير معروف",
+  "tourWebsite": "الموقع الإلكتروني",
+  "toursSearchHint": "البحث عن جولة...",
+  "toursNotFound": "لم يتم العثور على جولات لـ \"{query}\"",
+  "@toursNotFound": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "toursTourType": "نوع الجولة",
+  "toursSelectType": "حدد نوعًا",
+  "toursDifficulty": "الصعوبة",
+  "toursTourOperator": "منظم الجولات",
+  "toursSelectOperator": "حدد منظمًا",
   "homeRegionDjibouti": "جيبوتي",
   "homeRegionTadjourah": "تاجورة",
   "homeRegionAliSabieh": "علي صبيح",
@@ -607,5 +621,515 @@
   "tourRegistrationSuccessMessage": "تم تأكيد التسجيل بنجاح!",
   "tourRegistrationErrorMessage": "خطأ أثناء التسجيل",
 
-  "reviewsBeFirst": "كن أول من يترك تقييماً"
+  "helpFaqQuestion1": "كيفية حجز حدث؟",
+  "helpFaqAnswer1": "انتقل إلى علامة تبويب الأحداث، واختر حدثًا يهمك، ثم اضغط على \"التسجيل\". يمكنك إدارة حجوزاتك في ملفك الشخصي.",
+  "helpFaqQuestion2": "هل يمكنني استخدام التطبيق بدون اتصال بالإنترنت؟",
+  "helpFaqAnswer2": "نعم! قم بتفعيل الوضع غير المتصل في الإعدادات لتنزيل البيانات الأساسية. يمكن أيضًا تنزيل الخرائط للاستخدام دون اتصال.",
+  "helpFaqQuestion3": "كيفية إضافة مكان إلى المفضلة؟",
+  "helpFaqAnswer3": "في صفحة تفاصيل مكان معين، اضغط على أيقونة القلب. ستجد جميع مفضلاتك في ملفك الشخصي.",
+  "helpFaqQuestion4": "هل التطبيق مجاني؟",
+  "helpFaqAnswer4": "نعم، زيارة جيبوتي مجانية تمامًا. قد تكون بعض الأحداث لها تكلفة، لكن التطبيق نفسه لا يتطلب أي دفع.",
+  "helpFaqQuestion5": "كيفية تغيير لغة الواجهة؟",
+  "helpFaqAnswer5": "انتقل إلى الإعدادات > اللغة واختر لغتك المفضلة (Français, English, العربية).",
+  "helpFaqQuestion6": "هل يتم تحديث المعلومات؟",
+  "helpFaqAnswer6": "نعم، يقوم فريقنا بتحديث المعلومات حول الأماكن والأحداث بانتظام. تأكد من أن لديك اتصال بالإنترنت لتلقي أحدث البيانات.",
+  "helpFaqQuestion7": "كيفية الإبلاغ عن مشكلة في مكان؟",
+  "helpFaqAnswer7": "استخدم وظيفة \"التعليقات\" في القائمة الرئيسية للإبلاغ عن أي مشكلة. ملاحظاتك تساعدنا في تحسين التطبيق.",
+  "helpCategoryAll": "الكل",
+  "helpCategoryNavigation": "التنقل",
+  "helpCategoryEvents": "الأحداث",
+  "helpCategoryUsage": "الاستخدام",
+  "helpCategoryFavorites": "المفضلة",
+  "helpCategoryGeneral": "عام",
+  "helpCategorySettings": "الإعدادات",
+  "helpCategoryContent": "المحتوى",
+  "helpCategorySupport": "الدعم",
+  "helpTitle": "كيف يمكننا مساعدتك؟",
+  "helpSearchPlaceholder": "البحث في المساعدة...",
+  "helpLiveChat": "دردشة مباشرة",
+  "helpContactUs": "اتصل بنا",
+  "helpTutorials": "دروس تعليمية",
+  "helpReportBug": "الإبلاغ عن خطأ",
+  "helpCantFindAnswer": "لا تجد الإجابة؟",
+  "helpLiveChatTitle": "دردشة مباشرة",
+  "helpLiveChatInfo": "فريقنا متاح من الساعة 8 صباحًا إلى 6 مساءً\nللإجابة على أسئلتك في الوقت الفعلي.",
+  "helpLiveChatConnecting": "الاتصال بالدردشة جارٍ...",
+  "helpStartChat": "بدء الدردشة",
+  "helpContactUsTitle": "اتصل بنا",
+  "helpContactSubject": "الموضوع",
+  "helpContactMessage": "رسالتك",
+  "helpContactEmail": "بريدك الإلكتروني (اختياري)",
+  "helpMessageSent": "تم إرسال الرسالة بنجاح!",
+  "helpSend": "إرسال",
+  "helpTutorialsTitle": "دروس فيديو",
+  "helpTutorialMap": "كيفية استخدام الخريطة",
+  "helpTutorialMapDuration": "3 دقائق",
+  "helpTutorialReserve": "حجز حدث",
+  "helpTutorialReserveDuration": "2 دقيقة",
+  "helpTutorialFavorites": "إدارة المفضلة",
+  "helpTutorialFavoritesDuration": "دقيقة واحدة",
+  "helpReportBugTitle": "الإبلاغ عن مشكلة",
+  "helpBugTitle": "عنوان المشكلة",
+  "helpBugDescription": "صف المشكلة التي واجهتها...",
+  "helpBugReported": "تم إرسال تقرير الخطأ!",
+  "helpReport": "إبلاغ",
+
+  "reservationsEmptyMessage": "استكشف أماكننا وأحداثنا لإجراء حجزك الأول!",
+  "reservationsDetailsTitle": "تفاصيل الحجز",
+  "reservationsCancelConfirm": "هل أنت متأكد من أنك تريد إلغاء الحجز رقم {confirmationNumber}؟",
+  "@reservationsCancelConfirm": {
+    "placeholders": {
+      "confirmationNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsNo": "لا",
+  "reservationsYesCancel": "نعم، إلغاء",
+  "reservationsCancelled": "تم إلغاء الحجز",
+  "reservationsCancelError": "خطأ أثناء الإلغاء",
+  "reservationsDeleteConfirm": "هل أنت متأكد من أنك تريد حذف الحجز رقم {confirmationNumber} نهائيًا؟\n\nهذا الإجراء لا رجعة فيه.",
+  "@reservationsDeleteConfirm": {
+    "placeholders": {
+      "confirmationNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsYesDelete": "نعم، حذف",
+  "reservationsDeleted": "تم حذف الحجز",
+  "reservationsDeleteError": "خطأ أثناء الحذف",
+  "reservationsRegistrationDetailsTitle": "تفاصيل التسجيل",
+  "reservationsRegistrationCancelTitle": "إلغاء التسجيل",
+  "reservationsRegistrationCancelConfirm": "هل أنت متأكد من أنك تريد إلغاء هذا التسجيل؟ سيتغير حالته إلى \"ملغي\".",
+  "reservationsRegistrationDeleteConfirm": "هل أنت متأكد من أنك تريد حذف التسجيل #{id} نهائيًا؟ هذا الإجراء لا رجعة فيه.",
+  "@reservationsRegistrationDeleteConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsRegistrationCancelled": "تم إلغاء التسجيل",
+  "reservationsRegistrationDeleted": "تم حذف التسجيل",
+  "reservationsRegistrationCancelError": "خطأ أثناء الإلغاء",
+  "reservationsRegistrationDeleteError": "خطأ أثناء الحذف",
+  "reservationsNameNotAvailable": "الاسم غير متاح",
+  "reservationsTime": "الوقت",
+  "reservationsPeople": "الأشخاص",
+  "reservationsLocation": "الموقع",
+  "reservationsTotal": "الإجمالي:",
+  "commonDelete": "حذف",
+  "reservationsTour": "جولة",
+  "reservationsNumber": "الحجز #",
+  "reservationsDates": "التواريخ",
+  "reservationsParticipants": "المشاركون",
+  "reservationsNotes": "ملاحظات",
+  "reservationsActivity": "نشاط",
+  "reservationsRegistrationNumber": "التسجيل #",
+  "reservationsPreferredDate": "التاريخ المفضل",
+  "reservationsRequirements": "المتطلبات",
+  "reservationsConfirmationNumber": "الرقم",
+  "reservationsPlaceOrEvent": "المكان/الحدث",
+  "reservationsType": "النوع",
+  "reservationsStatus": "الحالة",
+  "reservationsCancelThisReservation": "إلغاء هذا الحجز",
+  "reservationsDeleteThisReservation": "حذف هذا الحجز",
+  "reservationsCreatedAt": "تم الإنشاء في",
+  "reservationsUpdatedAt": "تم التحديث",
+  "reservationsCancelButton": "إلغاء الحجز",
+  "reservationsDeleteButton": "حذف الحجز",
+  "reservationsMedicalConditions": "الحالات الطبية",
+  "reservationsTotalPrice": "السعر الإجمالي",
+  "reservationsConfirmedAt": "تم التأكيد في",
+  "reservationsCancelledAt": "تم الإلغاء في",
+  "reservationsRegistrationCancelButton": "إلغاء التسجيل",
+  "reservationsRegistrationDeleteButton": "حذف التسجيل",
+  "reservationsRegistrationDeleteTitle": "حذف التسجيل",
+  "reservationsName": "الاسم",
+  "reservationsError": "خطأ: {error}",
+  "@reservationsError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsStatusPending": "قيد الانتظار",
+  "reservationsStatusConfirmed": "مؤكدة",
+  "reservationsStatusCancelled": "ملغاة",
+  "reservationsStatusUnknown": "غير معروف",
+  "reservationsTypePoi": "مكان",
+  "reservationsTypeEvent": "حدث",
+
+  "settingsLanguageFrench": "الفرنسية",
+  "settingsRegionAll": "جميع المناطق",
+  "settingsCacheSizeCalculating": "جاري الحساب...",
+  "settingsChooseLanguage": "اختر اللغة",
+  "settingsLanguageFrenchFlag": "🇫🇷",
+  "settingsLanguageEnglishFlag": "🇬🇧",
+  "settingsLanguageArabicFlag": "🇸🇦",
+  "settingsPreferredRegionTitle": "المنطقة المفضلة",
+  "settingsRegionDjibouti": "جيبوتي",
+  "settingsRegionTadjourah": "تاجورة",
+  "settingsRegionAliSabieh": "علي صبيح",
+  "settingsRegionDikhil": "دخيل",
+  "settingsRegionObock": "أوبوك",
+  "settingsRegionArta": "عرتا",
+  "settingsLocationPermissionTitle": "السماح بالوصول إلى الموقع",
+  "settingsLocationPermissionMessage": "تطبيق زيارة جيبوتي يرغب في الوصول إلى موقعك لعرض نقاط الاهتمام القريبة منك.",
+  "settingsLater": "لاحقًا",
+  "settingsAllow": "سماح",
+  "settingsLocationEnabled": "تم تفعيل الموقع",
+  "settingsOfflineModeTitle": "الوضع دون اتصال",
+  "settingsOfflineModeMessage": "سيستخدم تنزيل البيانات للوضع غير المتصل حوالي 50 ميجابايت. هل تريد المتابعة؟",
+  "settingsDownloading": "جاري تنزيل البيانات...",
+  "settingsDownload": "تنزيل",
+  "settingsClearCacheTitle": "مسح ذاكرة التخزين المؤقت",
+  "settingsClearCacheMessage": "سيؤدي هذا الإجراء إلى إزالة جميع الصور المخزنة مؤقتًا ({size}). سيتم إعادة تنزيلها عند الاستخدام التالي.",
+  "@settingsClearCacheMessage": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsCacheCleared": "تم مسح ذاكرة التخزين المؤقت بنجاح",
+  "settingsClearCacheError": "خطأ أثناء المسح: {error}",
+  "@settingsClearCacheError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsClear": "مسح",
+  "settingsOfflineMapsTitle": "الخرائط دون اتصال",
+  "settingsOfflineMapsMessage": "تنزيل خرائط جيبوتي للاستخدام بدون اتصال بالإنترنت (200 ميجابايت).",
+  "settingsMapsDownloadStarted": "بدأ تنزيل الخرائط",
+  "settingsPrivacyTitle": "الخصوصية",
+  "settingsPrivacyMessage": "زيارة جيبوتي تحترم خصوصيتك. نحن نجمع فقط البيانات اللازمة لتشغيل التطبيق: الموقع للأماكن القريبة، وتفضيلات المستخدم، وبيانات الحجز.\n\nلا يتم مشاركة بياناتك مع أطراف ثالثة بدون موافقتك.",
+  "settingsUnderstood": "مفهوم",
+  "settingsTermsTitle": "شروط الاستخدام",
+  "settingsTermsMessage": "باستخدام زيارة جيبوتي، فإنك تقبل شروط الاستخدام الخاصة بنا. يتم توفير هذا التطبيق من قبل مكتب السياحة في جيبوتي لتعزيز السياحة المحلية.\n\nالتطبيق مجاني ويتم تحديث المعلومات بانتظام.",
+  "settingsClose": "إغلاق",
+  "settingsBackupTitle": "نسخ احتياطي",
+  "settingsBackupMessage": "نسخ احتياطي لمفضلاتك وحجوزاتك وتفضيلاتك إلى السحابة؟",
+  "settingsBackupSuccess": "تم النسخ الاحتياطي بنجاح",
+  "settingsSave": "حفظ",
+  "settingsResetTitle": "استعادة الإعدادات",
+  "settingsResetMessage": "سيؤدي هذا الإجراء إلى استعادة جميع الإعدادات إلى الافتراضية. سيتم الاحتفاظ بمفضلاتك وحجوزاتك.",
+  "settingsResetSuccess": "تمت استعادة الإعدادات",
+  "settingsRestore": "استعادة",
+
+  "offlineStatusOnline": "متصل - جميع الميزات متاحة",
+  "offlineStatusOffline": "غير متصل - تم تفعيل وضع ذاكرة التخزين المؤقت",
+  "offlineDataTitle": "البيانات دون اتصال",
+  "offlineTotalItems": "إجمالي العناصر",
+  "offlinePois": "نقاط الاهتمام",
+  "offlineEvents": "الأحداث",
+  "offlineFavorites": "المفضلة",
+  "offlineCacheSize": "حجم ذاكرة التخزين المؤقت",
+  "offlineActionsTitle": "الإجراءات",
+  "offlineSyncNow": "مزامنة الآن",
+  "offlineSyncNowSubtitle": "تحديث البيانات من الخادم",
+  "offlineDownloadForOffline": "تنزيل للاستخدام دون اتصال",
+  "offlineDownloadForOfflineSubtitle": "تنزيل جميع البيانات المهمة",
+  "offlineClearCache": "مسح ذاكرة التخزين المؤقت",
+  "offlineClearCacheSubtitle": "إزالة جميع البيانات المخزنة مؤقتًا",
+
+  "reviewFormPleaseRate": "يرجى تحديد تقييم",
+  "reviewFormUpdated": "تم تحديث التقييم بنجاح",
+  "reviewFormPublished": "تم نشر التقييم بنجاح",
+  "reviewFormError": "خطأ: {error}",
+  "@reviewFormError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewFormEditTitle": "تعديل تقييمك",
+  "reviewFormWriteTitle": "كتابة تقييم",
+  "reviewFormYourRating": "تقييمك *",
+  "reviewFormTitle": "العنوان (اختياري)",
+  "reviewFormTitleHint": "لخص تجربتك",
+  "reviewFormComment": "تقييمك (اختياري)",
+  "reviewFormCommentHint": "شارك تجربتك بالتفصيل...",
+  "reviewFormUpdate": "تحديث",
+  "reviewFormPublish": "نشر",
+
+  "reviewsBeFirst": "كن أول من يترك تقييمًا",
+  "reviewsNoReviewsYet": "لا توجد تقييمات حتى الآن",
+  "reviewsClickToReview": "انقر لترك تقييم",
+  "reviewsTitle": "التقييمات",
+  "reviewsCount": "{count} تقييمات",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewsLoadMore": "تحميل المزيد من التقييمات",
+  "reviewsOperatorResponse": "رد من المنشأة",
+  "reviewsHelpful": "مفيد",
+
+  "reviewsLoadError": "خطأ في تحميل التقييمات: {error}",
+  "@reviewsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsVotedHelpful": "شكرًا لتصويتك!",
+  "reviewsVoteError": "خطأ: {error}",
+  "@reviewsVoteError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsDeleteTitle": "حذف التقييم",
+  "reviewsDeleteConfirm": "هل أنت متأكد من أنك تريد حذف هذا التقييم؟",
+  "reviewsDelete": "حذف",
+  "reviewsDeleted": "تم حذف التقييم",
+  "reviewsDeleteError": "خطأ: {error}",
+  "@reviewsDeleteError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewsSectionTitle": "التقييمات",
+  "reviewsWriteReview": "كتابة تقييم",
+
+  "reservationFormTitle": "حجز {type}",
+  "@reservationFormTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationFormTitlePoi": "هذا المكان",
+  "reservationFormTitleEvent": "هذا الحدث",
+  "reservationFormNumberOfPeople": "عدد الأشخاص *",
+  "reservationFormNumberOfPeopleHint": "1",
+  "reservationFormNumberRequired": "عدد الأشخاص مطلوب",
+  "reservationFormMinOnePerson": "الحد الأدنى شخص واحد",
+  "reservationFormMaxPeople": "الحد الأقصى {available} أماكن متاحة",
+  "@reservationFormMaxPeople": {
+    "placeholders": {
+      "available": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationFormContactInfo": "معلومات الاتصال (اختياري)",
+  "reservationFormFullName": "الاسم الكامل",
+  "reservationFormEmailInvalid": "بريد إلكتروني غير صالح",
+  "reservationFormPhone": "الهاتف",
+  "reservationFormNotes": "ملاحظات أو طلبات خاصة",
+  "reservationFormNotesHint": "حساسية الطعام، احتياجات خاصة...",
+  "reservationFormConfirm": "تأكيد الحجز",
+  "reservationFormSuccess": "تم إنشاء الحجز بنجاح!",
+  "reservationFormError": "خطأ في إنشاء الحجز",
+
+  "contactOperatorTitle": "الاتصال بـ {name}",
+  "@contactOperatorTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contactOperatorTitleDefault": "المشغل",
+  "contactOperatorMessageType": "نوع الرسالة",
+  "contactOperatorYourMessage": "رسالتك",
+  "contactOperatorMessageHint": "اكتب رسالتك هنا...",
+  "contactOperatorMessageRequired": "يرجى كتابة رسالة",
+  "contactOperatorMessageTooShort": "يجب أن تحتوي الرسالة على 3 أحرف على الأقل",
+  "contactOperatorTypeQuestion": "سؤال",
+  "contactOperatorTypeReport": "تقرير",
+  "contactOperatorTypeSuggestion": "اقتراح",
+  "contactOperatorPrefixQuestion": "❓ سؤال: ",
+  "contactOperatorPrefixReport": "⚠️ تقرير: ",
+  "contactOperatorPrefixSuggestion": "💡 اقتراح: ",
+  "contactOperatorMessageSent": "تم إرسال الرسالة بنجاح إلى {name}",
+  "@contactOperatorMessageSent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contactOperatorMessageSentDefault": "المشغل",
+  "contactOperatorSendError": "خطأ في الإرسال: {error}",
+  "@contactOperatorSendError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "tourOperatorUnknown": "مشغل غير معروف",
+  "tourOperatorCallButton": "اتصال",
+  "tourOperatorWebsiteButton": "الموقع الإلكتروني",
+
+  "poiOperatorsServingTitle": "المشغلون الذين يخدمون هذا المكان",
+
+  "activitiesSearchHint": "ابحث عن نشاط...",
+
+  "toursSelectDifficulty": "اختر الصعوبة",
+
+  "termsLastUpdated": "آخر تحديث: 23 أكتوبر 2025",
+  "termsSection1Title": "1. قبول الشروط",
+  "termsSection1Content": "باستخدام تطبيق زيارة جيبوتي (المشار إليه فيما يلي \"التطبيق\")، فإنك توافق على الالتزام بشروط الاستخدام هذه. إذا كنت لا توافق على هذه الشروط، يرجى عدم استخدام التطبيق.",
+  "termsSection2Title": "2. وصف الخدمات",
+  "termsSection2Content": "زيارة جيبوتي هو تطبيق محمول مخصص لتعزيز السياحة في جيبوتي. يوفر التطبيق:\n\n• معلومات حول نقاط الاهتمام السياحية\n• تقويم للفعاليات الثقافية والسياحية\n• نظام حجز لبعض الخدمات\n• ميزات المفضلة وتخطيط الرحلات\n• خرائط تفاعلية وأدوات الملاحة\n• معلومات عملية عن البلد",
+  "termsSection3Title": "3. حساب المستخدم",
+  "termsSection3Content": "يتطلب استخدام بعض الميزات إنشاء حساب. أنت مسؤول عن:\n\n• سرية بيانات اعتمادك\n• جميع الأنشطة التي يتم إجراؤها من خلال حسابك\n• دقة المعلومات المقدمة\n• إخطارنا فورًا في حالة الاستخدام غير المصرح به",
+  "termsSection4Title": "4. الاستخدام المقبول",
+  "termsSection4Content": "أنت توافق على:\n\n• استخدام التطبيق فقط لأغراض قانونية\n• عدم نشر محتوى مسيء أو غير قانوني\n• احترام حقوق الآخرين\n• عدم محاولة تعطيل تشغيل التطبيق\n• عدم استخدام الروبوتات أو النصوص التلقائية\n• عدم جمع بيانات من مستخدمين آخرين",
+  "termsSection5Title": "5. الملكية الفكرية",
+  "termsSection5Content": "جميع محتويات التطبيق (النصوص والصور والشعارات والرسومات) محمية بموجب قوانين الملكية الفكرية وتنتمي إلى مكتب السياحة في جيبوتي أو شركائه.",
+  "termsSection6Title": "6. الحجوزات والمدفوعات",
+  "termsSection6Content": "يسمح التطبيق بحجز بعض الخدمات السياحية:\n\n• الحجوزات مرهونة بالتوافر\n• الأسعار المعروضة إرشادية وقد تختلف\n• شروط الإلغاء تختلف حسب مقدم الخدمة\n• يعمل مكتب السياحة كوسيط\n• نحن لسنا مسؤولين عن الخدمات المقدمة من أطراف ثالثة",
+  "termsSection7Title": "7. تحديد المسؤولية",
+  "termsSection7Content": "مكتب السياحة في جيبوتي:\n\n• يسعى لتقديم معلومات دقيقة لكنه لا يضمن اكتمالها\n• غير مسؤول عن الخدمات المقدمة من أطراف ثالثة\n• لا يمكن تحميله المسؤولية عن الأضرار غير المباشرة\n• يحتفظ بالحق في تعديل أو مقاطعة الخدمات دون إشعار\n• غير مسؤول عن المشاكل الفنية أو مشاكل الاتصال",
+  "termsSection8Title": "8. محتوى المستخدم",
+  "termsSection8Content": "من خلال نشر المحتوى (التقييمات والتعليقات والصور):\n\n• تحتفظ بحقوق الملكية الفكرية الخاصة بك\n• تمنحنا ترخيصًا مجانيًا عالميًا للاستخدام\n• تضمن أن المحتوى لا ينتهك أي حقوق\n• نحتفظ بالحق في الإشراف على أو إزالة أي محتوى غير لائق",
+  "termsSection9Title": "9. روابط لمواقع الأطراف الثالثة",
+  "termsSection9Content": "قد يحتوي التطبيق على روابط لمواقع ويب تابعة لأطراف ثالثة. يتم توفير هذه الروابط لراحتك، ولكن ليس لدينا سيطرة على هذه المواقع ولا نتحمل أي مسؤولية عن محتواها.",
+  "termsSection10Title": "10. تعديلات الخدمة",
+  "termsSection10Content": "نحتفظ بالحق في:\n\n• تعديل أو مقاطعة كل أو جزء من التطبيق\n• إضافة أو إزالة الميزات\n• تغيير الأسعار أو شروط الوصول",
+  "termsSection11Title": "11. الإنهاء",
+  "termsSection11Content": "يمكننا تعليق أو إنهاء وصولك إلى التطبيق في حالة:\n\n• انتهاك هذه الشروط\n• سلوك احتيالي أو تعسفي\n• طلب من السلطات المختصة\n• عدم النشاط لفترة طويلة",
+  "termsSection12Title": "12. القانون المطبق",
+  "termsSection12Content": "تخضع هذه الشروط للقانون الجيبوتي. أي نزاع سيخضع للاختصاص الحصري لمحاكم جيبوتي.",
+  "termsSection13Title": "13. تعديلات الشروط",
+  "termsSection13Content": "يمكننا تعديل هذه الشروط في أي وقت. سيتم نشر التعديلات في التطبيق وتدخل حيز التنفيذ فورًا. استمرارك في استخدام التطبيق يشكل قبولك للشروط المعدلة.",
+  "termsSection14Title": "14. الاتصال",
+  "termsSection14Content": "لأي أسئلة بخصوص شروط الاستخدام هذه، اتصل بنا:\n\nمكتب السياحة في جيبوتي\nالبريد الإلكتروني: info@visitdjibouti.dj\nالهاتف: +253 XXX XXX",
+
+  "activitiesTitle": "الأنشطة",
+  "activitiesPopular": "أنشطة شائعة",
+  "activitiesDifficulty": "الصعوبة",
+  "activitiesRegion": "المنطقة",
+  "activitiesAvailableSpotsOnly": "فقط مع أماكن متاحة",
+  "activitiesAvailableSpots": "أماكن متاحة",
+  "activitiesNoActivitiesFound": "لم يتم العثور على أنشطة",
+  "activitiesTryModifyingFilters": "حاول تعديل الفلاتر",
+
+  "personalInfoUser": "مستخدم",
+  "personalInfoVerifiedAccount": "حساب موثق",
+  "personalInfoBasicInfo": "معلومات أساسية",
+  "personalInfoFullName": "الاسم الكامل",
+  "personalInfoNameRequired": "الاسم مطلوب",
+  "personalInfoNameMinLength": "يجب أن يحتوي الاسم على حرفين على الأقل",
+  "personalInfoEmail": "عنوان البريد الإلكتروني",
+  "personalInfoEmailRequired": "عنوان البريد الإلكتروني مطلوب",
+  "personalInfoEmailInvalid": "عنوان بريد إلكتروني غير صالح",
+  "personalInfoPhoneOptional": "الهاتف (اختياري)",
+  "personalInfoProfileUpdated": "تم تحديث الملف الشخصي بنجاح",
+  "personalInfoUpdateError": "خطأ في تحديث الملف الشخصي",
+  "personalInfoError": "خطأ: {error}",
+  "@personalInfoError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+,
+
+  "securityChangePassword": "تغيير كلمة المرور",
+  "securityCurrentPassword": "كلمة المرور الحالية",
+  "securityCurrentPasswordRequired": "كلمة المرور الحالية مطلوبة",
+  "securityNewPassword": "كلمة المرور الجديدة",
+  "securityNewPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+  "securityPasswordMinLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+  "securityConfirmPassword": "تأكيد كلمة المرور الجديدة",
+  "securityConfirmPasswordRequired": "التأكيد مطلوب",
+  "securityPasswordMismatch": "كلمات المرور غير متطابقة",
+  "securityPasswordChanged": "تم تغيير كلمة المرور بنجاح",
+  "securityPasswordChangeError": "خطأ في تغيير كلمة المرور",
+  "securityError": "خطأ: {error}",
+  "@securityError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "aboutAppName": "زيارة جيبوتي",
+  "aboutVersion": "الإصدار {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutDescription": "زيارة جيبوتي هو التطبيق الرسمي للوكالة الوطنية للسياحة في جيبوتي (ANT). اكتشف عجائب بلدنا: من المناظر القمرية لبحيرة عسل إلى الشعاب المرجانية في جزر موشا، مروراً بأسواق مدينة جيبوتي النابضة بالحياة.",
+  "aboutOrganization": "ANT - الوكالة الوطنية للسياحة",
+  "aboutOrganizationFull": "الوكالة الوطنية للسياحة في جيبوتي",
+  "aboutOrganizationDescription": "المنظمة الرسمية لتعزيز وتطوير السياحة",
+
+  "aboutStatsPois": "نقاط الاهتمام",
+  "aboutStatsEvents": "الفعاليات",
+  "aboutStatsRegions": "المناطق",
+
+  "aboutFeaturesTitle": "الميزات",
+  "aboutFeatureDiscoverTitle": "اكتشف",
+  "aboutFeatureDiscoverDesc": "أكثر من 50 نقطة اهتمام مع صور وأوصاف تفصيلية",
+  "aboutFeatureEventsTitle": "الفعاليات",
+  "aboutFeatureEventsDesc": "تقويم كامل للفعاليات الثقافية والسياحية",
+  "aboutFeatureMapsTitle": "خرائط تفاعلية",
+  "aboutFeatureMapsDesc": "الملاحة عبر GPS وتحديد موقع نقاط الاهتمام القريبة",
+  "aboutFeatureFavoritesTitle": "المفضلة",
+  "aboutFeatureFavoritesDesc": "احفظ أماكنك المفضلة وخطط لزياراتك",
+  "aboutFeatureOfflineTitle": "وضع عدم الاتصال",
+  "aboutFeatureOfflineDesc": "الوصول إلى المعلومات حتى بدون اتصال بالإنترنت",
+
+  "aboutDevelopedByTitle": "تطوير بواسطة",
+  "aboutPartnersTitle": "الشركاء",
+  "aboutPartnerMinistry": "وزارة التجارة والسياحة",
+  "aboutPartnerMinistryDesc": "جمهورية جيبوتي",
+  "aboutPartnerHotels": "جمعية الفنادق",
+  "aboutPartnerHotelsDesc": "قطاع السياحة الخاص",
+
+  "aboutTechnologiesTitle": "التقنيات",
+  "aboutTechFlutter": "إطار عمل الهاتف المحمول متعدد المنصات",
+  "aboutTechDart": "لغة برمجة حديثة",
+  "aboutTechLaravel": "واجهة برمجة تطبيقات خلفية قوية وآمنة",
+  "aboutTechMaps": "رسم الخرائط وتحديد الموقع الجغرافي",
+
+  "aboutContactTitle": "الاتصال والروابط",
+  "aboutContactWebsite": "الموقع الرسمي",
+  "aboutContactEmail": "البريد الإلكتروني",
+  "aboutContactPhone": "الهاتف",
+  "aboutContactAddress": "العنوان",
+  "aboutContactAddressValue": "ساحة 27 يونيو، مدينة جيبوتي",
+
+  "aboutCopyright": "© {year} الوكالة الوطنية للسياحة في جيبوتي",
+  "@aboutCopyright": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutCopyrightDescription": "جميع الحقوق محفوظة. تم تطوير هذا التطبيق للترويج للسياحة في جيبوتي.",
+
+  "aboutOpeningWebsite": "فتح الموقع الإلكتروني...",
+  "aboutOpeningEmail": "فتح تطبيق البريد الإلكتروني...",
+  "aboutOpeningPhone": "فتح تطبيق الهاتف...",
+  "aboutOpeningMap": "فتح الخريطة..."
 }
