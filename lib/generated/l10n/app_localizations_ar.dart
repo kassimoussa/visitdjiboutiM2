@@ -605,6 +605,59 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mapUnknownPlace => 'مكان غير معروف';
 
   @override
+  String get mapLocationPermissionDenied => 'تم رفض إذن الموقع';
+
+  @override
+  String get mapErrorLoading => 'خطأ في التحميل';
+
+  @override
+  String get mapGetDirections => 'الحصول على الاتجاهات';
+
+  @override
+  String mapToDestination(Object name) {
+    return 'إلى: $name';
+  }
+
+  @override
+  String get mapErrorOpenMaps => 'تعذر فتح خرائط جوجل';
+
+  @override
+  String get mapErrorLocationUnavailable =>
+      'الموقع غير متاح. يرجى تفعيل خدمات الموقع.';
+
+  @override
+  String get mapActivate => 'تفعيل';
+
+  @override
+  String get mapCalculatingRoute => 'حساب المسار...';
+
+  @override
+  String mapRouteInfo(Object distance, Object duration) {
+    return 'المسافة: $distance • المدة: $duration';
+  }
+
+  @override
+  String get mapErrorCalculatingRoute => 'تعذر حساب المسار';
+
+  @override
+  String get mapLoading => 'تحميل الخريطة...';
+
+  @override
+  String get mapNearbyPois => 'الأماكن القريبة';
+
+  @override
+  String get mapDefaultLocation => 'جيبوتي';
+
+  @override
+  String get mapOfflineMessage => 'خريطة غير متصلة - عرض قائمة الأماكن المتاحة';
+
+  @override
+  String get mapOfflineNoData => 'لا توجد بيانات خريطة متاحة دون اتصال';
+
+  @override
+  String get mapOfflineConnectToDownload => 'اتصل بالإنترنت لتنزيل الأماكن';
+
+  @override
   String get navigationHome => 'الرئيسية';
 
   @override

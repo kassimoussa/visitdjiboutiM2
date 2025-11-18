@@ -606,6 +606,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapUnknownPlace => 'Unknown place';
 
   @override
+  String get mapLocationPermissionDenied => 'Location permission denied';
+
+  @override
+  String get mapErrorLoading => 'Loading error';
+
+  @override
+  String get mapGetDirections => 'Get directions';
+
+  @override
+  String mapToDestination(Object name) {
+    return 'To: $name';
+  }
+
+  @override
+  String get mapErrorOpenMaps => 'Unable to open Google Maps';
+
+  @override
+  String get mapErrorLocationUnavailable =>
+      'Position unavailable. Please enable location services.';
+
+  @override
+  String get mapActivate => 'Activate';
+
+  @override
+  String get mapCalculatingRoute => 'Calculating route...';
+
+  @override
+  String mapRouteInfo(Object distance, Object duration) {
+    return 'Distance: $distance • Duration: $duration';
+  }
+
+  @override
+  String get mapErrorCalculatingRoute => 'Unable to calculate route';
+
+  @override
+  String get mapLoading => 'Loading map...';
+
+  @override
+  String get mapNearbyPois => 'Nearby POIs';
+
+  @override
+  String get mapDefaultLocation => 'Djibouti';
+
+  @override
+  String get mapOfflineMessage =>
+      'Offline map - Displaying available POIs list';
+
+  @override
+  String get mapOfflineNoData => 'No offline map data available';
+
+  @override
+  String get mapOfflineConnectToDownload =>
+      'Connect to internet to download POIs';
+
+  @override
   String get navigationHome => 'Home';
 
   @override

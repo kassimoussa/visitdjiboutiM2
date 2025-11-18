@@ -611,6 +611,62 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mapUnknownPlace => 'Lieu inconnu';
 
   @override
+  String get mapLocationPermissionDenied =>
+      'Permission de localisation refusée';
+
+  @override
+  String get mapErrorLoading => 'Erreur de chargement';
+
+  @override
+  String get mapGetDirections => 'Obtenir un itinéraire';
+
+  @override
+  String mapToDestination(Object name) {
+    return 'Vers: $name';
+  }
+
+  @override
+  String get mapErrorOpenMaps => 'Impossible d\'ouvrir Google Maps';
+
+  @override
+  String get mapErrorLocationUnavailable =>
+      'Position non disponible. Veuillez activer la géolocalisation.';
+
+  @override
+  String get mapActivate => 'Activer';
+
+  @override
+  String get mapCalculatingRoute => 'Calcul de l\'itinéraire...';
+
+  @override
+  String mapRouteInfo(Object distance, Object duration) {
+    return 'Distance: $distance • Durée: $duration';
+  }
+
+  @override
+  String get mapErrorCalculatingRoute => 'Impossible de calculer l\'itinéraire';
+
+  @override
+  String get mapLoading => 'Chargement de la carte...';
+
+  @override
+  String get mapNearbyPois => 'POIs à proximité';
+
+  @override
+  String get mapDefaultLocation => 'Djibouti';
+
+  @override
+  String get mapOfflineMessage =>
+      'Carte hors ligne - Affichage de la liste des POIs disponibles';
+
+  @override
+  String get mapOfflineNoData => 'Aucune donnée de carte disponible hors ligne';
+
+  @override
+  String get mapOfflineConnectToDownload =>
+      'Connectez-vous à internet pour télécharger les POIs';
+
+  @override
   String get navigationHome => 'Accueil';
 
   @override

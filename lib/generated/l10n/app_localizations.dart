@@ -1270,6 +1270,102 @@ abstract class AppLocalizations {
   /// **'Lieu inconnu'**
   String get mapUnknownPlace;
 
+  /// No description provided for @mapLocationPermissionDenied.
+  ///
+  /// In fr, this message translates to:
+  /// **'Permission de localisation refusée'**
+  String get mapLocationPermissionDenied;
+
+  /// No description provided for @mapErrorLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de chargement'**
+  String get mapErrorLoading;
+
+  /// No description provided for @mapGetDirections.
+  ///
+  /// In fr, this message translates to:
+  /// **'Obtenir un itinéraire'**
+  String get mapGetDirections;
+
+  /// No description provided for @mapToDestination.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vers: {name}'**
+  String mapToDestination(Object name);
+
+  /// No description provided for @mapErrorOpenMaps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d\'ouvrir Google Maps'**
+  String get mapErrorOpenMaps;
+
+  /// No description provided for @mapErrorLocationUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Position non disponible. Veuillez activer la géolocalisation.'**
+  String get mapErrorLocationUnavailable;
+
+  /// No description provided for @mapActivate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activer'**
+  String get mapActivate;
+
+  /// No description provided for @mapCalculatingRoute.
+  ///
+  /// In fr, this message translates to:
+  /// **'Calcul de l\'itinéraire...'**
+  String get mapCalculatingRoute;
+
+  /// No description provided for @mapRouteInfo.
+  ///
+  /// In fr, this message translates to:
+  /// **'Distance: {distance} • Durée: {duration}'**
+  String mapRouteInfo(Object distance, Object duration);
+
+  /// No description provided for @mapErrorCalculatingRoute.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de calculer l\'itinéraire'**
+  String get mapErrorCalculatingRoute;
+
+  /// No description provided for @mapLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement de la carte...'**
+  String get mapLoading;
+
+  /// No description provided for @mapNearbyPois.
+  ///
+  /// In fr, this message translates to:
+  /// **'POIs à proximité'**
+  String get mapNearbyPois;
+
+  /// No description provided for @mapDefaultLocation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Djibouti'**
+  String get mapDefaultLocation;
+
+  /// No description provided for @mapOfflineMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Carte hors ligne - Affichage de la liste des POIs disponibles'**
+  String get mapOfflineMessage;
+
+  /// No description provided for @mapOfflineNoData.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune donnée de carte disponible hors ligne'**
+  String get mapOfflineNoData;
+
+  /// No description provided for @mapOfflineConnectToDownload.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connectez-vous à internet pour télécharger les POIs'**
+  String get mapOfflineConnectToDownload;
+
   /// No description provided for @navigationHome.
   ///
   /// In fr, this message translates to:
