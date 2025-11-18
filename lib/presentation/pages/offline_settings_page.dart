@@ -55,7 +55,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
         foregroundColor: Colors.white,
       ),
       body: _isLoading
-          ? const SmartLoadingWidget(message: 'Loading settings...') // TODO: Add translation key
+          ? SmartLoadingWidget(message: AppLocalizations.of(context)!.offlineLoadingSettings)
           : _buildContent(),
     );
   }
@@ -96,7 +96,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  'Connection status', // TODO: Add translation key
+                  AppLocalizations.of(context)!.offlineConnectionStatus,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -118,9 +118,9 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
                 ),
               ),
               child: Text(
-                isOnline 
-                  ? 'En ligne - Toutes les fonctionnalités disponibles'
-                  : 'Hors ligne - Mode cache activé',
+                isOnline
+                  ? AppLocalizations.of(context)!.offlineStatusOnline
+                  : AppLocalizations.of(context)!.offlineStatusOffline,
                 style: TextStyle(
                   color: isOnline ? Colors.green.shade700 : Colors.orange.shade700,
                   fontWeight: FontWeight.w600,
@@ -145,17 +145,17 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Données hors ligne',
+              AppLocalizations.of(context)!.offlineDataTitle,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 16.h),
-            _buildStatRow('Éléments total', '${_cacheStats!['totalItems'] ?? 0}'),
-            _buildStatRow('Points d\'intérêt', '${_cacheStats!['poisCount'] ?? 0}'),
-            _buildStatRow('Événements', '${_cacheStats!['eventsCount'] ?? 0}'),
-            _buildStatRow('Favoris', '${_cacheStats!['favoritesCount'] ?? 0}'),
-            _buildStatRow('Taille du cache', '${_cacheStats!['sizeInKB'] ?? '0'} KB'),
+            _buildStatRow(AppLocalizations.of(context)!.offlineStatsTotal, '${_cacheStats!['totalItems'] ?? 0}'),
+            _buildStatRow(AppLocalizations.of(context)!.offlineStatsPois, '${_cacheStats!['poisCount'] ?? 0}'),
+            _buildStatRow(AppLocalizations.of(context)!.offlineStatsEvents, '${_cacheStats!['eventsCount'] ?? 0}'),
+            _buildStatRow(AppLocalizations.of(context)!.offlineStatsFavorites, '${_cacheStats!['favoritesCount'] ?? 0}'),
+            _buildStatRow(AppLocalizations.of(context)!.offlineStatsCacheSize, '${_cacheStats!['sizeInKB'] ?? '0'} KB'),
           ],
         ),
       ),
@@ -186,7 +186,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Actions',
+              AppLocalizations.of(context)!.offlineActionsTitle,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -194,24 +194,24 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
             SizedBox(height: 16.h),
             _buildActionButton(
               icon: Icons.sync,
-              title: 'Synchroniser maintenant',
-              subtitle: 'Mettre à jour les données depuis le serveur',
+              title: AppLocalizations.of(context)!.offlineActionSyncNow,
+              subtitle: AppLocalizations.of(context)!.offlineActionSyncDesc,
               onTap: _syncData,
               enabled: _connectivityService.isOnline && !_syncService.isSyncing,
             ),
             SizedBox(height: 12.h),
             _buildActionButton(
               icon: Icons.download,
-              title: 'Télécharger pour hors ligne',
-              subtitle: 'Télécharger toutes les données importantes',
+              title: AppLocalizations.of(context)!.offlineActionDownload,
+              subtitle: AppLocalizations.of(context)!.offlineActionDownloadDesc,
               onTap: _downloadForOffline,
               enabled: _connectivityService.isOnline && !_isDownloading,
             ),
             SizedBox(height: 12.h),
             _buildActionButton(
               icon: Icons.clear,
-              title: 'Vider le cache',
-              subtitle: 'Supprimer toutes les données mises en cache',
+              title: AppLocalizations.of(context)!.offlineActionClearCache,
+              subtitle: AppLocalizations.of(context)!.offlineActionClearCacheDesc,
               onTap: _clearCache,
               enabled: true,
               isDestructive: true,
@@ -301,14 +301,14 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Régions disponibles hors ligne',
+              AppLocalizations.of(context)!.offlineRegionsTitle,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 8.h),
             Text(
-              'Ces régions peuvent être visitées même sans connexion internet.',
+              AppLocalizations.of(context)!.offlineRegionsDescription,
               style: TextStyle(
                 color: Colors.grey.shade600,
                 fontSize: 12.sp,
@@ -335,29 +335,29 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
 
   Future<void> _syncData() async {
     if (_connectivityService.isOffline) {
-      _showSnackBar('Connexion internet requise', isError: true);
+      _showSnackBar(AppLocalizations.of(context)!.offlineErrorNoConnection, isError: true);
       return;
     }
 
-    _showSnackBar('Synchronisation en cours...');
-    
+    _showSnackBar(AppLocalizations.of(context)!.offlineSyncInProgress);
+
     try {
       final result = await _syncService.syncData();
-      
+
       if (result.success) {
-        _showSnackBar('Synchronisation réussie ! ${result.totalSyncedItems} éléments mis à jour');
+        _showSnackBar(AppLocalizations.of(context)!.offlineSyncSuccess.replaceAll('{count}', '${result.totalSyncedItems}'));
         await _loadStats();
       } else {
-        _showSnackBar(result.message ?? 'Erreur de synchronisation', isError: true);
+        _showSnackBar(result.message ?? AppLocalizations.of(context)!.offlineSyncError, isError: true);
       }
     } catch (e) {
-      _showSnackBar('Erreur de synchronisation: $e', isError: true);
+      _showSnackBar('${AppLocalizations.of(context)!.offlineSyncError}: $e', isError: true);
     }
   }
 
   Future<void> _downloadForOffline() async {
     if (_connectivityService.isOffline) {
-      _showSnackBar('Connexion internet requise', isError: true);
+      _showSnackBar(AppLocalizations.of(context)!.offlineErrorNoConnection, isError: true);
       return;
     }
 
@@ -366,18 +366,18 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
     });
 
     try {
-      _showSnackBar('Téléchargement en cours...');
-      
+      _showSnackBar(AppLocalizations.of(context)!.offlineDownloadInProgress);
+
       final result = await _syncService.downloadForOffline();
-      
+
       if (result.success) {
-        _showSnackBar('Téléchargement réussi ! ${result.totalSyncedItems} éléments sauvegardés');
+        _showSnackBar(AppLocalizations.of(context)!.offlineDownloadSuccess.replaceAll('{count}', '${result.totalSyncedItems}'));
         await _loadStats();
       } else {
-        _showSnackBar(result.message ?? 'Erreur de téléchargement', isError: true);
+        _showSnackBar(result.message ?? AppLocalizations.of(context)!.offlineDownloadError, isError: true);
       }
     } catch (e) {
-      _showSnackBar('Erreur de téléchargement: $e', isError: true);
+      _showSnackBar('${AppLocalizations.of(context)!.offlineDownloadError}: $e', isError: true);
     } finally {
       if (mounted) {
         setState(() {
@@ -391,20 +391,17 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Vider le cache'),
-        content: const Text(
-          'Êtes-vous sûr de vouloir supprimer toutes les données mises en cache ? '
-          'Vous ne pourrez plus utiliser l\'application hors ligne jusqu\'au prochain téléchargement.',
-        ),
+        title: Text(AppLocalizations.of(context)!.offlineClearCacheTitle),
+        content: Text(AppLocalizations.of(context)!.offlineClearCacheConfirmation),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.offlineCancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Vider'),
+            child: Text(AppLocalizations.of(context)!.offlineClear),
           ),
         ],
       ),
@@ -413,10 +410,10 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
     if (confirmed == true) {
       try {
         await _cacheService.clearPoiCache();
-        _showSnackBar('Cache vidé avec succès');
+        _showSnackBar(AppLocalizations.of(context)!.offlineClearCacheSuccess);
         await _loadStats();
       } catch (e) {
-        _showSnackBar('Erreur lors du vidage du cache: $e', isError: true);
+        _showSnackBar('${AppLocalizations.of(context)!.offlineClearCacheError}: $e', isError: true);
       }
     }
   }

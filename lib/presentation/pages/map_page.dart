@@ -206,7 +206,7 @@ class _MapPageState extends State<MapPage> {
           );
         }
       } else {
-        throw Exception(response.message ?? 'Erreur de chargement');
+        throw Exception(response.message ?? AppLocalizations.of(context)!.mapErrorLoading);
       }
     } catch (e) {
       setState(() {
@@ -218,7 +218,7 @@ class _MapPageState extends State<MapPage> {
       if (mounted) {
         ErrorSnackBar.show(
           context,
-          title: 'Erreur de chargement',
+          title: AppLocalizations.of(context)!.mapErrorLoading,
           message: RetryHelper.getErrorMessage(e),
           onRetry: _loadPois,
         );
@@ -399,7 +399,7 @@ class _MapPageState extends State<MapPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Obtenir un itinéraire',
+              AppLocalizations.of(context)!.mapGetDirections,
               style:  TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -425,7 +425,7 @@ class _MapPageState extends State<MapPage> {
                 if (!success && mounted) {
                   ErrorSnackBar.show(
                     context,
-                    message: 'Impossible d\'ouvrir Google Maps',
+                    message: AppLocalizations.of(context)!.mapErrorOpenMaps,
                   );
                 }
               },
@@ -476,9 +476,9 @@ class _MapPageState extends State<MapPage> {
     if (_userPosition == null) {
       ErrorSnackBar.showWarning(
         context,
-        message: 'Position non disponible. Veuillez activer la géolocalisation.',
+        message: AppLocalizations.of(context)!.mapErrorLocationUnavailable,
         onAction: _getUserLocation,
-        actionLabel: 'Activer',
+        actionLabel: AppLocalizations.of(context)!.mapActivate,
       );
       return;
     }
@@ -496,7 +496,7 @@ class _MapPageState extends State<MapPage> {
               children: [
                 CircularProgressIndicator(),
                 SizedBox(height: 16.h),
-                Text('Calcul de l\'itinéraire...'),
+                Text(AppLocalizations.of(context)!.mapCalculatingRoute),
               ],
             ),
           ),
@@ -546,7 +546,7 @@ class _MapPageState extends State<MapPage> {
     } else if (mounted) {
       ErrorSnackBar.show(
         context,
-        message: 'Impossible de calculer l\'itinéraire',
+        message: AppLocalizations.of(context)!.mapErrorCalculatingRoute,
         onRetry: () => _showDirectionsOnMap(poi),
       );
     }
@@ -582,7 +582,7 @@ class _MapPageState extends State<MapPage> {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        'Chargement de la carte...',
+                        AppLocalizations.of(context)!.mapLoading,
                         style: TextStyle(
                           fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.w500,
@@ -684,7 +684,7 @@ class _MapPageState extends State<MapPage> {
                     child: Row(
                       children: [
                          Text(
-                          'POIs à proximité',
+                          AppLocalizations.of(context)!.mapNearbyPois,
                           style: TextStyle(
                             fontSize: ResponsiveConstants.subtitle2,
                             fontWeight: FontWeight.bold,
@@ -839,7 +839,7 @@ class _MapPageState extends State<MapPage> {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  'Djibouti',
+                  AppLocalizations.of(context)!.mapDefaultLocation,
                   style: TextStyle(
                     fontSize: ResponsiveConstants.body2,
                     color: Colors.grey[600],
@@ -930,7 +930,7 @@ class _MapPageState extends State<MapPage> {
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
-                  'Carte hors ligne - Affichage de la liste des POIs disponibles',
+                  AppLocalizations.of(context)!.mapOfflineMessage,
                   style: TextStyle(color: Colors.orange),
                 ),
               ),
@@ -956,12 +956,12 @@ class _MapPageState extends State<MapPage> {
                       const Icon(Icons.map_outlined, size: 64, color: Colors.grey),
                       SizedBox(height: 16.h),
                       Text(
-                        'Aucune donnée de carte disponible hors ligne',
+                        AppLocalizations.of(context)!.mapOfflineNoData,
                         style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 8.h),
                       const Text(
-                        'Connectez-vous à internet pour télécharger les POIs',
+                        AppLocalizations.of(context)!.mapOfflineConnectToDownload,
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],

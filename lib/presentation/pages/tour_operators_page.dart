@@ -47,7 +47,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
         if (mounted) {
           setState(() {
             _isLoading = false;
-            _errorMessage = response.message ?? 'Error loading operators'; // TODO: Add translation key
+            _errorMessage = response.message ?? AppLocalizations.of(context)!.tourOperatorsErrorLoading;
           });
         }
       }
@@ -55,7 +55,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = 'Unexpected error occurred: $e'; // TODO: Add translation key
+          _errorMessage = AppLocalizations.of(context)!.tourOperatorsErrorUnexpected.replaceAll('{error}', '$e');
         });
       }
     }
@@ -101,7 +101,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,
                         ),
-                        child: const Text('Réessayer'),
+                        child: Text(AppLocalizations.of(context)!.tourOperatorsRetry),
                       ),
                     ],
                   ),
@@ -125,7 +125,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           ),
                           SizedBox(height: 20.h),
                            Text(
-                            'Aucun opérateur disponible',
+                            AppLocalizations.of(context)!.tourOperatorsEmptyMessage,
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
@@ -156,7 +156,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                '${_operators.length} partenaire${_operators.length > 1 ? 's' : ''} local${_operators.length > 1 ? 'aux' : ''}',
+                                AppLocalizations.of(context)!.tourOperatorsPartnersCount.replaceAll('{count}', '${_operators.length}'),
                                 style:  TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
@@ -299,7 +299,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child:  Text(
-                                'Recommandé',
+                                AppLocalizations.of(context)!.tourOperatorsFeatured,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 10.sp,

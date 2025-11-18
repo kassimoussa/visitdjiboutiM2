@@ -10,74 +10,79 @@ class HelpPage extends StatefulWidget {
 }
 
 class _HelpPageState extends State<HelpPage> {
-  final List<Map<String, dynamic>> _faqItems = [
-    {
-      'question': 'How to use geolocation?', // TODO: Add translation key
-      'answer': 'Enable location services in your phone settings, then allow Visit Djibouti to access your location. The app will automatically show you nearby POIs.', // TODO: Add translation key
-      'category': 'Navigation',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment réserver un événement ?',
-      'answer': 'Allez dans l\'onglet Événements, sélectionnez un événement qui vous intéresse, puis appuyez sur "S\'inscrire". Vous pouvez gérer vos réservations dans votre profil.',
-      'category': 'Événements',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Puis-je utiliser l\'app sans connexion Internet ?',
-      'answer': 'Oui ! Activez le mode hors ligne dans les paramètres pour télécharger les données essentielles. Les cartes peuvent également être téléchargées pour une utilisation offline.',
-      'category': 'Utilisation',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment ajouter un lieu en favoris ?',
-      'answer': 'Sur la page de détail d\'un POI, appuyez sur l\'icône cœur. Vous retrouverez tous vos favoris dans votre profil.',
-      'category': 'Favoris',
-      'isExpanded': false,
-    },
-    {
-      'question': 'L\'app est-elle gratuite ?',
-      'answer': 'Oui, Visit Djibouti est entièrement gratuite. Certains événements peuvent avoir un coût, mais l\'application elle-même ne nécessite aucun paiement.',
-      'category': 'Général',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment changer la langue de l\'interface ?',
-      'answer': 'Allez dans Paramètres > Langue et sélectionnez votre langue préférée (Français, English, العربية).',
-      'category': 'Paramètres',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Les informations sont-elles mises à jour ?',
-      'answer': 'Oui, notre équipe met à jour régulièrement les informations sur les POIs et événements. Assurez-vous d\'avoir une connexion Internet pour recevoir les dernières données.',
-      'category': 'Contenu',
-      'isExpanded': false,
-    },
-    {
-      'question': 'Comment signaler un problème avec un lieu ?',
-      'answer': 'Utilisez la fonction "Commentaires" dans le menu principal pour nous signaler tout problème. Votre feedback nous aide à améliorer l\'application.',
-      'category': 'Support',
-      'isExpanded': false,
-    },
-  ];
+  late List<Map<String, dynamic>> _faqItems;
+  late String _selectedCategory;
+  late List<String> _categories;
 
-  String _selectedCategory = 'Toutes';
-  final List<String> _categories = [
-    'Toutes',
-    'Navigation',
-    'Événements',
-    'Utilisation',
-    'Favoris',
-    'Général',
-    'Paramètres',
-    'Contenu',
-    'Support',
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final l10n = AppLocalizations.of(context)!;
+
+    _faqItems = [
+      {
+        'question': l10n.helpFaqQuestion1,
+        'answer': l10n.helpFaqAnswer1,
+        'category': l10n.helpCategoryEvents,
+        'isExpanded': false,
+      },
+      {
+        'question': l10n.helpFaqQuestion2,
+        'answer': l10n.helpFaqAnswer2,
+        'category': l10n.helpCategoryUsage,
+        'isExpanded': false,
+      },
+      {
+        'question': l10n.helpFaqQuestion3,
+        'answer': l10n.helpFaqAnswer3,
+        'category': l10n.helpCategoryFavorites,
+        'isExpanded': false,
+      },
+      {
+        'question': l10n.helpFaqQuestion4,
+        'answer': l10n.helpFaqAnswer4,
+        'category': l10n.helpCategoryGeneral,
+        'isExpanded': false,
+      },
+      {
+        'question': l10n.helpFaqQuestion5,
+        'answer': l10n.helpFaqAnswer5,
+        'category': l10n.helpCategorySettings,
+        'isExpanded': false,
+      },
+      {
+        'question': l10n.helpFaqQuestion6,
+        'answer': l10n.helpFaqAnswer6,
+        'category': l10n.helpCategoryContent,
+        'isExpanded': false,
+      },
+      {
+        'question': l10n.helpFaqQuestion7,
+        'answer': l10n.helpFaqAnswer7,
+        'category': l10n.helpCategorySupport,
+        'isExpanded': false,
+      },
+    ];
+
+    _selectedCategory = l10n.helpCategoryAll;
+    _categories = [
+      l10n.helpCategoryAll,
+      l10n.helpCategoryNavigation,
+      l10n.helpCategoryEvents,
+      l10n.helpCategoryUsage,
+      l10n.helpCategoryFavorites,
+      l10n.helpCategoryGeneral,
+      l10n.helpCategorySettings,
+      l10n.helpCategoryContent,
+      l10n.helpCategorySupport,
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     Responsive.init(context);
-    final filteredFAQ = _selectedCategory == 'Toutes'
+    final l10n = AppLocalizations.of(context)!;
+    final filteredFAQ = _selectedCategory == l10n.helpCategoryAll
         ? _faqItems
         : _faqItems.where((item) => item['category'] == _selectedCategory).toList();
 
@@ -99,7 +104,7 @@ class _HelpPageState extends State<HelpPage> {
             child: Column(
               children: [
                Text(
-                  'How can we help you?', // TODO: Add translation key
+                  l10n.helpTitle,
                   style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle1,
                     fontWeight: FontWeight.bold,
@@ -109,7 +114,7 @@ class _HelpPageState extends State<HelpPage> {
                 SizedBox(height: ResponsiveConstants.mediumSpace),
                 TextField(
                   decoration: InputDecoration(
-                    hintText: 'Rechercher dans l\'aide...',
+                    hintText: l10n.helpSearchPlaceholder,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25.r),
@@ -136,22 +141,22 @@ class _HelpPageState extends State<HelpPage> {
                 SizedBox(width: ResponsiveConstants.mediumSpace),
                 _buildQuickAction(
                   Icons.chat,
-                  'Chat en direct',
+                  l10n.helpLiveChat,
                   () => _showLiveChat(),
                 ),
                 _buildQuickAction(
                   Icons.email,
-                  'Nous contacter',
+                  l10n.helpContactUs,
                   () => _showContactForm(),
                 ),
                 _buildQuickAction(
                   Icons.video_library,
-                  'Tutoriels',
+                  l10n.helpTutorials,
                   () => _showTutorials(),
                 ),
                 _buildQuickAction(
                   Icons.bug_report,
-                  'Signaler un bug',
+                  l10n.helpReportBug,
                   () => _showBugReport(),
                 ),
                 SizedBox(width: ResponsiveConstants.mediumSpace),
@@ -217,7 +222,7 @@ class _HelpPageState extends State<HelpPage> {
             child: Column(
               children: [
                Text(
-                  'Vous ne trouvez pas la réponse ?',
+                  AppLocalizations.of(context)!.helpCantFindAnswer,
                   style: TextStyle(
                     fontSize: ResponsiveConstants.body1,
                     fontWeight: FontWeight.w600,
@@ -230,7 +235,7 @@ class _HelpPageState extends State<HelpPage> {
                       child: OutlinedButton.icon(
                         onPressed: () => _showContactForm(),
                         icon: const Icon(Icons.email),
-                        label: const Text('Nous contacter'),
+                        label: Text(AppLocalizations.of(context)!.helpContactUs),
                       ),
                     ),
                     SizedBox(width: ResponsiveConstants.smallSpace),
@@ -238,7 +243,7 @@ class _HelpPageState extends State<HelpPage> {
                       child: ElevatedButton.icon(
                         onPressed: () => _showLiveChat(),
                         icon: const Icon(Icons.chat),
-                        label: const Text('Chat en direct'),
+                        label: Text(AppLocalizations.of(context)!.helpLiveChat),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
                           foregroundColor: Colors.white,
@@ -365,7 +370,7 @@ class _HelpPageState extends State<HelpPage> {
             Row(
               children: [
                Text(
-                  'Chat en direct',
+                  AppLocalizations.of(context)!.helpLiveChat,
                   style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle1,
                     fontWeight: FontWeight.bold,
@@ -396,7 +401,7 @@ class _HelpPageState extends State<HelpPage> {
                     ),
                     SizedBox(height: ResponsiveConstants.mediumSpace),
                    Text(
-                      'Chat en direct',
+                      AppLocalizations.of(context)!.helpLiveChat,
                       style: TextStyle(
                         fontSize: ResponsiveConstants.subtitle2,
                         fontWeight: FontWeight.bold,
@@ -404,7 +409,7 @@ class _HelpPageState extends State<HelpPage> {
                     ),
                     SizedBox(height: ResponsiveConstants.smallSpace),
                     Text(
-                      'Notre équipe est disponible de 8h à 18h\npour répondre à vos questions en temps réel.',
+                      AppLocalizations.of(context)!.helpLiveChatDescription,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey[600]),
                     ),
@@ -413,8 +418,8 @@ class _HelpPageState extends State<HelpPage> {
                       onPressed: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Connexion au chat en cours...'),
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.helpLiveChatConnecting),
                           ),
                         );
                       },
@@ -422,7 +427,7 @@ class _HelpPageState extends State<HelpPage> {
                         backgroundColor: const Color(0xFF3860F8),
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('Démarrer le chat'),
+                      child: Text(AppLocalizations.of(context)!.helpLiveChatStart),
                     ),
                   ],
                 ),
@@ -448,7 +453,7 @@ class _HelpPageState extends State<HelpPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
                Text(
-                'Nous contacter',
+                AppLocalizations.of(context)!.helpContactUs,
                 style: TextStyle(
                   fontSize: ResponsiveConstants.subtitle1,
                   fontWeight: FontWeight.bold,
@@ -457,7 +462,7 @@ class _HelpPageState extends State<HelpPage> {
               SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'Sujet',
+                  labelText: AppLocalizations.of(context)!.helpContactSubject,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
@@ -467,7 +472,7 @@ class _HelpPageState extends State<HelpPage> {
               TextField(
                 maxLines: 4,
                 decoration: InputDecoration(
-                  labelText: 'Votre message',
+                  labelText: AppLocalizations.of(context)!.helpContactMessage,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
@@ -476,7 +481,7 @@ class _HelpPageState extends State<HelpPage> {
               SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'Votre email (optionnel)',
+                  labelText: AppLocalizations.of(context)!.helpContactEmail,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
@@ -488,7 +493,7 @@ class _HelpPageState extends State<HelpPage> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Annuler'),
+                      child: Text(AppLocalizations.of(context)!.helpCancel),
                     ),
                   ),
                   SizedBox(width: ResponsiveConstants.smallSpace),
@@ -497,9 +502,9 @@ class _HelpPageState extends State<HelpPage> {
                       onPressed: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Message envoyé avec succès !'),
-                            backgroundColor: Color(0xFF10B981),
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.helpContactSuccess),
+                            backgroundColor: const Color(0xFF10B981),
                           ),
                         );
                       },
@@ -507,7 +512,7 @@ class _HelpPageState extends State<HelpPage> {
                         backgroundColor: const Color(0xFF3860F8),
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('Envoyer'),
+                      child: Text(AppLocalizations.of(context)!.helpSend),
                     ),
                   ),
                 ],
@@ -529,7 +534,7 @@ class _HelpPageState extends State<HelpPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
              Text(
-              'Tutoriels vidéo',
+              AppLocalizations.of(context)!.helpTutorialsTitle,
               style: TextStyle(
                 fontSize: ResponsiveConstants.subtitle1,
                 fontWeight: FontWeight.bold,
@@ -538,20 +543,20 @@ class _HelpPageState extends State<HelpPage> {
             SizedBox(height: ResponsiveConstants.mediumSpace),
             ListTile(
               leading: const Icon(Icons.play_circle, color: Color(0xFF3860F8)),
-              title: const Text('Comment utiliser la carte'),
-              subtitle: const Text('3 min'),
+              title: Text(AppLocalizations.of(context)!.helpTutorialMap),
+              subtitle: Text(AppLocalizations.of(context)!.helpTutorialDuration3),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.play_circle, color: Color(0xFF3860F8)),
-              title: const Text('Réserver un événement'),
-              subtitle: const Text('2 min'),
+              title: Text(AppLocalizations.of(context)!.helpTutorialBooking),
+              subtitle: Text(AppLocalizations.of(context)!.helpTutorialDuration2),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.play_circle, color: Color(0xFF3860F8)),
-              title: const Text('Gérer ses favoris'),
-              subtitle: const Text('1 min'),
+              title: Text(AppLocalizations.of(context)!.helpTutorialFavorites),
+              subtitle: Text(AppLocalizations.of(context)!.helpTutorialDuration1),
               onTap: () {},
             ),
             SizedBox(height: ResponsiveConstants.mediumSpace),
@@ -575,7 +580,7 @@ class _HelpPageState extends State<HelpPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
                Text(
-                'Signaler un problème',
+                AppLocalizations.of(context)!.helpReportBug,
                 style: TextStyle(
                   fontSize: ResponsiveConstants.subtitle1,
                   fontWeight: FontWeight.bold,
@@ -584,7 +589,7 @@ class _HelpPageState extends State<HelpPage> {
               SizedBox(height: ResponsiveConstants.mediumSpace),
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'Titre du problème',
+                  labelText: AppLocalizations.of(context)!.helpBugTitle,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
@@ -594,8 +599,8 @@ class _HelpPageState extends State<HelpPage> {
               TextField(
                 maxLines: 4,
                 decoration: InputDecoration(
-                  labelText: 'Description détaillée',
-                  hintText: 'Décrivez le problème rencontré...',
+                  labelText: AppLocalizations.of(context)!.helpBugDescription,
+                  hintText: AppLocalizations.of(context)!.helpBugDescriptionHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
@@ -607,7 +612,7 @@ class _HelpPageState extends State<HelpPage> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Annuler'),
+                      child: Text(AppLocalizations.of(context)!.helpCancel),
                     ),
                   ),
                   SizedBox(width: ResponsiveConstants.smallSpace),
@@ -616,9 +621,9 @@ class _HelpPageState extends State<HelpPage> {
                       onPressed: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Rapport de bug envoyé !'),
-                            backgroundColor: Color(0xFF10B981),
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.helpBugReportSent),
+                            backgroundColor: const Color(0xFF10B981),
                           ),
                         );
                       },
@@ -626,7 +631,7 @@ class _HelpPageState extends State<HelpPage> {
                         backgroundColor: const Color(0xFFEF4444),
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('Signaler'),
+                      child: Text(AppLocalizations.of(context)!.helpReport),
                     ),
                   ),
                 ],
