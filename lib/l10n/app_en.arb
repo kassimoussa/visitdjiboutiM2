@@ -604,5 +604,7 @@
   },
   "tourRegistrationConfirm": "Confirm registration",
   "tourRegistrationSuccessMessage": "Registration confirmed successfully!",
-  "tourRegistrationErrorMessage": "Error during registration"
+  "tourRegistrationErrorMessage": "Error during registration",
+
+  "reviewsBeFirst": "Be the first to leave a review"
 }

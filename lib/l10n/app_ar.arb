@@ -605,5 +605,7 @@
   },
   "tourRegistrationConfirm": "تأكيد التسجيل",
   "tourRegistrationSuccessMessage": "تم تأكيد التسجيل بنجاح!",
-  "tourRegistrationErrorMessage": "خطأ أثناء التسجيل"
+  "tourRegistrationErrorMessage": "خطأ أثناء التسجيل",
+
+  "reviewsBeFirst": "كن أول من يترك تقييماً"
 }

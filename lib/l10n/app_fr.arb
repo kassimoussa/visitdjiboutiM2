@@ -605,5 +605,7 @@
   },
   "tourRegistrationConfirm": "Confirmer l'inscription",
   "tourRegistrationSuccessMessage": "Inscription confirmée avec succès!",
-  "tourRegistrationErrorMessage": "Erreur lors de l'inscription"
+  "tourRegistrationErrorMessage": "Erreur lors de l'inscription",
+
+  "reviewsBeFirst": "Soyez le premier à donner votre avis"
 }
