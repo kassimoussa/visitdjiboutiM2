@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visitdjibouti/core/utils/responsive.dart';
+import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 import '../../generated/l10n/app_localizations.dart';

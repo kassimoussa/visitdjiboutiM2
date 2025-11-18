@@ -1,7 +1,6 @@
 import '../api/api_client.dart';
 import '../api/api_constants.dart';
 import '../models/tour.dart';
-import '../models/simple_tour.dart';
 import '../models/tour_reservation.dart';
 
 class TourService {
