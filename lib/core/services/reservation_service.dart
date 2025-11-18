@@ -280,12 +280,15 @@ class ReservationService {
       );
     }
 
-    if (event.maxParticipants != null &&
-        (event.currentParticipants + people) > event.maxParticipants!) {
-      return ApiResponse<Reservation>(
-        success: false,
-        message: 'Pas assez de places disponibles (${event.availableSpots} restantes)',
-      );
+    // Vérifier les places disponibles SEULEMENT si l'événement a une limite
+    // Si maxParticipants est null, c'est illimité - pas de validation
+    if (event.maxParticipants != null && event.availableSpots != null) {
+      if (people > event.availableSpots!) {
+        return ApiResponse<Reservation>(
+          success: false,
+          message: 'Pas assez de places disponibles (${event.availableSpots} restantes)',
+        );
+      }
     }
 
     // Use provided date or default to event start date
