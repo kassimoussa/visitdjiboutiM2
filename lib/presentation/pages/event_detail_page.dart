@@ -811,10 +811,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
               ),
               SizedBox(width: ResponsiveConstants.smallSpace),
               Text(
-                // Si maxParticipants est null ou 0 (illimité), afficher seulement le nombre d'inscrits
+                // Si maxParticipants est null ou 0 (illimité), afficher le nombre avec label
                 (event.maxParticipants == null || event.maxParticipants == 0)
-                    ? '${event.currentParticipants ?? 0}'
-                    : '${event.currentParticipants}/${event.maxParticipants}',
+                    ? AppLocalizations.of(context)!.eventDetailParticipantsWithCount(event.currentParticipants ?? 0)
+                    : '${event.currentParticipants}/${event.maxParticipants} ${AppLocalizations.of(context)!.eventDetailParticipantsLabel}',
                 style: const TextStyle(
                   color: Color(0xFF3860F8),
                   fontWeight: FontWeight.w500,

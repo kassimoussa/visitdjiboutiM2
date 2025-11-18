@@ -128,6 +128,15 @@
   "eventDetailInvalidEmail": "Email invalide",
   "eventDetailParticipants": "Participants",
   "eventDetailParticipantsLabel": "participants",
+  "eventDetailParticipantsWithCount": "{count} participants",
+  "@eventDetailParticipantsWithCount": {
+    "description": "Number of participants with label",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "eventDetailPopular": "Populaire",
   "eventDetailPrice": "Prix",
   "eventDetailRegistration": "Inscription",

@@ -128,6 +128,15 @@
   "eventDetailInvalidEmail": "بريد إلكتروني غير صالح",
   "eventDetailParticipants": "المشاركون",
   "eventDetailParticipantsLabel": "مشاركون",
+  "eventDetailParticipantsWithCount": "{count} مشاركون",
+  "@eventDetailParticipantsWithCount": {
+    "description": "Number of participants with label",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "eventDetailPopular": "شائع",
   "eventDetailPrice": "السعر",
   "eventDetailRegistration": "التسجيل",
