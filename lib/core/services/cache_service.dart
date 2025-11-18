@@ -8,7 +8,7 @@ class CacheService {
   factory CacheService() => _instance;
   CacheService._internal();
 
-  static const Duration _defaultCacheDuration = Duration(minutes: 15);
+  static const Duration _defaultCacheDuration = Duration(minutes: 10);
   static const Duration _offlineCacheDuration = Duration(days: 7); // Cache plus long pour mode hors ligne
 
   // Configuration LRU (Least Recently Used)
