@@ -232,8 +232,13 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         if (number == null || number < 1) {
           return 'Minimum 1 personne';
         }
-        if (_isEvent && widget.event!.maxParticipants != null) {
-          final available = widget.event!.availableSpots ?? 0;
+        // Valider seulement si maxParticipants ET availableSpots sont définis (pas null)
+        // Si null, cela signifie qu'il n'y a pas de limite
+        if (_isEvent &&
+            widget.event!.maxParticipants != null &&
+            widget.event!.availableSpots != null &&
+            widget.event!.availableSpots! > 0) {
+          final available = widget.event!.availableSpots!;
           if (number > available) {
             return 'Maximum $available places disponibles';
           }

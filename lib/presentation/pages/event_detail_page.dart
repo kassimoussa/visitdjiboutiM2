@@ -1430,8 +1430,12 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                           if (value?.isEmpty ?? true) return fieldRequiredText;
                           final count = int.tryParse(value!);
                           if (count == null || count < 1) return invalidNumberText;
-                          if ((widget.event.maxParticipants ?? 0) > 0 && count > (widget.event.maxParticipants ?? 0)) {
-                            return '$maxParticipantsText ${widget.event.maxParticipants}';
+                          // Valider contre availableSpots (places restantes) seulement si défini
+                          // Si null, cela signifie qu'il n'y a pas de limite
+                          if (widget.event.availableSpots != null && widget.event.availableSpots! > 0) {
+                            if (count > widget.event.availableSpots!) {
+                              return '$maxParticipantsText ${widget.event.availableSpots}';
+                            }
                           }
                           return null;
                         },
