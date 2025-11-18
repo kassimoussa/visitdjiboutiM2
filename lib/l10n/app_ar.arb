@@ -1,16 +1,13 @@
 {
   "@@locale": "ar",
-
   "appTitle": "زيارة جيبوتي",
   "@appTitle": {
     "description": "عنوان التطبيق"
   },
-
   "appDescription": "اكتشف جمال جيبوتي",
   "@appDescription": {
     "description": "وصف التطبيق"
   },
-
   "authAcceptTerms": "أوافق على",
   "authAcceptTermsAnd": "و",
   "authBackToLogin": "العودة إلى تسجيل الدخول",
@@ -41,9 +38,7 @@
   "authTermsAndConditions": "الشروط والأحكام",
   "authWelcomeBack": "مرحبا بعودتك",
   "authWelcomeToApp": "مرحبا بك في زيارة جيبوتي",
-
   "categoryFilterClear": "مسح الفلاتر",
-
   "commonAddress": "العنوان",
   "commonAll": "الكل",
   "commonAllFeminine": "كل",
@@ -95,10 +90,8 @@
   "commonUnknownPlace": "مكان غير معروف",
   "commonVisitorTips": "نصائح للزوار",
   "commonWebsite": "الموقع الإلكتروني",
-
   "discoverSearchHint": "ابحث عن الأماكن...",
   "discoverTitle": "اكتشف",
-
   "drawerAbout": "حول",
   "drawerChooseLanguage": "اختر اللغة",
   "drawerConnected": "متصل",
@@ -113,7 +106,6 @@
   "drawerReservationsSubtitle": "إدارة حجوزاتك",
   "drawerSettings": "الإعدادات",
   "drawerVersion": "الإصدار",
-
   "embassiesCall": "اتصل",
   "embassiesCannotOpenEmail": "لا يمكن فتح البريد الإلكتروني",
   "embassiesCannotOpenPhone": "لا يمكن فتح الهاتف",
@@ -125,11 +117,9 @@
   "embassiesNoForeignSubtitle": "المعلومات غير متوفرة",
   "embassiesTitle": "السفارات",
   "embassiesWebsite": "الموقع الإلكتروني",
-
   "essentialsNoLinksAvailable": "لا توجد روابط متاحة",
   "essentialsTitle": "معلومات أساسية",
   "essentialsUnavailableInfo": "المعلومات غير متوفرة",
-
   "eventDetailDetailsUnavailable": "التفاصيل غير متوفرة",
   "eventDetailEndDate": "تاريخ الانتهاء",
   "eventDetailEventEnded": "انتهى الحدث",
@@ -160,7 +150,6 @@
   "eventDetailSpecialRequirementsHint": "الحساسية، الاحتياجات الخاصة، إلخ.",
   "eventDetailSpecialRequirementsLabel": "متطلبات خاصة (اختياري)",
   "eventDetailTotalToPay": "المجموع المستحق",
-
   "eventsAddedToFavorites": "تمت إضافة {eventName} إلى المفضلة",
   "@eventsAddedToFavorites": {
     "description": "رسالة عند إضافة حدث إلى المفضلة",
@@ -171,7 +160,6 @@
       }
     }
   },
-
   "eventsAll": "الكل",
   "eventsClearFilters": "مسح الفلاتر",
   "eventsFree": "مجاني",
@@ -179,7 +167,6 @@
   "eventsOngoing": "جاري",
   "eventsPast": "السابقة",
   "eventsPopular": "أحداث شائعة",
-
   "eventsRemovedFromFavorites": "تمت إزالة {eventName} من المفضلة",
   "@eventsRemovedFromFavorites": {
     "description": "رسالة عند إزالة حدث من المفضلة",
@@ -190,12 +177,10 @@
       }
     }
   },
-
   "eventsSearchHint": "ابحث عن الأحداث...",
   "eventsSoldOut": "مباع بالكامل",
   "eventsTitle": "الأحداث",
   "eventsUpcoming": "القادمة",
-
   "favoritesAddedToFavorites": "تمت الإضافة إلى المفضلة",
   "favoritesAllTab": "الكل",
   "favoritesEmpty": "لا توجد مفضلة",
@@ -207,9 +192,7 @@
   "favoritesSortRating": "التقييم",
   "favoritesSortRecent": "الأحدث",
   "favoritesTitle": "المفضلة",
-
   "featuredBadge": "موصى به",
-
   "homeDiscover": "اكتشف",
   "homeDiscoverByRegion": "اكتشف حسب المنطقة",
   "homeDiscoverByRegionSubtitle": "استكشف مناطق جيبوتي الستة",
@@ -227,7 +210,6 @@
   "homeTourOperators": "منظمو الرحلات",
   "homeTourOperatorsSubtitle": "مشغلون معتمدون",
   "homeUpcomingEvents": "الأحداث القادمة",
-
   "homePopularActivities": "أنشطة شائعة",
   "@homePopularActivities": {
     "description": "عنوان قسم الأنشطة الشائعة في الصفحة الرئيسية"
@@ -236,11 +218,9 @@
   "@homeNoActivities": {
     "description": "رسالة يتم عرضها عند عدم وجود أنشطة لإظهارها"
   },
-
   "languageArabic": "العربية",
   "languageEnglish": "English",
   "languageFrench": "Français",
-
   "mapError": "خطأ في الخريطة: {error}",
   "@mapError": {
     "description": "Map error message",
@@ -250,7 +230,6 @@
       }
     }
   },
-
   "mapErrorLoadingPois": "خطأ في تحميل الأماكن: {error}",
   "@mapErrorLoadingPois": {
     "description": "Error loading POIs message",
@@ -260,7 +239,6 @@
       }
     }
   },
-
   "mapTitle": "الخريطة",
   "mapUnknownPlace": "مكان غير معروف",
   "mapLocationPermissionDenied": "تم رفض إذن الموقع",
@@ -279,13 +257,11 @@
   "mapOfflineMessage": "خريطة غير متصلة - عرض قائمة الأماكن المتاحة",
   "mapOfflineNoData": "لا توجد بيانات خريطة متاحة دون اتصال",
   "mapOfflineConnectToDownload": "اتصل بالإنترنت لتنزيل الأماكن",
-
   "navigationHome": "الرئيسية",
   "navigationDiscover": "اكتشف",
   "navigationEvents": "الأحداث",
   "navigationMap": "الخريطة",
   "navigationFavorites": "المفضلة",
-
   "operatorAddress": "العنوان",
   "operatorCall": "اتصل",
   "operatorContact": "اتصل",
@@ -308,7 +284,6 @@
   "operatorTours": "الجولات",
   "operatorViews": "مشاهدات",
   "operatorWebsite": "الموقع الإلكتروني",
-
   "poiCallError": "خطأ في الاتصال: {error}",
   "@poiCallError": {
     "description": "Call error message",
@@ -318,7 +293,6 @@
       }
     }
   },
-
   "poiCannotCall": "لا يمكن الاتصال بـ {phone}",
   "@poiCannotCall": {
     "description": "Cannot make call message",
@@ -328,9 +302,7 @@
       }
     }
   },
-
   "poiCannotOpenEmail": "لا يمكن فتح البريد الإلكتروني",
-
   "poiEmailError": "خطأ في البريد الإلكتروني: {error}",
   "@poiEmailError": {
     "description": "Email error message",
@@ -340,11 +312,9 @@
       }
     }
   },
-
   "poiNoContact": "لا توجد معلومات اتصال متاحة",
   "poiTourOperatorsTitle": "منظمو الرحلات السياحية",
   "poiLicensedOperator": "مشغل مرخص",
-
   "profileAboutApp": "حول التطبيق",
   "profileComingSoon": "قريبا",
   "profileComingSoonMessage": "ستتوفر هذه الميزة قريبا",
@@ -356,7 +326,6 @@
   "profileHelp": "مساعدة",
   "profileHelpSubtitle": "تحتاج إلى مساعدة؟",
   "profileLanguage": "اللغة",
-
   "profileLanguageChanged": "تم تغيير اللغة إلى {language}",
   "@profileLanguageChanged": {
     "description": "Language changed confirmation",
@@ -366,7 +335,6 @@
       }
     }
   },
-
   "profileLogoutConfirm": "تأكيد تسجيل الخروج",
   "profileLogoutSubtitle": "تسجيل الخروج من حسابك",
   "profileLogoutTitle": "تسجيل الخروج",
@@ -380,7 +348,6 @@
   "profileSettingsSubtitle": "إدارة تفضيلاتك",
   "profileTitle": "الملف الشخصي",
   "profileUser": "المستخدم",
-
   "reservationsAll": "الكل ({count})",
   "@reservationsAll": {
     "description": "All reservations tab",
@@ -390,8 +357,7 @@
       }
     }
   },
-
-  "reservationsCancelled": "ملغاة ({count})",
+  "reservationsCancelled": "تم إلغاء الحجز",
   "@reservationsCancelled": {
     "description": "Cancelled reservations tab",
     "placeholders": {
@@ -400,9 +366,7 @@
       }
     }
   },
-
   "reservationsCancelTitle": "إلغاء الحجز",
-
   "reservationsConfirmed": "مؤكدة ({count})",
   "@reservationsConfirmed": {
     "description": "Confirmed reservations tab",
@@ -412,7 +376,6 @@
       }
     }
   },
-
   "reservationsDeleteTitle": "حذف الحجز",
   "reservationsNoneAll": "لا توجد حجوزات",
   "reservationsNoneCancelled": "لا توجد حجوزات ملغاة",
@@ -422,7 +385,6 @@
   "reservationsTabConfirmed": "مؤكدة",
   "reservationsTabPending": "قيد الانتظار",
   "reservationsTabCancelled": "ملغاة",
-
   "reservationsPending": "قيد الانتظار ({count})",
   "@reservationsPending": {
     "description": "Pending reservations tab",
@@ -432,7 +394,6 @@
       }
     }
   },
-
   "settingsActions": "الإجراءات",
   "settingsBackupData": "نسخ احتياطي للبيانات",
   "settingsBackupDataSubtitle": "نسخ احتياطي تلقائي",
@@ -446,7 +407,6 @@
   "settingsEventReminders": "تذكيرات الأحداث",
   "settingsEventRemindersSubtitle": "استقبال التذكيرات",
   "settingsGeneral": "عام",
-
   "settingsImageCache": "{size} في ذاكرة التخزين المؤقت",
   "@settingsImageCache": {
     "description": "Image cache size",
@@ -456,7 +416,6 @@
       }
     }
   },
-
   "settingsLocation": "الموقع",
   "settingsLocationServices": "خدمات الموقع",
   "settingsLocationServicesSubtitle": "تفعيل الموقع",
@@ -475,7 +434,6 @@
   "settingsResetSettingsSubtitle": "استعادة الإعدادات الافتراضية",
   "settingsSecurityPrivacy": "الأمان والخصوصية",
   "settingsTermsSubtitle": "شروط الاستخدام",
-
   "tourCall": "اتصل",
   "tourDescription": "الوصف",
   "tourEmail": "البريد الإلكتروني",
@@ -636,7 +594,6 @@
   "tourRegistrationConfirm": "تأكيد التسجيل",
   "tourRegistrationSuccessMessage": "تم تأكيد التسجيل بنجاح!",
   "tourRegistrationErrorMessage": "خطأ أثناء التسجيل",
-
   "helpFaqQuestion1": "كيفية حجز حدث؟",
   "helpFaqAnswer1": "انتقل إلى علامة تبويب الأحداث، واختر حدثًا يهمك، ثم اضغط على \"التسجيل\". يمكنك إدارة حجوزاتك في ملفك الشخصي.",
   "helpFaqQuestion2": "هل يمكنني استخدام التطبيق بدون اتصال بالإنترنت؟",
@@ -689,7 +646,6 @@
   "helpBugDescription": "صف المشكلة التي واجهتها...",
   "helpBugReported": "تم إرسال تقرير الخطأ!",
   "helpReport": "إبلاغ",
-
   "reservationsEmptyMessage": "استكشف أماكننا وأحداثنا لإجراء حجزك الأول!",
   "reservationsDetailsTitle": "تفاصيل الحجز",
   "reservationsCancelConfirm": "هل أنت متأكد من أنك تريد إلغاء الحجز رقم {confirmationNumber}؟",
@@ -702,7 +658,6 @@
   },
   "reservationsNo": "لا",
   "reservationsYesCancel": "نعم، إلغاء",
-  "reservationsCancelled": "تم إلغاء الحجز",
   "reservationsCancelError": "خطأ أثناء الإلغاء",
   "reservationsDeleteConfirm": "هل أنت متأكد من أنك تريد حذف الحجز رقم {confirmationNumber} نهائيًا؟\n\nهذا الإجراء لا رجعة فيه.",
   "@reservationsDeleteConfirm": {
@@ -777,7 +732,6 @@
   "reservationsStatusUnknown": "غير معروف",
   "reservationsTypePoi": "مكان",
   "reservationsTypeEvent": "حدث",
-
   "settingsLanguageFrench": "الفرنسية",
   "settingsRegionAll": "جميع المناطق",
   "settingsCacheSizeCalculating": "جاري الحساب...",
@@ -837,9 +791,8 @@
   "settingsResetMessage": "سيؤدي هذا الإجراء إلى استعادة جميع الإعدادات إلى الافتراضية. سيتم الاحتفاظ بمفضلاتك وحجوزاتك.",
   "settingsResetSuccess": "تمت استعادة الإعدادات",
   "settingsRestore": "استعادة",
-
   "offlineStatusOnline": "متصل - جميع الميزات متاحة",
-  "offlineStatusOffline": "غير متصل - تم تفعيل وضع ذاكرة التخزين المؤقت",
+  "offlineStatusOffline": "غير متصل - تم تفعيل وضع التخزين المؤقت",
   "offlineDataTitle": "البيانات دون اتصال",
   "offlineTotalItems": "إجمالي العناصر",
   "offlinePois": "نقاط الاهتمام",
@@ -853,7 +806,6 @@
   "offlineDownloadForOfflineSubtitle": "تنزيل جميع البيانات المهمة",
   "offlineClearCache": "مسح ذاكرة التخزين المؤقت",
   "offlineClearCacheSubtitle": "إزالة جميع البيانات المخزنة مؤقتًا",
-
   "reviewFormPleaseRate": "يرجى تحديد تقييم",
   "reviewFormUpdated": "تم تحديث التقييم بنجاح",
   "reviewFormPublished": "تم نشر التقييم بنجاح",
@@ -874,7 +826,6 @@
   "reviewFormCommentHint": "شارك تجربتك بالتفصيل...",
   "reviewFormUpdate": "تحديث",
   "reviewFormPublish": "نشر",
-
   "reviewsBeFirst": "كن أول من يترك تقييمًا",
   "reviewsNoReviewsYet": "لا توجد تقييمات حتى الآن",
   "reviewsClickToReview": "انقر لترك تقييم",
@@ -890,7 +841,6 @@
   "reviewsLoadMore": "تحميل المزيد من التقييمات",
   "reviewsOperatorResponse": "رد من المنشأة",
   "reviewsHelpful": "مفيد",
-
   "reviewsLoadError": "خطأ في تحميل التقييمات: {error}",
   "@reviewsLoadError": {
     "placeholders": {
@@ -922,7 +872,6 @@
   },
   "reviewsSectionTitle": "التقييمات",
   "reviewsWriteReview": "كتابة تقييم",
-
   "reservationFormTitle": "حجز {type}",
   "@reservationFormTitle": {
     "placeholders": {
@@ -954,7 +903,6 @@
   "reservationFormConfirm": "تأكيد الحجز",
   "reservationFormSuccess": "تم إنشاء الحجز بنجاح!",
   "reservationFormError": "خطأ في إنشاء الحجز",
-
   "contactOperatorTitle": "الاتصال بـ {name}",
   "@contactOperatorTitle": {
     "placeholders": {
@@ -992,17 +940,12 @@
       }
     }
   },
-
   "tourOperatorUnknown": "مشغل غير معروف",
   "tourOperatorCallButton": "اتصال",
   "tourOperatorWebsiteButton": "الموقع الإلكتروني",
-
   "poiOperatorsServingTitle": "المشغلون الذين يخدمون هذا المكان",
-
   "activitiesSearchHint": "ابحث عن نشاط...",
-
   "toursSelectDifficulty": "اختر الصعوبة",
-
   "termsLastUpdated": "آخر تحديث: 23 أكتوبر 2025",
   "termsSection1Title": "1. قبول الشروط",
   "termsSection1Content": "باستخدام تطبيق زيارة جيبوتي (المشار إليه فيما يلي \"التطبيق\")، فإنك توافق على الالتزام بشروط الاستخدام هذه. إذا كنت لا توافق على هذه الشروط، يرجى عدم استخدام التطبيق.",
@@ -1032,7 +975,6 @@
   "termsSection13Content": "يمكننا تعديل هذه الشروط في أي وقت. سيتم نشر التعديلات في التطبيق وتدخل حيز التنفيذ فورًا. استمرارك في استخدام التطبيق يشكل قبولك للشروط المعدلة.",
   "termsSection14Title": "14. الاتصال",
   "termsSection14Content": "لأي أسئلة بخصوص شروط الاستخدام هذه، اتصل بنا:\n\nمكتب السياحة في جيبوتي\nالبريد الإلكتروني: info@visitdjibouti.dj\nالهاتف: +253 XXX XXX",
-
   "activitiesTitle": "الأنشطة",
   "activitiesPopular": "أنشطة شائعة",
   "activitiesDifficulty": "الصعوبة",
@@ -1041,7 +983,6 @@
   "activitiesAvailableSpots": "أماكن متاحة",
   "activitiesNoActivitiesFound": "لم يتم العثور على أنشطة",
   "activitiesTryModifyingFilters": "حاول تعديل الفلاتر",
-
   "personalInfoUser": "مستخدم",
   "personalInfoVerifiedAccount": "حساب موثق",
   "personalInfoBasicInfo": "معلومات أساسية",
@@ -1061,9 +1002,7 @@
         "type": "String"
       }
     }
-  }
-,
-
+  },
   "securityChangePassword": "تغيير كلمة المرور",
   "securityCurrentPassword": "كلمة المرور الحالية",
   "securityCurrentPasswordRequired": "كلمة المرور الحالية مطلوبة",
@@ -1083,7 +1022,6 @@
       }
     }
   },
-
   "aboutAppName": "زيارة جيبوتي",
   "aboutVersion": "الإصدار {version}",
   "@aboutVersion": {
@@ -1097,11 +1035,9 @@
   "aboutOrganization": "ANT - الوكالة الوطنية للسياحة",
   "aboutOrganizationFull": "الوكالة الوطنية للسياحة في جيبوتي",
   "aboutOrganizationDescription": "المنظمة الرسمية لتعزيز وتطوير السياحة",
-
   "aboutStatsPois": "نقاط الاهتمام",
   "aboutStatsEvents": "الفعاليات",
   "aboutStatsRegions": "المناطق",
-
   "aboutFeaturesTitle": "الميزات",
   "aboutFeatureDiscoverTitle": "اكتشف",
   "aboutFeatureDiscoverDesc": "أكثر من 50 نقطة اهتمام مع صور وأوصاف تفصيلية",
@@ -1113,27 +1049,23 @@
   "aboutFeatureFavoritesDesc": "احفظ أماكنك المفضلة وخطط لزياراتك",
   "aboutFeatureOfflineTitle": "وضع عدم الاتصال",
   "aboutFeatureOfflineDesc": "الوصول إلى المعلومات حتى بدون اتصال بالإنترنت",
-
   "aboutDevelopedByTitle": "تطوير بواسطة",
   "aboutPartnersTitle": "الشركاء",
   "aboutPartnerMinistry": "وزارة التجارة والسياحة",
   "aboutPartnerMinistryDesc": "جمهورية جيبوتي",
   "aboutPartnerHotels": "جمعية الفنادق",
   "aboutPartnerHotelsDesc": "قطاع السياحة الخاص",
-
   "aboutTechnologiesTitle": "التقنيات",
   "aboutTechFlutter": "إطار عمل الهاتف المحمول متعدد المنصات",
   "aboutTechDart": "لغة برمجة حديثة",
   "aboutTechLaravel": "واجهة برمجة تطبيقات خلفية قوية وآمنة",
   "aboutTechMaps": "رسم الخرائط وتحديد الموقع الجغرافي",
-
   "aboutContactTitle": "الاتصال والروابط",
   "aboutContactWebsite": "الموقع الرسمي",
   "aboutContactEmail": "البريد الإلكتروني",
   "aboutContactPhone": "الهاتف",
   "aboutContactAddress": "العنوان",
   "aboutContactAddressValue": "ساحة 27 يونيو، مدينة جيبوتي",
-
   "aboutCopyright": "© {year} الوكالة الوطنية للسياحة في جيبوتي",
   "@aboutCopyright": {
     "placeholders": {
@@ -1143,9 +1075,73 @@
     }
   },
   "aboutCopyrightDescription": "جميع الحقوق محفوظة. تم تطوير هذا التطبيق للترويج للسياحة في جيبوتي.",
-
   "aboutOpeningWebsite": "فتح الموقع الإلكتروني...",
   "aboutOpeningEmail": "فتح تطبيق البريد الإلكتروني...",
   "aboutOpeningPhone": "فتح تطبيق الهاتف...",
-  "aboutOpeningMap": "فتح الخريطة..."
+  "aboutOpeningMap": "فتح الخريطة...",
+  "tourOperatorsErrorLoading": "خطأ في تحميل المشغلين",
+  "tourOperatorsErrorUnexpected": "خطأ غير متوقع: {error}",
+  "tourOperatorsRetry": "إعادة المحاولة",
+  "tourOperatorsEmptyMessage": "لا يوجد مشغلون متاحون",
+  "tourOperatorsPartnersCount": "{count} شريك محلي",
+  "tourOperatorsFeatured": "مميز",
+  "helpLiveChatDescription": "فريقنا متاح من الساعة 8 صباحًا حتى 6 مساءً\\nللإجابة على أسئلتك في الوقت الفعلي.",
+  "helpLiveChatStart": "بدء الدردشة",
+  "helpCancel": "إلغاء",
+  "helpContactSuccess": "تم إرسال الرسالة بنجاح!",
+  "helpTutorialDuration1": "1 دقيقة",
+  "helpTutorialDuration2": "2 دقيقة",
+  "helpTutorialDuration3": "3 دقائق",
+  "helpTutorialBooking": "حجز حدث",
+  "helpBugDescriptionHint": "صِف المشكلة التي واجهتها...",
+  "helpBugReportSent": "تم إرسال تقرير الخطأ!",
+  "reservationsNA": "غير متاح",
+  "reservationsErrorUnexpected": "خطأ غير متوقع: {error}",
+  "reservationsNameUnavailable": "الاسم غير متاح",
+  "reservationsDate": "التاريخ",
+  "reservationsCancel": "إلغاء",
+  "reservationsDelete": "حذف",
+  "reservationsRetry": "إعادة المحاولة",
+  "reservationsTourUnavailable": "الجولة غير متاحة",
+  "reservationsTourNumber": "الحجز #{number}",
+  "reservationsActivityNumber": "التسجيل #{number}",
+  "reservationsDetailNumber": "الرقم",
+  "reservationsDetailPlace": "المكان/الحدث",
+  "reservationsDetailType": "النوع",
+  "reservationsDetailStatus": "الحالة",
+  "reservationsDetailContact": "جهة الاتصال",
+  "reservationsDetailEmail": "البريد الإلكتروني",
+  "reservationsDetailPhone": "الهاتف",
+  "reservationsDetailName": "الاسم",
+  "reservationsDeleteConfirmation": "هل أنت متأكد من رغبتك في حذف الحجز رقم {number} نهائيًا؟\\n\\nهذا الإجراء لا رجعة فيه.",
+  "reservationsTourNumberLabel": "الحجز #",
+  "reservationsDeleteConfirmButton": "نعم، احذف",
+  "offlineLoadingSettings": "تحميل الإعدادات...",
+  "offlineConnectionStatus": "حالة الاتصال",
+  "offlineStatsTotal": "إجمالي العناصر",
+  "offlineStatsPois": "نقاط الاهتمام",
+  "offlineStatsEvents": "الأحداث",
+  "offlineStatsFavorites": "المفضلة",
+  "offlineStatsCacheSize": "حجم ذاكرة التخزين المؤقت",
+  "offlineActionSyncNow": "مزامنة الآن",
+  "offlineActionSyncDesc": "تحديث البيانات من الخادم",
+  "offlineActionDownload": "تنزيل للاستخدام بدون اتصال",
+  "offlineActionDownloadDesc": "تنزيل جميع البيانات المهمة",
+  "offlineActionClearCache": "مسح ذاكرة التخزين المؤقت",
+  "offlineActionClearCacheDesc": "حذف جميع البيانات المخزنة مؤقتًا",
+  "offlineRegionsTitle": "المناطق المتاحة دون اتصال",
+  "offlineRegionsDescription": "يمكن زيارة هذه المناطق حتى بدون اتصال بالإنترنت.",
+  "offlineErrorNoConnection": "مطلوب اتصال بالإنترنت",
+  "offlineSyncInProgress": "جارٍ المزامنة...",
+  "offlineSyncSuccess": "نجحت المزامنة! تم تحديث {count} عنصر",
+  "offlineSyncError": "خطأ في المزامنة",
+  "offlineDownloadInProgress": "جارٍ التنزيل...",
+  "offlineDownloadSuccess": "نجح التنزيل! تم حفظ {count} عنصر",
+  "offlineDownloadError": "خطأ في التنزيل",
+  "offlineClearCacheTitle": "مسح ذاكرة التخزين المؤقت",
+  "offlineClearCacheConfirmation": "هل أنت متأكد من رغبتك في حذف جميع البيانات المخزنة مؤقتًا؟ لن تتمكن من استخدام التطبيق دون اتصال حتى التنزيل التالي.",
+  "offlineCancel": "إلغاء",
+  "offlineClear": "مسح",
+  "offlineClearCacheSuccess": "تم مسح ذاكرة التخزين المؤقت بنجاح",
+  "offlineClearCacheError": "خطأ أثناء مسح ذاكرة التخزين المؤقت"
 }

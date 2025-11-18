@@ -1861,8 +1861,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get offlineStatusOnline => 'متصل - جميع الميزات متاحة';
 
   @override
-  String get offlineStatusOffline =>
-      'غير متصل - تم تفعيل وضع ذاكرة التخزين المؤقت';
+  String get offlineStatusOffline => 'غير متصل - تم تفعيل وضع التخزين المؤقت';
 
   @override
   String get offlineDataTitle => 'البيانات دون اتصال';
@@ -2480,4 +2479,218 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aboutOpeningMap => 'فتح الخريطة...';
+
+  @override
+  String get tourOperatorsErrorLoading => 'خطأ في تحميل المشغلين';
+
+  @override
+  String tourOperatorsErrorUnexpected(Object error) {
+    return 'خطأ غير متوقع: $error';
+  }
+
+  @override
+  String get tourOperatorsRetry => 'إعادة المحاولة';
+
+  @override
+  String get tourOperatorsEmptyMessage => 'لا يوجد مشغلون متاحون';
+
+  @override
+  String tourOperatorsPartnersCount(Object count) {
+    return '$count شريك محلي';
+  }
+
+  @override
+  String get tourOperatorsFeatured => 'مميز';
+
+  @override
+  String get helpLiveChatDescription =>
+      'فريقنا متاح من الساعة 8 صباحًا حتى 6 مساءً\\nللإجابة على أسئلتك في الوقت الفعلي.';
+
+  @override
+  String get helpLiveChatStart => 'بدء الدردشة';
+
+  @override
+  String get helpCancel => 'إلغاء';
+
+  @override
+  String get helpContactSuccess => 'تم إرسال الرسالة بنجاح!';
+
+  @override
+  String get helpTutorialDuration1 => '1 دقيقة';
+
+  @override
+  String get helpTutorialDuration2 => '2 دقيقة';
+
+  @override
+  String get helpTutorialDuration3 => '3 دقائق';
+
+  @override
+  String get helpTutorialBooking => 'حجز حدث';
+
+  @override
+  String get helpBugDescriptionHint => 'صِف المشكلة التي واجهتها...';
+
+  @override
+  String get helpBugReportSent => 'تم إرسال تقرير الخطأ!';
+
+  @override
+  String get reservationsNA => 'غير متاح';
+
+  @override
+  String reservationsErrorUnexpected(Object error) {
+    return 'خطأ غير متوقع: $error';
+  }
+
+  @override
+  String get reservationsNameUnavailable => 'الاسم غير متاح';
+
+  @override
+  String get reservationsDate => 'التاريخ';
+
+  @override
+  String get reservationsCancel => 'إلغاء';
+
+  @override
+  String get reservationsDelete => 'حذف';
+
+  @override
+  String get reservationsRetry => 'إعادة المحاولة';
+
+  @override
+  String get reservationsTourUnavailable => 'الجولة غير متاحة';
+
+  @override
+  String reservationsTourNumber(Object number) {
+    return 'الحجز #$number';
+  }
+
+  @override
+  String reservationsActivityNumber(Object number) {
+    return 'التسجيل #$number';
+  }
+
+  @override
+  String get reservationsDetailNumber => 'الرقم';
+
+  @override
+  String get reservationsDetailPlace => 'المكان/الحدث';
+
+  @override
+  String get reservationsDetailType => 'النوع';
+
+  @override
+  String get reservationsDetailStatus => 'الحالة';
+
+  @override
+  String get reservationsDetailContact => 'جهة الاتصال';
+
+  @override
+  String get reservationsDetailEmail => 'البريد الإلكتروني';
+
+  @override
+  String get reservationsDetailPhone => 'الهاتف';
+
+  @override
+  String get reservationsDetailName => 'الاسم';
+
+  @override
+  String reservationsDeleteConfirmation(Object number) {
+    return 'هل أنت متأكد من رغبتك في حذف الحجز رقم $number نهائيًا؟\\n\\nهذا الإجراء لا رجعة فيه.';
+  }
+
+  @override
+  String get reservationsTourNumberLabel => 'الحجز #';
+
+  @override
+  String get reservationsDeleteConfirmButton => 'نعم، احذف';
+
+  @override
+  String get offlineLoadingSettings => 'تحميل الإعدادات...';
+
+  @override
+  String get offlineConnectionStatus => 'حالة الاتصال';
+
+  @override
+  String get offlineStatsTotal => 'إجمالي العناصر';
+
+  @override
+  String get offlineStatsPois => 'نقاط الاهتمام';
+
+  @override
+  String get offlineStatsEvents => 'الأحداث';
+
+  @override
+  String get offlineStatsFavorites => 'المفضلة';
+
+  @override
+  String get offlineStatsCacheSize => 'حجم ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineActionSyncNow => 'مزامنة الآن';
+
+  @override
+  String get offlineActionSyncDesc => 'تحديث البيانات من الخادم';
+
+  @override
+  String get offlineActionDownload => 'تنزيل للاستخدام بدون اتصال';
+
+  @override
+  String get offlineActionDownloadDesc => 'تنزيل جميع البيانات المهمة';
+
+  @override
+  String get offlineActionClearCache => 'مسح ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineActionClearCacheDesc => 'حذف جميع البيانات المخزنة مؤقتًا';
+
+  @override
+  String get offlineRegionsTitle => 'المناطق المتاحة دون اتصال';
+
+  @override
+  String get offlineRegionsDescription =>
+      'يمكن زيارة هذه المناطق حتى بدون اتصال بالإنترنت.';
+
+  @override
+  String get offlineErrorNoConnection => 'مطلوب اتصال بالإنترنت';
+
+  @override
+  String get offlineSyncInProgress => 'جارٍ المزامنة...';
+
+  @override
+  String offlineSyncSuccess(Object count) {
+    return 'نجحت المزامنة! تم تحديث $count عنصر';
+  }
+
+  @override
+  String get offlineSyncError => 'خطأ في المزامنة';
+
+  @override
+  String get offlineDownloadInProgress => 'جارٍ التنزيل...';
+
+  @override
+  String offlineDownloadSuccess(Object count) {
+    return 'نجح التنزيل! تم حفظ $count عنصر';
+  }
+
+  @override
+  String get offlineDownloadError => 'خطأ في التنزيل';
+
+  @override
+  String get offlineClearCacheTitle => 'مسح ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineClearCacheConfirmation =>
+      'هل أنت متأكد من رغبتك في حذف جميع البيانات المخزنة مؤقتًا؟ لن تتمكن من استخدام التطبيق دون اتصال حتى التنزيل التالي.';
+
+  @override
+  String get offlineCancel => 'إلغاء';
+
+  @override
+  String get offlineClear => 'مسح';
+
+  @override
+  String get offlineClearCacheSuccess => 'تم مسح ذاكرة التخزين المؤقت بنجاح';
+
+  @override
+  String get offlineClearCacheError => 'خطأ أثناء مسح ذاكرة التخزين المؤقت';
 }

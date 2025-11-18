@@ -52,7 +52,7 @@ class AboutPage extends StatelessWidget {
             SizedBox(height: ResponsiveConstants.smallSpace),
 
             Text(
-              AppLocalizations.of(context)!.aboutVersion.replaceAll('{version}', '1.0.0'),
+              AppLocalizations.of(context)!.aboutVersion('1.0.0'),
               style: TextStyle(
                 fontSize: ResponsiveConstants.body1,
                 color: Colors.grey[600],
@@ -271,7 +271,7 @@ class AboutPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.aboutCopyright.replaceAll('{year}', '2024'),
+                    AppLocalizations.of(context)!.aboutCopyright('2024'),
                     style: TextStyle(
                       fontSize: ResponsiveConstants.body2,
                       fontWeight: FontWeight.w500,

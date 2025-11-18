@@ -146,7 +146,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = AppLocalizations.of(context)!.reservationsErrorUnexpected.replaceAll('{error}', '$e');
+          _errorMessage = AppLocalizations.of(context)!.reservationsErrorUnexpected('$e');
         });
       }
     }
@@ -398,9 +398,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       AppLocalizations.of(context)!.reservationsTotal,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       reservation.priceText,
@@ -731,9 +731,9 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       AppLocalizations.of(context)!.reservationsTotal,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       registration.displayPrice,
@@ -1086,7 +1086,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsDeleteTitle),
         content: Text(
-          AppLocalizations.of(context)!.reservationsDeleteConfirmation.replaceAll('{number}', reservation.confirmationNumber)
+          AppLocalizations.of(context)!.reservationsDeleteConfirmation(reservation.confirmationNumber)
         ),
         actions: [
           TextButton(
@@ -1099,7 +1099,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: Text(AppLocalizations.of(context)!.reservationsDeleteConfirm),
+            child: Text(AppLocalizations.of(context)!.reservationsDeleteConfirmButton),
           ),
         ],
       ),

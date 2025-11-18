@@ -55,7 +55,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = AppLocalizations.of(context)!.tourOperatorsErrorUnexpected.replaceAll('{error}', '$e');
+          _errorMessage = AppLocalizations.of(context)!.tourOperatorsErrorUnexpected('$e');
         });
       }
     }
@@ -156,7 +156,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                AppLocalizations.of(context)!.tourOperatorsPartnersCount.replaceAll('{count}', '${_operators.length}'),
+                                AppLocalizations.of(context)!.tourOperatorsPartnersCount('${_operators.length}'),
                                 style:  TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,

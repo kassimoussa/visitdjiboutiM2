@@ -1,16 +1,13 @@
 {
   "@@locale": "fr",
-
   "appTitle": "Visit Djibouti",
   "@appTitle": {
     "description": "Titre de l'application"
   },
-
   "appDescription": "Découvrez la beauté de Djibouti",
   "@appDescription": {
     "description": "Description de l'application"
   },
-
   "authAcceptTerms": "J'accepte les",
   "authAcceptTermsAnd": "et",
   "authBackToLogin": "Retour à la connexion",
@@ -41,9 +38,7 @@
   "authTermsAndConditions": "Conditions d'utilisation",
   "authWelcomeBack": "Bon retour",
   "authWelcomeToApp": "Bienvenue sur Visit Djibouti",
-
   "categoryFilterClear": "Effacer les filtres",
-
   "commonAddress": "Adresse",
   "commonAll": "Tout",
   "commonAllFeminine": "Toute",
@@ -95,10 +90,8 @@
   "commonUnknownPlace": "Lieu inconnu",
   "commonVisitorTips": "Conseils aux visiteurs",
   "commonWebsite": "Site web",
-
   "discoverSearchHint": "Rechercher des lieux...",
   "discoverTitle": "Découvrir",
-
   "drawerAbout": "À propos",
   "drawerChooseLanguage": "Choisir la langue",
   "drawerConnected": "Connecté",
@@ -113,7 +106,6 @@
   "drawerReservationsSubtitle": "Gérer vos réservations",
   "drawerSettings": "Paramètres",
   "drawerVersion": "Version",
-
   "embassiesCall": "Appeler",
   "embassiesCannotOpenEmail": "Impossible d'ouvrir l'email",
   "embassiesCannotOpenPhone": "Impossible d'ouvrir le téléphone",
@@ -125,11 +117,9 @@
   "embassiesNoForeignSubtitle": "Informations non disponibles",
   "embassiesTitle": "Ambassades",
   "embassiesWebsite": "Site web",
-
   "essentialsNoLinksAvailable": "Aucun lien disponible",
   "essentialsTitle": "Informations essentielles",
   "essentialsUnavailableInfo": "Informations non disponibles",
-
   "eventDetailDetailsUnavailable": "Détails non disponibles",
   "eventDetailEndDate": "Date de fin",
   "eventDetailEventEnded": "Événement terminé",
@@ -160,7 +150,6 @@
   "eventDetailSpecialRequirementsHint": "Allergies, besoins spéciaux, etc.",
   "eventDetailSpecialRequirementsLabel": "Demandes spéciales (optionnel)",
   "eventDetailTotalToPay": "Total à payer",
-
   "eventsAddedToFavorites": "{eventName} ajouté aux favoris",
   "@eventsAddedToFavorites": {
     "description": "Message when an event is added to favorites",
@@ -171,7 +160,6 @@
       }
     }
   },
-
   "eventsAll": "Tous",
   "eventsClearFilters": "Effacer les filtres",
   "eventsFree": "Gratuit",
@@ -179,7 +167,6 @@
   "eventsOngoing": "En cours",
   "eventsPast": "Passés",
   "eventsPopular": "Événements populaires",
-
   "eventsRemovedFromFavorites": "{eventName} retiré des favoris",
   "@eventsRemovedFromFavorites": {
     "description": "Message when an event is removed from favorites",
@@ -190,12 +177,10 @@
       }
     }
   },
-
   "eventsSearchHint": "Rechercher des événements...",
   "eventsSoldOut": "Complet",
   "eventsTitle": "Événements",
   "eventsUpcoming": "À venir",
-
   "favoritesAddedToFavorites": "Ajouté aux favoris",
   "favoritesAllTab": "Tous",
   "favoritesEmpty": "Aucun favori",
@@ -207,9 +192,7 @@
   "favoritesSortRating": "Évaluation",
   "favoritesSortRecent": "Récents",
   "favoritesTitle": "Favoris",
-
   "featuredBadge": "Recommandé",
-
   "homeDiscover": "Découvrir",
   "homeDiscoverByRegion": "Découvrir par région",
   "homeDiscoverByRegionSubtitle": "Explorez les 6 régions de Djibouti",
@@ -227,7 +210,6 @@
   "homeTourOperators": "Tour opérateurs",
   "homeTourOperatorsSubtitle": "Opérateurs agréés",
   "homeUpcomingEvents": "Événements à venir",
-
   "homePopularActivities": "Activités populaires",
   "@homePopularActivities": {
     "description": "Titre de la section des activités populaires sur la page d'accueil"
@@ -236,11 +218,9 @@
   "@homeNoActivities": {
     "description": "Message affiché lorsqu'il n'y a aucune activité à montrer"
   },
-
   "languageArabic": "العربية",
   "languageEnglish": "English",
   "languageFrench": "Français",
-
   "mapError": "Erreur de carte: {error}",
   "@mapError": {
     "description": "Map error message",
@@ -250,7 +230,6 @@
       }
     }
   },
-
   "mapErrorLoadingPois": "Erreur de chargement des lieux: {error}",
   "@mapErrorLoadingPois": {
     "description": "Error loading POIs message",
@@ -260,7 +239,6 @@
       }
     }
   },
-
   "mapTitle": "Carte",
   "mapUnknownPlace": "Lieu inconnu",
   "mapLocationPermissionDenied": "Permission de localisation refusée",
@@ -279,13 +257,11 @@
   "mapOfflineMessage": "Carte hors ligne - Affichage de la liste des POIs disponibles",
   "mapOfflineNoData": "Aucune donnée de carte disponible hors ligne",
   "mapOfflineConnectToDownload": "Connectez-vous à internet pour télécharger les POIs",
-
   "navigationHome": "Accueil",
   "navigationDiscover": "Découvrir",
   "navigationEvents": "Événements",
   "navigationMap": "Carte",
   "navigationFavorites": "Favoris",
-
   "operatorAddress": "Adresse",
   "operatorCall": "Appeler",
   "operatorContact": "Contact",
@@ -308,7 +284,6 @@
   "operatorTours": "Circuits",
   "operatorViews": "vues",
   "operatorWebsite": "Site web",
-
   "poiCallError": "Erreur lors de l'appel: {error}",
   "@poiCallError": {
     "description": "Call error message",
@@ -318,7 +293,6 @@
       }
     }
   },
-
   "poiCannotCall": "Impossible d'appeler {phone}",
   "@poiCannotCall": {
     "description": "Cannot make call message",
@@ -328,9 +302,7 @@
       }
     }
   },
-
   "poiCannotOpenEmail": "Impossible d'ouvrir l'email",
-
   "poiEmailError": "Erreur email: {error}",
   "@poiEmailError": {
     "description": "Email error message",
@@ -340,11 +312,9 @@
       }
     }
   },
-
   "poiNoContact": "Aucune information de contact disponible",
   "poiTourOperatorsTitle": "Opérateurs touristiques",
   "poiLicensedOperator": "Opérateur agréé",
-
   "profileAboutApp": "À propos de l'application",
   "profileComingSoon": "Bientôt disponible",
   "profileComingSoonMessage": "Cette fonctionnalité sera bientôt disponible",
@@ -356,7 +326,6 @@
   "profileHelp": "Aide",
   "profileHelpSubtitle": "Besoin d'assistance?",
   "profileLanguage": "Langue",
-
   "profileLanguageChanged": "Langue changée en {language}",
   "@profileLanguageChanged": {
     "description": "Language changed confirmation",
@@ -366,7 +335,6 @@
       }
     }
   },
-
   "profileLogoutConfirm": "Confirmer la déconnexion",
   "profileLogoutSubtitle": "Déconnectez-vous de votre compte",
   "profileLogoutTitle": "Déconnexion",
@@ -380,7 +348,6 @@
   "profileSettingsSubtitle": "Gérer vos préférences",
   "profileTitle": "Profil",
   "profileUser": "Utilisateur",
-
   "reservationsAll": "Toutes ({count})",
   "@reservationsAll": {
     "description": "All reservations tab",
@@ -390,8 +357,7 @@
       }
     }
   },
-
-  "reservationsCancelled": "Annulées ({count})",
+  "reservationsCancelled": "Réservation annulée",
   "@reservationsCancelled": {
     "description": "Cancelled reservations tab",
     "placeholders": {
@@ -400,9 +366,7 @@
       }
     }
   },
-
   "reservationsCancelTitle": "Annuler la réservation",
-
   "reservationsConfirmed": "Confirmées ({count})",
   "@reservationsConfirmed": {
     "description": "Confirmed reservations tab",
@@ -412,7 +376,6 @@
       }
     }
   },
-
   "reservationsDeleteTitle": "Supprimer la réservation",
   "reservationsNoneAll": "Aucune réservation",
   "reservationsNoneCancelled": "Aucune réservation annulée",
@@ -422,7 +385,6 @@
   "reservationsTabConfirmed": "Confirmées",
   "reservationsTabPending": "En attente",
   "reservationsTabCancelled": "Annulées",
-
   "reservationsPending": "En attente ({count})",
   "@reservationsPending": {
     "description": "Pending reservations tab",
@@ -432,7 +394,6 @@
       }
     }
   },
-
   "settingsActions": "Actions",
   "settingsBackupData": "Sauvegarder les données",
   "settingsBackupDataSubtitle": "Sauvegarde automatique",
@@ -446,7 +407,6 @@
   "settingsEventReminders": "Rappels d'événements",
   "settingsEventRemindersSubtitle": "Recevoir des rappels",
   "settingsGeneral": "Général",
-
   "settingsImageCache": "{size} en cache",
   "@settingsImageCache": {
     "description": "Image cache size",
@@ -456,7 +416,6 @@
       }
     }
   },
-
   "settingsLocation": "Localisation",
   "settingsLocationServices": "Services de localisation",
   "settingsLocationServicesSubtitle": "Activer la localisation",
@@ -475,7 +434,6 @@
   "settingsResetSettingsSubtitle": "Restaurer les paramètres par défaut",
   "settingsSecurityPrivacy": "Sécurité et confidentialité",
   "settingsTermsSubtitle": "Conditions d'utilisation",
-
   "tourCall": "Appeler",
   "tourDescription": "Description",
   "tourEmail": "Email",
@@ -636,7 +594,6 @@
   "tourRegistrationConfirm": "Confirmer l'inscription",
   "tourRegistrationSuccessMessage": "Inscription confirmée avec succès!",
   "tourRegistrationErrorMessage": "Erreur lors de l'inscription",
-
   "helpFaqQuestion1": "Comment réserver un événement ?",
   "helpFaqAnswer1": "Allez dans l'onglet Événements, sélectionnez un événement qui vous intéresse, puis appuyez sur \"S'inscrire\". Vous pouvez gérer vos réservations dans votre profil.",
   "helpFaqQuestion2": "Puis-je utiliser l'app sans connexion Internet ?",
@@ -689,7 +646,6 @@
   "helpBugDescription": "Décrivez le problème rencontré...",
   "helpBugReported": "Rapport de bug envoyé !",
   "helpReport": "Signaler",
-
   "reservationsEmptyMessage": "Explorez nos lieux et événements pour faire votre première réservation!",
   "reservationsDetailsTitle": "Détails de la réservation",
   "reservationsCancelConfirm": "Êtes-vous sûr de vouloir annuler la réservation n°{confirmationNumber}?",
@@ -702,7 +658,6 @@
   },
   "reservationsNo": "Non",
   "reservationsYesCancel": "Oui, annuler",
-  "reservationsCancelled": "Réservation annulée",
   "reservationsCancelError": "Erreur lors de l'annulation",
   "reservationsDeleteConfirm": "Êtes-vous sûr de vouloir supprimer définitivement la réservation n°{confirmationNumber}?\n\nCette action est irréversible.",
   "@reservationsDeleteConfirm": {
@@ -777,7 +732,6 @@
   "reservationsStatusUnknown": "Inconnue",
   "reservationsTypePoi": "Lieu",
   "reservationsTypeEvent": "Événement",
-
   "settingsLanguageFrench": "Français",
   "settingsRegionAll": "Toutes les régions",
   "settingsCacheSizeCalculating": "Calcul en cours...",
@@ -837,7 +791,6 @@
   "settingsResetMessage": "Cette action remettra tous les paramètres par défaut. Vos favoris et réservations seront conservés.",
   "settingsResetSuccess": "Paramètres restaurés",
   "settingsRestore": "Restaurer",
-
   "offlineStatusOnline": "En ligne - Toutes les fonctionnalités disponibles",
   "offlineStatusOffline": "Hors ligne - Mode cache activé",
   "offlineDataTitle": "Données hors ligne",
@@ -853,7 +806,6 @@
   "offlineDownloadForOfflineSubtitle": "Télécharger toutes les données importantes",
   "offlineClearCache": "Vider le cache",
   "offlineClearCacheSubtitle": "Supprimer toutes les données mises en cache",
-
   "reviewFormPleaseRate": "Veuillez sélectionner une note",
   "reviewFormUpdated": "Avis modifié avec succès",
   "reviewFormPublished": "Avis publié avec succès",
@@ -874,7 +826,6 @@
   "reviewFormCommentHint": "Partagez votre expérience en détail...",
   "reviewFormUpdate": "Modifier",
   "reviewFormPublish": "Publier",
-
   "reviewsBeFirst": "Soyez le premier à donner votre avis",
   "reviewsNoReviewsYet": "Aucun avis pour le moment",
   "reviewsClickToReview": "Cliquez pour laisser un avis",
@@ -890,7 +841,6 @@
   "reviewsLoadMore": "Voir plus d'avis",
   "reviewsOperatorResponse": "Réponse de l'établissement",
   "reviewsHelpful": "Utile",
-
   "reviewsLoadError": "Erreur chargement avis: {error}",
   "@reviewsLoadError": {
     "placeholders": {
@@ -922,7 +872,6 @@
   },
   "reviewsSectionTitle": "Avis",
   "reviewsWriteReview": "Écrire un avis",
-
   "reservationFormTitle": "Réserver {type}",
   "@reservationFormTitle": {
     "placeholders": {
@@ -954,7 +903,6 @@
   "reservationFormConfirm": "Confirmer la réservation",
   "reservationFormSuccess": "Réservation créée avec succès!",
   "reservationFormError": "Erreur lors de la réservation",
-
   "contactOperatorTitle": "Contacter {name}",
   "@contactOperatorTitle": {
     "placeholders": {
@@ -992,17 +940,12 @@
       }
     }
   },
-
   "tourOperatorUnknown": "Opérateur inconnu",
   "tourOperatorCallButton": "Appeler",
   "tourOperatorWebsiteButton": "Site web",
-
   "poiOperatorsServingTitle": "Opérateurs desservant ce lieu",
-
   "activitiesSearchHint": "Rechercher une activité...",
-
   "toursSelectDifficulty": "Sélectionner une difficulté",
-
   "termsLastUpdated": "Dernière mise à jour : 23 octobre 2025",
   "termsSection1Title": "1. Acceptation des conditions",
   "termsSection1Content": "En utilisant l'application Visit Djibouti (ci-après \"l'Application\"), vous acceptez d'être lié par les présentes conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser l'Application.",
@@ -1032,7 +975,6 @@
   "termsSection13Content": "Nous pouvons modifier ces conditions à tout moment. Les modifications seront publiées dans l'Application et prendront effet immédiatement. Votre utilisation continue de l'Application constitue votre acceptation des conditions modifiées.",
   "termsSection14Title": "14. Contact",
   "termsSection14Content": "Pour toute question concernant ces conditions d'utilisation, contactez-nous:\n\nOffice du Tourisme de Djibouti\nEmail: info@visitdjibouti.dj\nTéléphone: +253 XXX XXX",
-
   "activitiesTitle": "Activités",
   "activitiesPopular": "Activités populaires",
   "activitiesDifficulty": "Difficulté",
@@ -1041,7 +983,6 @@
   "activitiesAvailableSpots": "Places disponibles",
   "activitiesNoActivitiesFound": "Aucune activité trouvée",
   "activitiesTryModifyingFilters": "Essayez de modifier vos filtres",
-
   "personalInfoUser": "Utilisateur",
   "personalInfoVerifiedAccount": "Compte vérifié",
   "personalInfoBasicInfo": "Informations de base",
@@ -1062,7 +1003,6 @@
       }
     }
   },
-
   "securityChangePassword": "Changer le mot de passe",
   "securityCurrentPassword": "Mot de passe actuel",
   "securityCurrentPasswordRequired": "Le mot de passe actuel est obligatoire",
@@ -1082,7 +1022,6 @@
       }
     }
   },
-
   "aboutAppName": "Visit Djibouti",
   "aboutVersion": "Version {version}",
   "@aboutVersion": {
@@ -1096,11 +1035,9 @@
   "aboutOrganization": "ANT - Agence Nationale du Tourisme",
   "aboutOrganizationFull": "Agence Nationale du Tourisme de Djibouti",
   "aboutOrganizationDescription": "Organisme officiel de promotion et développement touristique",
-
   "aboutStatsPois": "Points d'Intérêt",
   "aboutStatsEvents": "Événements",
   "aboutStatsRegions": "Régions",
-
   "aboutFeaturesTitle": "Fonctionnalités",
   "aboutFeatureDiscoverTitle": "Découvrir",
   "aboutFeatureDiscoverDesc": "Plus de 50 points d'intérêt avec photos et descriptions détaillées",
@@ -1112,27 +1049,23 @@
   "aboutFeatureFavoritesDesc": "Sauvegardez vos lieux préférés et planifiez vos visites",
   "aboutFeatureOfflineTitle": "Mode hors ligne",
   "aboutFeatureOfflineDesc": "Accédez aux informations même sans connexion Internet",
-
   "aboutDevelopedByTitle": "Développé par",
   "aboutPartnersTitle": "Partenaires",
   "aboutPartnerMinistry": "Ministère du Commerce et du Tourisme",
   "aboutPartnerMinistryDesc": "République de Djibouti",
   "aboutPartnerHotels": "Association des Hôteliers",
   "aboutPartnerHotelsDesc": "Secteur privé du tourisme",
-
   "aboutTechnologiesTitle": "Technologies",
   "aboutTechFlutter": "Framework mobile multiplateforme",
   "aboutTechDart": "Langage de programmation moderne",
   "aboutTechLaravel": "API Backend robuste et sécurisée",
   "aboutTechMaps": "Cartographie et géolocalisation",
-
   "aboutContactTitle": "Contact & Liens",
   "aboutContactWebsite": "Site web officiel",
   "aboutContactEmail": "Email",
   "aboutContactPhone": "Téléphone",
   "aboutContactAddress": "Adresse",
   "aboutContactAddressValue": "Place du 27 Juin, Djibouti-ville",
-
   "aboutCopyright": "© {year} Agence Nationale du Tourisme de Djibouti",
   "@aboutCopyright": {
     "placeholders": {
@@ -1142,9 +1075,73 @@
     }
   },
   "aboutCopyrightDescription": "Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.",
-
   "aboutOpeningWebsite": "Ouverture du site web...",
   "aboutOpeningEmail": "Ouverture de l'application email...",
   "aboutOpeningPhone": "Ouverture de l'application téléphone...",
-  "aboutOpeningMap": "Ouverture de la carte..."
+  "aboutOpeningMap": "Ouverture de la carte...",
+  "tourOperatorsErrorLoading": "Erreur de chargement des opérateurs",
+  "tourOperatorsErrorUnexpected": "Erreur inattendue: {error}",
+  "tourOperatorsRetry": "Réessayer",
+  "tourOperatorsEmptyMessage": "Aucun opérateur disponible",
+  "tourOperatorsPartnersCount": "{count} partenaire(s) local(aux)",
+  "tourOperatorsFeatured": "Recommandé",
+  "helpLiveChatDescription": "Notre équipe est disponible de 8h à 18h\\npour répondre à vos questions en temps réel.",
+  "helpLiveChatStart": "Démarrer le chat",
+  "helpCancel": "Annuler",
+  "helpContactSuccess": "Message envoyé avec succès !",
+  "helpTutorialDuration1": "1 min",
+  "helpTutorialDuration2": "2 min",
+  "helpTutorialDuration3": "3 min",
+  "helpTutorialBooking": "Réserver un événement",
+  "helpBugDescriptionHint": "Décrivez le problème rencontré...",
+  "helpBugReportSent": "Rapport de bug envoyé !",
+  "reservationsNA": "N/A",
+  "reservationsErrorUnexpected": "Erreur inattendue: {error}",
+  "reservationsNameUnavailable": "Nom non disponible",
+  "reservationsDate": "Date",
+  "reservationsCancel": "Annuler",
+  "reservationsDelete": "Supprimer",
+  "reservationsRetry": "Réessayer",
+  "reservationsTourUnavailable": "Tour non disponible",
+  "reservationsTourNumber": "Réservation #{number}",
+  "reservationsActivityNumber": "Inscription #{number}",
+  "reservationsDetailNumber": "Numéro",
+  "reservationsDetailPlace": "Lieu/Événement",
+  "reservationsDetailType": "Type",
+  "reservationsDetailStatus": "Statut",
+  "reservationsDetailContact": "Contact",
+  "reservationsDetailEmail": "Email",
+  "reservationsDetailPhone": "Téléphone",
+  "reservationsDetailName": "Nom",
+  "reservationsDeleteConfirmation": "Êtes-vous sûr de vouloir supprimer définitivement la réservation n°{number}?\\n\\nCette action est irréversible.",
+  "reservationsTourNumberLabel": "Réservation #",
+  "reservationsDeleteConfirmButton": "Oui, supprimer",
+  "offlineLoadingSettings": "Chargement des paramètres...",
+  "offlineConnectionStatus": "État de la connexion",
+  "offlineStatsTotal": "Éléments total",
+  "offlineStatsPois": "Points d'intérêt",
+  "offlineStatsEvents": "Événements",
+  "offlineStatsFavorites": "Favoris",
+  "offlineStatsCacheSize": "Taille du cache",
+  "offlineActionSyncNow": "Synchroniser maintenant",
+  "offlineActionSyncDesc": "Mettre à jour les données depuis le serveur",
+  "offlineActionDownload": "Télécharger pour hors ligne",
+  "offlineActionDownloadDesc": "Télécharger toutes les données importantes",
+  "offlineActionClearCache": "Vider le cache",
+  "offlineActionClearCacheDesc": "Supprimer toutes les données mises en cache",
+  "offlineRegionsTitle": "Régions disponibles hors ligne",
+  "offlineRegionsDescription": "Ces régions peuvent être visitées même sans connexion internet.",
+  "offlineErrorNoConnection": "Connexion internet requise",
+  "offlineSyncInProgress": "Synchronisation en cours...",
+  "offlineSyncSuccess": "Synchronisation réussie ! {count} éléments mis à jour",
+  "offlineSyncError": "Erreur de synchronisation",
+  "offlineDownloadInProgress": "Téléchargement en cours...",
+  "offlineDownloadSuccess": "Téléchargement réussi ! {count} éléments sauvegardés",
+  "offlineDownloadError": "Erreur de téléchargement",
+  "offlineClearCacheTitle": "Vider le cache",
+  "offlineClearCacheConfirmation": "Êtes-vous sûr de vouloir supprimer toutes les données mises en cache ? Vous ne pourrez plus utiliser l'application hors ligne jusqu'au prochain téléchargement.",
+  "offlineCancel": "Annuler",
+  "offlineClear": "Vider",
+  "offlineClearCacheSuccess": "Cache vidé avec succès",
+  "offlineClearCacheError": "Erreur lors du vidage du cache"
 }

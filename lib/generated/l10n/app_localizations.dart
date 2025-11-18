@@ -4767,6 +4767,396 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ouverture de la carte...'**
   String get aboutOpeningMap;
+
+  /// No description provided for @tourOperatorsErrorLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de chargement des opérateurs'**
+  String get tourOperatorsErrorLoading;
+
+  /// No description provided for @tourOperatorsErrorUnexpected.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur inattendue: {error}'**
+  String tourOperatorsErrorUnexpected(Object error);
+
+  /// No description provided for @tourOperatorsRetry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get tourOperatorsRetry;
+
+  /// No description provided for @tourOperatorsEmptyMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun opérateur disponible'**
+  String get tourOperatorsEmptyMessage;
+
+  /// No description provided for @tourOperatorsPartnersCount.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} partenaire(s) local(aux)'**
+  String tourOperatorsPartnersCount(Object count);
+
+  /// No description provided for @tourOperatorsFeatured.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommandé'**
+  String get tourOperatorsFeatured;
+
+  /// No description provided for @helpLiveChatDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Notre équipe est disponible de 8h à 18h\\npour répondre à vos questions en temps réel.'**
+  String get helpLiveChatDescription;
+
+  /// No description provided for @helpLiveChatStart.
+  ///
+  /// In fr, this message translates to:
+  /// **'Démarrer le chat'**
+  String get helpLiveChatStart;
+
+  /// No description provided for @helpCancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get helpCancel;
+
+  /// No description provided for @helpContactSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Message envoyé avec succès !'**
+  String get helpContactSuccess;
+
+  /// No description provided for @helpTutorialDuration1.
+  ///
+  /// In fr, this message translates to:
+  /// **'1 min'**
+  String get helpTutorialDuration1;
+
+  /// No description provided for @helpTutorialDuration2.
+  ///
+  /// In fr, this message translates to:
+  /// **'2 min'**
+  String get helpTutorialDuration2;
+
+  /// No description provided for @helpTutorialDuration3.
+  ///
+  /// In fr, this message translates to:
+  /// **'3 min'**
+  String get helpTutorialDuration3;
+
+  /// No description provided for @helpTutorialBooking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réserver un événement'**
+  String get helpTutorialBooking;
+
+  /// No description provided for @helpBugDescriptionHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Décrivez le problème rencontré...'**
+  String get helpBugDescriptionHint;
+
+  /// No description provided for @helpBugReportSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapport de bug envoyé !'**
+  String get helpBugReportSent;
+
+  /// No description provided for @reservationsNA.
+  ///
+  /// In fr, this message translates to:
+  /// **'N/A'**
+  String get reservationsNA;
+
+  /// No description provided for @reservationsErrorUnexpected.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur inattendue: {error}'**
+  String reservationsErrorUnexpected(Object error);
+
+  /// No description provided for @reservationsNameUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom non disponible'**
+  String get reservationsNameUnavailable;
+
+  /// No description provided for @reservationsDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date'**
+  String get reservationsDate;
+
+  /// No description provided for @reservationsCancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get reservationsCancel;
+
+  /// No description provided for @reservationsDelete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
+  String get reservationsDelete;
+
+  /// No description provided for @reservationsRetry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get reservationsRetry;
+
+  /// No description provided for @reservationsTourUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour non disponible'**
+  String get reservationsTourUnavailable;
+
+  /// No description provided for @reservationsTourNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservation #{number}'**
+  String reservationsTourNumber(Object number);
+
+  /// No description provided for @reservationsActivityNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription #{number}'**
+  String reservationsActivityNumber(Object number);
+
+  /// No description provided for @reservationsDetailNumber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro'**
+  String get reservationsDetailNumber;
+
+  /// No description provided for @reservationsDetailPlace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu/Événement'**
+  String get reservationsDetailPlace;
+
+  /// No description provided for @reservationsDetailType.
+  ///
+  /// In fr, this message translates to:
+  /// **'Type'**
+  String get reservationsDetailType;
+
+  /// No description provided for @reservationsDetailStatus.
+  ///
+  /// In fr, this message translates to:
+  /// **'Statut'**
+  String get reservationsDetailStatus;
+
+  /// No description provided for @reservationsDetailContact.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contact'**
+  String get reservationsDetailContact;
+
+  /// No description provided for @reservationsDetailEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get reservationsDetailEmail;
+
+  /// No description provided for @reservationsDetailPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get reservationsDetailPhone;
+
+  /// No description provided for @reservationsDetailName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom'**
+  String get reservationsDetailName;
+
+  /// No description provided for @reservationsDeleteConfirmation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir supprimer définitivement la réservation n°{number}?\\n\\nCette action est irréversible.'**
+  String reservationsDeleteConfirmation(Object number);
+
+  /// No description provided for @reservationsTourNumberLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réservation #'**
+  String get reservationsTourNumberLabel;
+
+  /// No description provided for @reservationsDeleteConfirmButton.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oui, supprimer'**
+  String get reservationsDeleteConfirmButton;
+
+  /// No description provided for @offlineLoadingSettings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement des paramètres...'**
+  String get offlineLoadingSettings;
+
+  /// No description provided for @offlineConnectionStatus.
+  ///
+  /// In fr, this message translates to:
+  /// **'État de la connexion'**
+  String get offlineConnectionStatus;
+
+  /// No description provided for @offlineStatsTotal.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éléments total'**
+  String get offlineStatsTotal;
+
+  /// No description provided for @offlineStatsPois.
+  ///
+  /// In fr, this message translates to:
+  /// **'Points d\'intérêt'**
+  String get offlineStatsPois;
+
+  /// No description provided for @offlineStatsEvents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événements'**
+  String get offlineStatsEvents;
+
+  /// No description provided for @offlineStatsFavorites.
+  ///
+  /// In fr, this message translates to:
+  /// **'Favoris'**
+  String get offlineStatsFavorites;
+
+  /// No description provided for @offlineStatsCacheSize.
+  ///
+  /// In fr, this message translates to:
+  /// **'Taille du cache'**
+  String get offlineStatsCacheSize;
+
+  /// No description provided for @offlineActionSyncNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchroniser maintenant'**
+  String get offlineActionSyncNow;
+
+  /// No description provided for @offlineActionSyncDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mettre à jour les données depuis le serveur'**
+  String get offlineActionSyncDesc;
+
+  /// No description provided for @offlineActionDownload.
+  ///
+  /// In fr, this message translates to:
+  /// **'Télécharger pour hors ligne'**
+  String get offlineActionDownload;
+
+  /// No description provided for @offlineActionDownloadDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Télécharger toutes les données importantes'**
+  String get offlineActionDownloadDesc;
+
+  /// No description provided for @offlineActionClearCache.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider le cache'**
+  String get offlineActionClearCache;
+
+  /// No description provided for @offlineActionClearCacheDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer toutes les données mises en cache'**
+  String get offlineActionClearCacheDesc;
+
+  /// No description provided for @offlineRegionsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régions disponibles hors ligne'**
+  String get offlineRegionsTitle;
+
+  /// No description provided for @offlineRegionsDescription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ces régions peuvent être visitées même sans connexion internet.'**
+  String get offlineRegionsDescription;
+
+  /// No description provided for @offlineErrorNoConnection.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connexion internet requise'**
+  String get offlineErrorNoConnection;
+
+  /// No description provided for @offlineSyncInProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation en cours...'**
+  String get offlineSyncInProgress;
+
+  /// No description provided for @offlineSyncSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation réussie ! {count} éléments mis à jour'**
+  String offlineSyncSuccess(Object count);
+
+  /// No description provided for @offlineSyncError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de synchronisation'**
+  String get offlineSyncError;
+
+  /// No description provided for @offlineDownloadInProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléchargement en cours...'**
+  String get offlineDownloadInProgress;
+
+  /// No description provided for @offlineDownloadSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléchargement réussi ! {count} éléments sauvegardés'**
+  String offlineDownloadSuccess(Object count);
+
+  /// No description provided for @offlineDownloadError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de téléchargement'**
+  String get offlineDownloadError;
+
+  /// No description provided for @offlineClearCacheTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider le cache'**
+  String get offlineClearCacheTitle;
+
+  /// No description provided for @offlineClearCacheConfirmation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir supprimer toutes les données mises en cache ? Vous ne pourrez plus utiliser l\'application hors ligne jusqu\'au prochain téléchargement.'**
+  String get offlineClearCacheConfirmation;
+
+  /// No description provided for @offlineCancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get offlineCancel;
+
+  /// No description provided for @offlineClear.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider'**
+  String get offlineClear;
+
+  /// No description provided for @offlineClearCacheSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cache vidé avec succès'**
+  String get offlineClearCacheSuccess;
+
+  /// No description provided for @offlineClearCacheError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors du vidage du cache'**
+  String get offlineClearCacheError;
 }
 
 class _AppLocalizationsDelegate

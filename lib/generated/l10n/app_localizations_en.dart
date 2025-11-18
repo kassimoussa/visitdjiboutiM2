@@ -2487,4 +2487,218 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutOpeningMap => 'Opening map...';
+
+  @override
+  String get tourOperatorsErrorLoading => 'Error loading operators';
+
+  @override
+  String tourOperatorsErrorUnexpected(Object error) {
+    return 'Unexpected error: $error';
+  }
+
+  @override
+  String get tourOperatorsRetry => 'Retry';
+
+  @override
+  String get tourOperatorsEmptyMessage => 'No operators available';
+
+  @override
+  String tourOperatorsPartnersCount(Object count) {
+    return '$count local partner(s)';
+  }
+
+  @override
+  String get tourOperatorsFeatured => 'Featured';
+
+  @override
+  String get helpLiveChatDescription =>
+      'Our team is available from 8am to 6pm\\nto answer your questions in real time.';
+
+  @override
+  String get helpLiveChatStart => 'Start chat';
+
+  @override
+  String get helpCancel => 'Cancel';
+
+  @override
+  String get helpContactSuccess => 'Message sent successfully!';
+
+  @override
+  String get helpTutorialDuration1 => '1 min';
+
+  @override
+  String get helpTutorialDuration2 => '2 min';
+
+  @override
+  String get helpTutorialDuration3 => '3 min';
+
+  @override
+  String get helpTutorialBooking => 'Book an event';
+
+  @override
+  String get helpBugDescriptionHint => 'Describe the problem encountered...';
+
+  @override
+  String get helpBugReportSent => 'Bug report sent!';
+
+  @override
+  String get reservationsNA => 'N/A';
+
+  @override
+  String reservationsErrorUnexpected(Object error) {
+    return 'Unexpected error: $error';
+  }
+
+  @override
+  String get reservationsNameUnavailable => 'Name unavailable';
+
+  @override
+  String get reservationsDate => 'Date';
+
+  @override
+  String get reservationsCancel => 'Cancel';
+
+  @override
+  String get reservationsDelete => 'Delete';
+
+  @override
+  String get reservationsRetry => 'Retry';
+
+  @override
+  String get reservationsTourUnavailable => 'Tour unavailable';
+
+  @override
+  String reservationsTourNumber(Object number) {
+    return 'Reservation #$number';
+  }
+
+  @override
+  String reservationsActivityNumber(Object number) {
+    return 'Registration #$number';
+  }
+
+  @override
+  String get reservationsDetailNumber => 'Number';
+
+  @override
+  String get reservationsDetailPlace => 'Place/Event';
+
+  @override
+  String get reservationsDetailType => 'Type';
+
+  @override
+  String get reservationsDetailStatus => 'Status';
+
+  @override
+  String get reservationsDetailContact => 'Contact';
+
+  @override
+  String get reservationsDetailEmail => 'Email';
+
+  @override
+  String get reservationsDetailPhone => 'Phone';
+
+  @override
+  String get reservationsDetailName => 'Name';
+
+  @override
+  String reservationsDeleteConfirmation(Object number) {
+    return 'Are you sure you want to permanently delete reservation #$number?\\n\\nThis action is irreversible.';
+  }
+
+  @override
+  String get reservationsTourNumberLabel => 'Reservation #';
+
+  @override
+  String get reservationsDeleteConfirmButton => 'Yes, delete';
+
+  @override
+  String get offlineLoadingSettings => 'Loading settings...';
+
+  @override
+  String get offlineConnectionStatus => 'Connection status';
+
+  @override
+  String get offlineStatsTotal => 'Total items';
+
+  @override
+  String get offlineStatsPois => 'Points of Interest';
+
+  @override
+  String get offlineStatsEvents => 'Events';
+
+  @override
+  String get offlineStatsFavorites => 'Favorites';
+
+  @override
+  String get offlineStatsCacheSize => 'Cache size';
+
+  @override
+  String get offlineActionSyncNow => 'Sync now';
+
+  @override
+  String get offlineActionSyncDesc => 'Update data from server';
+
+  @override
+  String get offlineActionDownload => 'Download for offline';
+
+  @override
+  String get offlineActionDownloadDesc => 'Download all important data';
+
+  @override
+  String get offlineActionClearCache => 'Clear cache';
+
+  @override
+  String get offlineActionClearCacheDesc => 'Delete all cached data';
+
+  @override
+  String get offlineRegionsTitle => 'Available offline regions';
+
+  @override
+  String get offlineRegionsDescription =>
+      'These regions can be visited even without internet connection.';
+
+  @override
+  String get offlineErrorNoConnection => 'Internet connection required';
+
+  @override
+  String get offlineSyncInProgress => 'Synchronization in progress...';
+
+  @override
+  String offlineSyncSuccess(Object count) {
+    return 'Sync successful! $count items updated';
+  }
+
+  @override
+  String get offlineSyncError => 'Synchronization error';
+
+  @override
+  String get offlineDownloadInProgress => 'Download in progress...';
+
+  @override
+  String offlineDownloadSuccess(Object count) {
+    return 'Download successful! $count items saved';
+  }
+
+  @override
+  String get offlineDownloadError => 'Download error';
+
+  @override
+  String get offlineClearCacheTitle => 'Clear cache';
+
+  @override
+  String get offlineClearCacheConfirmation =>
+      'Are you sure you want to delete all cached data? You will not be able to use the app offline until the next download.';
+
+  @override
+  String get offlineCancel => 'Cancel';
+
+  @override
+  String get offlineClear => 'Clear';
+
+  @override
+  String get offlineClearCacheSuccess => 'Cache cleared successfully';
+
+  @override
+  String get offlineClearCacheError => 'Error clearing cache';
 }

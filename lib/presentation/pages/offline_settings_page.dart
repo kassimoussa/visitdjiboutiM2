@@ -345,7 +345,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
       final result = await _syncService.syncData();
 
       if (result.success) {
-        _showSnackBar(AppLocalizations.of(context)!.offlineSyncSuccess.replaceAll('{count}', '${result.totalSyncedItems}'));
+        _showSnackBar(AppLocalizations.of(context)!.offlineSyncSuccess('${result.totalSyncedItems}'));
         await _loadStats();
       } else {
         _showSnackBar(result.message ?? AppLocalizations.of(context)!.offlineSyncError, isError: true);
@@ -371,7 +371,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
       final result = await _syncService.downloadForOffline();
 
       if (result.success) {
-        _showSnackBar(AppLocalizations.of(context)!.offlineDownloadSuccess.replaceAll('{count}', '${result.totalSyncedItems}'));
+        _showSnackBar(AppLocalizations.of(context)!.offlineDownloadSuccess('${result.totalSyncedItems}'));
         await _loadStats();
       } else {
         _showSnackBar(result.message ?? AppLocalizations.of(context)!.offlineDownloadError, isError: true);
