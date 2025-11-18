@@ -41,18 +41,18 @@ class AboutPage extends StatelessWidget {
             SizedBox(height: ResponsiveConstants.largeSpace),
             
             Text(
-              'Visit Djibouti',
+              AppLocalizations.of(context)!.aboutAppName,
               style: TextStyle(
                 fontSize: ResponsiveConstants.headline5,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF3860F8),
               ),
             ),
-            
+
             SizedBox(height: ResponsiveConstants.smallSpace),
-            
+
             Text(
-              'Version 1.0.0',
+              AppLocalizations.of(context)!.aboutVersion.replaceAll('{version}', '1.0.0'),
               style: TextStyle(
                 fontSize: ResponsiveConstants.body1,
                 color: Colors.grey[600],
@@ -69,7 +69,7 @@ class AboutPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Text(
-                'Visit Djibouti is the official app of the Djibouti Tourism Office. Discover the wonders of our country: from the lunar landscapes of Lake Assal to the coral reefs of Moucha Islands, passing through the bustling markets of Djibouti City.', // TODO: Add translation key
+                AppLocalizations.of(context)!.aboutDescription,
                 style: TextStyle(
                   fontSize: ResponsiveConstants.body1,
                   height: 1.5,
@@ -85,8 +85,9 @@ class AboutPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildStatCard(
+                    context,
                     '50+',
-                    'Points of Interest', // TODO: Add translation key
+                    AppLocalizations.of(context)!.aboutStatsPois,
                     Icons.place,
                     const Color(0xFF3860F8),
                   ),
@@ -94,8 +95,9 @@ class AboutPage extends StatelessWidget {
                 SizedBox(width: ResponsiveConstants.smallSpace),
                 Expanded(
                   child: _buildStatCard(
+                    context,
                     '100+',
-                    'Events', // TODO: Add translation key
+                    AppLocalizations.of(context)!.aboutStatsEvents,
                     Icons.event,
                     const Color(0xFF009639),
                   ),
@@ -103,8 +105,9 @@ class AboutPage extends StatelessWidget {
                 SizedBox(width: ResponsiveConstants.smallSpace),
                 Expanded(
                   child: _buildStatCard(
+                    context,
                     '6',
-                    'Régions',
+                    AppLocalizations.of(context)!.aboutStatsRegions,
                     Icons.map,
                     const Color(0xFF0072CE),
                   ),
@@ -116,32 +119,32 @@ class AboutPage extends StatelessWidget {
             
             // Fonctionnalités
             _buildSection(
-              'Fonctionnalités',
+              AppLocalizations.of(context)!.aboutFeaturesTitle,
               [
                 _buildFeatureItem(
                   Icons.explore,
-                  'Découvrir',
-                  'Plus de 50 points d\'intérêt avec photos et descriptions détaillées',
+                  AppLocalizations.of(context)!.aboutFeatureDiscoverTitle,
+                  AppLocalizations.of(context)!.aboutFeatureDiscoverDesc,
                 ),
                 _buildFeatureItem(
                   Icons.event,
-                  'Événements',
-                  'Calendrier complet des événements culturels et touristiques',
+                  AppLocalizations.of(context)!.aboutFeatureEventsTitle,
+                  AppLocalizations.of(context)!.aboutFeatureEventsDesc,
                 ),
                 _buildFeatureItem(
                   Icons.map,
-                  'Cartes interactives',
-                  'Navigation GPS et localisation des POIs proches',
+                  AppLocalizations.of(context)!.aboutFeatureMapsTitle,
+                  AppLocalizations.of(context)!.aboutFeatureMapsDesc,
                 ),
                 _buildFeatureItem(
                   Icons.favorite,
-                  'Favoris',
-                  'Sauvegardez vos lieux préférés et planifiez vos visites',
+                  AppLocalizations.of(context)!.aboutFeatureFavoritesTitle,
+                  AppLocalizations.of(context)!.aboutFeatureFavoritesDesc,
                 ),
                 _buildFeatureItem(
                   Icons.offline_pin,
-                  'Mode hors ligne',
-                  'Accédez aux informations même sans connexion Internet',
+                  AppLocalizations.of(context)!.aboutFeatureOfflineTitle,
+                  AppLocalizations.of(context)!.aboutFeatureOfflineDesc,
                 ),
               ],
             ),
@@ -150,15 +153,15 @@ class AboutPage extends StatelessWidget {
             
             // Équipe
             _buildSection(
-              'Développé par',
+              AppLocalizations.of(context)!.aboutDevelopedByTitle,
               [
                 ListTile(
                   leading: const CircleAvatar(
                     backgroundColor: Color(0xFF3860F8),
-                    child: Text('OT', style: TextStyle(color: Colors.white)),
+                    child: Text('ANT', style: TextStyle(color: Colors.white)),
                   ),
-                  title: const Text('Office du Tourisme de Djibouti'),
-                  subtitle: const Text('Organisme officiel de promotion touristique'),
+                  title: Text(AppLocalizations.of(context)!.aboutOrganizationFull),
+                  subtitle: Text(AppLocalizations.of(context)!.aboutOrganizationDescription),
                 ),
               ],
             ),
@@ -167,17 +170,17 @@ class AboutPage extends StatelessWidget {
             
             // Partenaires
             _buildSection(
-              'Partenaires',
+              AppLocalizations.of(context)!.aboutPartnersTitle,
               [
                 ListTile(
                   leading: const Icon(Icons.business, color: Color(0xFF3860F8)),
-                  title: const Text('Ministère du Commerce et du Tourisme'),
-                  subtitle: const Text('République de Djibouti'),
+                  title: Text(AppLocalizations.of(context)!.aboutPartnerMinistry),
+                  subtitle: Text(AppLocalizations.of(context)!.aboutPartnerMinistryDesc),
                 ),
                 ListTile(
                   leading: const Icon(Icons.hotel, color: Color(0xFF009639)),
-                  title: const Text('Association des Hôteliers'),
-                  subtitle: const Text('Secteur privé du tourisme'),
+                  title: Text(AppLocalizations.of(context)!.aboutPartnerHotels),
+                  subtitle: Text(AppLocalizations.of(context)!.aboutPartnerHotelsDesc),
                 ),
               ],
             ),
@@ -186,12 +189,12 @@ class AboutPage extends StatelessWidget {
             
             // Technologies utilisées
             _buildSection(
-              'Technologies',
+              AppLocalizations.of(context)!.aboutTechnologiesTitle,
               [
-                _buildTechItem('Flutter', 'Framework mobile multiplateforme'),
-                _buildTechItem('Dart', 'Langage de programmation moderne'),
-                _buildTechItem('Laravel', 'API Backend robuste et sécurisée'),
-                _buildTechItem('Google Maps', 'Cartographie et géolocalisation'),
+                _buildTechItem('Flutter', AppLocalizations.of(context)!.aboutTechFlutter),
+                _buildTechItem('Dart', AppLocalizations.of(context)!.aboutTechDart),
+                _buildTechItem('Laravel', AppLocalizations.of(context)!.aboutTechLaravel),
+                _buildTechItem('Google Maps', AppLocalizations.of(context)!.aboutTechMaps),
               ],
             ),
             
@@ -199,52 +202,56 @@ class AboutPage extends StatelessWidget {
             
             // Contact et liens
             _buildSection(
-              'Contact & Liens',
+              AppLocalizations.of(context)!.aboutContactTitle,
               [
                 _buildContactItem(
+                  context,
                   Icons.web,
-                  'Site web officiel',
+                  AppLocalizations.of(context)!.aboutContactWebsite,
                   'www.office-tourisme.dj',
                   () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Ouverture du site web...'),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.aboutOpeningWebsite),
                       ),
                     );
                   },
                 ),
                 _buildContactItem(
+                  context,
                   Icons.email,
-                  'Email',
+                  AppLocalizations.of(context)!.aboutContactEmail,
                   'info@office-tourisme.dj',
                   () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Ouverture de l\'application email...'),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.aboutOpeningEmail),
                       ),
                     );
                   },
                 ),
                 _buildContactItem(
+                  context,
                   Icons.phone,
-                  'Téléphone',
+                  AppLocalizations.of(context)!.aboutContactPhone,
                   '+253 21 35 68 00',
                   () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Ouverture de l\'application téléphone...'),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.aboutOpeningPhone),
                       ),
                     );
                   },
                 ),
                 _buildContactItem(
+                  context,
                   Icons.location_on,
-                  'Adresse',
-                  'Place du 27 Juin, Djibouti-ville',
+                  AppLocalizations.of(context)!.aboutContactAddress,
+                  AppLocalizations.of(context)!.aboutContactAddressValue,
                   () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Ouverture de la carte...'),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.aboutOpeningMap),
                       ),
                     );
                   },
@@ -264,7 +271,7 @@ class AboutPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    '© 2024 Office du Tourisme de Djibouti',
+                    AppLocalizations.of(context)!.aboutCopyright.replaceAll('{year}', '2024'),
                     style: TextStyle(
                       fontSize: ResponsiveConstants.body2,
                       fontWeight: FontWeight.w500,
@@ -274,7 +281,7 @@ class AboutPage extends StatelessWidget {
                   ),
                   SizedBox(height: ResponsiveConstants.smallSpace),
                   Text(
-                    'Tous droits réservés. Cette application est développée pour promouvoir le tourisme à Djibouti.',
+                    AppLocalizations.of(context)!.aboutCopyrightDescription,
                     style: TextStyle(
                       fontSize: ResponsiveConstants.caption,
                       color: Colors.grey[600],
@@ -292,7 +299,7 @@ class AboutPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(String value, String label, IconData icon, Color color) {
+  Widget _buildStatCard(BuildContext context, String value, String label, IconData icon, Color color) {
     return Container(
       padding: Responsive.all(16),
       decoration: BoxDecoration(
@@ -422,6 +429,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Widget _buildContactItem(
+    BuildContext context,
     IconData icon,
     String title,
     String value,
