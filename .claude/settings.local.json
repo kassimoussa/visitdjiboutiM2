@@ -40,7 +40,14 @@
       "Bash(xcodebuild:*)",
       "Bash(pkill:*)",
       "Bash(adb install:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(git pull:*)",
+      "Bash(/tmp/app_en_other.arb)",
+      "Bash(/tmp/app_ar_other.arb)",
+      "Bash(/Users/ctd-dsi-kassim/development/flutter/bin/flutter gen-l10n:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

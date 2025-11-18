@@ -960,9 +960,9 @@ class _MapPageState extends State<MapPage> {
                         style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 8.h),
-                      const Text(
+                      Text(
                         AppLocalizations.of(context)!.mapOfflineConnectToDownload,
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
