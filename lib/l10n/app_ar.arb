@@ -881,6 +881,7 @@
   },
   "reviewsSectionTitle": "التقييمات",
   "reviewsWriteReview": "كتابة تقييم",
+  "reviewsAll": "الكل",
   "reservationFormTitle": "حجز {type}",
   "@reservationFormTitle": {
     "placeholders": {

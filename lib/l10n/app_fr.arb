@@ -881,6 +881,7 @@
   },
   "reviewsSectionTitle": "Avis",
   "reviewsWriteReview": "Écrire un avis",
+  "reviewsAll": "Tous",
   "reservationFormTitle": "Réserver {type}",
   "@reservationFormTitle": {
     "placeholders": {

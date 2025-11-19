@@ -880,6 +880,7 @@
   },
   "reviewsSectionTitle": "Reviews",
   "reviewsWriteReview": "Write a review",
+  "reviewsAll": "All",
   "reservationFormTitle": "Book {type}",
   "@reservationFormTitle": {
     "placeholders": {

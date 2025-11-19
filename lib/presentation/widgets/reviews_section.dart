@@ -116,7 +116,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(
-            content: Text('Merci pour votre vote !'),
+            content: Text(AppLocalizations.of(context)!.reviewsVotedHelpful),
             duration: Duration(seconds: 2),
           ),
         );
@@ -125,7 +125,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.reviewsVoteError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -137,17 +137,17 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title:  Text('Supprimer l\'avis'),
-        content:  Text('Êtes-vous sûr de vouloir supprimer cet avis ?'),
+        title:  Text(AppLocalizations.of(context)!.reviewsDeleteTitle),
+        content:  Text(AppLocalizations.of(context)!.reviewsDeleteConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child:  Text('Annuler'),
+            child:  Text(AppLocalizations.of(context)!.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child:  Text('Supprimer'),
+            child:  Text(AppLocalizations.of(context)!.reviewsDelete),
           ),
         ],
       ),
@@ -163,14 +163,14 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       _loadReviews();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text('Avis supprimé')),
+           SnackBar(content: Text(AppLocalizations.of(context)!.reviewsDeleted)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.reviewsVoteError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -238,7 +238,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ),
             SizedBox(width: 12.w),
             Text(
-              'Avis',
+              AppLocalizations.of(context)!.reviewsSectionTitle,
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
           ],
@@ -304,7 +304,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      '${_statistics!.totalReviews} avis',
+                      AppLocalizations.of(context)!.reviewsCount(_statistics!.totalReviews),
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey[600],
@@ -370,7 +370,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildFilterChip('Tous', _filterRating == null, () => _filterByRating(null)),
+          _buildFilterChip(AppLocalizations.of(context)!.reviewsAll, _filterRating == null, () => _filterByRating(null)),
           SizedBox(width: 8.w),
           ...List.generate(5, (index) {
             final rating = 5 - index;
@@ -417,7 +417,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             padding: Responsive.symmetric(vertical: 16),
             child: TextButton(
               onPressed: () => _loadReviews(loadMore: true),
-              child:  Text('Voir plus d\'avis'),
+              child:  Text(AppLocalizations.of(context)!.reviewsLoadMore),
             ),
           ),
       ],
@@ -508,7 +508,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                         children: [
                           Icon(Icons.edit, size: 18),
                           SizedBox(width: 8.w),
-                          Text('Modifier'),
+                          Text(AppLocalizations.of(context)!.commonEdit),
                         ],
                       ),
                     ),
@@ -518,7 +518,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                         children: [
                           Icon(Icons.delete, size: 18, color: Colors.red),
                           SizedBox(width: 8.w),
-                          Text('Supprimer', style: TextStyle(color: Colors.red)),
+                          Text(AppLocalizations.of(context)!.reviewsDelete, style: TextStyle(color: Colors.red)),
                         ],
                       ),
                     ),
@@ -693,7 +693,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             SizedBox(height: 16.h),
             ElevatedButton(
               onPressed: _loadReviews,
-              child:  Text('Réessayer'),
+              child:  Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),
