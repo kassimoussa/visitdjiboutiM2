@@ -356,7 +356,7 @@ class _MapPageState extends State<MapPage> {
                       _navigateToPoiDetail(poi);
                     },
                     icon: const Icon(Icons.info),
-                    label: const Text('Voir détails'),
+                    label: Text(AppLocalizations.of(context)!.mapViewDetails),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF3860F8),
                       foregroundColor: Colors.white,
@@ -371,7 +371,7 @@ class _MapPageState extends State<MapPage> {
                       _showDirectionsOptions(poi);
                     },
                     icon: const Icon(Icons.directions),
-                    label: const Text('Itinéraire'),
+                    label: Text(AppLocalizations.of(context)!.mapGetDirections),
                   ),
                 ),
               ],
@@ -697,7 +697,7 @@ class _MapPageState extends State<MapPage> {
                               _showNearbyList = false;
                             });
                           },
-                          child: const Text('Fermer'),
+                          child: Text(AppLocalizations.of(context)!.commonClose),
                         ),
                       ],
                     ),
