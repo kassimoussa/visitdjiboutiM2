@@ -1135,6 +1135,7 @@
   "reservationsDeleteConfirmation": "Are you sure you want to permanently delete reservation #{number}?\\n\\nThis action is irreversible.",
   "reservationsTourNumberLabel": "Reservation #",
   "reservationsDeleteConfirmButton": "Yes, delete",
+  "regionListTitle": "Regions of Djibouti",
   "offlineLoadingSettings": "Loading settings...",
   "offlineConnectionStatus": "Connection status",
   "offlineStatsTotal": "Total items",

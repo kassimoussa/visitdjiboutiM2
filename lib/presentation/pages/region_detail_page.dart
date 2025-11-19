@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 import '../../../core/utils/responsive.dart';
 import '../../core/services/region_service.dart';
 import '../widgets/poi_card.dart';
@@ -120,7 +121,7 @@ class _RegionDetailPageState extends State<RegionDetailPage>
             SizedBox(height: 24.h),
             ElevatedButton(
               onPressed: _loadRegionContent,
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),

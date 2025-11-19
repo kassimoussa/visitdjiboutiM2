@@ -1136,6 +1136,7 @@
   "reservationsDeleteConfirmation": "هل أنت متأكد من رغبتك في حذف الحجز رقم {number} نهائيًا؟\\n\\nهذا الإجراء لا رجعة فيه.",
   "reservationsTourNumberLabel": "الحجز #",
   "reservationsDeleteConfirmButton": "نعم، احذف",
+  "regionListTitle": "مناطق جيبوتي",
   "offlineLoadingSettings": "تحميل الإعدادات...",
   "offlineConnectionStatus": "حالة الاتصال",
   "offlineStatsTotal": "إجمالي العناصر",
