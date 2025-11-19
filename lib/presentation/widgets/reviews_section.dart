@@ -3,6 +3,7 @@ import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 import 'review_form_widget.dart';
 
 /// Widget d'affichage de la section avis (statistiques + liste)
@@ -243,16 +244,13 @@ class _ReviewsSectionState extends State<ReviewsSection> {
           ],
         ),
         if (_authService.isLoggedIn)
-          Flexible(
-            child: ElevatedButton.icon(
-              onPressed: () => _showReviewForm(),
-              icon:  Icon(Icons.edit, size: 18),
-              label:  Text('Écrire un avis'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:  Color(0xFF3860F8),
-                foregroundColor: Colors.white,
-                padding: Responsive.symmetric(horizontal: 16, vertical: 8),
-              ),
+          IconButton.filled(
+            onPressed: () => _showReviewForm(),
+            icon: const Icon(Icons.edit, size: 20),
+            tooltip: AppLocalizations.of(context)!.reviewsWriteReview,
+            style: IconButton.styleFrom(
+              backgroundColor: const Color(0xFF3860F8),
+              foregroundColor: Colors.white,
             ),
           ),
       ],
