@@ -166,8 +166,7 @@ class TourService {
           final tours = cachedTours.map((json) => Tour.fromJson(json)).toList();
           return TourListResponse(
             success: true,
-            message: cacheMessage,
-            data: TourListData(tours: tours.take(limit).toList()),
+            data: TourData(tours: tours.take(limit).toList()),
           );
         }
       }
@@ -176,8 +175,7 @@ class TourService {
       if (_connectivityService.isOffline) {
         return TourListResponse(
           success: false,
-          message: 'Mode hors ligne - Aucune donnée en cache disponible. Connectez-vous pour télécharger les données.',
-          data: TourListData(tours: []),
+          data: TourData(tours: []),
         );
       }
 
