@@ -537,7 +537,7 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Mode hors ligne'),
+        title: Text(AppLocalizations.of(context)!.settingsOfflineModeTitle),
         content: const Text(
           'Le téléchargement des données pour le mode hors ligne consommera environ 50 MB. Voulez-vous continuer ?',
         ),
@@ -549,7 +549,7 @@ class _SettingsPageState extends State<SettingsPage> {
               });
               Navigator.pop(context);
             },
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -579,7 +579,7 @@ class _SettingsPageState extends State<SettingsPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -729,7 +729,7 @@ class _SettingsPageState extends State<SettingsPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.commonCancel),
           ),
           ElevatedButton(
             onPressed: () {
