@@ -62,6 +62,14 @@
   "commonErrorFavorites": "Erreur lors de la gestion des favoris",
   "commonErrorLoading": "Erreur de chargement",
   "commonErrorUnexpected": "Erreur inattendue",
+  "commonErrorSending": "Erreur lors de l'envoi: {error}",
+  "@commonErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "commonEvent": "Événement",
   "commonFieldRequired": "Ce champ est requis",
   "commonFilters": "Filtres",

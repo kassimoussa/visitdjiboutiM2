@@ -62,6 +62,14 @@
   "commonErrorFavorites": "خطأ في إدارة المفضلة",
   "commonErrorLoading": "خطأ في التحميل",
   "commonErrorUnexpected": "خطأ غير متوقع",
+  "commonErrorSending": "خطأ في الإرسال: {error}",
+  "@commonErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "commonEvent": "حدث",
   "commonFieldRequired": "هذا الحقل مطلوب",
   "commonFilters": "الفلاتر",

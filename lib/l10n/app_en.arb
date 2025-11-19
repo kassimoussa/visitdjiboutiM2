@@ -61,6 +61,14 @@
   "commonError": "Error",
   "commonErrorFavorites": "Error managing favorites",
   "commonErrorUnexpected": "Unexpected error",
+  "commonErrorSending": "Error sending: {error}",
+  "@commonErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "commonEvent": "Event",
   "commonFieldRequired": "This field is required",
   "commonFilters": "Filters",
