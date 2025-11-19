@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 import '../../../core/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'fullscreen_image_viewer.dart';
@@ -50,7 +51,7 @@ class PoiGalleryPage extends StatelessWidget {
       body: imageUrls.isEmpty
           ?  Center(
               child: Text(
-                'Aucune image disponible',
+                AppLocalizations.of(context)!.commonNoImages,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: Colors.grey,
