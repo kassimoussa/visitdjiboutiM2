@@ -11,6 +11,7 @@
   "authAcceptTerms": "أوافق على",
   "authAcceptTermsAnd": "و",
   "authBackToLogin": "العودة إلى تسجيل الدخول",
+  "authAccountCreatedSuccess": "تم إنشاء الحساب بنجاح! جاري تسجيل الدخول تلقائيًا...",
   "authConfirmPassword": "تأكيد كلمة المرور",
   "authConversionProblemTitle": "مشكلة في التحويل",
   "authCreateAccount": "إنشاء حساب",
