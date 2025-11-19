@@ -276,6 +276,10 @@
   "mapOfflineMessage": "Carte hors ligne - Affichage de la liste des POIs disponibles",
   "mapOfflineNoData": "Aucune donnée de carte disponible hors ligne",
   "mapOfflineConnectToDownload": "Connectez-vous à internet pour télécharger les POIs",
+  "mapOpenGoogleMaps": "Ouvrir dans Google Maps",
+  "mapNavigationGPS": "Navigation GPS en temps réel",
+  "mapShowOnMap": "Afficher sur la carte",
+  "mapRouteInApp": "Itinéraire dans l'application",
   "navigationHome": "Accueil",
   "navigationDiscover": "Découvrir",
   "navigationEvents": "Événements",
@@ -1164,5 +1168,6 @@
   "offlineCancel": "Annuler",
   "offlineClear": "Vider",
   "offlineClearCacheSuccess": "Cache vidé avec succès",
-  "offlineClearCacheError": "Erreur lors du vidage du cache"
+  "offlineClearCacheError": "Erreur lors du vidage du cache",
+  "offlineConnectionRestored": "Connexion rétablie !"
 }

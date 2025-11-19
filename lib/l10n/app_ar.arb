@@ -276,6 +276,10 @@
   "mapOfflineMessage": "خريطة غير متصلة - عرض قائمة الأماكن المتاحة",
   "mapOfflineNoData": "لا توجد بيانات خريطة متاحة دون اتصال",
   "mapOfflineConnectToDownload": "اتصل بالإنترنت لتنزيل الأماكن",
+  "mapOpenGoogleMaps": "فتح في خرائط جوجل",
+  "mapNavigationGPS": "ملاحة GPS في الوقت الفعلي",
+  "mapShowOnMap": "عرض على الخريطة",
+  "mapRouteInApp": "المسار في التطبيق",
   "navigationHome": "الرئيسية",
   "navigationDiscover": "اكتشف",
   "navigationEvents": "الأحداث",
@@ -1164,5 +1168,6 @@
   "offlineCancel": "إلغاء",
   "offlineClear": "مسح",
   "offlineClearCacheSuccess": "تم مسح ذاكرة التخزين المؤقت بنجاح",
-  "offlineClearCacheError": "خطأ أثناء مسح ذاكرة التخزين المؤقت"
+  "offlineClearCacheError": "خطأ أثناء مسح ذاكرة التخزين المؤقت",
+  "offlineConnectionRestored": "تم استعادة الاتصال!"
 }

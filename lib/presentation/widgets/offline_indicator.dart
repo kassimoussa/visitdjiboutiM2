@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 import 'dart:async';
 import '../../core/services/connectivity_service.dart';
@@ -146,7 +147,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
-                  'Réessayer',
+                  AppLocalizations.of(context)!.commonRetry,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12.sp,
@@ -167,7 +168,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
     if (isOnline) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Connexion rétablie !'),
+          content: Text(AppLocalizations.of(context)!.offlineConnectionRestored),
           backgroundColor: Colors.green,
           duration: const Duration(seconds: 2),
         ),
@@ -257,7 +258,7 @@ class _ConnectivityIconState extends State<ConnectivityIcon> {
                   SnackBar(
                     content: Text(
                       isOnline 
-                        ? 'Connexion rétablie !' 
+                        ? AppLocalizations.of(context)!.offlineConnectionRestored 
                         : 'Toujours hors ligne',
                     ),
                     backgroundColor: isOnline ? Colors.green : Colors.orange,
@@ -265,7 +266,7 @@ class _ConnectivityIconState extends State<ConnectivityIcon> {
                 );
               }
             },
-            child: const Text('Réessayer'),
+            child: Text(AppLocalizations.of(context)!.commonRetry),
           ),
         ],
       ),

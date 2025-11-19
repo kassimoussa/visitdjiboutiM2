@@ -275,6 +275,10 @@
   "mapOfflineMessage": "Offline map - Displaying available POIs list",
   "mapOfflineNoData": "No offline map data available",
   "mapOfflineConnectToDownload": "Connect to internet to download POIs",
+  "mapOpenGoogleMaps": "Open in Google Maps",
+  "mapNavigationGPS": "Real-time GPS navigation",
+  "mapShowOnMap": "Show on map",
+  "mapRouteInApp": "Route in app",
   "navigationHome": "Home",
   "navigationDiscover": "Discover",
   "navigationEvents": "Events",
@@ -1163,5 +1167,6 @@
   "offlineCancel": "Cancel",
   "offlineClear": "Clear",
   "offlineClearCacheSuccess": "Cache cleared successfully",
-  "offlineClearCacheError": "Error clearing cache"
+  "offlineClearCacheError": "Error clearing cache",
+  "offlineConnectionRestored": "Connection restored!"
 }

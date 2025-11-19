@@ -536,7 +536,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   });
                   _applyFilters();
                 },
-                child: const Text('Clear filters'), // Temporaire - clé à créer
+                child: Text(AppLocalizations.of(context)!.commonClearAll),
               ),
           ],
         ),
