@@ -20,7 +20,10 @@ class ReservationFormWidget extends StatefulWidget {
     this.event,
     this.onSuccess,
     this.onCancel,
-  }) : assert(poi != null || event != null, 'Either poi or event must be provided');
+  }) : assert(
+         poi != null || event != null,
+         'Either poi or event must be provided',
+       );
 
   @override
   State<ReservationFormWidget> createState() => _ReservationFormWidgetState();
@@ -53,8 +56,10 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
   bool get _isEvent => widget.event != null;
 
   String get _title => _isPoi ? widget.poi!.name : widget.event!.title;
-  String get _location => _isPoi ? widget.poi!.displayAddress : widget.event!.displayLocation;
-  String? get _imageUrl => _isPoi ? widget.poi!.imageUrl : widget.event!.imageUrl;
+  String get _location =>
+      _isPoi ? widget.poi!.displayAddress : widget.event!.displayLocation;
+  String? get _imageUrl =>
+      _isPoi ? widget.poi!.imageUrl : widget.event!.imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +76,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           // Header
           _buildHeader(),
           SizedBox(height: 20.h),
-          
+
           // Form
           Flexible(
             child: SingleChildScrollView(
@@ -105,13 +110,10 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         Text(
           AppLocalizations.of(context)!.reservationFormTitle(
             _isPoi
-              ? AppLocalizations.of(context)!.reservationFormTitlePoi
-              : AppLocalizations.of(context)!.reservationFormTitleEvent
+                ? AppLocalizations.of(context)!.reservationFormTitlePoi
+                : AppLocalizations.of(context)!.reservationFormTitleEvent,
           ),
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
         IconButton(
           onPressed: widget.onCancel ?? () => Navigator.of(context).pop(),
@@ -141,12 +143,13 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                     width: 60.w,
                     height: 60.h,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => _buildPlaceholderImage(),
+                    errorBuilder: (context, error, stackTrace) =>
+                        _buildPlaceholderImage(),
                   )
                 : _buildPlaceholderImage(),
           ),
           SizedBox(width: 12.w),
-          
+
           // Info
           Expanded(
             child: Column(
@@ -164,11 +167,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
                 SizedBox(height: 4.h),
                 Row(
                   children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
+                    Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
                     SizedBox(width: 4.w),
                     Expanded(
                       child: Text(
@@ -223,11 +222,11 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.reservationFormNumberOfPeople,
-        hintText: AppLocalizations.of(context)!.reservationFormNumberOfPeopleHint,
+        hintText: AppLocalizations.of(
+          context,
+        )!.reservationFormNumberOfPeopleHint,
         prefixIcon: const Icon(Icons.people),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
       ),
       validator: (value) {
         if (value?.isEmpty == true) {
@@ -245,7 +244,9 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
             widget.event!.availableSpots! > 0) {
           final available = widget.event!.availableSpots!;
           if (number > available) {
-            return AppLocalizations.of(context)!.reservationFormMaxPeople(available);
+            return AppLocalizations.of(
+              context,
+            )!.reservationFormMaxPeople(available.toString());
           }
         }
         return null;
@@ -264,10 +265,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       children: [
         Text(
           AppLocalizations.of(context)!.reservationFormContactInfo,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 12.h),
         TextFormField(
@@ -322,9 +320,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       decoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.reservationFormNotes,
         hintText: AppLocalizations.of(context)!.reservationFormNotesHint,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
       ),
     );
   }
@@ -396,31 +392,52 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
         response = await _reservationService.reservePoi(
           widget.poi!,
           people: numberOfPeople,
-          notes: _notesController.text.isNotEmpty ? _notesController.text : null,
-          userName: _nameController.text.isNotEmpty ? _nameController.text : null,
-          userEmail: _emailController.text.isNotEmpty ? _emailController.text : null,
-          userPhone: _phoneController.text.isNotEmpty ? _phoneController.text : null,
+          notes: _notesController.text.isNotEmpty
+              ? _notesController.text
+              : null,
+          userName: _nameController.text.isNotEmpty
+              ? _nameController.text
+              : null,
+          userEmail: _emailController.text.isNotEmpty
+              ? _emailController.text
+              : null,
+          userPhone: _phoneController.text.isNotEmpty
+              ? _phoneController.text
+              : null,
         );
       } else {
         print('[FORM] Making Event reservation for ${widget.event!.title}');
         response = await _reservationService.reserveEvent(
           widget.event!,
           people: numberOfPeople,
-          notes: _notesController.text.isNotEmpty ? _notesController.text : null,
-          userName: _nameController.text.isNotEmpty ? _nameController.text : null,
-          userEmail: _emailController.text.isNotEmpty ? _emailController.text : null,
-          userPhone: _phoneController.text.isNotEmpty ? _phoneController.text : null,
+          notes: _notesController.text.isNotEmpty
+              ? _notesController.text
+              : null,
+          userName: _nameController.text.isNotEmpty
+              ? _nameController.text
+              : null,
+          userEmail: _emailController.text.isNotEmpty
+              ? _emailController.text
+              : null,
+          userPhone: _phoneController.text.isNotEmpty
+              ? _phoneController.text
+              : null,
         );
       }
 
-      print('[FORM] Response received: success=${response.isSuccess}, message=${response.message}');
+      print(
+        '[FORM] Response received: success=${response.isSuccess}, message=${response.message}',
+      );
 
       if (mounted) {
         if (response.isSuccess) {
           print('[FORM] Success! Showing snackbar and navigating to home');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? AppLocalizations.of(context)!.reservationFormSuccess),
+              content: Text(
+                response.message ??
+                    AppLocalizations.of(context)!.reservationFormSuccess,
+              ),
               backgroundColor: Colors.green,
               duration: const Duration(seconds: 2),
             ),
@@ -439,14 +456,19 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
           Future.delayed(const Duration(milliseconds: 300), () {
             if (mounted) {
               print('[FORM] Navigating to home screen');
-              Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/', (route) => false);
             }
           });
         } else {
           print('[FORM] Error: ${response.message}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? AppLocalizations.of(context)!.reservationFormError),
+              content: Text(
+                response.message ??
+                    AppLocalizations.of(context)!.reservationFormError,
+              ),
               backgroundColor: Colors.red,
             ),
           );
@@ -458,12 +480,14 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
+            content: Text(
+              AppLocalizations.of(context)!.reservationsError(e.toString()),
+            ),
             backgroundColor: Colors.red,
           ),
         );
       }
-    } finally{
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;
