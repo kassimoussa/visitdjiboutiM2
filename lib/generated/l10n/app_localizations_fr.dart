@@ -139,6 +139,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonClearAll => 'Tout effacer';
 
   @override
+  String get commonClose => 'Fermer';
+
+  @override
   String get commonConnectionError => 'Erreur de connexion';
 
   @override
@@ -623,6 +626,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get mapTitle => 'Carte';
+
+  @override
+  String get mapViewDetails => 'Voir détails';
 
   @override
   String get mapUnknownPlace => 'Lieu inconnu';

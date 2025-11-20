@@ -352,6 +352,12 @@ abstract class AppLocalizations {
   /// **'Tout effacer'**
   String get commonClearAll;
 
+  /// No description provided for @commonClose.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get commonClose;
+
   /// No description provided for @commonConnectionError.
   ///
   /// In fr, this message translates to:
@@ -1287,6 +1293,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Carte'**
   String get mapTitle;
+
+  /// No description provided for @mapViewDetails.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir détails'**
+  String get mapViewDetails;
 
   /// No description provided for @mapUnknownPlace.
   ///

@@ -137,6 +137,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonClearAll => 'مسح الكل';
 
   @override
+  String get commonClose => 'إغلاق';
+
+  @override
   String get commonConnectionError => 'خطأ في الاتصال';
 
   @override
@@ -617,6 +620,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mapTitle => 'الخريطة';
+
+  @override
+  String get mapViewDetails => 'عرض التفاصيل';
 
   @override
   String get mapUnknownPlace => 'مكان غير معروف';
