@@ -130,6 +130,12 @@ abstract class AppLocalizations {
   /// **'Retour à la connexion'**
   String get authBackToLogin;
 
+  /// No description provided for @authAccountCreatedSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte créé avec succès ! Connexion automatique...'**
+  String get authAccountCreatedSuccess;
+
   /// No description provided for @authConfirmPassword.
   ///
   /// In fr, this message translates to:
@@ -436,6 +442,12 @@ abstract class AppLocalizations {
   /// **'Erreur inattendue'**
   String get commonErrorUnexpected;
 
+  /// No description provided for @commonErrorSending.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de l\'envoi: {error}'**
+  String commonErrorSending(String error);
+
   /// No description provided for @commonEvent.
   ///
   /// In fr, this message translates to:
@@ -489,6 +501,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune application de navigation disponible'**
   String get commonNoNavigationApp;
+
+  /// No description provided for @commonNoImages.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune image disponible'**
+  String get commonNoImages;
 
   /// No description provided for @commonOk.
   ///
@@ -1371,6 +1389,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Connectez-vous à internet pour télécharger les POIs'**
   String get mapOfflineConnectToDownload;
+
+  /// No description provided for @mapOpenGoogleMaps.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir dans Google Maps'**
+  String get mapOpenGoogleMaps;
+
+  /// No description provided for @mapNavigationGPS.
+  ///
+  /// In fr, this message translates to:
+  /// **'Navigation GPS en temps réel'**
+  String get mapNavigationGPS;
+
+  /// No description provided for @mapShowOnMap.
+  ///
+  /// In fr, this message translates to:
+  /// **'Afficher sur la carte'**
+  String get mapShowOnMap;
+
+  /// No description provided for @mapRouteInApp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Itinéraire dans l\'application'**
+  String get mapRouteInApp;
 
   /// No description provided for @navigationHome.
   ///
@@ -3910,6 +3952,12 @@ abstract class AppLocalizations {
   /// **'Écrire un avis'**
   String get reviewsWriteReview;
 
+  /// No description provided for @reviewsAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous'**
+  String get reviewsAll;
+
   /// No description provided for @reservationFormTitle.
   ///
   /// In fr, this message translates to:
@@ -4996,6 +5044,12 @@ abstract class AppLocalizations {
   /// **'Oui, supprimer'**
   String get reservationsDeleteConfirmButton;
 
+  /// No description provided for @regionListTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Régions de Djibouti'**
+  String get regionListTitle;
+
   /// No description provided for @offlineLoadingSettings.
   ///
   /// In fr, this message translates to:
@@ -5163,6 +5217,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Erreur lors du vidage du cache'**
   String get offlineClearCacheError;
+
+  /// No description provided for @offlineConnectionRestored.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connexion rétablie !'**
+  String get offlineConnectionRestored;
 }
 
 class _AppLocalizationsDelegate

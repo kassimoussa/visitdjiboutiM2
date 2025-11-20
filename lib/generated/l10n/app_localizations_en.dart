@@ -24,6 +24,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authBackToLogin => 'Back to login';
 
   @override
+  String get authAccountCreatedSuccess =>
+      'Account created successfully! Logging in automatically...';
+
+  @override
   String get authConfirmPassword => 'Confirm password';
 
   @override
@@ -178,6 +182,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonErrorUnexpected => 'Unexpected error';
 
   @override
+  String commonErrorSending(String error) {
+    return 'Error sending: $error';
+  }
+
+  @override
   String get commonEvent => 'Event';
 
   @override
@@ -203,6 +212,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonNoNavigationApp => 'No navigation app available';
+
+  @override
+  String get commonNoImages => 'No images available';
 
   @override
   String get commonOk => 'OK';
@@ -664,6 +676,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mapOfflineConnectToDownload =>
       'Connect to internet to download POIs';
+
+  @override
+  String get mapOpenGoogleMaps => 'Open in Google Maps';
+
+  @override
+  String get mapNavigationGPS => 'Real-time GPS navigation';
+
+  @override
+  String get mapShowOnMap => 'Show on map';
+
+  @override
+  String get mapRouteInApp => 'Route in app';
 
   @override
   String get navigationHome => 'Home';
@@ -2019,6 +2043,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewsWriteReview => 'Write a review';
 
   @override
+  String get reviewsAll => 'All';
+
+  @override
   String reservationFormTitle(String type) {
     return 'Book $type';
   }
@@ -2618,6 +2645,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reservationsDeleteConfirmButton => 'Yes, delete';
 
   @override
+  String get regionListTitle => 'Regions of Djibouti';
+
+  @override
   String get offlineLoadingSettings => 'Loading settings...';
 
   @override
@@ -2706,4 +2736,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineClearCacheError => 'Error clearing cache';
+
+  @override
+  String get offlineConnectionRestored => 'Connection restored!';
 }

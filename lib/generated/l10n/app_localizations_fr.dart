@@ -24,6 +24,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authBackToLogin => 'Retour à la connexion';
 
   @override
+  String get authAccountCreatedSuccess =>
+      'Compte créé avec succès ! Connexion automatique...';
+
+  @override
   String get authConfirmPassword => 'Confirmer le mot de passe';
 
   @override
@@ -180,6 +184,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonErrorUnexpected => 'Erreur inattendue';
 
   @override
+  String commonErrorSending(String error) {
+    return 'Erreur lors de l\'envoi: $error';
+  }
+
+  @override
   String get commonEvent => 'Événement';
 
   @override
@@ -206,6 +215,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get commonNoNavigationApp =>
       'Aucune application de navigation disponible';
+
+  @override
+  String get commonNoImages => 'Aucune image disponible';
 
   @override
   String get commonOk => 'OK';
@@ -670,6 +682,18 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get mapOfflineConnectToDownload =>
       'Connectez-vous à internet pour télécharger les POIs';
+
+  @override
+  String get mapOpenGoogleMaps => 'Ouvrir dans Google Maps';
+
+  @override
+  String get mapNavigationGPS => 'Navigation GPS en temps réel';
+
+  @override
+  String get mapShowOnMap => 'Afficher sur la carte';
+
+  @override
+  String get mapRouteInApp => 'Itinéraire dans l\'application';
 
   @override
   String get navigationHome => 'Accueil';
@@ -2039,6 +2063,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reviewsWriteReview => 'Écrire un avis';
 
   @override
+  String get reviewsAll => 'Tous';
+
+  @override
   String reservationFormTitle(String type) {
     return 'Réserver $type';
   }
@@ -2647,6 +2674,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reservationsDeleteConfirmButton => 'Oui, supprimer';
 
   @override
+  String get regionListTitle => 'Régions de Djibouti';
+
+  @override
   String get offlineLoadingSettings => 'Chargement des paramètres...';
 
   @override
@@ -2738,4 +2768,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get offlineClearCacheError => 'Erreur lors du vidage du cache';
+
+  @override
+  String get offlineConnectionRestored => 'Connexion rétablie !';
 }

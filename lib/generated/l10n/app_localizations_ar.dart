@@ -24,6 +24,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authBackToLogin => 'العودة إلى تسجيل الدخول';
 
   @override
+  String get authAccountCreatedSuccess =>
+      'تم إنشاء الحساب بنجاح! جاري تسجيل الدخول تلقائيًا...';
+
+  @override
   String get authConfirmPassword => 'تأكيد كلمة المرور';
 
   @override
@@ -178,6 +182,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonErrorUnexpected => 'خطأ غير متوقع';
 
   @override
+  String commonErrorSending(String error) {
+    return 'خطأ في الإرسال: $error';
+  }
+
+  @override
   String get commonEvent => 'حدث';
 
   @override
@@ -203,6 +212,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonNoNavigationApp => 'لا يوجد تطبيق ملاحة متاح';
+
+  @override
+  String get commonNoImages => 'لا توجد صور متاحة';
 
   @override
   String get commonOk => 'حسنا';
@@ -661,6 +673,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mapOfflineConnectToDownload => 'اتصل بالإنترنت لتنزيل الأماكن';
+
+  @override
+  String get mapOpenGoogleMaps => 'فتح في خرائط جوجل';
+
+  @override
+  String get mapNavigationGPS => 'ملاحة GPS في الوقت الفعلي';
+
+  @override
+  String get mapShowOnMap => 'عرض على الخريطة';
+
+  @override
+  String get mapRouteInApp => 'المسار في التطبيق';
 
   @override
   String get navigationHome => 'الرئيسية';
@@ -2012,6 +2036,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviewsWriteReview => 'كتابة تقييم';
 
   @override
+  String get reviewsAll => 'الكل';
+
+  @override
   String reservationFormTitle(String type) {
     return 'حجز $type';
   }
@@ -2610,6 +2637,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reservationsDeleteConfirmButton => 'نعم، احذف';
 
   @override
+  String get regionListTitle => 'مناطق جيبوتي';
+
+  @override
   String get offlineLoadingSettings => 'تحميل الإعدادات...';
 
   @override
@@ -2698,4 +2728,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offlineClearCacheError => 'خطأ أثناء مسح ذاكرة التخزين المؤقت';
+
+  @override
+  String get offlineConnectionRestored => 'تم استعادة الاتصال!';
 }
