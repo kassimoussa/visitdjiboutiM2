@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/simple_activity.dart';
-import '../../core/utils/responsive.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../pages/activity_detail_page.dart';
 

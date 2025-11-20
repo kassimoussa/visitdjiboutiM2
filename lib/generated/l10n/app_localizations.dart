@@ -832,6 +832,12 @@ abstract class AppLocalizations {
   /// **'participants'**
   String get eventDetailParticipantsLabel;
 
+  /// Number of participants with label
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} participants'**
+  String eventDetailParticipantsWithCount(int count);
+
   /// No description provided for @eventDetailPopular.
   ///
   /// In fr, this message translates to:

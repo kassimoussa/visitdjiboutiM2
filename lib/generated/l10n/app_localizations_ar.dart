@@ -376,6 +376,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get eventDetailParticipantsLabel => 'مشاركون';
 
   @override
+  String eventDetailParticipantsWithCount(int count) {
+    return '$count مشاركون';
+  }
+
+  @override
   String get eventDetailPopular => 'شائع';
 
   @override

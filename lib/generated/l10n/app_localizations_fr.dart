@@ -380,6 +380,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get eventDetailParticipantsLabel => 'participants';
 
   @override
+  String eventDetailParticipantsWithCount(int count) {
+    return '$count participants';
+  }
+
+  @override
   String get eventDetailPopular => 'Populaire';
 
   @override

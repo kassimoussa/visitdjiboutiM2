@@ -11,7 +11,6 @@ import '../../generated/l10n/app_localizations.dart';
 import '../widgets/shimmer_loading.dart';
 import '../widgets/tour_reservation_form_widget.dart';
 import '../widgets/contact_operator_button.dart';
-import 'tour_operator_detail_page.dart';
 import 'tour_gallery_page.dart';
 
 class TourDetailPage extends StatefulWidget {
