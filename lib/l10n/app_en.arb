@@ -48,6 +48,7 @@
   "commonCategories": "Categories",
   "commonCategory": "Category",
   "commonClearAll": "Clear all",
+  "commonClose": "Close",
   "commonConnectionError": "Connection error",
   "commonContact": "Contact",
   "commonCoordinates": "Coordinates",
@@ -258,6 +259,7 @@
     }
   },
   "mapTitle": "Map",
+  "mapViewDetails": "View details",
   "mapUnknownPlace": "Unknown place",
   "mapLocationPermissionDenied": "Location permission denied",
   "mapErrorLoading": "Loading error",

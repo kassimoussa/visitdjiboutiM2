@@ -48,6 +48,7 @@
   "commonCategories": "الفئات",
   "commonCategory": "الفئة",
   "commonClearAll": "مسح الكل",
+  "commonClose": "إغلاق",
   "commonConnectionError": "خطأ في الاتصال",
   "commonContact": "اتصل",
   "commonCoordinates": "الإحداثيات",
@@ -259,6 +260,7 @@
     }
   },
   "mapTitle": "الخريطة",
+  "mapViewDetails": "عرض التفاصيل",
   "mapUnknownPlace": "مكان غير معروف",
   "mapLocationPermissionDenied": "تم رفض إذن الموقع",
   "mapErrorLoading": "خطأ في التحميل",

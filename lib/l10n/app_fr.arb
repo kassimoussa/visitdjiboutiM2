@@ -48,6 +48,7 @@
   "commonCategories": "Catégories",
   "commonCategory": "Catégorie",
   "commonClearAll": "Tout effacer",
+  "commonClose": "Fermer",
   "commonConnectionError": "Erreur de connexion",
   "commonContact": "Contact",
   "commonCoordinates": "Coordonnées",
@@ -259,6 +260,7 @@
     }
   },
   "mapTitle": "Carte",
+  "mapViewDetails": "Voir détails",
   "mapUnknownPlace": "Lieu inconnu",
   "mapLocationPermissionDenied": "Permission de localisation refusée",
   "mapErrorLoading": "Erreur de chargement",
