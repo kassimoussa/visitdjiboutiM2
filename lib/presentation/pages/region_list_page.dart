@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 import '../../../core/utils/responsive.dart';
 import '../../core/models/region.dart';
 import '../../core/services/region_service.dart';
@@ -49,7 +50,7 @@ class _RegionListPageState extends State<RegionListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Régions de Djibouti'),
+        title: Text(AppLocalizations.of(context)!.regionListTitle),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
       ),
@@ -83,7 +84,7 @@ class _RegionListPageState extends State<RegionListPage> {
             SizedBox(height: 24.h),
             ElevatedButton(
               onPressed: _loadRegions,
-              child: const Text('Réessayer'),
+              child: Text(AppLocalizations.of(context)!.commonRetry),
             ),
           ],
         ),

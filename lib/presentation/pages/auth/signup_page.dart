@@ -349,10 +349,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _showSimpleSuccessDialog() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Compte créé avec succès ! Connexion automatique...'),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.authAccountCreatedSuccess),
         backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
 

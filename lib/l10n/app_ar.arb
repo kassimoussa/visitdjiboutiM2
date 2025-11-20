@@ -11,6 +11,7 @@
   "authAcceptTerms": "أوافق على",
   "authAcceptTermsAnd": "و",
   "authBackToLogin": "العودة إلى تسجيل الدخول",
+  "authAccountCreatedSuccess": "تم إنشاء الحساب بنجاح! جاري تسجيل الدخول تلقائيًا...",
   "authConfirmPassword": "تأكيد كلمة المرور",
   "authConversionProblemTitle": "مشكلة في التحويل",
   "authCreateAccount": "إنشاء حساب",
@@ -62,6 +63,14 @@
   "commonErrorFavorites": "خطأ في إدارة المفضلة",
   "commonErrorLoading": "خطأ في التحميل",
   "commonErrorUnexpected": "خطأ غير متوقع",
+  "commonErrorSending": "خطأ في الإرسال: {error}",
+  "@commonErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "commonEvent": "حدث",
   "commonFieldRequired": "هذا الحقل مطلوب",
   "commonFilters": "الفلاتر",
@@ -71,6 +80,7 @@
   "commonLocation": "الموقع",
   "commonNext": "التالي",
   "commonNoNavigationApp": "لا يوجد تطبيق ملاحة متاح",
+  "commonNoImages": "لا توجد صور متاحة",
   "commonOk": "حسنا",
   "commonOpeningHours": "ساعات العمل",
   "commonOverview": "نظرة عامة",
@@ -266,6 +276,10 @@
   "mapOfflineMessage": "خريطة غير متصلة - عرض قائمة الأماكن المتاحة",
   "mapOfflineNoData": "لا توجد بيانات خريطة متاحة دون اتصال",
   "mapOfflineConnectToDownload": "اتصل بالإنترنت لتنزيل الأماكن",
+  "mapOpenGoogleMaps": "فتح في خرائط جوجل",
+  "mapNavigationGPS": "ملاحة GPS في الوقت الفعلي",
+  "mapShowOnMap": "عرض على الخريطة",
+  "mapRouteInApp": "المسار في التطبيق",
   "navigationHome": "الرئيسية",
   "navigationDiscover": "اكتشف",
   "navigationEvents": "الأحداث",
@@ -881,6 +895,7 @@
   },
   "reviewsSectionTitle": "التقييمات",
   "reviewsWriteReview": "كتابة تقييم",
+  "reviewsAll": "الكل",
   "reservationFormTitle": "حجز {type}",
   "@reservationFormTitle": {
     "placeholders": {
@@ -1125,6 +1140,7 @@
   "reservationsDeleteConfirmation": "هل أنت متأكد من رغبتك في حذف الحجز رقم {number} نهائيًا؟\\n\\nهذا الإجراء لا رجعة فيه.",
   "reservationsTourNumberLabel": "الحجز #",
   "reservationsDeleteConfirmButton": "نعم، احذف",
+  "regionListTitle": "مناطق جيبوتي",
   "offlineLoadingSettings": "تحميل الإعدادات...",
   "offlineConnectionStatus": "حالة الاتصال",
   "offlineStatsTotal": "إجمالي العناصر",
@@ -1152,5 +1168,6 @@
   "offlineCancel": "إلغاء",
   "offlineClear": "مسح",
   "offlineClearCacheSuccess": "تم مسح ذاكرة التخزين المؤقت بنجاح",
-  "offlineClearCacheError": "خطأ أثناء مسح ذاكرة التخزين المؤقت"
+  "offlineClearCacheError": "خطأ أثناء مسح ذاكرة التخزين المؤقت",
+  "offlineConnectionRestored": "تم استعادة الاتصال!"
 }

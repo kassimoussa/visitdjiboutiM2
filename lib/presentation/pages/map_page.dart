@@ -356,7 +356,7 @@ class _MapPageState extends State<MapPage> {
                       _navigateToPoiDetail(poi);
                     },
                     icon: const Icon(Icons.info),
-                    label: const Text('Voir détails'),
+                    label: Text(AppLocalizations.of(context)!.mapViewDetails),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF3860F8),
                       foregroundColor: Colors.white,
@@ -371,7 +371,7 @@ class _MapPageState extends State<MapPage> {
                       _showDirectionsOptions(poi);
                     },
                     icon: const Icon(Icons.directions),
-                    label: const Text('Itinéraire'),
+                    label: Text(AppLocalizations.of(context)!.mapGetDirections),
                   ),
                 ),
               ],
@@ -413,8 +413,8 @@ class _MapPageState extends State<MapPage> {
             SizedBox(height: 16.h),
             ListTile(
               leading: const Icon(Icons.navigation, color: Color(0xFF3860F8)),
-              title: const Text('Ouvrir dans Google Maps'),
-              subtitle: const Text('Navigation GPS en temps réel'),
+              title: Text(AppLocalizations.of(context)!.mapOpenGoogleMaps),
+              subtitle: Text(AppLocalizations.of(context)!.mapNavigationGPS),
               onTap: () async {
                 Navigator.pop(context);
                 final success = await _directionsService.openGoogleMapsDirections(
@@ -433,8 +433,8 @@ class _MapPageState extends State<MapPage> {
             const Divider(),
             ListTile(
               leading: const Icon(Icons.map, color: Color(0xFF3860F8)),
-              title: const Text('Afficher sur la carte'),
-              subtitle: const Text('Itinéraire dans l\'application'),
+              title: Text(AppLocalizations.of(context)!.mapShowOnMap),
+              subtitle: Text(AppLocalizations.of(context)!.mapRouteInApp),
               onTap: () async {
                 Navigator.pop(context);
                 await _showDirectionsOnMap(poi);
@@ -697,7 +697,7 @@ class _MapPageState extends State<MapPage> {
                               _showNearbyList = false;
                             });
                           },
-                          child: const Text('Fermer'),
+                          child: Text(AppLocalizations.of(context)!.commonClose),
                         ),
                       ],
                     ),

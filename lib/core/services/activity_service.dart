@@ -3,6 +3,8 @@ import '../api/api_constants.dart';
 import '../models/activity.dart';
 import '../models/simple_activity.dart';
 import '../models/activity_registration.dart';
+import 'cache_service.dart';
+import 'connectivity_service.dart';
 
 class ActivityService {
   static final ActivityService _instance = ActivityService._internal();
@@ -10,6 +12,8 @@ class ActivityService {
   ActivityService._internal();
 
   final ApiClient _apiClient = ApiClient();
+  final CacheService _cacheService = CacheService();
+  final ConnectivityService _connectivityService = ConnectivityService();
 
   /// Récupérer la liste des activités avec filtres
   Future<ActivityListResponse> getActivities({
@@ -138,10 +142,38 @@ class ActivityService {
   }
 
   /// Récupérer les activités mises en avant (pour page d'accueil)
-  Future<List<SimpleActivity>> getFeaturedActivities({int limit = 5}) async {
-    print('[ACTIVITY SERVICE] Récupération activités mises en avant');
+  Future<List<SimpleActivity>> getFeaturedActivities({
+    int limit = 5,
+    bool useCache = true,
+  }) async {
+    print('[ACTIVITY SERVICE] Récupération activités mises en avant (limit: $limit, useCache: $useCache)');
 
     try {
+      // Vérifier le cache d'abord si hors ligne ou cache activé
+      final shouldUseCache = _connectivityService.isOffline || useCache;
+
+      if (shouldUseCache) {
+        final cachedActivities = await _cacheService.getCachedActivities();
+        if (cachedActivities != null) {
+          final cacheMessage = _connectivityService.isOffline
+              ? 'Mode hors ligne - Activités depuis le cache'
+              : 'Activités chargées depuis le cache';
+          print('[ACTIVITY SERVICE] $cacheMessage');
+
+          final activities = cachedActivities
+              .map((json) => SimpleActivity.fromJson(json))
+              .toList();
+          return activities.take(limit).toList();
+        }
+      }
+
+      // Si hors ligne et pas de cache, retourner liste vide
+      if (_connectivityService.isOffline) {
+        print('[ACTIVITY SERVICE] Mode hors ligne - Aucune donnée en cache disponible');
+        return [];
+      }
+
+      // Appel API
       final response = await _apiClient.get(
         ApiConstants.activities,
         queryParameters: {
@@ -151,16 +183,10 @@ class ActivityService {
       );
 
       print('[ACTIVITY SERVICE] Response status: ${response.statusCode}');
-      print('[ACTIVITY SERVICE] Response data type: ${response.data.runtimeType}');
 
       if (response.statusCode == 200) {
         final data = response.data['data'] as List;
         print('[ACTIVITY SERVICE] Nombre d\'activités dans data: ${data.length}');
-
-        if (data.isNotEmpty) {
-          print('[ACTIVITY SERVICE] Premier item structure: ${data.first.keys}');
-          print('[ACTIVITY SERVICE] Premier item complet: ${data.first}');
-        }
 
         final activities = data.map((item) {
           try {
@@ -172,6 +198,14 @@ class ActivityService {
             rethrow;
           }
         }).toList();
+
+        // Mettre en cache les résultats
+        if (useCache && activities.isNotEmpty) {
+          await _cacheService.cacheActivities(
+            activities.map((activity) => activity.toJson()).toList(),
+          );
+          print('[ACTIVITY SERVICE] ${activities.length} activités mises en cache');
+        }
 
         print('[ACTIVITY SERVICE] Activités featured parsées avec succès: ${activities.length}');
         return activities;

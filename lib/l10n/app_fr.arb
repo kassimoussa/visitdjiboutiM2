@@ -11,6 +11,7 @@
   "authAcceptTerms": "J'accepte les",
   "authAcceptTermsAnd": "et",
   "authBackToLogin": "Retour à la connexion",
+  "authAccountCreatedSuccess": "Compte créé avec succès ! Connexion automatique...",
   "authConfirmPassword": "Confirmer le mot de passe",
   "authConversionProblemTitle": "Problème de conversion",
   "authCreateAccount": "Créer un compte",
@@ -62,6 +63,14 @@
   "commonErrorFavorites": "Erreur lors de la gestion des favoris",
   "commonErrorLoading": "Erreur de chargement",
   "commonErrorUnexpected": "Erreur inattendue",
+  "commonErrorSending": "Erreur lors de l'envoi: {error}",
+  "@commonErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "commonEvent": "Événement",
   "commonFieldRequired": "Ce champ est requis",
   "commonFilters": "Filtres",
@@ -71,6 +80,7 @@
   "commonLocation": "Localisation",
   "commonNext": "Suivant",
   "commonNoNavigationApp": "Aucune application de navigation disponible",
+  "commonNoImages": "Aucune image disponible",
   "commonOk": "OK",
   "commonOpeningHours": "Horaires d'ouverture",
   "commonOverview": "Aperçu",
@@ -266,6 +276,10 @@
   "mapOfflineMessage": "Carte hors ligne - Affichage de la liste des POIs disponibles",
   "mapOfflineNoData": "Aucune donnée de carte disponible hors ligne",
   "mapOfflineConnectToDownload": "Connectez-vous à internet pour télécharger les POIs",
+  "mapOpenGoogleMaps": "Ouvrir dans Google Maps",
+  "mapNavigationGPS": "Navigation GPS en temps réel",
+  "mapShowOnMap": "Afficher sur la carte",
+  "mapRouteInApp": "Itinéraire dans l'application",
   "navigationHome": "Accueil",
   "navigationDiscover": "Découvrir",
   "navigationEvents": "Événements",
@@ -881,6 +895,7 @@
   },
   "reviewsSectionTitle": "Avis",
   "reviewsWriteReview": "Écrire un avis",
+  "reviewsAll": "Tous",
   "reservationFormTitle": "Réserver {type}",
   "@reservationFormTitle": {
     "placeholders": {
@@ -1125,6 +1140,7 @@
   "reservationsDeleteConfirmation": "Êtes-vous sûr de vouloir supprimer définitivement la réservation n°{number}?\\n\\nCette action est irréversible.",
   "reservationsTourNumberLabel": "Réservation #",
   "reservationsDeleteConfirmButton": "Oui, supprimer",
+  "regionListTitle": "Régions de Djibouti",
   "offlineLoadingSettings": "Chargement des paramètres...",
   "offlineConnectionStatus": "État de la connexion",
   "offlineStatsTotal": "Éléments total",
@@ -1152,5 +1168,6 @@
   "offlineCancel": "Annuler",
   "offlineClear": "Vider",
   "offlineClearCacheSuccess": "Cache vidé avec succès",
-  "offlineClearCacheError": "Erreur lors du vidage du cache"
+  "offlineClearCacheError": "Erreur lors du vidage du cache",
+  "offlineConnectionRestored": "Connexion rétablie !"
 }

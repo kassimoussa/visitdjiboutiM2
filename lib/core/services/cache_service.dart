@@ -8,7 +8,7 @@ class CacheService {
   factory CacheService() => _instance;
   CacheService._internal();
 
-  static const Duration _defaultCacheDuration = Duration(minutes: 15);
+  static const Duration _defaultCacheDuration = Duration(minutes: 10);
   static const Duration _offlineCacheDuration = Duration(days: 7); // Cache plus long pour mode hors ligne
 
   // Configuration LRU (Least Recently Used)
@@ -208,6 +208,32 @@ class CacheService {
     return getCachedData<List<dynamic>>(
       CacheKeys.events(languageCode: languageCode),
     );
+  }
+
+  /// Cache des tours
+  Future<void> cacheTours(List<dynamic> tours) async {
+    await cacheData(
+      CacheKeys.featuredTours,
+      tours,
+    );
+  }
+
+  /// Récupère les tours mis en cache
+  Future<List<dynamic>?> getCachedTours() async {
+    return getCachedData<List<dynamic>>(CacheKeys.featuredTours);
+  }
+
+  /// Cache des activités
+  Future<void> cacheActivities(List<dynamic> activities) async {
+    await cacheData(
+      CacheKeys.featuredActivities,
+      activities,
+    );
+  }
+
+  /// Récupère les activités mises en cache
+  Future<List<dynamic>?> getCachedActivities() async {
+    return getCachedData<List<dynamic>>(CacheKeys.featuredActivities);
   }
 
   // Nettoyage du cache

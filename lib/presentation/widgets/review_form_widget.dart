@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vd_gem/core/utils/responsive.dart';
 import '../../core/models/review.dart';
 import '../../core/services/review_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 /// Widget de formulaire pour créer ou modifier un avis
 class ReviewFormWidget extends StatefulWidget {
@@ -54,8 +55,8 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
   Future<void> _submitReview() async {
     if (_rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuillez sélectionner une note'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.reviewFormPleaseRate),
           backgroundColor: Colors.orange,
         ),
       );
@@ -95,7 +96,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
         widget.onReviewSubmitted();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_isEditing ? 'Avis modifié avec succès' : 'Avis publié avec succès'),
+            content: Text(_isEditing ? AppLocalizations.of(context)!.reviewFormUpdated : AppLocalizations.of(context)!.reviewFormPublished),
             backgroundColor: Colors.green,
           ),
         );
@@ -107,7 +108,7 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.reviewFormError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );

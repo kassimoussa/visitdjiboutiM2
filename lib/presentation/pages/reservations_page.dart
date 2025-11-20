@@ -977,7 +977,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Annuler cette réservation'),
+                  child: Text(AppLocalizations.of(context)!.reservationsCancelThisReservation),
                 ),
               )
             else if (reservation.isCancelled)
@@ -992,7 +992,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Supprimer cette réservation'),
+                  child: Text(AppLocalizations.of(context)!.reservationsDeleteThisReservation),
                 ),
               ),
           ],
@@ -1042,7 +1042,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1050,7 +1050,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, annuler'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesCancel),
           ),
         ],
       ),
@@ -1218,7 +1218,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: Responsive.symmetric(vertical: 16),
                       ),
-                      child: const Text('Annuler la réservation'),
+                      child: Text(AppLocalizations.of(context)!.reservationsCancelButton),
                     ),
                   ),
                 ] else if (reservation.status == ReservationStatus.cancelledByUser) ...[
@@ -1235,7 +1235,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: Responsive.symmetric(vertical: 16),
                       ),
-                      child: const Text('Supprimer la réservation'),
+                      child: Text(AppLocalizations.of(context)!.reservationsDeleteButton),
                     ),
                   ),
                 ],
@@ -1251,14 +1251,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Annuler la réservation'),
+        title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
           'Êtes-vous sûr de vouloir annuler la réservation #${reservation.id}?'
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1266,7 +1266,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, annuler'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesCancel),
           ),
         ],
       ),
@@ -1298,7 +1298,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur: $e'),
+              content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -1311,14 +1311,14 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer la réservation'),
+        title: Text(AppLocalizations.of(context)!.reservationsDeleteTitle),
         content: Text(
           'Êtes-vous sûr de vouloir supprimer définitivement la réservation #${reservation.id}? Cette action est irréversible.'
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1326,7 +1326,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Oui, supprimer'),
+            child: Text(AppLocalizations.of(context)!.reservationsYesDelete),
           ),
         ],
       ),
@@ -1342,7 +1342,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           if (success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Réservation supprimée'),
+                content: Text(AppLocalizations.of(context)!.reservationsDeleted),
                 backgroundColor: Colors.green,
               ),
             );
@@ -1350,7 +1350,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Erreur lors de la suppression'),
+                content: Text(AppLocalizations.of(context)!.reservationsDeleteError),
                 backgroundColor: Colors.red,
               ),
             );
@@ -1360,7 +1360,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur: $e'),
+              content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -1466,7 +1466,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: Responsive.symmetric(vertical: 16),
                       ),
-                      child: const Text('Annuler l\'inscription'),
+                      child: Text(AppLocalizations.of(context)!.reservationsRegistrationCancelButton),
                     ),
                   ),
                 ] else if (registration.status == RegistrationStatus.cancelledByUser || registration.status == RegistrationStatus.cancelledByOperator) ...[
@@ -1483,7 +1483,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
                         foregroundColor: Colors.white,
                         padding: Responsive.symmetric(vertical: 16),
                       ),
-                      child: const Text('Supprimer l\'inscription'),
+                      child: Text(AppLocalizations.of(context)!.reservationsRegistrationDeleteButton),
                     ),
                   ),
                 ],
@@ -1510,7 +1510,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Non'),
+            child: Text(AppLocalizations.of(context)!.reservationsNo),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -1559,7 +1559,7 @@ class _ReservationsPageState extends State<ReservationsPage> with SingleTickerPr
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erreur: $e'),
+              content: Text(AppLocalizations.of(context)!.reservationsError(e.toString())),
               backgroundColor: Colors.red,
             ),
           );

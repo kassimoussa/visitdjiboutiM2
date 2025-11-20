@@ -273,7 +273,7 @@ class _ToursPageState extends State<ToursPage> {
           ),
           TextButton(
             onPressed: _resetFilters,
-            child: const Text('Tout effacer'),
+            child: Text(AppLocalizations.of(context)!.commonClearAll),
           ),
         ],
       ),
@@ -325,7 +325,7 @@ class _ToursPageState extends State<ToursPage> {
               backgroundColor: const Color(0xFF3860F8),
               foregroundColor: Colors.white,
             ),
-            child: const Text('Réessayer'),
+            child: Text(AppLocalizations.of(context)!.commonRetry),
           ),
         ],
       ),
@@ -410,7 +410,7 @@ class _ToursPageState extends State<ToursPage> {
                             _resetFilters();
                             Navigator.pop(context);
                           },
-                          child: const Text('Réinitialiser'),
+                          child: Text(AppLocalizations.of(context)!.commonReset),
                         ),
                       ],
                     ),
@@ -425,9 +425,9 @@ class _ToursPageState extends State<ToursPage> {
                             DropdownButton<TourType?>(
                               isExpanded: true,
                               value: _selectedType,
-                              hint: const Text('Sélectionner un type'),
+                              hint: Text(AppLocalizations.of(context)!.toursSelectType),
                               items: [
-                                const DropdownMenuItem(value: null, child: Text('Tous')),
+                                DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAll)),
                                 ...TourType.values.map((type) => DropdownMenuItem(
                                   value: type,
                                   child: Text('${type.icon} ${type.label}'),
@@ -443,9 +443,9 @@ class _ToursPageState extends State<ToursPage> {
                             DropdownButton<TourDifficulty?>(
                               isExpanded: true,
                               value: _selectedDifficulty,
-                              hint: const Text('Sélectionner une difficulté'),
+                              hint: Text(AppLocalizations.of(context)!.toursSelectDifficulty),
                               items: [
-                                const DropdownMenuItem(value: null, child: Text('Toutes')),
+                                DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAllFeminine)),
                                 ...TourDifficulty.values.map((difficulty) => DropdownMenuItem(
                                   value: difficulty,
                                   child: Text('${difficulty.icon} ${difficulty.label}'),
@@ -462,9 +462,9 @@ class _ToursPageState extends State<ToursPage> {
                               DropdownButton<int?>(
                                 isExpanded: true,
                                 value: _selectedOperatorId,
-                                hint: const Text('Sélectionner un opérateur'),
+                                hint: Text(AppLocalizations.of(context)!.toursSelectOperator),
                                 items: [
-                                  const DropdownMenuItem(value: null, child: Text('Tous')),
+                                  DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAll)),
                                   ..._operators.map((operator) => DropdownMenuItem(
                                     value: operator.id,
                                     child: Text(operator.name),
@@ -492,7 +492,7 @@ class _ToursPageState extends State<ToursPage> {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
-                        child: const Text('Appliquer les filtres'),
+                        child: Text(AppLocalizations.of(context)!.commonApplyFilters),
                       ),
                     ),
                   ],

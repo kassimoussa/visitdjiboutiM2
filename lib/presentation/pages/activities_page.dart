@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../generated/l10n/app_localizations.dart';
 import '../../core/models/activity.dart';
 import '../../core/services/activity_service.dart';
 import '../widgets/simple_activity_card.dart';
@@ -139,7 +140,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             _hasSpots = null;
                           });
                         },
-                        child: const Text('Réinitialiser'),
+                        child: Text(AppLocalizations.of(context)!.commonReset),
                       ),
                     ],
                   ),

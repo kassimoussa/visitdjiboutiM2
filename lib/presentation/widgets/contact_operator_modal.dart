@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/utils/responsive.dart';
 import '../../core/services/comment_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 /// Modal pour contacter un opérateur/administration
 /// Les commentaires ne sont PAS affichés dans l'app mais envoyés aux opérateurs
@@ -140,7 +141,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
-                    child: const Text('Annuler'),
+                    child: Text(AppLocalizations.of(context)!.commonCancel),
                   ),
                 ),
                 SizedBox(width: 12.w),
@@ -289,7 +290,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de l\'envoi: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.commonErrorSending(e.toString())),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(

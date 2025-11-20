@@ -250,7 +250,7 @@ class _SecurityPageState extends State<SecurityPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Mot de passe modifié avec succès'),
+              content: Text(AppLocalizations.of(context)!.securityPasswordChanged),
               backgroundColor: const Color(0xFF009639),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -277,7 +277,7 @@ class _SecurityPageState extends State<SecurityPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: $e'),
+            content: Text(AppLocalizations.of(context)!.securityError(e.toString())),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(

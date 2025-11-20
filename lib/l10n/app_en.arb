@@ -11,6 +11,7 @@
   "authAcceptTerms": "I accept the",
   "authAcceptTermsAnd": "and",
   "authBackToLogin": "Back to login",
+  "authAccountCreatedSuccess": "Account created successfully! Logging in automatically...",
   "authConfirmPassword": "Confirm password",
   "authConversionProblemTitle": "Conversion problem",
   "authCreateAccount": "Create account",
@@ -61,6 +62,14 @@
   "commonError": "Error",
   "commonErrorFavorites": "Error managing favorites",
   "commonErrorUnexpected": "Unexpected error",
+  "commonErrorSending": "Error sending: {error}",
+  "@commonErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "commonEvent": "Event",
   "commonFieldRequired": "This field is required",
   "commonFilters": "Filters",
@@ -70,6 +79,7 @@
   "commonLocation": "Location",
   "commonNext": "Next",
   "commonNoNavigationApp": "No navigation app available",
+  "commonNoImages": "No images available",
   "commonOk": "OK",
   "commonOpeningHours": "Opening hours",
   "commonOverview": "Overview",
@@ -265,6 +275,10 @@
   "mapOfflineMessage": "Offline map - Displaying available POIs list",
   "mapOfflineNoData": "No offline map data available",
   "mapOfflineConnectToDownload": "Connect to internet to download POIs",
+  "mapOpenGoogleMaps": "Open in Google Maps",
+  "mapNavigationGPS": "Real-time GPS navigation",
+  "mapShowOnMap": "Show on map",
+  "mapRouteInApp": "Route in app",
   "navigationHome": "Home",
   "navigationDiscover": "Discover",
   "navigationEvents": "Events",
@@ -880,6 +894,7 @@
   },
   "reviewsSectionTitle": "Reviews",
   "reviewsWriteReview": "Write a review",
+  "reviewsAll": "All",
   "reservationFormTitle": "Book {type}",
   "@reservationFormTitle": {
     "placeholders": {
@@ -1124,6 +1139,7 @@
   "reservationsDeleteConfirmation": "Are you sure you want to permanently delete reservation #{number}?\\n\\nThis action is irreversible.",
   "reservationsTourNumberLabel": "Reservation #",
   "reservationsDeleteConfirmButton": "Yes, delete",
+  "regionListTitle": "Regions of Djibouti",
   "offlineLoadingSettings": "Loading settings...",
   "offlineConnectionStatus": "Connection status",
   "offlineStatsTotal": "Total items",
@@ -1151,5 +1167,6 @@
   "offlineCancel": "Cancel",
   "offlineClear": "Clear",
   "offlineClearCacheSuccess": "Cache cleared successfully",
-  "offlineClearCacheError": "Error clearing cache"
+  "offlineClearCacheError": "Error clearing cache",
+  "offlineConnectionRestored": "Connection restored!"
 }

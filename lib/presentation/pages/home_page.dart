@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
       final ApiResponse<PoiListData> response = await RetryHelper.apiCall(
         apiRequest: () => _poiService.getPois(
           perPage: 15,
-          useCache: false,
+          useCache: true,
         ),
         maxAttempts: 3,
         operationName: "Chargement POIs featured HomePage",

@@ -350,7 +350,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Profil mis à jour avec succès'),
+              content: Text(AppLocalizations.of(context)!.personalInfoProfileUpdated),
               backgroundColor: const Color(0xFF009639),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -377,7 +377,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: $e'),
+            content: Text(AppLocalizations.of(context)!.personalInfoError(e.toString())),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
