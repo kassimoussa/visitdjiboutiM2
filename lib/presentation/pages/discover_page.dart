@@ -10,7 +10,6 @@ import '../../core/models/api_response.dart';
 import '../../core/models/category.dart';
 import '../widgets/poi_card.dart';
 import '../../generated/l10n/app_localizations.dart';
-import 'region_list_page.dart';
 import '../../core/utils/retry_helper.dart';
 import '../widgets/error_state_widget.dart'; 
 class DiscoverPage extends StatefulWidget {
@@ -334,86 +333,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
           SizedBox(height: 8.h),
           _buildActiveFiltersChips(),
         ],
-        SizedBox(height: ResponsiveConstants.smallSpace),
-
-        // Bouton Explorer par région
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegionListPage(),
-                  ),
-                );
-              },
-              borderRadius: BorderRadius.circular(12.r),
-              child: Container(
-                padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF3860F8), Color(0xFF0072CE)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(ResponsiveConstants.smallSpace),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: const Icon(
-                        Icons.map,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                    ),
-                    SizedBox(width: ResponsiveConstants.mediumSpace),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Explorer par région',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            'Découvrez le contenu par région de Djibouti',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
         SizedBox(height: ResponsiveConstants.smallSpace),
 
         // Contenu principal
