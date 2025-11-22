@@ -382,20 +382,21 @@ class _ToursPageState extends State<ToursPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape:  RoundedRectangleBorder(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        maxChildSize: 0.9,
-        minChildSize: 0.5,
-        expand: false,
-        builder: (context, scrollController) {
-          return StatefulBuilder(
-            builder: (context, setModalState) {
-              return Container(
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) {
+          return Container(
+            padding: Responsive.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SingleChildScrollView(
+              child: Padding(
                 padding: Responsive.all(20),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -403,120 +404,166 @@ class _ToursPageState extends State<ToursPage> {
                       children: [
                         Text(
                           'Filtres',
-                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         TextButton(
                           onPressed: () {
-                            _resetFilters();
-                            Navigator.pop(context);
+                            setModalState(() {
+                              _selectedType = null;
+                              _selectedDifficulty = null;
+                              if (widget.operatorId == null) {
+                                _selectedOperatorId = null;
+                              }
+                            });
+                            setState(() {
+                              _selectedType = null;
+                              _selectedDifficulty = null;
+                              if (widget.operatorId == null) {
+                                _selectedOperatorId = null;
+                              }
+                            });
                           },
                           child: Text(AppLocalizations.of(context)!.commonReset),
                         ),
                       ],
                     ),
-                    const Divider(),
-                    Expanded(
-                      child: ListView(
-                        controller: scrollController,
-                        children: [
-                          // Type de tour
-                          _buildFilterSection(
-                            'Type de tour',
-                            DropdownButton<TourType?>(
-                              isExpanded: true,
-                              value: _selectedType,
-                              hint: Text(AppLocalizations.of(context)!.toursSelectType),
-                              items: [
-                                DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAll)),
-                                ...TourType.values.map((type) => DropdownMenuItem(
-                                  value: type,
-                                  child: Text('${type.icon} ${type.label}'),
-                                )),
-                              ],
-                              onChanged: (value) => setModalState(() => _selectedType = value),
-                            ),
-                          ),
+                    SizedBox(height: 20.h),
 
-                          // Difficulté
-                          _buildFilterSection(
-                            'Difficulté',
-                            DropdownButton<TourDifficulty?>(
-                              isExpanded: true,
-                              value: _selectedDifficulty,
-                              hint: Text(AppLocalizations.of(context)!.toursSelectDifficulty),
-                              items: [
-                                DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAllFeminine)),
-                                ...TourDifficulty.values.map((difficulty) => DropdownMenuItem(
-                                  value: difficulty,
-                                  child: Text('${difficulty.icon} ${difficulty.label}'),
-                                )),
-                              ],
-                              onChanged: (value) => setModalState(() => _selectedDifficulty = value),
-                            ),
-                          ),
-
-                          // Opérateur (seulement si pas de opérateur pré-sélectionné)
-                          if (widget.operatorId == null && _operators.isNotEmpty)
-                            _buildFilterSection(
-                              'Opérateur de tour',
-                              DropdownButton<int?>(
-                                isExpanded: true,
-                                value: _selectedOperatorId,
-                                hint: Text(AppLocalizations.of(context)!.toursSelectOperator),
-                                items: [
-                                  DropdownMenuItem(value: null, child: Text(AppLocalizations.of(context)!.commonAll)),
-                                  ..._operators.map((operator) => DropdownMenuItem(
-                                    value: operator.id,
-                                    child: Text(operator.name),
-                                  )),
-                                ],
-                                onChanged: (value) => setModalState(() => _selectedOperatorId = value),
-                              ),
-                            ),
-                        ],
+                    // Type de tour
+                    Text(
+                      'Type de tour',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 10.h),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: TourType.values.map((type) {
+                        final isSelected = _selectedType == type;
+                        return FilterChip(
+                          label: Text('${type.icon} ${type.label}'),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setModalState(() {
+                              _selectedType = selected ? type : null;
+                            });
+                            setState(() {
+                              _selectedType = selected ? type : null;
+                            });
+                          },
+                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          checkmarkColor: const Color(0xFF3860F8),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // Difficulté
+                    Text(
+                      'Difficulté',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: TourDifficulty.values.map((difficulty) {
+                        final isSelected = _selectedDifficulty == difficulty;
+                        return FilterChip(
+                          label: Text('${difficulty.icon} ${difficulty.label}'),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setModalState(() {
+                              _selectedDifficulty = selected ? difficulty : null;
+                            });
+                            setState(() {
+                              _selectedDifficulty = selected ? difficulty : null;
+                            });
+                          },
+                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          checkmarkColor: const Color(0xFF3860F8),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // Opérateur (seulement si pas de opérateur pré-sélectionné)
+                    if (widget.operatorId == null && _operators.isNotEmpty) ...[
+                      Text(
+                        'Opérateur de tour',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: _operators.map((operator) {
+                          final isSelected = _selectedOperatorId == operator.id;
+                          return FilterChip(
+                            label: Text(operator.name),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              setModalState(() {
+                                _selectedOperatorId = selected ? operator.id : null;
+                              });
+                              setState(() {
+                                _selectedOperatorId = selected ? operator.id : null;
+                              });
+                            },
+                            selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                            checkmarkColor: const Color(0xFF3860F8),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(height: 20.h),
+                    ],
+
+                    // Bouton Appliquer
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          _applyFilters();
                           Navigator.pop(context);
+                          _applyFilters();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3860F8),
-                          foregroundColor: Colors.white,
                           padding: Responsive.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
-                        child: Text(AppLocalizations.of(context)!.commonApplyFilters),
+                        child: Text(
+                          AppLocalizations.of(context)!.commonApplyFilters,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
+                    SizedBox(height: 10.h),
                   ],
                 ),
-              );
-            },
+              ),
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildFilterSection(String title, Widget child) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style:  TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
-        ),
-        SizedBox(height: 8.h),
-        child,
-        SizedBox(height: 20.h),
-      ],
-    );
-  }
 }
