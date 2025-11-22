@@ -544,47 +544,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
     );
   }
 
-  Widget _buildCategoryBadge({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-    IconData? icon,
-    Color? color,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.only(right: 8.w),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          color: isSelected ? (color ?? const Color(0xFF3860F8)) : Colors.grey[200],
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                size: 18,
-                color: isSelected ? Colors.white : Colors.black87,
-              ),
-              SizedBox(width: 6.w),
-            ],
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 14.sp,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildContent(bool isSmallScreen) {
     if (_isLoading) {
       return Center(
@@ -672,51 +631,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
           final poi = _filteredPois[index];
           return PoiCard(poi: poi);
         },
-      ),
-    );
-  }
-
-  Widget _buildCategoryBadge({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-    IconData? icon,
-    Color? color,
-  }) {
-    return Padding(
-      padding: Responsive.only(right: 8),
-      child: FilterChip(
-        label: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                size: 18,
-                color: isSelected ? Colors.white : (color ?? const Color(0xFF3860F8)),
-              ),
-              SizedBox(width: 6.w),
-            ],
-            Text(label),
-          ],
-        ),
-        selected: isSelected,
-        onSelected: (_) => onTap(),
-        backgroundColor: Colors.grey[100],
-        selectedColor: color ?? const Color(0xFF3860F8),
-        labelStyle: TextStyle(
-          color: isSelected ? Colors.white : Colors.black87,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          fontSize: 14.sp,
-        ),
-        padding: Responsive.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-          side: BorderSide(
-            color: isSelected ? (color ?? const Color(0xFF3860F8)) : Colors.grey[300]!,
-            width: 1.w,
-          ),
-        ),
       ),
     );
   }
