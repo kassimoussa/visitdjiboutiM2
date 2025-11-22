@@ -32,10 +32,21 @@ class _DiscoverPageState extends State<DiscoverPage> {
   bool _isLoading = true;
   String? _errorMessage;
   Category? _selectedCategory;
+  String? _selectedRegion;
   String _currentSearchQuery = '';
   int _currentPage = 1;
   bool _hasMorePages = false;
   bool _isLoadingMore = false;
+
+  // Liste des régions de Djibouti
+  static const List<String> _regions = [
+    'Djibouti',
+    'Arta',
+    'Ali Sabieh',
+    'Dikhil',
+    'Tadjourah',
+    'Obock',
+  ];
 
   @override
   void initState() {
@@ -202,7 +213,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   // Applique les filtres localement sans recharger depuis l'API
   void _applyFilters() {
     List<Poi> filtered = List.from(_allPois);
-    
+
     // Filtrage par recherche textuelle
     if (_currentSearchQuery.isNotEmpty) {
       final searchQuery = _currentSearchQuery.toLowerCase();
@@ -212,7 +223,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                poi.primaryCategory.toLowerCase().contains(searchQuery);
       }).toList();
     }
-    
+
+    // Filtrage par région
+    if (_selectedRegion != null) {
+      filtered = filtered.where((poi) {
+        return poi.region.toLowerCase() == _selectedRegion!.toLowerCase();
+      }).toList();
+    }
+
     // Filtrage par catégorie
     if (_selectedCategory != null) {
       filtered = filtered.where((poi) {
@@ -221,9 +239,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
           final childIds = _selectedCategory!.subCategories
               ?.map((sub) => sub.id)
               .toList() ?? [];
-          
-          return poi.categories.any((poiCategory) => 
-            poiCategory.id == _selectedCategory!.id || 
+
+          return poi.categories.any((poiCategory) =>
+            poiCategory.id == _selectedCategory!.id ||
             childIds.contains(poiCategory.id)
           );
         } else {
@@ -232,11 +250,11 @@ class _DiscoverPageState extends State<DiscoverPage> {
         }
       }).toList();
     }
-    
+
     setState(() {
       _filteredPois = filtered;
     });
-    
+
     print('[DISCOVER] Filtres appliqués: ${_filteredPois.length}/${_allPois.length} POIs');
   }
 
@@ -329,7 +347,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     return Column(
       children: [
         _buildSearchAndFilters(),
-        if (_selectedCategory != null) ...[
+        if (_selectedCategory != null || _selectedRegion != null) ...[
           SizedBox(height: 8.h),
           _buildActiveFiltersChips(),
         ],
@@ -408,6 +426,17 @@ class _DiscoverPageState extends State<DiscoverPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
+          if (_selectedRegion != null)
+            Chip(
+              label: Text(_selectedRegion!),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _selectedRegion = null;
+                });
+                _applyFilters();
+              },
+            ),
           if (_selectedCategory != null)
             Chip(
               label: Text(_selectedCategory!.name),
@@ -464,14 +493,48 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         onPressed: () {
                           setModalState(() {
                             _selectedCategory = null;
+                            _selectedRegion = null;
                           });
                           setState(() {
                             _selectedCategory = null;
+                            _selectedRegion = null;
                           });
                         },
                         child: Text(AppLocalizations.of(context)!.commonReset),
                       ),
                     ],
+                  ),
+                  SizedBox(height: 20.h),
+
+                  // Région
+                  Text(
+                    'Région',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _regions.map((region) {
+                      final isSelected = _selectedRegion == region;
+                      return FilterChip(
+                        label: Text(region),
+                        selected: isSelected,
+                        onSelected: (selected) {
+                          setModalState(() {
+                            _selectedRegion = selected ? region : null;
+                          });
+                          setState(() {
+                            _selectedRegion = selected ? region : null;
+                          });
+                        },
+                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        checkmarkColor: const Color(0xFF3860F8),
+                      );
+                    }).toList(),
                   ),
                   SizedBox(height: 20.h),
 
@@ -588,12 +651,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 fontSize: 16.sp,
               ),
             ),
-            if (_searchController.text.isNotEmpty || _selectedCategory != null)
+            if (_searchController.text.isNotEmpty || _selectedCategory != null || _selectedRegion != null)
               TextButton(
                 onPressed: () {
                   _searchController.clear();
                   setState(() {
                     _selectedCategory = null;
+                    _selectedRegion = null;
                     _currentSearchQuery = '';
                   });
                   _applyFilters();

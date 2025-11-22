@@ -91,11 +91,16 @@ class _EventsPageState extends State<EventsPage> {
             _currentPage++;
           } else {
             _events = eventsData.events;
+            // Filtrer pour n'afficher que les catégories parentes
+            final parentCategories = eventsData.filters.categories
+                .where((cat) => cat.isParentCategory)
+                .toList();
             _categories = [
               const Category(id: -1, name: 'Tous', slug: 'tous'),
-              ...eventsData.filters.categories
+              ...parentCategories
             ];
             print('[EVENTS PAGE] Catégories reçues: ${eventsData.filters.categories.length}');
+            print('[EVENTS PAGE] Catégories parentes: ${parentCategories.length}');
             print('[EVENTS PAGE] Total catégories avec "Tous": ${_categories.length}');
             _currentPage = eventsData.pagination.currentPage;
           }
