@@ -230,81 +230,12 @@ class _EventsPageState extends State<EventsPage> {
 
     return Column(
       children: [
-        // Barre de recherche
-        Container(
-          padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-          child: TextField(
-            controller: _searchController,
-            onChanged: (_) => _onSearchChanged(),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.eventsSearchHint,
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        _loadEvents();
-                      },
-                    )
-                  : null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.r),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.grey[100],
-            ),
-          ),
-        ),
-
-        // Filtres par statut
-        Container(
-          height: isSmallScreen ? 45 : 50,
-          padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              _buildStatusChip(AppLocalizations.of(context)!.eventsAll, 'all'),
-              SizedBox(width: ResponsiveConstants.smallSpace),
-              _buildStatusChip(AppLocalizations.of(context)!.eventsUpcoming, 'upcoming'),
-              SizedBox(width: ResponsiveConstants.smallSpace),
-              _buildStatusChip(AppLocalizations.of(context)!.eventsOngoing, 'ongoing'),
-            ],
-          ),
-        ),
-
-        // Filtres par catégorie
-        if (_categories.isNotEmpty)
-          Container(
-            height: isSmallScreen ? 45 : 50,
-            padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                final isSelected = category.name == _selectedCategory;
-
-                return Container(
-                  margin: Responsive.only(right: 8),
-                  child: FilterChip(
-                    label: Text(category.name),
-                    selected: isSelected,
-                    onSelected: (_) => _onCategoryChanged(category.name),
-                    backgroundColor: Colors.grey[200],
-                    selectedColor: const Color(0xFF3860F8),
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black87,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
+        _buildSearchAndFilters(),
+        if (_hasActiveFilters()) ...[
+          SizedBox(height: 8.h),
+          _buildActiveFiltersChips(),
+        ],
         SizedBox(height: ResponsiveConstants.smallSpace),
-
         // Contenu principal
         Expanded(
           child: _buildContent(isSmallScreen),
@@ -313,17 +244,293 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
-  Widget _buildStatusChip(String label, String value) {
-    final isSelected = _selectedStatus == value;
-    return FilterChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (_) => _onStatusChanged(value),
-      backgroundColor: Colors.grey[200],
-      selectedColor: const Color(0xFF009639),
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black87,
+  Widget _buildSearchAndFilters() {
+    return Container(
+      padding: Responsive.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.eventsSearchHint,
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: const BorderSide(color: Color(0xFF3860F8)),
+                ),
+                contentPadding: Responsive.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              onSubmitted: (_) => _loadEvents(),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF3860F8),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: IconButton(
+              onPressed: _showFiltersBottomSheet,
+              icon: const Icon(Icons.tune, color: Colors.white),
+              tooltip: 'Filtres',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _hasActiveFilters() {
+    return _selectedCategory != 'Tous' || _selectedStatus != 'upcoming';
+  }
+
+  Widget _buildActiveFiltersChips() {
+    return Container(
+      padding: Responsive.symmetric(horizontal: 16),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          if (_selectedStatus != 'upcoming')
+            Chip(
+              label: Text(_getStatusLabel(_selectedStatus)),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _selectedStatus = 'upcoming';
+                });
+                _loadEvents();
+              },
+            ),
+          if (_selectedCategory != 'Tous')
+            Chip(
+              label: Text(_selectedCategory),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _selectedCategory = 'Tous';
+                });
+                _loadEvents();
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
+  String _getStatusLabel(String status) {
+    switch (status) {
+      case 'all':
+        return AppLocalizations.of(context)!.eventsAll;
+      case 'upcoming':
+        return AppLocalizations.of(context)!.eventsUpcoming;
+      case 'ongoing':
+        return AppLocalizations.of(context)!.eventsOngoing;
+      default:
+        return status;
+    }
+  }
+
+  void _showFiltersBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => _buildFiltersSheet(),
+    );
+  }
+
+  Widget _buildFiltersSheet() {
+    return StatefulBuilder(
+      builder: (context, setModalState) {
+        return Container(
+          padding: Responsive.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: Responsive.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Filtres',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setModalState(() {
+                            _selectedCategory = 'Tous';
+                            _selectedStatus = 'upcoming';
+                          });
+                          setState(() {
+                            _selectedCategory = 'Tous';
+                            _selectedStatus = 'upcoming';
+                          });
+                        },
+                        child: Text(AppLocalizations.of(context)!.commonReset),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+
+                  // Statut
+                  Text(
+                    'Statut',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      FilterChip(
+                        label: Text(AppLocalizations.of(context)!.eventsAll),
+                        selected: _selectedStatus == 'all',
+                        onSelected: (selected) {
+                          setModalState(() {
+                            _selectedStatus = 'all';
+                          });
+                          setState(() {
+                            _selectedStatus = 'all';
+                          });
+                        },
+                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        checkmarkColor: const Color(0xFF3860F8),
+                      ),
+                      FilterChip(
+                        label: Text(AppLocalizations.of(context)!.eventsUpcoming),
+                        selected: _selectedStatus == 'upcoming',
+                        onSelected: (selected) {
+                          setModalState(() {
+                            _selectedStatus = 'upcoming';
+                          });
+                          setState(() {
+                            _selectedStatus = 'upcoming';
+                          });
+                        },
+                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        checkmarkColor: const Color(0xFF3860F8),
+                      ),
+                      FilterChip(
+                        label: Text(AppLocalizations.of(context)!.eventsOngoing),
+                        selected: _selectedStatus == 'ongoing',
+                        onSelected: (selected) {
+                          setModalState(() {
+                            _selectedStatus = 'ongoing';
+                          });
+                          setState(() {
+                            _selectedStatus = 'ongoing';
+                          });
+                        },
+                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        checkmarkColor: const Color(0xFF3860F8),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+
+                  // Catégories
+                  if (_categories.isNotEmpty) ...[
+                    Text(
+                      'Catégorie',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: _categories.map((category) {
+                        final isSelected = _selectedCategory == category.name;
+                        return FilterChip(
+                          label: Text(category.name),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setModalState(() {
+                              _selectedCategory = selected ? category.name : 'Tous';
+                            });
+                            setState(() {
+                              _selectedCategory = selected ? category.name : 'Tous';
+                            });
+                          },
+                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          checkmarkColor: const Color(0xFF3860F8),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20.h),
+                  ],
+
+                  // Bouton Appliquer
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _loadEvents();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3860F8),
+                        padding: Responsive.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.commonApplyFilters,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
