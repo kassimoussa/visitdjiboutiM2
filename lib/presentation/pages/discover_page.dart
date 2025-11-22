@@ -329,36 +329,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
     return Column(
       children: [
-        // Barre de recherche
-        Container(
-          padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-          child: TextField(
-            controller: _searchController,
-            onChanged: (_) => _onSearchChanged(),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.discoverSearchHint,
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        setState(() {
-                          _currentSearchQuery = '';
-                        });
-                        _applyFilters();
-                      },
-                    )
-                  : null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.r),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.grey[100],
-            ),
-          ),
-        ),
+        _buildSearchAndFilters(),
+        if (_selectedCategory != null) ...[
+          SizedBox(height: 8.h),
+          _buildActiveFiltersChips(),
+        ],
+        SizedBox(height: ResponsiveConstants.smallSpace),
 
         // Bouton Explorer par région
         Container(
@@ -438,40 +414,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
         ),
 
-        SizedBox(height: ResponsiveConstants.mediumSpace),
-
-        // Badges de filtrage par catégorie parente
-        if (_categories.isNotEmpty)
-          Container(
-            height: 50.h,
-            margin: Responsive.only(bottom: 8),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: Responsive.symmetric(horizontal: 16),
-              itemCount: _categories.length + 1, // +1 pour "Tout"
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  // Badge "Tout" pour réinitialiser le filtre
-                  return _buildCategoryBadge(
-                    label: AppLocalizations.of(context)!.commonAll,
-                    isSelected: _selectedCategory == null,
-                    onTap: () => _onCategoryChanged(null),
-                    icon: Icons.grid_view,
-                  );
-                }
-
-                final category = _categories[index - 1];
-                return _buildCategoryBadge(
-                  label: category.name,
-                  isSelected: _selectedCategory?.id == category.id,
-                  onTap: () => _onCategoryChanged(category),
-                  icon: _getCategoryIcon(category.icon),
-                  color: category.color != null ? Color(int.parse(category.color!.replaceFirst('#', '0xFF'))) : null,
-                );
-              },
-            ),
-          ),
-
         SizedBox(height: ResponsiveConstants.smallSpace),
 
         // Contenu principal
@@ -479,6 +421,248 @@ class _DiscoverPageState extends State<DiscoverPage> {
           child: _buildContent(isSmallScreen),
         ),
       ],
+    );
+  }
+
+  Widget _buildSearchAndFilters() {
+    return Container(
+      padding: Responsive.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.discoverSearchHint,
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: BorderSide(color: Colors.grey[300]!),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                  borderSide: const BorderSide(color: Color(0xFF3860F8)),
+                ),
+                contentPadding: Responsive.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              onSubmitted: (_) => _applyFilters(),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF3860F8),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: IconButton(
+              onPressed: _showFiltersBottomSheet,
+              icon: const Icon(Icons.tune, color: Colors.white),
+              tooltip: 'Filtres',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActiveFiltersChips() {
+    return Container(
+      padding: Responsive.symmetric(horizontal: 16),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          if (_selectedCategory != null)
+            Chip(
+              label: Text(_selectedCategory!.name),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _selectedCategory = null;
+                });
+                _applyFilters();
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _showFiltersBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => _buildFiltersSheet(),
+    );
+  }
+
+  Widget _buildFiltersSheet() {
+    return StatefulBuilder(
+      builder: (context, setModalState) {
+        return Container(
+          padding: Responsive.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: Responsive.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Filtres',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setModalState(() {
+                            _selectedCategory = null;
+                          });
+                          setState(() {
+                            _selectedCategory = null;
+                          });
+                        },
+                        child: Text(AppLocalizations.of(context)!.commonReset),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.h),
+
+                  // Catégories
+                  if (_categories.isNotEmpty) ...[
+                    Text(
+                      'Catégorie',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: _categories.map((category) {
+                        final isSelected = _selectedCategory?.id == category.id;
+                        return FilterChip(
+                          label: Text(category.name),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setModalState(() {
+                              _selectedCategory = selected ? category : null;
+                            });
+                            setState(() {
+                              _selectedCategory = selected ? category : null;
+                            });
+                          },
+                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          checkmarkColor: const Color(0xFF3860F8),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20.h),
+                  ],
+
+                  // Bouton Appliquer
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _applyFilters();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3860F8),
+                        padding: Responsive.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.commonApplyFilters,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCategoryBadge({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+    IconData? icon,
+    Color? color,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(right: 8.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: isSelected ? (color ?? const Color(0xFF3860F8)) : Colors.grey[200],
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(
+                icon,
+                size: 18,
+                color: isSelected ? Colors.white : Colors.black87,
+              ),
+              SizedBox(width: 6.w),
+            ],
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.black87,
+                fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
