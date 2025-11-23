@@ -38,6 +38,23 @@
   "authSuccessTitle": "Succès",
   "authTermsAndConditions": "Conditions d'utilisation",
   "authWelcomeBack": "Bon retour",
+  "authErrorEmailNotFound": "Aucun compte n'est associé à cet email",
+  "authErrorOtpExpired": "Le code a expiré, veuillez en demander un nouveau",
+  "authErrorInvalidOtp": "Code incorrect",
+  "authErrorPasswordMismatch": "Les mots de passe ne correspondent pas",
+  "authErrorPasswordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+  "authErrorInvalidCodeLength": "Le code doit contenir 6 chiffres",
+  "authResendCode": "Renvoyer le code",
+  "authCodeSent": "Code de vérification",
+  "authPasswordResetGenericSuccess": "Si cet email existe dans notre système, vous recevrez un code de réinitialisation dans quelques instants.",
+  "authRemainingAttempts": "Il vous reste {count} tentative(s)",
+  "@authRemainingAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "authWelcomeToApp": "Bienvenue sur Visit Djibouti",
   "categoryFilterClear": "Effacer les filtres",
   "commonAddress": "Adresse",
@@ -969,7 +986,7 @@
   "tourOperatorUnknown": "Opérateur inconnu",
   "tourOperatorCallButton": "Appeler",
   "tourOperatorWebsiteButton": "Site web",
-  "poiOperatorsServingTitle": "Opérateurs desservant ce lieu",
+  "poiOperatorsServingTitle": "Desservies par",
   "activitiesSearchHint": "Rechercher une activité...",
   "toursSelectDifficulty": "Sélectionner une difficulté",
   "termsLastUpdated": "Dernière mise à jour : 23 octobre 2025",

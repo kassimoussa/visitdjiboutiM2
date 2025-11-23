@@ -51,14 +51,14 @@ class Review {
 @JsonSerializable()
 class ReviewAuthor {
   final String name;
-  @JsonKey(name: 'is_verified')
-  final bool isVerified;
-  @JsonKey(name: 'is_me')
+  @JsonKey(name: 'is_verified', defaultValue: false)
+  final bool? isVerified;
+  @JsonKey(name: 'is_me', defaultValue: false)
   final bool isMe;
 
   ReviewAuthor({
     required this.name,
-    required this.isVerified,
+    this.isVerified,
     required this.isMe,
   });
 

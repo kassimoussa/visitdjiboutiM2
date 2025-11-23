@@ -107,6 +107,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authWelcomeBack => 'Welcome back';
 
   @override
+  String get authErrorEmailNotFound => 'No account associated with this email';
+
+  @override
+  String get authErrorOtpExpired => 'Code expired, please request a new one';
+
+  @override
+  String get authErrorInvalidOtp => 'Invalid code';
+
+  @override
+  String get authErrorPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get authErrorPasswordTooShort =>
+      'Password must be at least 8 characters';
+
+  @override
+  String get authErrorInvalidCodeLength => 'Code must be 6 digits';
+
+  @override
+  String get authResendCode => 'Resend code';
+
+  @override
+  String get authCodeSent => 'Verification code';
+
+  @override
+  String get authPasswordResetGenericSuccess =>
+      'If this email exists in our system, you will receive a reset code shortly.';
+
+  @override
+  String authRemainingAttempts(int count) {
+    return '$count attempts remaining';
+  }
+
+  @override
   String get authWelcomeToApp => 'Welcome to Visit Djibouti';
 
   @override
@@ -2171,7 +2205,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tourOperatorWebsiteButton => 'Website';
 
   @override
-  String get poiOperatorsServingTitle => 'Operators serving this place';
+  String get poiOperatorsServingTitle => 'Served by';
 
   @override
   String get activitiesSearchHint => 'Search for an activity...';

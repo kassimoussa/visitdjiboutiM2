@@ -69,6 +69,8 @@ dependencies:
   firebase_core: ^3.8.1
   firebase_messaging: ^15.1.5
   flutter_local_notifications: ^18.0.1
+  flutter_riverpod: ^2.6.1
+  pinput: ^6.0.0
 
 dev_dependencies:
   flutter_test:

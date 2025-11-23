@@ -96,8 +96,27 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
         widget.onReviewSubmitted();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_isEditing ? AppLocalizations.of(context)!.reviewFormUpdated : AppLocalizations.of(context)!.reviewFormPublished),
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    _isEditing
+                      ? AppLocalizations.of(context)!.reviewFormUpdated
+                      : AppLocalizations.of(context)!.reviewFormPublished,
+                    style: TextStyle(fontSize: 15.sp),
+                  ),
+                ),
+              ],
+            ),
             backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            duration: const Duration(seconds: 4),
+            margin: EdgeInsets.all(16.w),
           ),
         );
       }
@@ -108,8 +127,25 @@ class _ReviewFormWidgetState extends State<ReviewFormWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.reviewFormError(e.toString())),
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)!.reviewFormError(e.toString()),
+                    style: TextStyle(fontSize: 15.sp),
+                  ),
+                ),
+              ],
+            ),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            duration: const Duration(seconds: 4),
+            margin: EdgeInsets.all(16.w),
           ),
         );
       }

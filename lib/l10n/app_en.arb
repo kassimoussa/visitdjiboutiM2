@@ -38,6 +38,23 @@
   "authSuccessTitle": "Success",
   "authTermsAndConditions": "Terms and Conditions",
   "authWelcomeBack": "Welcome back",
+  "authErrorEmailNotFound": "No account associated with this email",
+  "authErrorOtpExpired": "Code expired, please request a new one",
+  "authErrorInvalidOtp": "Invalid code",
+  "authErrorPasswordMismatch": "Passwords do not match",
+  "authErrorPasswordTooShort": "Password must be at least 8 characters",
+  "authErrorInvalidCodeLength": "Code must be 6 digits",
+  "authResendCode": "Resend code",
+  "authCodeSent": "Verification code",
+  "authPasswordResetGenericSuccess": "If this email exists in our system, you will receive a reset code shortly.",
+  "authRemainingAttempts": "{count} attempts remaining",
+  "@authRemainingAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "authWelcomeToApp": "Welcome to Visit Djibouti",
   "categoryFilterClear": "Clear filters",
   "commonAddress": "Address",
@@ -968,7 +985,7 @@
   "tourOperatorUnknown": "Unknown operator",
   "tourOperatorCallButton": "Call",
   "tourOperatorWebsiteButton": "Website",
-  "poiOperatorsServingTitle": "Operators serving this place",
+  "poiOperatorsServingTitle": "Served by",
   "activitiesSearchHint": "Search for an activity...",
   "toursSelectDifficulty": "Select difficulty",
   "termsLastUpdated": "Last updated: October 23, 2025",

@@ -118,7 +118,9 @@ class _MapPageState extends State<MapPage> {
           _userPosition = position;
           _isLocatingUser = false;
         });
-        print('[MAP] Position utilisateur obtenue: ${position.latitude}, ${position.longitude}');
+        print(
+          '[MAP] Position utilisateur obtenue: ${position.latitude}, ${position.longitude}',
+        );
       } else {
         setState(() {
           _isLocatingUser = false;
@@ -161,7 +163,9 @@ class _MapPageState extends State<MapPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.mapLocationPermissionDenied),
+              content: Text(
+                AppLocalizations.of(context)!.mapLocationPermissionDenied,
+              ),
               backgroundColor: Colors.orange,
             ),
           );
@@ -197,16 +201,10 @@ class _MapPageState extends State<MapPage> {
           _isLoading = false;
           _hasError = false;
         });
-
-        // Message de succès
-        if (mounted && pois.isNotEmpty) {
-          ErrorSnackBar.showSuccess(
-            context,
-            message: '${pois.length} lieux chargés sur la carte',
-          );
-        }
       } else {
-        throw Exception(response.message ?? AppLocalizations.of(context)!.mapErrorLoading);
+        throw Exception(
+          response.message ?? AppLocalizations.of(context)!.mapErrorLoading,
+        );
       }
     } catch (e) {
       setState(() {
@@ -229,9 +227,7 @@ class _MapPageState extends State<MapPage> {
   void _navigateToPoiDetail(Poi poi) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => PoiDetailPage(poi: poi),
-      ),
+      MaterialPageRoute(builder: (context) => PoiDetailPage(poi: poi)),
     );
   }
 
@@ -242,8 +238,10 @@ class _MapPageState extends State<MapPage> {
       } else {
         _filteredPois = _pois.where((poi) {
           return (poi.name ?? '').toLowerCase().contains(query.toLowerCase()) ||
-                 poi.primaryCategory.toLowerCase().contains(query.toLowerCase()) ||
-                 (poi.shortDescription ?? '').toLowerCase().contains(query.toLowerCase());
+              poi.primaryCategory.toLowerCase().contains(query.toLowerCase()) ||
+              (poi.shortDescription ?? '').toLowerCase().contains(
+                query.toLowerCase(),
+              );
         }).toList();
       }
     });
@@ -276,7 +274,6 @@ class _MapPageState extends State<MapPage> {
     return _buildGoogleMapView();
   }
 
-
   void _showPoiBottomSheet(Poi poi) {
     showModalBottomSheet(
       context: context,
@@ -301,18 +298,25 @@ class _MapPageState extends State<MapPage> {
                           width: 60.w,
                           height: 60.h,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
-                            width: 60.w,
-                            height: 60.h,
-                            color: const Color(0xFF3860F8).withOpacity(0.1),
-                            child: const Icon(Icons.place, color: Color(0xFF3860F8)),
-                          ),
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                width: 60.w,
+                                height: 60.h,
+                                color: const Color(0xFF3860F8).withOpacity(0.1),
+                                child: const Icon(
+                                  Icons.place,
+                                  color: Color(0xFF3860F8),
+                                ),
+                              ),
                         )
                       : Container(
                           width: 60.w,
                           height: 60.h,
                           color: const Color(0xFF3860F8).withOpacity(0.1),
-                          child: const Icon(Icons.place, color: Color(0xFF3860F8)),
+                          child: const Icon(
+                            Icons.place,
+                            color: Color(0xFF3860F8),
+                          ),
                         ),
                 ),
                 SizedBox(width: 16.w),
@@ -322,7 +326,7 @@ class _MapPageState extends State<MapPage> {
                     children: [
                       Text(
                         poi.name,
-                        style:  TextStyle(
+                        style: TextStyle(
                           fontSize: ResponsiveConstants.subtitle2,
                           fontWeight: FontWeight.bold,
                         ),
@@ -334,10 +338,7 @@ class _MapPageState extends State<MapPage> {
                       if (poi.shortDescription?.isNotEmpty == true)
                         Text(
                           poi.shortDescription!,
-                          style:  TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.grey,
-                          ),
+                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -400,10 +401,7 @@ class _MapPageState extends State<MapPage> {
           children: [
             Text(
               AppLocalizations.of(context)!.mapGetDirections,
-              style:  TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             Text(
@@ -417,10 +415,11 @@ class _MapPageState extends State<MapPage> {
               subtitle: Text(AppLocalizations.of(context)!.mapNavigationGPS),
               onTap: () async {
                 Navigator.pop(context);
-                final success = await _directionsService.openGoogleMapsDirections(
-                  destination: LatLng(poi.latitude, poi.longitude),
-                  destinationName: poi.name,
-                );
+                final success = await _directionsService
+                    .openGoogleMapsDirections(
+                      destination: LatLng(poi.latitude, poi.longitude),
+                      destinationName: poi.name,
+                    );
 
                 if (!success && mounted) {
                   ErrorSnackBar.show(
@@ -446,19 +445,16 @@ class _MapPageState extends State<MapPage> {
                 padding: Responsive.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   children: [
-                    const Icon(Icons.info_outline, size: 16, color: Colors.grey),
+                    const Icon(
+                      Icons.info_outline,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
-                        'Distance: ${_locationService.formatDistance(
-                          _locationService.calculateDistance(
-                            _userPosition!.latitude,
-                            _userPosition!.longitude,
-                            poi.latitude,
-                            poi.longitude,
-                          ),
-                        )}',
-                        style:  TextStyle(fontSize: 12.sp, color: Colors.grey),
+                        'Distance: ${_locationService.formatDistance(_locationService.calculateDistance(_userPosition!.latitude, _userPosition!.longitude, poi.latitude, poi.longitude))}',
+                        style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                       ),
                     ),
                   ],
@@ -487,7 +483,7 @@ class _MapPageState extends State<MapPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) =>  Center(
+      builder: (context) => Center(
         child: Card(
           child: Padding(
             padding: Responsive.all(16),
@@ -529,9 +525,7 @@ class _MapPageState extends State<MapPage> {
 
       // Ajuster la caméra pour afficher tout l'itinéraire
       final bounds = _directionsService.calculateBounds(result.points);
-      _mapController?.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, 50),
-      );
+      _mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
 
       // Afficher les infos de l'itinéraire
       ErrorSnackBar.showInfo(
@@ -573,12 +567,14 @@ class _MapPageState extends State<MapPage> {
                     ],
                   ),
                 ),
-                child:  Center(
+                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF3860F8),
+                        ),
                       ),
                       SizedBox(height: 16.h),
                       Text(
@@ -658,12 +654,12 @@ class _MapPageState extends State<MapPage> {
             left: 0,
             right: 0,
             child: Container(
-              height: MediaQuery.of(context).size.height * (isSmallScreen ? 0.45 : 0.4),
-              decoration:  BoxDecoration(
+              height:
+                  MediaQuery.of(context).size.height *
+                  (isSmallScreen ? 0.45 : 0.4),
+              decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20.r),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
               ),
               child: Column(
                 children: [
@@ -683,7 +679,7 @@ class _MapPageState extends State<MapPage> {
                     padding: Responsive.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                         Text(
+                        Text(
                           AppLocalizations.of(context)!.mapNearbyPois,
                           style: TextStyle(
                             fontSize: ResponsiveConstants.subtitle2,
@@ -697,7 +693,9 @@ class _MapPageState extends State<MapPage> {
                               _showNearbyList = false;
                             });
                           },
-                          child: Text(AppLocalizations.of(context)!.commonClose),
+                          child: Text(
+                            AppLocalizations.of(context)!.commonClose,
+                          ),
                         ),
                       ],
                     ),
@@ -712,12 +710,17 @@ class _MapPageState extends State<MapPage> {
                         final poi = _filteredPois[index];
                         return ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: const Color(0xFF3860F8).withOpacity(0.1),
+                            backgroundColor: const Color(
+                              0xFF3860F8,
+                            ).withOpacity(0.1),
                             backgroundImage: poi.imageUrl.isNotEmpty
                                 ? NetworkImage(poi.imageUrl)
                                 : null,
                             child: poi.imageUrl.isEmpty
-                                ? const Icon(Icons.place, color: Color(0xFF3860F8))
+                                ? const Icon(
+                                    Icons.place,
+                                    color: Color(0xFF3860F8),
+                                  )
                                 : null,
                           ),
                           title: Text(
@@ -778,7 +781,7 @@ class _MapPageState extends State<MapPage> {
                     : Colors.white,
                 foregroundColor: const Color(0xFF3860F8),
                 child: _isLocatingUser
-                    ?  SizedBox(
+                    ? SizedBox(
                         width: 20.w,
                         height: 20.h,
                         child: CircularProgressIndicator(strokeWidth: 2),
@@ -823,15 +826,11 @@ class _MapPageState extends State<MapPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.map,
-                  size: 48,
-                  color: const Color(0xFF3860F8),
-                ),
+                Icon(Icons.map, size: 48, color: const Color(0xFF3860F8)),
                 SizedBox(height: 12.h),
                 Text(
                   AppLocalizations.of(context)!.mapTitle,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.subtitle2,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF3860F8),
@@ -890,12 +889,17 @@ class _MapPageState extends State<MapPage> {
                       margin: Responsive.symmetric(horizontal: 16, vertical: 4),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: const Color(0xFF3860F8).withOpacity(0.1),
+                          backgroundColor: const Color(
+                            0xFF3860F8,
+                          ).withOpacity(0.1),
                           backgroundImage: poi.imageUrl.isNotEmpty
                               ? NetworkImage(poi.imageUrl)
                               : null,
                           child: poi.imageUrl.isEmpty
-                              ? const Icon(Icons.place, color: Color(0xFF3860F8))
+                              ? const Icon(
+                                  Icons.place,
+                                  color: Color(0xFF3860F8),
+                                )
                               : null,
                         ),
                         title: Text(
@@ -924,7 +928,7 @@ class _MapPageState extends State<MapPage> {
           width: double.infinity,
           padding: Responsive.all(16),
           color: Colors.orange.withOpacity(0.1),
-          child:  Row(
+          child: Row(
             children: [
               Icon(Icons.wifi_off, color: Colors.orange),
               SizedBox(width: 8.w),
@@ -953,15 +957,24 @@ class _MapPageState extends State<MapPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.map_outlined, size: 64, color: Colors.grey),
+                      const Icon(
+                        Icons.map_outlined,
+                        size: 64,
+                        color: Colors.grey,
+                      ),
                       SizedBox(height: 16.h),
                       Text(
                         AppLocalizations.of(context)!.mapOfflineNoData,
-                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        AppLocalizations.of(context)!.mapOfflineConnectToDownload,
+                        AppLocalizations.of(
+                          context,
+                        )!.mapOfflineConnectToDownload,
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],
@@ -976,7 +989,10 @@ class _MapPageState extends State<MapPage> {
                   return Card(
                     margin: Responsive.symmetric(horizontal: 16, vertical: 4),
                     child: ListTile(
-                      leading: const Icon(Icons.place, color: Color(0xFF3860F8)),
+                      leading: const Icon(
+                        Icons.place,
+                        color: Color(0xFF3860F8),
+                      ),
                       title: Text(poi.name),
                       subtitle: Text(poi.primaryCategory),
                       trailing: const Icon(Icons.arrow_forward_ios),

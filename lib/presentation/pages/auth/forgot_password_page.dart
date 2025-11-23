@@ -1,26 +1,68 @@
 import 'package:flutter/material.dart';
-import '../../../generated/l10n/app_localizations.dart';
-import '../../../core/utils/responsive.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../providers/password_reset_provider.dart';
+import '../../../../generated/l10n/app_localizations.dart';
+import '../../../../core/utils/responsive.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({super.key});
+class ForgotPasswordPage extends ConsumerStatefulWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  ConsumerState<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
 
-  bool _isLoading = false;
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  String _getErrorMessage(BuildContext context, String error) {
+    switch (error) {
+      case 'authErrorEmailNotFound':
+        return AppLocalizations.of(context)!.authErrorEmailNotFound;
+      case 'authErrorOtpExpired':
+        return AppLocalizations.of(context)!.authErrorOtpExpired;
+      case 'authErrorInvalidOtp':
+        return AppLocalizations.of(context)!.authErrorInvalidOtp;
+      case 'authPasswordResetGenericSuccess':
+        return AppLocalizations.of(context)!.authPasswordResetGenericSuccess;
+      default:
+        return error;
+    }
+  }
+
+  Future<void> _requestOtp() async {
+    if (_formKey.currentState!.validate()) {
+      await ref
+          .read(passwordResetProvider.notifier)
+          .requestOtp(_emailController.text.trim());
+
+      final state = ref.read(passwordResetProvider);
+
+      if (state.otpSent) {
+        // Naviguer vers l'écran de saisie OTP
+        Navigator.pushNamed(
+          context,
+          '/reset-password-otp',
+          arguments: _emailController.text.trim(),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(passwordResetProvider);
     Responsive.init(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.authResetPassword),
+        title: Text(AppLocalizations.of(context)!.authResetPasswordTitle),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
         elevation: 0,
@@ -31,66 +73,34 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: ResponsiveConstants.extraLargeSpace),
-
-                // Logo
-                Center(
-                  child: Container(
-                    width: 120.w,
-                    height: 120.h,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    padding: Responsive.all(16),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: Image.asset(
-                        'assets/images/logo_visitdjibouti.png',
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const Icon(
-                          Icons.lock_reset,
-                          color: Color(0xFF3860F8),
-                          size: 60,
-                        ),
-                      ),
-                    ),
-                  ),
+                SizedBox(height: ResponsiveConstants.largeSpace),
+                Icon(
+                  Icons.lock_reset,
+                  size: 80.w,
+                  color: const Color(0xFF3860F8),
                 ),
-
-                SizedBox(height: ResponsiveConstants.extraLargeSpace),
-
+                SizedBox(height: ResponsiveConstants.largeSpace),
                 Text(
-                  AppLocalizations.of(context)!.authResetPasswordTitle,
+                  AppLocalizations.of(context)!.authResetPassword,
                   style: TextStyle(
                     fontSize: ResponsiveConstants.headline5,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1D2233),
+                    color: const Color(0xFF1D2233),
                   ),
+                  textAlign: TextAlign.center,
                 ),
-
                 SizedBox(height: ResponsiveConstants.smallSpace),
-
                 Text(
                   AppLocalizations.of(context)!.authResetPasswordSubtitle,
                   style: TextStyle(
                     fontSize: ResponsiveConstants.body1,
                     color: Colors.grey[600],
                   ),
+                  textAlign: TextAlign.center,
                 ),
-
                 SizedBox(height: ResponsiveConstants.extraLargeSpace),
-
-                // Email field
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -102,23 +112,35 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                   ),
                   validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'L\'email est requis';
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context)!.commonFieldRequired;
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-                      return AppLocalizations.of(context)!.eventDetailInvalidEmail;
+                    if (!value.contains('@')) {
+                      return AppLocalizations.of(
+                        context,
+                      )!.eventDetailInvalidEmail;
                     }
                     return null;
                   },
                 ),
-
-                SizedBox(height: ResponsiveConstants.extraLargeSpace),
-
-                // Send reset link button
+                SizedBox(height: ResponsiveConstants.mediumSpace),
+                if (state.error != null)
+                  Container(
+                    padding: Responsive.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Text(
+                      _getErrorMessage(context, state.error!),
+                      style: TextStyle(color: Colors.red.shade900),
+                    ),
+                  ),
+                SizedBox(height: ResponsiveConstants.mediumSpace),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: !_isLoading ? _handleResetPassword : null,
+                    onPressed: state.isLoading ? null : _requestOtp,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF3860F8),
                       foregroundColor: Colors.white,
@@ -128,13 +150,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                       disabledBackgroundColor: Colors.grey[300],
                     ),
-                    child: _isLoading
+                    child: state.isLoading
                         ? SizedBox(
                             height: 20.h,
                             width: 20.w,
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
                             ),
                           )
                         : Text(
@@ -146,102 +170,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ),
                   ),
                 ),
-
-                SizedBox(height: ResponsiveConstants.largeSpace),
-
-                // Back to login
-                Center(
-                  child: TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(
-                      AppLocalizations.of(context)!.authBackToLogin,
-                      style: const TextStyle(
-                        color: Color(0xFF3860F8),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _handleResetPassword() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-
-    try {
-      // TODO: Implémenter l'appel API pour la réinitialisation du mot de passe
-      // await _authService.resetPassword(email: _emailController.text.trim());
-
-      // Simuler un délai réseau
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (mounted) {
-        _showSuccessDialog();
-      }
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog('Une erreur inattendue s\'est produite: $e');
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
-  }
-
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        icon: const Icon(
-          Icons.mark_email_read,
-          color: Color(0xFF009639),
-          size: 48,
-        ),
-        title: Text(AppLocalizations.of(context)!.authResetEmailSent),
-        content: Text(
-          AppLocalizations.of(context)!.authResetEmailSentMessage,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-            child: Text(AppLocalizations.of(context)!.commonOk),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.authErrorTitle),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(AppLocalizations.of(context)!.commonOk),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
   }
 }

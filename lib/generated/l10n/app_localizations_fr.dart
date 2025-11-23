@@ -109,6 +109,43 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authWelcomeBack => 'Bon retour';
 
   @override
+  String get authErrorEmailNotFound =>
+      'Aucun compte n\'est associé à cet email';
+
+  @override
+  String get authErrorOtpExpired =>
+      'Le code a expiré, veuillez en demander un nouveau';
+
+  @override
+  String get authErrorInvalidOtp => 'Code incorrect';
+
+  @override
+  String get authErrorPasswordMismatch =>
+      'Les mots de passe ne correspondent pas';
+
+  @override
+  String get authErrorPasswordTooShort =>
+      'Le mot de passe doit contenir au moins 8 caractères';
+
+  @override
+  String get authErrorInvalidCodeLength => 'Le code doit contenir 6 chiffres';
+
+  @override
+  String get authResendCode => 'Renvoyer le code';
+
+  @override
+  String get authCodeSent => 'Code de vérification';
+
+  @override
+  String get authPasswordResetGenericSuccess =>
+      'Si cet email existe dans notre système, vous recevrez un code de réinitialisation dans quelques instants.';
+
+  @override
+  String authRemainingAttempts(int count) {
+    return 'Il vous reste $count tentative(s)';
+  }
+
+  @override
   String get authWelcomeToApp => 'Bienvenue sur Visit Djibouti';
 
   @override
@@ -2193,7 +2230,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tourOperatorWebsiteButton => 'Site web';
 
   @override
-  String get poiOperatorsServingTitle => 'Opérateurs desservant ce lieu';
+  String get poiOperatorsServingTitle => 'Desservies par';
 
   @override
   String get activitiesSearchHint => 'Rechercher une activité...';

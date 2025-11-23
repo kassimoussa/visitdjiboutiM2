@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vd_gem/presentation/pages/auth/forgot_password_page.dart';
+import 'package:vd_gem/presentation/pages/auth/reset_password_otp_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,7 +9,7 @@ import 'package:vd_gem/presentation/pages/splash_page.dart';
 import 'package:vd_gem/presentation/pages/main_navigation_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
-import 'package:vd_gem/presentation/pages/auth/forgot_password_page.dart';
+
 import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/legal/privacy_policy_page.dart';
 import 'package:vd_gem/presentation/pages/legal/terms_conditions_page.dart';
@@ -35,9 +38,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Configure Firebase Messaging background handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -68,7 +69,9 @@ void main() async {
   // Initialize FCM service
   await FCMService().initialize();
 
-  runApp(const VdGemApp());
+  await FCMService().initialize();
+
+  runApp(const ProviderScope(child: VdGemApp()));
 }
 
 class VdGemApp extends StatelessWidget {
@@ -78,7 +81,7 @@ class VdGemApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: LocalizationService(),
-       builder: (context, child) {
+      builder: (context, child) {
         // Initialiser la responsivité dès le premier build
         return Builder(
           builder: (context) {
@@ -89,16 +92,14 @@ class VdGemApp extends StatelessWidget {
       },
     );
   }
-  
+
   Widget _buildApp(BuildContext context) {
     final localizationService = LocalizationService();
-        
-    
+
     return MaterialApp(
       title: 'Visit Djibouti',
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Ajouter la clé globale
-          
       // Localisation configuration
       locale: localizationService.currentLocale,
       localizationsDelegates: const [
@@ -108,7 +109,7 @@ class VdGemApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: LocalizationService.supportedLocales,
-          
+
       // Theme configuration
       theme: ThemeData(
         useMaterial3: true,
@@ -127,37 +128,50 @@ class VdGemApp extends StatelessWidget {
           ),
         ),
         cardTheme: CardThemeData(
-          elevation: 4, 
+          elevation: 4,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
+            borderRadius: BorderRadius.circular(
+              ResponsiveConstants.mediumRadius,
+            ),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(double.infinity, ResponsiveConstants.buttonHeight),
+            minimumSize: Size(
+              double.infinity,
+              ResponsiveConstants.buttonHeight,
+            ),
             textStyle: TextStyle(
               fontSize: ResponsiveConstants.body1,
               fontWeight: FontWeight.w600,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+              borderRadius: BorderRadius.circular(
+                ResponsiveConstants.smallRadius,
+              ),
             ),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           contentPadding: Responsive.symmetric(horizontal: 16, vertical: 16),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+            borderRadius: BorderRadius.circular(
+              ResponsiveConstants.smallRadius,
+            ),
           ),
         ),
       ),
-      
+
       home: const SplashPage(),
       routes: {
         '/main': (context) => const MainNavigationPage(),
         '/signup': (context) => const SignUpPage(),
         '/login': (context) => const LoginPage(),
         '/forgot-password': (context) => const ForgotPasswordPage(),
+        '/reset-password-otp': (context) {
+          final email = ModalRoute.of(context)!.settings.arguments as String;
+          return ResetPasswordOtpPage(email: email);
+        },
         '/profile': (context) => const ProfilePage(),
         '/privacy-policy': (context) => const PrivacyPolicyPage(),
         '/terms-conditions': (context) => const TermsConditionsPage(),

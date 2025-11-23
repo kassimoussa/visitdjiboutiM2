@@ -292,6 +292,66 @@ abstract class AppLocalizations {
   /// **'Bon retour'**
   String get authWelcomeBack;
 
+  /// No description provided for @authErrorEmailNotFound.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun compte n\'est associé à cet email'**
+  String get authErrorEmailNotFound;
+
+  /// No description provided for @authErrorOtpExpired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le code a expiré, veuillez en demander un nouveau'**
+  String get authErrorOtpExpired;
+
+  /// No description provided for @authErrorInvalidOtp.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code incorrect'**
+  String get authErrorInvalidOtp;
+
+  /// No description provided for @authErrorPasswordMismatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les mots de passe ne correspondent pas'**
+  String get authErrorPasswordMismatch;
+
+  /// No description provided for @authErrorPasswordTooShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le mot de passe doit contenir au moins 8 caractères'**
+  String get authErrorPasswordTooShort;
+
+  /// No description provided for @authErrorInvalidCodeLength.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le code doit contenir 6 chiffres'**
+  String get authErrorInvalidCodeLength;
+
+  /// No description provided for @authResendCode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Renvoyer le code'**
+  String get authResendCode;
+
+  /// No description provided for @authCodeSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Code de vérification'**
+  String get authCodeSent;
+
+  /// No description provided for @authPasswordResetGenericSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Si cet email existe dans notre système, vous recevrez un code de réinitialisation dans quelques instants.'**
+  String get authPasswordResetGenericSuccess;
+
+  /// No description provided for @authRemainingAttempts.
+  ///
+  /// In fr, this message translates to:
+  /// **'Il vous reste {count} tentative(s)'**
+  String authRemainingAttempts(int count);
+
   /// No description provided for @authWelcomeToApp.
   ///
   /// In fr, this message translates to:
@@ -4189,7 +4249,7 @@ abstract class AppLocalizations {
   /// No description provided for @poiOperatorsServingTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Opérateurs desservant ce lieu'**
+  /// **'Desservies par'**
   String get poiOperatorsServingTitle;
 
   /// No description provided for @activitiesSearchHint.

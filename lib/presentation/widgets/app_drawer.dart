@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 // import 'package:vd_gem/presentation/pages/settings_page.dart'; // Hidden temporarily
 import 'package:vd_gem/presentation/pages/about_page.dart';
 import 'package:vd_gem/presentation/pages/help_page.dart';
@@ -27,7 +27,7 @@ class _AppDrawerState extends State<AppDrawer> {
     // Debug pour voir l'état d'authentification
     print('[DEBUG DRAWER] isLoggedIn: ${_authService.isLoggedIn}');
     print('[DEBUG DRAWER] currentUser: ${_authService.currentUser?.name}');
-    
+
     return Drawer(
       backgroundColor: Colors.white,
       child: SafeArea(
@@ -56,11 +56,12 @@ class _AppDrawerState extends State<AppDrawer> {
                     subtitle: 'Découvrez nos circuits guidés',
                     onTap: () => _navigateTo(context, const ToursPage()),
                   ), */
-
                   _buildMenuItem(
                     icon: Icons.book_online,
                     title: AppLocalizations.of(context)!.drawerReservations,
-                    subtitle: AppLocalizations.of(context)!.drawerReservationsSubtitle,
+                    subtitle: AppLocalizations.of(
+                      context,
+                    )!.drawerReservationsSubtitle,
                     onTap: () => _navigateTo(context, const ReservationsPage()),
                   ),
 
@@ -77,12 +78,11 @@ class _AppDrawerState extends State<AppDrawer> {
                     onTap: () => _navigateTo(context, const SettingsPage()),
                   ), */
 
-                  _buildMenuItem(
+                  /* _buildMenuItem(
                     icon: Icons.help_outline,
                     title: AppLocalizations.of(context)!.drawerHelp,
                     onTap: () => _navigateTo(context, const HelpPage()),
-                  ),
-
+                  ), */
                   _buildMenuItem(
                     icon: Icons.info_outline,
                     title: AppLocalizations.of(context)!.profileAboutApp,
@@ -112,10 +112,7 @@ class _AppDrawerState extends State<AppDrawer> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF3860F8),
-            Color(0xFF1D2233),
-          ],
+          colors: [Color(0xFF3860F8), Color(0xFF1D2233)],
         ),
       ),
       child: Column(
@@ -171,11 +168,13 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ],
           ),
-          
+
           SizedBox(height: ResponsiveConstants.largeSpace),
-          
+
           // Boutons d'authentification
-          _authService.isLoggedIn ? _buildLoggedInSection() : _buildAuthButtons(),
+          _authService.isLoggedIn
+              ? _buildLoggedInSection()
+              : _buildAuthButtons(),
         ],
       ),
     );
@@ -226,7 +225,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
   Widget _buildLoggedInSection() {
     final user = _authService.currentUser;
-    
+
     return Container(
       padding: Responsive.all(12),
       decoration: BoxDecoration(
@@ -240,7 +239,9 @@ class _AppDrawerState extends State<AppDrawer> {
             radius: 16.r,
             backgroundColor: Colors.white.withOpacity(0.2),
             child: Text(
-              user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : '👤',
+              user?.name.isNotEmpty == true
+                  ? user!.name[0].toUpperCase()
+                  : '👤',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -273,11 +274,7 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           IconButton(
             onPressed: _handleLogout,
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.white70,
-              size: 20,
-            ),
+            icon: const Icon(Icons.logout, color: Colors.white70, size: 20),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
           ),
@@ -302,11 +299,7 @@ class _AppDrawerState extends State<AppDrawer> {
             color: const Color(0xFF3860F8).withOpacity(0.1),
             borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(
-            icon,
-            color: const Color(0xFF3860F8),
-            size: 20,
-          ),
+          child: Icon(icon, color: const Color(0xFF3860F8), size: 20),
         ),
         title: Text(
           title,
@@ -324,15 +317,9 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
               )
             : null,
-        trailing: const Icon(
-          Icons.chevron_right,
-          color: Colors.grey,
-          size: 20,
-        ),
+        trailing: const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
         onTap: onTap,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
         contentPadding: Responsive.symmetric(horizontal: 16, vertical: 4),
       ),
     );
@@ -347,11 +334,7 @@ class _AppDrawerState extends State<AppDrawer> {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.info_outline,
-            size: 16,
-            color: Colors.grey[600],
-          ),
+          Icon(Icons.info_outline, size: 16, color: Colors.grey[600]),
           SizedBox(width: 8.w),
           Text(
             AppLocalizations.of(context)!.drawerVersion,
@@ -367,18 +350,12 @@ class _AppDrawerState extends State<AppDrawer> {
 
   void _navigateTo(BuildContext context, Widget page) {
     Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
   void _navigateToAuth(BuildContext context, Widget page) {
     Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
   void _showLanguageDialog(BuildContext context) {
@@ -431,7 +408,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
   Future<void> _handleLogout() async {
     Navigator.pop(context); // Fermer le drawer d'abord
-    
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -453,7 +430,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
     if (confirmed == true) {
       final success = await _authService.logout();
-      
+
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

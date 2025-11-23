@@ -38,6 +38,23 @@
   "authSuccessTitle": "نجح",
   "authTermsAndConditions": "الشروط والأحكام",
   "authWelcomeBack": "مرحبا بعودتك",
+  "authErrorEmailNotFound": "لا يوجد حساب مرتبط بهذا البريد الإلكتروني",
+  "authErrorOtpExpired": "انتهت صلاحية الرمز، يرجى طلب رمز جديد",
+  "authErrorInvalidOtp": "الرمز غير صحيح",
+  "authErrorPasswordMismatch": "كلمات المرور غير متطابقة",
+  "authErrorPasswordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "authErrorInvalidCodeLength": "يجب أن يتكون الرمز من 6 أرقام",
+  "authResendCode": "إعادة إرسال الرمز",
+  "authCodeSent": "رمز التحقق",
+  "authPasswordResetGenericSuccess": "إذا كان هذا البريد الإلكتروني موجودًا في نظامنا، فستتلقى رمز إعادة تعيين قريبًا.",
+  "authRemainingAttempts": "بقي لديك {count} محاولة",
+  "@authRemainingAttempts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "authWelcomeToApp": "مرحبا بك في زيارة جيبوتي",
   "categoryFilterClear": "مسح الفلاتر",
   "commonAddress": "العنوان",
@@ -969,7 +986,7 @@
   "tourOperatorUnknown": "مشغل غير معروف",
   "tourOperatorCallButton": "اتصال",
   "tourOperatorWebsiteButton": "الموقع الإلكتروني",
-  "poiOperatorsServingTitle": "المشغلون الذين يخدمون هذا المكان",
+  "poiOperatorsServingTitle": "يخدمها",
   "activitiesSearchHint": "ابحث عن نشاط...",
   "toursSelectDifficulty": "اختر الصعوبة",
   "termsLastUpdated": "آخر تحديث: 23 أكتوبر 2025",

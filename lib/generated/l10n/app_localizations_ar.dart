@@ -107,6 +107,41 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authWelcomeBack => 'مرحبا بعودتك';
 
   @override
+  String get authErrorEmailNotFound =>
+      'لا يوجد حساب مرتبط بهذا البريد الإلكتروني';
+
+  @override
+  String get authErrorOtpExpired => 'انتهت صلاحية الرمز، يرجى طلب رمز جديد';
+
+  @override
+  String get authErrorInvalidOtp => 'الرمز غير صحيح';
+
+  @override
+  String get authErrorPasswordMismatch => 'كلمات المرور غير متطابقة';
+
+  @override
+  String get authErrorPasswordTooShort =>
+      'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
+
+  @override
+  String get authErrorInvalidCodeLength => 'يجب أن يتكون الرمز من 6 أرقام';
+
+  @override
+  String get authResendCode => 'إعادة إرسال الرمز';
+
+  @override
+  String get authCodeSent => 'رمز التحقق';
+
+  @override
+  String get authPasswordResetGenericSuccess =>
+      'إذا كان هذا البريد الإلكتروني موجودًا في نظامنا، فستتلقى رمز إعادة تعيين قريبًا.';
+
+  @override
+  String authRemainingAttempts(int count) {
+    return 'بقي لديك $count محاولة';
+  }
+
+  @override
   String get authWelcomeToApp => 'مرحبا بك في زيارة جيبوتي';
 
   @override
@@ -2164,7 +2199,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tourOperatorWebsiteButton => 'الموقع الإلكتروني';
 
   @override
-  String get poiOperatorsServingTitle => 'المشغلون الذين يخدمون هذا المكان';
+  String get poiOperatorsServingTitle => 'يخدمها';
 
   @override
   String get activitiesSearchHint => 'ابحث عن نشاط...';

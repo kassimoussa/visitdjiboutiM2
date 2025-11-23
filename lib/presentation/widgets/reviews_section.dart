@@ -91,6 +91,12 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   }
 
   void _showReviewForm({Review? existingReview}) {
+    // Vérifier si l'utilisateur est connecté
+    if (!_authService.isLoggedIn) {
+      _showLoginRequiredDialog();
+      return;
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -106,31 +112,109 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     );
   }
 
-  Future<void> _voteHelpful(Review review) async {
-    try {
-      await _reviewService.voteHelpful(
-        poiId: widget.poiId,
-        reviewId: review.id,
-      );
-      _loadReviews(); // Recharger pour mettre à jour le compteur
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-            content: Text(AppLocalizations.of(context)!.reviewsVotedHelpful),
-            duration: Duration(seconds: 2),
+  void _showLoginRequiredDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.lock_outline,
+              color: Color(0xFF3860F8),
+              size: 28,
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Text(
+                'Connexion requise',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Pour laisser un commentaire, vous devez être connecté.',
+              style: TextStyle(
+                fontSize: 15.sp,
+                color: Colors.grey[800],
+                height: 1.4,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Container(
+              padding: Responsive.all(12),
+              decoration: BoxDecoration(
+                color: Color(0xFF3860F8).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: Color(0xFF3860F8),
+                    size: 20,
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      'Créez un compte ou connectez-vous pour partager votre expérience.',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Color(0xFF3860F8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Annuler',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 15.sp,
+              ),
+            ),
           ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.reviewsVoteError(e.toString())),
-            backgroundColor: Colors.red,
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // TODO: Naviguer vers la page de connexion/inscription
+              // Navigator.pushNamed(context, '/login');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF3860F8),
+              foregroundColor: Colors.white,
+              padding: Responsive.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            child: Text(
+              'Se connecter',
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
-        );
-      }
-    }
+        ],
+      ),
+    );
   }
 
   Future<void> _deleteReview(Review review) async {
@@ -243,16 +327,16 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ),
           ],
         ),
-        if (_authService.isLoggedIn)
-          IconButton.filled(
-            onPressed: () => _showReviewForm(),
-            icon: const Icon(Icons.edit, size: 20),
-            tooltip: AppLocalizations.of(context)!.reviewsWriteReview,
-            style: IconButton.styleFrom(
-              backgroundColor: const Color(0xFF3860F8),
-              foregroundColor: Colors.white,
-            ),
+        // Afficher le bouton pour tous les utilisateurs
+        IconButton.filled(
+          onPressed: () => _showReviewForm(),
+          icon: const Icon(Icons.edit, size: 20),
+          tooltip: AppLocalizations.of(context)!.reviewsWriteReview,
+          style: IconButton.styleFrom(
+            backgroundColor: const Color(0xFF3860F8),
+            foregroundColor: Colors.white,
           ),
+        ),
       ],
     );
   }
@@ -463,7 +547,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                             fontSize: 15.sp,
                           ),
                         ),
-                        if (review.author.isVerified) ...[
+                        if (review.author.isVerified == true) ...[
                           SizedBox(width: 4.w),
                            Icon(
                             Icons.verified,
@@ -595,53 +679,6 @@ class _ReviewsSectionState extends State<ReviewsSection> {
               ),
             ),
           ],
-
-          // Bouton "Utile"
-          SizedBox(height: 12.h),
-          Row(
-            children: [
-              InkWell(
-                onTap: review.isHelpful ? null : () => _voteHelpful(review),
-                child: Container(
-                  padding: Responsive.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: review.isHelpful
-                        ?  Color(0xFF3860F8).withValues(alpha: 0.1)
-                        : Colors.grey[100],
-                    borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(
-                      color: review.isHelpful
-                          ?  Color(0xFF3860F8)
-                          : Colors.grey[300]!,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        review.isHelpful ? Icons.thumb_up : Icons.thumb_up_outlined,
-                        size: 14,
-                        color: review.isHelpful
-                            ?  Color(0xFF3860F8)
-                            : Colors.grey[600],
-                      ),
-                      SizedBox(width: 6.w),
-                      Text(
-                        'Utile${(review.helpfulCount ?? 0) > 0 ? ' (${review.helpfulCount})' : ''}',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: review.isHelpful ? FontWeight.w600 : FontWeight.normal,
-                          color: review.isHelpful
-                              ?  Color(0xFF3860F8)
-                              : Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -659,13 +696,11 @@ class _ReviewsSectionState extends State<ReviewsSection> {
               'Aucun avis pour le moment',
               style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
             ),
-            if (_authService.isLoggedIn) ...[
-              SizedBox(height: 8.h),
-              Text(
-                'Soyez le premier à donner votre avis !',
-                style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
-              ),
-            ],
+            SizedBox(height: 8.h),
+            Text(
+              'Soyez le premier à donner votre avis !',
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
+            ),
           ],
         ),
       ),

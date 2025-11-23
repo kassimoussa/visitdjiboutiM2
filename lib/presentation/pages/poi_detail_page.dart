@@ -1200,7 +1200,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
     return _buildInfoSection(
       icon: Icons.business,
-      title: 'Opérateurs desservant ce lieu',
+      title: AppLocalizations.of(context)!.poiOperatorsServingTitle,
       child: Column(
         children: poi.tourOperators.map((operator) {
           return Padding(
