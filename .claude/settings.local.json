@@ -47,7 +47,10 @@
       "Bash(/Users/ctd-dsi-kassim/development/flutter/bin/flutter gen-l10n:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(xargs:*)",
+      "Bash(cat:*)",
+      "Bash(pgrep:*)"
     ],
     "deny": [],
     "ask": []

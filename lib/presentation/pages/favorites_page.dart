@@ -7,12 +7,14 @@ import '../../core/services/conversion_trigger_service.dart';
 import '../../core/models/poi.dart';
 import '../../core/models/event.dart';
 import '../../core/models/tour.dart';
+import '../../core/models/activity.dart';
 import 'poi_detail_page.dart';
 import 'event_detail_page.dart';
-import 'tour_detail_page.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../widgets/poi_card.dart';
 import '../widgets/event_card.dart';
+import '../widgets/tour_card.dart';
+import '../widgets/activity_card.dart';
 import '../../core/utils/responsive.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -25,28 +27,38 @@ class FavoritesPage extends StatefulWidget {
 class _FavoritesPageState extends State<FavoritesPage> {
   final FavoritesService _favoritesService = FavoritesService();
   final EventService _eventService = EventService();
-  final ConversionTriggerService _conversionService = ConversionTriggerService();
-  
+  final ConversionTriggerService _conversionService =
+      ConversionTriggerService();
+
   late StreamSubscription _favoritesSubscription;
 
   List<Poi> _favoritePois = [];
   List<Event> _favoriteEvents = [];
   List<Tour> _favoriteTours = [];
+  List<Activity> _favoriteActivities = [];
   bool _isLoading = true;
-  String _selectedTab = 'all'; // all, pois, events, tours
+  String _selectedTab = 'all'; // all, pois, events, tours, activities
   String _sortBy = 'recent';
-  final List<String> _sortOptions = ['recent', 'alphabetical', 'rating'];
+  final List<String> _sortOptions = ['recent', 'alphabetical'];
 
   @override
   void initState() {
     super.initState();
-    _loadFavorites();
+    _syncAndLoadFavorites();
     _favoritesSubscription = _favoritesService.favoritesStream.listen((_) {
       _loadFavorites();
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _conversionService.checkAndShowConversionTrigger(context);
     });
+  }
+
+  /// Synchronise les favoris depuis l'API puis les charge
+  Future<void> _syncAndLoadFavorites() async {
+    // Sync depuis l'API en premier
+    await _favoritesService.syncFromAPI();
+    // Puis charge les favoris locaux
+    await _loadFavorites();
   }
 
   @override
@@ -62,12 +74,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
       final pois = await _favoritesService.getFavoritePois();
       final events = await _favoritesService.getFavoriteEvents();
       final tours = await _favoritesService.getFavoriteTours();
+      final activities = await _favoritesService.getFavoriteActivities();
 
       if (mounted) {
         setState(() {
           _favoritePois = pois;
           _favoriteEvents = events;
           _favoriteTours = tours;
+          _favoriteActivities = activities;
           _isLoading = false;
         });
       }
@@ -91,6 +105,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
         return l10n.favoritesEventsTab;
       case 'tours':
         return 'Tours'; // TODO: Add translation
+      case 'activities':
+        return 'Activités'; // TODO: Add translation
       default:
         return tab;
     }
@@ -104,8 +120,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
         return l10n.favoritesSortRecent;
       case 'alphabetical':
         return l10n.favoritesSortAlphabetical;
-      case 'rating':
-        return l10n.favoritesSortRating;
       default:
         return sort;
     }
@@ -116,18 +130,80 @@ class _FavoritesPageState extends State<FavoritesPage> {
     Responsive.init(context);
     return Scaffold(
       backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        backgroundColor: Colors.grey[50],
+        elevation: 0,
+        centerTitle: false,
+        title: Text(
+          AppLocalizations.of(context)!.favoritesTitle,
+          style: TextStyle(
+            fontSize: ResponsiveConstants.headline5,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1D2233),
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Color(0xFF1D2233)),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+        ),
+        actions: [
+          if (!_isLoading &&
+              (_favoritePois.isNotEmpty ||
+                  _favoriteEvents.isNotEmpty ||
+                  _favoriteTours.isNotEmpty ||
+                  _favoriteActivities.isNotEmpty))
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Center(
+                child: PopupMenuButton<String>(
+                  initialValue: _sortBy,
+                  onSelected: (value) {
+                    setState(() {
+                      _sortBy = value;
+                    });
+                  },
+                  itemBuilder: (context) => _sortOptions.map((option) {
+                    return PopupMenuItem<String>(
+                      value: option,
+                      child: Text(_getSortLabel(option)),
+                    );
+                  }).toList(),
+                  child: Container(
+                    padding: Responsive.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    child: const Icon(
+                      Icons.sort,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
-            if (!_isLoading && (_favoritePois.isNotEmpty || _favoriteEvents.isNotEmpty || _favoriteTours.isNotEmpty))
+            if (!_isLoading &&
+                (_favoritePois.isNotEmpty ||
+                    _favoriteEvents.isNotEmpty ||
+                    _favoriteTours.isNotEmpty ||
+                    _favoriteActivities.isNotEmpty))
               _buildTabBar(),
             Expanded(
               child: _isLoading
                   ? _buildLoadingState()
-                  : (_favoritePois.isEmpty && _favoriteEvents.isEmpty && _favoriteTours.isEmpty)
-                      ? _buildEmptyState()
-                      : _buildFavoritesList(),
+                  : (_favoritePois.isEmpty &&
+                        _favoriteEvents.isEmpty &&
+                        _favoriteTours.isEmpty &&
+                        _favoriteActivities.isEmpty)
+                  ? _buildEmptyState()
+                  : _buildFavoritesList(),
             ),
           ],
         ),
@@ -135,51 +211,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      child: Row(
-        children: [
-          Text(
-            AppLocalizations.of(context)!.favoritesTitle,
-            style: TextStyle(
-              fontSize: ResponsiveConstants.headline5,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1D2233),
-            ),
-          ),
-          const Spacer(),
-          if (!_isLoading && (_favoritePois.isNotEmpty || _favoriteEvents.isNotEmpty || _favoriteTours.isNotEmpty))
-            PopupMenuButton<String>(
-              initialValue: _sortBy,
-              onSelected: (value) {
-                setState(() {
-                  _sortBy = value;
-                });
-              },
-              itemBuilder: (context) => _sortOptions.map((option) {
-                return PopupMenuItem<String>(
-                  value: option,
-                  child: Text(_getSortLabel(option)),
-                );
-              }).toList(),
-              child: Container(
-                padding: Responsive.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: Colors.grey[300]!),
-                ),
-                child: const Icon(Icons.sort, size: 20),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildTabBar() {
-    final totalCount = _favoritePois.length + _favoriteEvents.length + _favoriteTours.length;
+    final totalCount =
+        _favoritePois.length +
+        _favoriteEvents.length +
+        _favoriteTours.length +
+        _favoriteActivities.length;
 
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
@@ -194,6 +231,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
             _buildTabButton('events', _favoriteEvents.length),
             SizedBox(width: 8.w),
             _buildTabButton('tours', _favoriteTours.length),
+            SizedBox(width: 8.w),
+            _buildTabButton('activities', _favoriteActivities.length),
           ],
         ),
       ),
@@ -232,24 +271,26 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return ListView.separated(
       padding: Responsive.all(20),
       itemCount: 5,
-      separatorBuilder: (context, index) => SizedBox(height: ResponsiveConstants.mediumSpace),
+      separatorBuilder: (context, index) =>
+          SizedBox(height: ResponsiveConstants.mediumSpace),
       itemBuilder: (context, index) => _buildShimmerCard(),
     );
   }
 
   Widget _buildFavoritesList() {
     final items = _getFilteredItems();
-    
+
     if (items.isEmpty) {
       return _buildEmptyFilterState();
     }
-    
+
     return RefreshIndicator(
       onRefresh: _loadFavorites,
       child: ListView.separated(
         padding: Responsive.all(20),
         itemCount: items.length,
-        separatorBuilder: (context, index) => SizedBox(height: ResponsiveConstants.mediumSpace),
+        separatorBuilder: (context, index) =>
+            SizedBox(height: ResponsiveConstants.mediumSpace),
         itemBuilder: (context, index) {
           final item = items[index];
           if (item is Poi) {
@@ -257,7 +298,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
           } else if (item is Event) {
             return EventCard(event: item);
           } else if (item is Tour) {
-            return _buildTourCard(item);
+            return TourCard(tour: item);
+          } else if (item is Activity) {
+            return ActivityCard(activity: item);
           }
           return const SizedBox.shrink();
         },
@@ -273,6 +316,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         items.addAll(_favoritePois);
         items.addAll(_favoriteEvents);
         items.addAll(_favoriteTours);
+        items.addAll(_favoriteActivities);
         break;
       case 'pois':
         items.addAll(_favoritePois);
@@ -282,6 +326,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
         break;
       case 'tours':
         items.addAll(_favoriteTours);
+        break;
+      case 'activities':
+        items.addAll(_favoriteActivities);
         break;
     }
 
@@ -296,12 +343,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
             aDateStr = a.createdAt;
           } else if (a is Tour) {
             aDateStr = a.createdAt;
+          } else if (a is Activity) {
+            aDateStr = a.createdAt;
           }
           if (b is Poi) {
             bDateStr = b.createdAt;
           } else if (b is Event) {
             bDateStr = b.createdAt;
           } else if (b is Tour) {
+            bDateStr = b.createdAt;
+          } else if (b is Activity) {
             bDateStr = b.createdAt;
           }
           final aDate = DateTime.tryParse(aDateStr ?? '') ?? DateTime(1970);
@@ -316,12 +367,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
             aName = a.title;
           } else if (a is Tour) {
             aName = a.title;
+          } else if (a is Activity) {
+            aName = a.title;
           }
           if (b is Poi) {
             bName = b.name;
           } else if (b is Event) {
             bName = b.title;
           } else if (b is Tour) {
+            bName = b.title;
+          } else if (b is Activity) {
             bName = b.title;
           }
           return aName.compareTo(bName);
@@ -333,7 +388,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           return 0;
       }
     });
-    
+
     return items;
   }
 
@@ -349,7 +404,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       default:
         message = 'Aucun favori dans cette catégorie';
     }
-    
+
     return Center(
       child: Padding(
         padding: Responsive.all(40),
@@ -357,11 +412,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.favorite_outline,
-                size: 60,
-                color: Colors.grey[400],
-              ),
+              Icon(Icons.favorite_outline, size: 60, color: Colors.grey[400]),
               SizedBox(height: ResponsiveConstants.mediumSpace),
               Text(
                 message,
@@ -397,18 +448,18 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ),
                   elevation: 0,
                 ),
-              child: Text(
-                AppLocalizations.of(context)!.discoverTitle,
-                style: TextStyle(
-                  fontSize: ResponsiveConstants.body1,
-                  fontWeight: FontWeight.w600,
+                child: Text(
+                  AppLocalizations.of(context)!.discoverTitle,
+                  style: TextStyle(
+                    fontSize: ResponsiveConstants.body1,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    )
     );
   }
 
@@ -486,18 +537,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
   void _navigateToPoiDetail(Poi poi) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => PoiDetailPage(poi: poi),
-      ),
+      MaterialPageRoute(builder: (context) => PoiDetailPage(poi: poi)),
     );
   }
 
   void _navigateToEventDetail(Event event) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => EventDetailPage(event: event),
-      ),
+      MaterialPageRoute(builder: (context) => EventDetailPage(event: event)),
     );
   }
 
@@ -506,7 +553,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.favoritesRemovedFromFavorites),
+          content: Text(
+            AppLocalizations.of(context)!.favoritesRemovedFromFavorites,
+          ),
           backgroundColor: const Color(0xFFEF4444),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -541,135 +590,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
         width: double.infinity,
         height: 160.h,
         color: Colors.white,
-      ),
-    );
-  }
-
-  Widget _buildTourCard(Tour tour) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TourDetailPage(tour: tour),
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image du tour
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-              child: tour.featuredImage?.url != null
-                  ? Image.network(
-                      tour.featuredImage!.url,
-                      height: 200.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 200.h,
-                          color: Colors.grey[200],
-                          child: const Icon(Icons.tour, size: 64, color: Colors.grey),
-                        );
-                      },
-                    )
-                  : Container(
-                      height: 200.h,
-                      color: Colors.grey[200],
-                      child: const Icon(Icons.tour, size: 64, color: Colors.grey),
-                    ),
-            ),
-            // Contenu
-            Padding(
-              padding: Responsive.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tour.title,
-                    style: TextStyle(
-                      fontSize: ResponsiveConstants.subtitle2,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1D2233),
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      Container(
-                        padding: Responsive.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3860F8).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(6.r),
-                        ),
-                        child: Text(
-                          tour.type.label,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Color(0xFF3860F8),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Container(
-                        padding: Responsive.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(6.r),
-                        ),
-                        child: Text(
-                          tour.difficulty.label,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: ResponsiveConstants.smallSpace),
-                  Row(
-                    children: [
-                      Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-                      SizedBox(width: 4.w),
-                      Text(
-                        tour.displayDuration,
-                        style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
-                      ),
-                      const Spacer(),
-                      Text(
-                        tour.displayPrice,
-                        style: TextStyle(
-                          fontSize: ResponsiveConstants.body1,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF009639),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -722,10 +642,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
       ),
     );
   }
-
-  
-
-  
 
   String _formatDate(DateTime date) {
     return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
@@ -784,11 +700,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.star,
-            color: Colors.amber,
-            size: 14,
-          ),
+          const Icon(Icons.star, color: Colors.amber, size: 14),
           SizedBox(width: 4.w),
           Text(
             rating.toString(),

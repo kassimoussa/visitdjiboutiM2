@@ -8,7 +8,7 @@ import '../../../../core/utils/responsive.dart';
 class ResetPasswordOtpPage extends ConsumerStatefulWidget {
   final String email;
 
-  const ResetPasswordOtpPage({Key? key, required this.email}) : super(key: key);
+  const ResetPasswordOtpPage({super.key, required this.email});
 
   @override
   ConsumerState<ResetPasswordOtpPage> createState() =>

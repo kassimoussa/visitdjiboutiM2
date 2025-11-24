@@ -3,6 +3,7 @@ import '../../../core/utils/responsive.dart';
 import '../../core/models/activity.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/activity_service.dart';
+import '../../core/services/favorites_service.dart';
 import '../widgets/activity_registration_form_widget.dart';
 import '../widgets/contact_operator_button.dart';
 import 'activity_gallery_page.dart';
@@ -19,6 +20,7 @@ class ActivityDetailPage extends StatefulWidget {
 
 class _ActivityDetailPageState extends State<ActivityDetailPage> {
   final ActivityService _activityService = ActivityService();
+  final FavoritesService _favoritesService = FavoritesService();
   final ScrollController _scrollController = ScrollController();
   final PageController _imagePageController = PageController();
   int _currentImageIndex = 0;
@@ -27,6 +29,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   bool _isLoading = true;
   String? _errorMessage;
   bool _showTitle = false;
+  bool _isFavorite = false;
 
   @override
   void initState() {
@@ -61,8 +64,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
     try {
       final activity = await _activityService.getActivityDetails(widget.activityId);
+      final isFav = await _favoritesService.isActivityFavorite(widget.activityId);
       setState(() {
         _activity = activity;
+        _isFavorite = isFav;
         _isLoading = false;
       });
     } catch (e) {
@@ -378,6 +383,35 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           color: Colors.black.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
+                        child: IconButton(
+                          onPressed: () async {
+                            await _favoritesService.toggleActivityFavorite(_activity!.id);
+                            setState(() {
+                              _isFavorite = !_isFavorite;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  _isFavorite
+                                      ? 'Ajouté aux favoris'
+                                      : 'Retiré des favoris'
+                                ),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            _isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: _isFavorite ? Colors.red : Colors.black87,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
                         child: ContactOperatorButton(
                           resourceType: 'activity',
                           resourceId: _activity!.id,
@@ -414,6 +448,41 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 icon: const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+
+        // Bouton favoris flottant à droite
+        if (!_showTitle)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.4),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: () async {
+                  await _favoritesService.toggleActivityFavorite(_activity!.id);
+                  setState(() {
+                    _isFavorite = !_isFavorite;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        _isFavorite
+                            ? 'Ajouté aux favoris'
+                            : 'Retiré des favoris'
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  _isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: _isFavorite ? Colors.red : Colors.white,
                 ),
               ),
             ),

@@ -2,13 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../core/models/activity.dart';
+import '../../core/services/favorites_service.dart';
 import '../pages/activity_detail_page.dart';
 import '../../core/utils/responsive.dart';
 
-class ActivityCard extends StatelessWidget {
+class ActivityCard extends StatefulWidget {
   final Activity activity;
 
   const ActivityCard({super.key, required this.activity});
+
+  @override
+  State<ActivityCard> createState() => _ActivityCardState();
+}
+
+class _ActivityCardState extends State<ActivityCard> {
+  final FavoritesService _favoritesService = FavoritesService();
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFavoriteStatus();
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    final isFav = await _favoritesService.isActivityFavorite(widget.activity.id);
+    if (mounted) {
+      setState(() {
+        _isFavorite = isFav;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +53,7 @@ class ActivityCard extends StatelessWidget {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ActivityDetailPage(activityId: activity.id),
+            builder: (context) => ActivityDetailPage(activityId: widget.activity.id),
           ),
         ),
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
@@ -45,15 +69,23 @@ class ActivityCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      activity.title,
-                      style: TextStyle(
-                        fontSize: ResponsiveConstants.body1,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1D2233),
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.activity.title,
+                            style: TextStyle(
+                              fontSize: ResponsiveConstants.body1,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF1D2233),
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        SizedBox(width: ResponsiveConstants.smallSpace),
+                        _buildFavoriteButton(),
+                      ],
                     ),
                     SizedBox(height: ResponsiveConstants.smallSpace * 0.8),
                     _buildActivityInfo(),
@@ -79,7 +111,7 @@ class ActivityCard extends StatelessWidget {
             borderRadius: BorderRadius.vertical(
                 top: Radius.circular(ResponsiveConstants.mediumRadius)),
             child: CachedNetworkImage(
-              imageUrl: activity.firstImageUrl,
+              imageUrl: widget.activity.firstImageUrl,
               width: double.infinity,
               height: ResponsiveConstants.cardImageHeight,
               fit: BoxFit.cover,
@@ -107,7 +139,7 @@ class ActivityCard extends StatelessWidget {
               ),
             ),
           ),
-          if (activity.isFeatured)
+          if (widget.activity.isFeatured)
             Positioned(
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
@@ -139,14 +171,14 @@ class ActivityCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (activity.duration.formatted.isNotEmpty)
+        if (widget.activity.duration.formatted.isNotEmpty)
           Row(
             children: [
               Icon(Icons.access_time,
                   size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Text(
-                activity.duration.formatted,
+                widget.activity.duration.formatted,
                 style: TextStyle(
                     fontSize: ResponsiveConstants.caption + 1.sp,
                     color: Colors.grey[600],
@@ -154,9 +186,9 @@ class ActivityCard extends StatelessWidget {
               ),
             ],
           ),
-        if (activity.duration.formatted.isNotEmpty && activity.location?.address != null)
+        if (widget.activity.duration.formatted.isNotEmpty && widget.activity.location?.address != null)
           SizedBox(height: ResponsiveConstants.tinySpace),
-        if (activity.location?.address != null)
+        if (widget.activity.location?.address != null)
           Row(
             children: [
               Icon(Icons.location_on_outlined,
@@ -164,7 +196,7 @@ class ActivityCard extends StatelessWidget {
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Expanded(
                 child: Text(
-                  activity.location!.address!,
+                  widget.activity.location!.address!,
                   style: TextStyle(
                       fontSize: ResponsiveConstants.caption + 1.sp,
                       color: Colors.grey[600]),
@@ -193,7 +225,7 @@ class ActivityCard extends StatelessWidget {
                 BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
-            activity.displayPrice,
+            widget.activity.displayPrice,
             style: TextStyle(
               fontSize: ResponsiveConstants.caption,
               fontWeight: FontWeight.w600,
@@ -206,20 +238,20 @@ class ActivityCard extends StatelessWidget {
               horizontal: ResponsiveConstants.smallSpace,
               vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
-            color: _getDifficultyColor(activity.difficulty).withValues(alpha: 0.1),
+            color: _getDifficultyColor(widget.activity.difficulty).withValues(alpha: 0.1),
             borderRadius:
                 BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
-            activity.displayDifficulty,
+            widget.activity.displayDifficulty,
             style: TextStyle(
               fontSize: ResponsiveConstants.caption,
               fontWeight: FontWeight.w500,
-              color: _getDifficultyColor(activity.difficulty),
+              color: _getDifficultyColor(widget.activity.difficulty),
             ),
           ),
         ),
-        if (activity.region != null)
+        if (widget.activity.region != null)
           Container(
             padding: Responsive.symmetric(
                 horizontal: ResponsiveConstants.smallSpace,
@@ -230,7 +262,7 @@ class ActivityCard extends StatelessWidget {
                   BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Text(
-              activity.region!,
+              widget.activity.region!,
               style: TextStyle(
                 color: const Color(0xFF0072CE),
                 fontSize: ResponsiveConstants.caption,
@@ -252,6 +284,44 @@ class ActivityCard extends StatelessWidget {
       case ActivityDifficulty.expert:
         return Colors.red;
     }
+  }
+
+  Widget _buildFavoriteButton() {
+    return Container(
+      width: 32.w,
+      height: 32.h,
+      decoration: BoxDecoration(
+        color: _isFavorite ? Colors.red.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
+      ),
+      child: IconButton(
+        onPressed: () async {
+          await _favoritesService.toggleActivityFavorite(widget.activity.id);
+          setState(() {
+            _isFavorite = !_isFavorite;
+          });
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  _isFavorite
+                      ? 'Ajouté aux favoris'
+                      : 'Retiré des favoris'
+                ),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        },
+        icon: Icon(
+          _isFavorite ? Icons.favorite : Icons.favorite_border,
+          color: _isFavorite ? Colors.red : Colors.grey[600],
+          size: ResponsiveConstants.smallIcon,
+        ),
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+      ),
+    );
   }
 
   Widget _buildShimmerImagePlaceholder() {

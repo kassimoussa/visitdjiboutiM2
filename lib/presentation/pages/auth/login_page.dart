@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/services/anonymous_auth_service.dart';
+import '../../../core/services/favorites_service.dart';
 import '../../../generated/l10n/app_localizations.dart';
 import '../../../core/utils/responsive.dart';
 
@@ -13,10 +14,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AnonymousAuthService _authService = AnonymousAuthService();
-  
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   bool _isLoading = false;
   bool _obscurePassword = true;
 
@@ -62,11 +63,12 @@ class _LoginPageState extends State<LoginPage> {
                       child: Image.asset(
                         'assets/images/logo_visitdjibouti.png',
                         fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const Icon(
-                          Icons.travel_explore,
-                          color: Color(0xFF3860F8),
-                          size: 60,
-                        ),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(
+                              Icons.travel_explore,
+                              color: Color(0xFF3860F8),
+                              size: 60,
+                            ),
                       ),
                     ),
                   ),
@@ -94,12 +96,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 SizedBox(height: ResponsiveConstants.extraLargeSpace),
-                
+
                 // Formulaire
                 _buildForm(),
-                
+
                 SizedBox(height: ResponsiveConstants.mediumSpace),
-                
+
                 // Mot de passe oublié
                 Align(
                   alignment: Alignment.centerRight,
@@ -116,9 +118,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: ResponsiveConstants.largeSpace),
-                
+
                 // Bouton de connexion
                 _buildLoginButton(),
 
@@ -158,9 +160,9 @@ class _LoginPageState extends State<LoginPage> {
             return null;
           },
         ),
-        
+
         SizedBox(height: ResponsiveConstants.mediumSpace),
-        
+
         // Mot de passe
         TextFormField(
           controller: _passwordController,
@@ -169,8 +171,11 @@ class _LoginPageState extends State<LoginPage> {
             labelText: AppLocalizations.of(context)!.authPassword,
             prefixIcon: const Icon(Icons.lock_outline),
             suffixIcon: IconButton(
-              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-              icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+              onPressed: () =>
+                  setState(() => _obscurePassword = !_obscurePassword),
+              icon: Icon(
+                _obscurePassword ? Icons.visibility : Icons.visibility_off,
+              ),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -248,16 +253,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _isLoading = true);
-    
+
     try {
       final response = await _authService.login(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
-      
+
       if (response.isSuccess) {
+        // Sync favorites after successful login
+        await FavoritesService().syncFromAPI();
         _showSuccessDialog();
       } else {
         _showErrorDialog(response.message ?? 'Erreur lors de la connexion');
@@ -280,17 +287,14 @@ class _LoginPageState extends State<LoginPage> {
           size: 48,
         ),
         title: Text(AppLocalizations.of(context)!.authSuccessTitle),
-        content: Text(
-          AppLocalizations.of(context)!.authWelcomeBack,
-        ),
+        content: Text(AppLocalizations.of(context)!.authWelcomeBack),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/main',
-                (route) => false,
-              );
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/main', (route) => false);
             },
             child: Text(AppLocalizations.of(context)!.commonNext),
           ),

@@ -43,19 +43,21 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   Widget build(BuildContext context) {
     return OfflineIndicator(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(_getPageTitle()),
-          backgroundColor: const Color(0xFF3860F8),
-          foregroundColor: Colors.white,
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
-          ),
-          actions: const [ConnectivityIcon()],
-        ),
+        appBar: _currentIndex == 4
+            ? null
+            : AppBar(
+                title: Text(_getPageTitle()),
+                backgroundColor: const Color(0xFF3860F8),
+                foregroundColor: Colors.white,
+                centerTitle: true,
+                leading: Builder(
+                  builder: (context) => IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
+                ),
+                actions: const [ConnectivityIcon()],
+              ),
         drawer: const AppDrawer(),
         body: IndexedStack(index: _currentIndex, children: _pages),
         bottomNavigationBar: BottomNavigationBar(
@@ -68,11 +70,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           },
           selectedItemColor: const Color(0xFF3860F8),
           unselectedItemColor: const Color(0xFF64748B),
-          selectedLabelStyle:  TextStyle(
+          selectedLabelStyle: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 12.sp,
           ),
-          unselectedLabelStyle:  TextStyle(
+          unselectedLabelStyle: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 12.sp,
           ),

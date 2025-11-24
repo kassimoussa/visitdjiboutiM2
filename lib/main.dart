@@ -20,6 +20,7 @@ import 'package:vd_gem/core/services/api_language_sync_service.dart';
 import 'package:vd_gem/core/services/preload_service.dart';
 import 'package:vd_gem/core/services/connectivity_service.dart';
 import 'package:vd_gem/core/services/fcm_service.dart';
+import 'package:vd_gem/core/services/favorites_service.dart';
 import 'package:vd_gem/core/utils/responsive.dart';
 import 'package:vd_gem/generated/l10n/app_localizations.dart';
 import 'package:vd_gem/firebase_options.dart';
@@ -53,6 +54,9 @@ void main() async {
 
   // 3. Initialize other services
   await AnonymousAuthService().initializeAnonymousUser();
+
+  // 3.1 Sync favorites from API
+  await FavoritesService().syncFromAPI();
 
   // 4. Initialize API-UI language synchronization
   ApiLanguageSyncService().initialize();

@@ -5,7 +5,7 @@ import '../../../../generated/l10n/app_localizations.dart';
 import '../../../../core/utils/responsive.dart';
 
 class ForgotPasswordPage extends ConsumerStatefulWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+  const ForgotPasswordPage({super.key});
 
   @override
   ConsumerState<ForgotPasswordPage> createState() => _ForgotPasswordPageState();

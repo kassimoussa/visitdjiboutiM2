@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:vd_gem/presentation/pages/settings_page.dart'; // Hidden temporarily
 import 'package:vd_gem/presentation/pages/about_page.dart';
-import 'package:vd_gem/presentation/pages/help_page.dart';
 import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
