@@ -16,6 +16,8 @@ class Event {
   @JsonKey(name: 'short_description', defaultValue: '')
   final String shortDescription;
   final String? description;
+  @JsonKey(defaultValue: 'region')
+  final String region;
   @JsonKey(defaultValue: '')
   final String location;
   @JsonKey(name: 'location_details')
@@ -93,6 +95,7 @@ class Event {
     required this.title,
     required this.shortDescription,
     this.description,
+    required this.region,
     required this.location,
     this.locationDetails,
     this.fullLocation,
@@ -136,7 +139,17 @@ class Event {
 
   Map<String, dynamic> toJson() => _$EventToJson(this);
 
-  String get primaryCategory => categories.isNotEmpty ? categories.first.name : 'Événement';
+  String get primaryCategory {
+    if (categories.isEmpty) return 'Général';
+
+    // Chercher la première catégorie parente (level == 0)
+    final parentCategory = categories.firstWhere(
+      (category) => category.isParentCategory,
+      orElse: () => categories.first,
+    );
+
+    return parentCategory.name;
+  }
   String get imageUrl => featuredImage?.imageUrl ?? '';
   String get displayLocation => fullLocation ?? location ?? '';
   bool get hasMedia => media != null && media!.isNotEmpty;

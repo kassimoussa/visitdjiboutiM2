@@ -223,6 +223,8 @@
   "favoritesEmptyDescription": "You don't have any favorites yet. Explore and add your favorite places!",
   "favoritesEventsTab": "Events",
   "favoritesPoisTab": "Places",
+  "favoritesToursTab": "Tours",
+  "favoritesActivitiesTab": "Activities",
   "favoritesRemovedFromFavorites": "Removed from favorites",
   "favoritesSortAlphabetical": "Alphabetical",
   "favoritesSortRating": "Rating",

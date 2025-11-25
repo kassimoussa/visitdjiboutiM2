@@ -388,7 +388,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 await LocalizationService().setLanguage('en');
               },
             ),
-            ListTile(
+           /*  ListTile(
               leading: const Text('🇸🇦'),
               title: Text(AppLocalizations.of(context)!.languageArabic),
               trailing: LocalizationService().currentLocale.languageCode == 'ar'
@@ -398,7 +398,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.pop(context);
                 await LocalizationService().setLanguage('ar');
               },
-            ),
+            ), */
           ],
         ),
       ),

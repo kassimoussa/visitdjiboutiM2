@@ -109,7 +109,18 @@ class Poi {
   factory Poi.fromJson(Map<String, dynamic> json) => _$PoiFromJson(json);
   Map<String, dynamic> toJson() => _$PoiToJson(this);
 
-  String get primaryCategory => categories.isNotEmpty ? categories.first.name : 'Général';
+  String get primaryCategory {
+    if (categories.isEmpty) return 'Général';
+
+    // Chercher la première catégorie parente (level == 0)
+    final parentCategory = categories.firstWhere(
+      (category) => category.isParentCategory,
+      orElse: () => categories.first,
+    );
+
+    return parentCategory.name;
+  }
+
   String get imageUrl => featuredImage?.imageUrl ?? '';
   String get displayAddress => fullAddress ?? address ?? 'Adresse non spécifiée';
   bool get hasMedia => media != null && media!.isNotEmpty;

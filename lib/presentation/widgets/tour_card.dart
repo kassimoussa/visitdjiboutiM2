@@ -128,7 +128,7 @@ class _TourCardState extends State<TourCard> {
               ),
             ),
           ),
-          if (tour.isFeatured)
+          /* if (tour.isFeatured)
             Positioned(
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
@@ -166,7 +166,7 @@ class _TourCardState extends State<TourCard> {
                 ),
               ),
             ),
-          ),
+          ), */
         ],
       ),
     );
@@ -221,7 +221,7 @@ class _TourCardState extends State<TourCard> {
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Expanded(
                 child: Text(
-                  tour.meetingPoint!.displayText,
+                  tour.meetingPoint!.address!,
                   style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -253,7 +253,7 @@ class _TourCardState extends State<TourCard> {
             ),
           ),
         ),
-        Container(
+        /* Container(
           padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
             color: const Color(0xFF3860F8).withOpacity(0.1),
@@ -268,7 +268,7 @@ class _TourCardState extends State<TourCard> {
             ),
           ),
         ),
-        /* if (tour.maxParticipants != null && tour.maxParticipants! > 0)
+        if (tour.maxParticipants != null && tour.maxParticipants! > 0)
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(

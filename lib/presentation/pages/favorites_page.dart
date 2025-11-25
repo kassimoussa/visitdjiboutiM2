@@ -104,9 +104,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
       case 'events':
         return l10n.favoritesEventsTab;
       case 'tours':
-        return 'Tours'; // TODO: Add translation
+        return l10n.favoritesToursTab;
       case 'activities':
-        return 'Activités'; // TODO: Add translation
+        return l10n.favoritesActivitiesTab;
       default:
         return tab;
     }

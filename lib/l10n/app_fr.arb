@@ -224,6 +224,8 @@
   "favoritesEmptyDescription": "Vous n'avez pas encore de favoris. Explorez et ajoutez vos lieux préférés!",
   "favoritesEventsTab": "Événements",
   "favoritesPoisTab": "Lieux",
+  "favoritesToursTab": "Tours",
+  "favoritesActivitiesTab": "Activités",
   "favoritesRemovedFromFavorites": "Retiré des favoris",
   "favoritesSortAlphabetical": "Alphabétique",
   "favoritesSortRating": "Évaluation",

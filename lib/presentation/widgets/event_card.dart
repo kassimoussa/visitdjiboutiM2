@@ -125,7 +125,7 @@ class _EventCardState extends State<EventCard> {
               ),
             ),
           ),
-          if (event.isFeatured)
+          /* if (event.isFeatured)
             Positioned(
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
@@ -144,7 +144,7 @@ class _EventCardState extends State<EventCard> {
                   ),
                 ),
               ),
-            ),
+            ), */
           Positioned(
             top: ResponsiveConstants.smallSpace * 1.5,
             right: ResponsiveConstants.smallSpace * 1.5,
@@ -184,14 +184,14 @@ class _EventCardState extends State<EventCard> {
           ],
         ),
         SizedBox(height: ResponsiveConstants.tinySpace),
-        if (event.location.isNotEmpty)
+        if (event.region.isNotEmpty)
           Row(
             children: [
               Icon(Icons.location_on_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
               SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
               Expanded(
                 child: Text(
-                  event.location,
+                  event.region,
                   style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

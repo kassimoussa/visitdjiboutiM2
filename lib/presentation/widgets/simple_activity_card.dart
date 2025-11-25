@@ -261,7 +261,7 @@ class _SimpleActivityCardState extends State<SimpleActivityCard> {
               ],
             ),
           ),
-        Container(
+        /* Container(
           padding: Responsive.symmetric(
               horizontal: ResponsiveConstants.smallSpace,
               vertical: ResponsiveConstants.tinySpace),
@@ -278,7 +278,7 @@ class _SimpleActivityCardState extends State<SimpleActivityCard> {
               fontWeight: FontWeight.w500,
             ),
           ),
-        ),
+        ), */
         if (widget.activity.hasAvailableSpots)
           Container(
             padding: Responsive.symmetric(

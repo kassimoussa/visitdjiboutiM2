@@ -560,6 +560,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesPoisTab => 'الأماكن';
 
   @override
+  String get favoritesToursTab => 'الجولات';
+
+  @override
+  String get favoritesActivitiesTab => 'الأنشطة';
+
+  @override
   String get favoritesRemovedFromFavorites => 'تمت الإزالة من المفضلة';
 
   @override

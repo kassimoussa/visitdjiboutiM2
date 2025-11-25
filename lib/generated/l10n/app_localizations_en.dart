@@ -560,6 +560,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get favoritesPoisTab => 'Places';
 
   @override
+  String get favoritesToursTab => 'Tours';
+
+  @override
+  String get favoritesActivitiesTab => 'Activities';
+
+  @override
   String get favoritesRemovedFromFavorites => 'Removed from favorites';
 
   @override

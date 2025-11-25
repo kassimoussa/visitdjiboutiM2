@@ -1168,6 +1168,18 @@ abstract class AppLocalizations {
   /// **'Lieux'**
   String get favoritesPoisTab;
 
+  /// No description provided for @favoritesToursTab.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tours'**
+  String get favoritesToursTab;
+
+  /// No description provided for @favoritesActivitiesTab.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activités'**
+  String get favoritesActivitiesTab;
+
   /// No description provided for @favoritesRemovedFromFavorites.
   ///
   /// In fr, this message translates to:

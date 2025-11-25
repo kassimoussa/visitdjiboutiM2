@@ -229,8 +229,8 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                 // Logo section
                 if (operator.logo != null && operator.logoUrl.isNotEmpty)
                   Container(
-                    width: 70.w,
-                    height: 70.h,
+                    width: 65.w,
+                    height: 65.h,
                     margin: Responsive.only(right: 16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.r),

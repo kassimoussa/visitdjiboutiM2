@@ -139,7 +139,7 @@ class _ActivityCardState extends State<ActivityCard> {
               ),
             ),
           ),
-          if (widget.activity.isFeatured)
+          /* if (widget.activity.isFeatured)
             Positioned(
               top: ResponsiveConstants.smallSpace * 1.5,
               left: ResponsiveConstants.smallSpace * 1.5,
@@ -161,7 +161,7 @@ class _ActivityCardState extends State<ActivityCard> {
                   ),
                 ),
               ),
-            ),
+            ), */
         ],
       ),
     );
@@ -188,7 +188,7 @@ class _ActivityCardState extends State<ActivityCard> {
           ),
         if (widget.activity.duration.formatted.isNotEmpty && widget.activity.location?.address != null)
           SizedBox(height: ResponsiveConstants.tinySpace),
-        if (widget.activity.location?.address != null)
+        /* if (widget.activity.location?.address != null)
           Row(
             children: [
               Icon(Icons.location_on_outlined,
@@ -205,7 +205,7 @@ class _ActivityCardState extends State<ActivityCard> {
                 ),
               ),
             ],
-          ),
+          ), */
       ],
     );
   }
@@ -233,7 +233,7 @@ class _ActivityCardState extends State<ActivityCard> {
             ),
           ),
         ),
-        Container(
+        /* Container(
           padding: Responsive.symmetric(
               horizontal: ResponsiveConstants.smallSpace,
               vertical: ResponsiveConstants.tinySpace),
@@ -250,7 +250,7 @@ class _ActivityCardState extends State<ActivityCard> {
               color: _getDifficultyColor(widget.activity.difficulty),
             ),
           ),
-        ),
+        ), */
         if (widget.activity.region != null)
           Container(
             padding: Responsive.symmetric(

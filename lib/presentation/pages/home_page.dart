@@ -401,13 +401,29 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _refreshAll() async {
+    // Vider le cache
+    await _cacheService.clearPoiCache();
+
+    // Recharger toutes les données en parallèle
+    await Future.wait([
+      _loadFeaturedPoisForced(),
+      _loadUpcomingEventsForced(),
+      _loadFeaturedToursForced(),
+      _loadFeaturedActivities(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     Responsive.init(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
 
-    return SingleChildScrollView(
+    return RefreshIndicator(
+      onRefresh: _refreshAll,
+      color: const Color(0xFF3860F8),
+      child: SingleChildScrollView(
         padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,6 +484,7 @@ class _HomePageState extends State<HomePage> {
             _buildEssentialsSection(),
           ],
         ),
+      ),
     );
   }
 
