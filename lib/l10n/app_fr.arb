@@ -38,6 +38,8 @@
   "authSuccessTitle": "Succès",
   "authTermsAndConditions": "Conditions d'utilisation",
   "authWelcomeBack": "Bon retour",
+  "authContinueGuest": "Continuer en tant qu'invité",
+  "authWelcomeSubtitle": "Connectez-vous pour une expérience personnalisée ou explorez librement.",
   "authErrorEmailNotFound": "Aucun compte n'est associé à cet email",
   "authErrorOtpExpired": "Le code a expiré, veuillez en demander un nouveau",
   "authErrorInvalidOtp": "Code incorrect",
@@ -729,6 +731,24 @@
   "reservationsRegistrationDeleted": "Inscription supprimée",
   "reservationsRegistrationCancelError": "Erreur lors de l'annulation",
   "reservationsRegistrationDeleteError": "Erreur lors de la suppression",
+  "reservationsTourCancelConfirm": "Êtes-vous sûr de vouloir annuler la réservation #{id}?",
+  "@reservationsTourCancelConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsTourDeleteConfirm": "Êtes-vous sûr de vouloir supprimer définitivement la réservation #{id}? Cette action est irréversible.",
+  "@reservationsTourDeleteConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsPhone": "Téléphone",
+  "reservationsEmail": "Email",
   "reservationsNameNotAvailable": "Nom non disponible",
   "reservationsTime": "Heure",
   "reservationsPeople": "Personnes",

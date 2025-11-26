@@ -109,6 +109,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authWelcomeBack => 'Bon retour';
 
   @override
+  String get authContinueGuest => 'Continuer en tant qu\'invité';
+
+  @override
+  String get authWelcomeSubtitle =>
+      'Connectez-vous pour une expérience personnalisée ou explorez librement.';
+
+  @override
   String get authErrorEmailNotFound =>
       'Aucun compte n\'est associé à cet email';
 
@@ -1689,6 +1696,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get reservationsRegistrationDeleteError =>
       'Erreur lors de la suppression';
+
+  @override
+  String reservationsTourCancelConfirm(String id) {
+    return 'Êtes-vous sûr de vouloir annuler la réservation #$id?';
+  }
+
+  @override
+  String reservationsTourDeleteConfirm(String id) {
+    return 'Êtes-vous sûr de vouloir supprimer définitivement la réservation #$id? Cette action est irréversible.';
+  }
+
+  @override
+  String get reservationsPhone => 'Téléphone';
+
+  @override
+  String get reservationsEmail => 'Email';
 
   @override
   String get reservationsNameNotAvailable => 'Nom non disponible';

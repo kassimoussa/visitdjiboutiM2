@@ -6,35 +6,67 @@ import 'simple_tour.dart';
 
 part 'tour.g.dart';
 
-// Parse duration field - handles null or empty values from API
+// --- Helper Functions for JSON Deserialization ---
+
+// Helper pour extraire le titre depuis les traductions
+String? _extractTitleFromTranslations(Map<String, dynamic> json, String? currentLocale) {
+  // Si le champ title existe directement, l'utiliser
+  if (json['title'] != null && (json['title'] as String).isNotEmpty) {
+    return json['title'] as String;
+  }
+
+  // Sinon, chercher dans les traductions
+  final translations = json['translations'];
+  if (translations == null || translations is! List || translations.isEmpty) {
+    return null;
+  }
+
+  // Utiliser la locale courante ou 'fr' par défaut
+  final locale = currentLocale ?? 'fr';
+
+  // Chercher la traduction correspondant à la locale
+  final translation = translations.firstWhere(
+    (t) => t['locale'] == locale,
+    orElse: () => translations.first,
+  );
+
+  return translation['title'] as String?;
+}
+
+// Helper pour extraire la description depuis les traductions
+String? _extractDescriptionFromTranslations(Map<String, dynamic> json, String? currentLocale) {
+  if (json['description'] != null && (json['description'] as String).isNotEmpty) {
+    return json['description'] as String;
+  }
+
+  final translations = json['translations'];
+  if (translations == null || translations is! List || translations.isEmpty) {
+    return null;
+  }
+
+  final locale = currentLocale ?? 'fr';
+  final translation = translations.firstWhere(
+    (t) => t['locale'] == locale,
+    orElse: () => translations.first,
+  );
+
+  return translation['description'] as String?;
+}
+
 TourDuration _durationFromJsonField(dynamic duration) {
-  // Par défaut, retourner une durée vide
   return TourDuration(hours: null, days: 1, formatted: '1 jour');
 }
 
-// Parse duration from full JSON object with duration_hours and formatted_duration
 TourDuration _durationFromJson(Map<String, dynamic> json) {
-  // L'API retourne duration_hours et formatted_duration, pas un objet duration
   final hours = (json['duration_hours'] as num?)?.toInt();
   final formatted = json['formatted_duration'] as String?;
 
   if (formatted != null && formatted.isNotEmpty) {
-    // Si on a un formatted_duration, l'utiliser
-    return TourDuration(
-      hours: hours,
-      days: 1, // Par défaut 1 jour
-      formatted: formatted,
-    );
+    return TourDuration(hours: hours, days: 1, formatted: formatted);
   } else if (hours != null) {
-    // Si on a seulement les heures
-    return TourDuration(
-      hours: hours,
-      days: 1,
-      formatted: '${hours}h',
-    );
+    return TourDuration(hours: hours, days: 1, formatted: '${hours}h');
   }
 
-  // Fallback
   return TourDuration(hours: null, days: 1, formatted: '1 jour');
 }
 
@@ -61,7 +93,6 @@ Media? _mediaFromJson(dynamic media) {
   return null;
 }
 
-// Parse age restrictions from API
 AgeRestrictions? _ageRestrictionsFromJson(dynamic ageRestrictions) {
   if (ageRestrictions == null) {
     return null;
@@ -75,7 +106,6 @@ AgeRestrictions? _ageRestrictionsFromJson(dynamic ageRestrictions) {
   return null;
 }
 
-// Parse meeting point from API
 MeetingPoint? _meetingPointFromJson(dynamic meetingPoint) {
   if (meetingPoint == null) {
     return null;
@@ -87,7 +117,6 @@ MeetingPoint? _meetingPointFromJson(dynamic meetingPoint) {
       description: meetingPoint['description'] as String?,
     );
   } else if (meetingPoint is String) {
-    // Fallback pour ancienne structure (string uniquement)
     return MeetingPoint(
       latitude: null,
       longitude: null,
@@ -102,44 +131,70 @@ TourOperator? _tourOperatorFromJson(dynamic operator) {
   if (operator == null) {
     return null;
   } else if (operator is Map<String, dynamic>) {
-    return TourOperator.fromJson(operator);
+    // Patch pour gérer les champs null du tour operator
+    final operatorData = Map<String, dynamic>.from(operator);
+    if (operatorData['name'] == null) {
+      operatorData['name'] = 'Tour Operator';
+    }
+    if (operatorData['slug'] == null) {
+      operatorData['slug'] = 'operator-${operatorData['id'] ?? 0}';
+    }
+    return TourOperator.fromJson(operatorData);
   }
   return null;
 }
 
-// Parse tour type from API - handles null values
 TourType _typeFromJson(dynamic type) {
   if (type == null) {
-    return TourType.mixed; // Default value when type is null
+    return TourType.mixed;
   }
   if (type is String) {
-    switch (type.toLowerCase()) {
-      case 'poi':
-        return TourType.poi;
-      case 'event':
-        return TourType.event;
-      case 'mixed':
-        return TourType.mixed;
-      case 'cultural':
-        return TourType.cultural;
-      case 'adventure':
-        return TourType.adventure;
-      case 'nature':
-        return TourType.nature;
-      case 'gastronomic':
-        return TourType.gastronomic;
-      default:
-        return TourType.mixed;
-    }
+    return _stringToTourType(type);
   }
   return TourType.mixed;
 }
 
+TourType _stringToTourType(String type) {
+  switch (type.toLowerCase()) {
+    case 'cultural':
+      return TourType.cultural;
+    case 'adventure':
+      return TourType.adventure;
+    case 'nature':
+      return TourType.nature;
+    case 'gastronomic':
+      return TourType.gastronomic;
+    case 'poi':
+      return TourType.poi;
+    case 'event':
+      return TourType.event;
+    default:
+      return TourType.mixed;
+  }
+}
+
+TourDifficulty _stringToTourDifficulty(String difficulty) {
+  switch (difficulty.toLowerCase()) {
+    case 'easy':
+      return TourDifficulty.easy;
+    case 'moderate':
+      return TourDifficulty.moderate;
+    case 'difficult':
+      return TourDifficulty.difficult;
+    case 'expert':
+      return TourDifficulty.expert;
+    default:
+      return TourDifficulty.easy;
+  }
+}
+
+// --- Main Tour Class ---
+
 @JsonSerializable()
 class Tour {
   final int id;
-  final String slug;
-  final String title;
+  final String? slug;
+  final String? title;
   @JsonKey(name: 'short_description')
   final String? shortDescription;
   final String? description;
@@ -202,8 +257,8 @@ class Tour {
 
   Tour({
     required this.id,
-    required this.slug,
-    required this.title,
+    this.slug,
+    this.title,
     this.shortDescription,
     this.description,
     this.itinerary,
@@ -239,47 +294,69 @@ class Tour {
   });
 
   factory Tour.fromJson(Map<String, dynamic> json) {
-    final tour = _$TourFromJson(json);
-    // Construire duration à partir des champs duration_hours et formatted_duration
-    final duration = _durationFromJson(json);
+    try {
+      // Patch pour difficulty_level manquant (défaut: easy)
+      if (json['difficulty_level'] == null) {
+        json['difficulty_level'] = 'easy';
+      }
 
-    return Tour(
-      id: tour.id,
-      slug: tour.slug,
-      title: tour.title,
-      shortDescription: tour.shortDescription,
-      description: tour.description,
-      itinerary: tour.itinerary,
-      type: tour.type,
-      typeLabel: tour.typeLabel,
-      difficulty: tour.difficulty,
-      difficultyLabel: tour.difficultyLabel,
-      price: tour.price,
-      formattedPrice: tour.formattedPrice,
-      currency: tour.currency,
-      isFree: tour.isFree,
-      duration: duration, // Utiliser la duration parsée
-      maxParticipants: tour.maxParticipants,
-      minParticipants: tour.minParticipants,
-      availableSpots: tour.availableSpots,
-      isFeatured: tour.isFeatured,
-      isActive: tour.isActive,
-      highlights: tour.highlights,
-      whatToBring: tour.whatToBring,
-      ageRestrictions: tour.ageRestrictions,
-      weatherDependent: tour.weatherDependent,
-      viewsCount: tour.viewsCount,
-      meetingPoint: tour.meetingPoint,
-      tourOperator: tour.tourOperator,
-      featuredImage: tour.featuredImage,
-      media: tour.media,
-      categories: tour.categories,
-      startDate: tour.startDate,
-      endDate: tour.endDate,
-      formattedDateRange: tour.formattedDateRange,
-      createdAt: tour.createdAt,
-      updatedAt: tour.updatedAt,
-    );
+      // Extraire title et description depuis translations si nécessaire
+      final extractedTitle = _extractTitleFromTranslations(json, null);
+      final extractedDescription = _extractDescriptionFromTranslations(json, null);
+
+      // Patcher le JSON avec les valeurs extraites
+      if (extractedTitle != null && json['title'] == null) {
+        json['title'] = extractedTitle;
+      }
+      if (extractedDescription != null && json['description'] == null) {
+        json['description'] = extractedDescription;
+      }
+
+      final tour = _$TourFromJson(json);
+      final duration = _durationFromJson(json);
+
+      return Tour(
+        id: tour.id,
+        slug: tour.slug,
+        title: tour.title,
+        shortDescription: tour.shortDescription,
+        description: tour.description,
+        itinerary: tour.itinerary,
+        type: tour.type,
+        typeLabel: tour.typeLabel,
+        difficulty: tour.difficulty,
+        difficultyLabel: tour.difficultyLabel,
+        price: tour.price,
+        formattedPrice: tour.formattedPrice,
+        currency: tour.currency,
+        isFree: tour.isFree,
+        duration: duration,
+        maxParticipants: tour.maxParticipants,
+        minParticipants: tour.minParticipants,
+        availableSpots: tour.availableSpots,
+        isFeatured: tour.isFeatured,
+        isActive: tour.isActive,
+        highlights: tour.highlights,
+        whatToBring: tour.whatToBring,
+        ageRestrictions: tour.ageRestrictions,
+        weatherDependent: tour.weatherDependent,
+        viewsCount: tour.viewsCount,
+        meetingPoint: tour.meetingPoint,
+        tourOperator: tour.tourOperator,
+        featuredImage: tour.featuredImage,
+        media: tour.media,
+        categories: tour.categories,
+        startDate: tour.startDate,
+        endDate: tour.endDate,
+        formattedDateRange: tour.formattedDateRange,
+        createdAt: tour.createdAt,
+        updatedAt: tour.updatedAt,
+      );
+    } catch (e, stack) {
+      print('[Tour.fromJson] Error parsing tour id=${json['id']}: $e');
+      print('[Tour.fromJson] JSON keys: ${json.keys.toList()}');
+      rethrow;
+    }
   }
 
   factory Tour.fromSimpleTour(SimpleTour simpleTour) {
@@ -296,7 +373,7 @@ class Tour {
       currency: simpleTour.currency,
       isFree: (int.tryParse(simpleTour.price) ?? 0) == 0,
       duration: TourDuration(hours: null, days: 1, formatted: '1 jour'),
-      availableSpots: 0, // À définir via l'API
+      availableSpots: 0,
       maxParticipants: simpleTour.maxParticipants,
       minParticipants: simpleTour.minParticipants,
       isFeatured: simpleTour.isFeatured,
@@ -304,21 +381,21 @@ class Tour {
       weatherDependent: false,
       viewsCount: 0,
       featuredImage: simpleTour.featuredImage != null
-        ? Media(
-            id: 0,
-            url: simpleTour.featuredImage!['url'] ?? '',
-            type: 'image',
-            altText: simpleTour.title,
-          )
-        : null,
+          ? Media(
+              id: 0,
+              url: simpleTour.featuredImage!['url'] ?? '',
+              type: 'image',
+              altText: simpleTour.title,
+            )
+          : null,
       tourOperator: simpleTour.tourOperator != null
-        ? TourOperator(
-            id: 0,
-            name: simpleTour.tourOperator!['name'] ?? '',
-            slug: '',
-            description: '',
-          )
-        : null,
+          ? TourOperator(
+              id: 0,
+              name: simpleTour.tourOperator!['name'] ?? '',
+              slug: '',
+              description: '',
+            )
+          : null,
       startDate: simpleTour.startDate,
       endDate: simpleTour.endDate,
       formattedDateRange: simpleTour.nextAvailableDate ?? simpleTour.startDate,
@@ -327,36 +404,23 @@ class Tour {
 
   Map<String, dynamic> toJson() => _$TourToJson(this);
 
-  static TourType _stringToTourType(String type) {
-    switch (type.toLowerCase()) {
-      case 'cultural':
-        return TourType.cultural;
-      case 'adventure':
-        return TourType.adventure;
-      case 'nature':
-        return TourType.nature;
-      case 'gastronomic':
-        return TourType.gastronomic;
-      default:
-        return TourType.mixed;
+  // Getters avec valeurs par défaut pour gérer les champs null
+  String get displayTitle {
+    if (title != null && title!.isNotEmpty) {
+      return title!;
     }
+    // Si pas de title, utiliser le slug formaté
+    if (slug != null && slug!.isNotEmpty) {
+      // Convertir "test1" en "Test1", "my-tour" en "My Tour", etc.
+      return slug!
+          .split('-')
+          .map((word) => word.isEmpty ? '' : word[0].toUpperCase() + word.substring(1))
+          .join(' ');
+    }
+    return 'Tour #$id';
   }
 
-  static TourDifficulty _stringToTourDifficulty(String difficulty) {
-    switch (difficulty.toLowerCase()) {
-      case 'easy':
-        return TourDifficulty.easy;
-      case 'moderate':
-        return TourDifficulty.moderate;
-      case 'difficult':
-        return TourDifficulty.difficult;
-      case 'expert':
-        return TourDifficulty.expert;
-      default:
-        return TourDifficulty.easy;
-    }
-  }
-
+  String get displaySlug => slug ?? 'tour-$id';
   String get displayPrice => formattedPrice ?? '$price $currency';
   String get displayDuration => duration.formatted;
   String get displayType => typeLabel ?? type.label;
@@ -371,7 +435,8 @@ class Tour {
   double? get longitude => meetingPoint?.longitude;
 }
 
-// TourDuration - Objet représentant la durée d'un tour
+// --- Supporting Classes ---
+
 @JsonSerializable()
 class TourDuration {
   final int? hours;
@@ -380,17 +445,13 @@ class TourDuration {
   @JsonKey(defaultValue: '')
   final String formatted;
 
-  TourDuration({
-    this.hours,
-    required this.days,
-    required this.formatted,
-  });
+  TourDuration({this.hours, required this.days, required this.formatted});
 
-  factory TourDuration.fromJson(Map<String, dynamic> json) => _$TourDurationFromJson(json);
+  factory TourDuration.fromJson(Map<String, dynamic> json) =>
+      _$TourDurationFromJson(json);
   Map<String, dynamic> toJson() => _$TourDurationToJson(this);
 }
 
-// MeetingPoint - Point de rendez-vous avec coordonnées GPS
 @JsonSerializable()
 class MeetingPoint {
   final double? latitude;
@@ -398,21 +459,17 @@ class MeetingPoint {
   final String? address;
   final String? description;
 
-  MeetingPoint({
-    this.latitude,
-    this.longitude,
-    this.address,
-    this.description,
-  });
+  MeetingPoint({this.latitude, this.longitude, this.address, this.description});
 
-  factory MeetingPoint.fromJson(Map<String, dynamic> json) => _$MeetingPointFromJson(json);
+  factory MeetingPoint.fromJson(Map<String, dynamic> json) =>
+      _$MeetingPointFromJson(json);
   Map<String, dynamic> toJson() => _$MeetingPointToJson(this);
 
   bool get hasCoordinates => latitude != null && longitude != null;
-  String get displayText => description ?? address ?? 'Point de rendez-vous non spécifié';
+  String get displayText =>
+      description ?? address ?? 'Point de rendez-vous non spécifié';
 }
 
-// AgeRestrictions - Restrictions d'âge pour un tour
 @JsonSerializable()
 class AgeRestrictions {
   final int? min;
@@ -420,13 +477,10 @@ class AgeRestrictions {
   @JsonKey(defaultValue: '')
   final String text;
 
-  AgeRestrictions({
-    this.min,
-    this.max,
-    required this.text,
-  });
+  AgeRestrictions({this.min, this.max, required this.text});
 
-  factory AgeRestrictions.fromJson(Map<String, dynamic> json) => _$AgeRestrictionsFromJson(json);
+  factory AgeRestrictions.fromJson(Map<String, dynamic> json) =>
+      _$AgeRestrictionsFromJson(json);
   Map<String, dynamic> toJson() => _$AgeRestrictionsToJson(this);
 
   bool get hasRestrictions => min != null || max != null;
@@ -533,12 +587,10 @@ class TourListResponse {
   final bool success;
   final TourData data;
 
-  TourListResponse({
-    required this.success,
-    required this.data,
-  });
+  TourListResponse({required this.success, required this.data});
 
-  factory TourListResponse.fromJson(Map<String, dynamic> json) => _$TourListResponseFromJson(json);
+  factory TourListResponse.fromJson(Map<String, dynamic> json) =>
+      _$TourListResponseFromJson(json);
   Map<String, dynamic> toJson() => _$TourListResponseToJson(this);
 }
 
@@ -547,12 +599,10 @@ class TourData {
   final List<Tour> tours;
   final Pagination? pagination;
 
-  TourData({
-    required this.tours,
-    this.pagination,
-  });
+  TourData({required this.tours, this.pagination});
 
-  factory TourData.fromJson(Map<String, dynamic> json) => _$TourDataFromJson(json);
+  factory TourData.fromJson(Map<String, dynamic> json) =>
+      _$TourDataFromJson(json);
   Map<String, dynamic> toJson() => _$TourDataToJson(this);
 }
 
@@ -573,6 +623,7 @@ class Pagination {
     required this.total,
   });
 
-  factory Pagination.fromJson(Map<String, dynamic> json) => _$PaginationFromJson(json);
+  factory Pagination.fromJson(Map<String, dynamic> json) =>
+      _$PaginationFromJson(json);
   Map<String, dynamic> toJson() => _$PaginationToJson(this);
 }

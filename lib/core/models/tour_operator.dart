@@ -12,6 +12,19 @@ Media _parseLogoMedia(Map<String, dynamic> json) {
   return Media.fromJson(logoData);
 }
 
+// Helper pour convertir String ou List en List<String>?
+List<String>? _parseStringList(dynamic value) {
+  if (value == null) return null;
+  if (value is List) {
+    return value.map((e) => e.toString()).toList();
+  }
+  if (value is String) {
+    // Si c'est une string, on la met dans une liste
+    return [value];
+  }
+  return null;
+}
+
 class TourOperator {
   final int id;
   final String name;
@@ -118,9 +131,9 @@ class TourOperator {
       name: json['name'] as String,
       description: json['description'] as String?,
       slug: json['slug'] as String,
-      phones: (json['phones'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      phones: _parseStringList(json['phones']),
       firstPhone: json['first_phone'] as String?,
-      emails: (json['emails'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      emails: _parseStringList(json['emails']),
       firstEmail: json['first_email'] as String?,
       website: json['website'] as String?,
       address: json['address'] as String?,
@@ -128,7 +141,7 @@ class TourOperator {
       longitude: json['longitude'] as String?,
       featured: json['featured'] as bool?,
       logo: parsedLogo,
-      galleryPreview: (json['gallery_preview'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      galleryPreview: _parseStringList(json['gallery_preview']),
       tours: (json['tours'] as List<dynamic>?)?.map((e) => Tour.fromJson(e as Map<String, dynamic>)).toList(),
       pois: parsedPois,
     );

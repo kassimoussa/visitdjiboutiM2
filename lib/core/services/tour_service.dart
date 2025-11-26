@@ -283,15 +283,43 @@ class TourService {
       print('[ TOUR SERVICE] Statut mes réservations: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final reservationListResponse = TourReservationListResponse.fromJson(response.data);
-        print('[ TOUR SERVICE] Réservations chargées: ${reservationListResponse.data.data.length}');
-        return reservationListResponse;
+        try {
+          print('[ TOUR SERVICE] Parsing response data...');
+
+          // Debug: afficher les données de la première réservation
+          if (response.data['data'] != null &&
+              response.data['data']['data'] is List &&
+              (response.data['data']['data'] as List).isNotEmpty) {
+            final firstReservation = (response.data['data']['data'] as List).first;
+            print('[ TOUR SERVICE] Première réservation tour keys: ${firstReservation['tour']?.keys.toList()}');
+            print('[ TOUR SERVICE] Tour title: ${firstReservation['tour']?['title']}');
+            print('[ TOUR SERVICE] Tour slug: ${firstReservation['tour']?['slug']}');
+          }
+
+          final reservationListResponse = TourReservationListResponse.fromJson(response.data);
+          print('[ TOUR SERVICE] Réservations chargées: ${reservationListResponse.data.data.length}');
+
+          // Debug: afficher le titre du tour de la première réservation
+          if (reservationListResponse.data.data.isNotEmpty) {
+            final firstRes = reservationListResponse.data.data.first;
+            print('[ TOUR SERVICE] Première réservation tour title après parsing: ${firstRes.tour?.title}');
+            print('[ TOUR SERVICE] Première réservation displayTitle: ${firstRes.tour?.displayTitle}');
+          }
+
+          return reservationListResponse;
+        } catch (parseError, stackTrace) {
+          print('[ TOUR SERVICE] Erreur parsing: $parseError');
+          print('[ TOUR SERVICE] Stack trace: $stackTrace');
+          print('[ TOUR SERVICE] Response data: ${response.data}');
+          rethrow;
+        }
       }
       else {
         throw Exception('Erreur lors du chargement des réservations: ${response.statusCode}');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('[ TOUR SERVICE] Erreur mes réservations: $e');
+      print('[ TOUR SERVICE] Stack trace generale: $stackTrace');
       rethrow;
     }
   }

@@ -906,7 +906,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   children: [
                     // Titre
                     Text(
-                      tour.title,
+                      tour.displayTitle,
                       style:  TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,

@@ -107,6 +107,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authWelcomeBack => 'مرحبا بعودتك';
 
   @override
+  String get authContinueGuest => 'Continuer en tant qu\'invité';
+
+  @override
+  String get authWelcomeSubtitle =>
+      'Connectez-vous pour une expérience personnalisée ou explorez librement.';
+
+  @override
   String get authErrorEmailNotFound =>
       'لا يوجد حساب مرتبط بهذا البريد الإلكتروني';
 
@@ -1664,6 +1671,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reservationsRegistrationDeleteError => 'خطأ أثناء الحذف';
+
+  @override
+  String reservationsTourCancelConfirm(String id) {
+    return 'هل أنت متأكد من أنك تريد إلغاء الحجز #$id؟';
+  }
+
+  @override
+  String reservationsTourDeleteConfirm(String id) {
+    return 'هل أنت متأكد من أنك تريد حذف الحجز #$id نهائيًا؟ هذا الإجراء لا رجعة فيه.';
+  }
+
+  @override
+  String get reservationsPhone => 'الهاتف';
+
+  @override
+  String get reservationsEmail => 'البريد الإلكتروني';
 
   @override
   String get reservationsNameNotAvailable => 'الاسم غير متاح';

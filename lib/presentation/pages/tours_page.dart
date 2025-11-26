@@ -166,7 +166,7 @@ class _ToursPageState extends State<ToursPage> {
   List<Tour> get _filteredTours {
     if (_searchController.text.isEmpty) return _tours;
     return _tours.where((tour) =>
-      tour.title.toLowerCase().contains(_searchController.text.toLowerCase()) ||
+      tour.displayTitle.toLowerCase().contains(_searchController.text.toLowerCase()) ||
       (tour.tourOperator?.name.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false)
     ).toList();
   }

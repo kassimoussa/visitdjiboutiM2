@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../../core/services/image_preloader_service.dart';
 import 'main_navigation_page.dart';
+import 'auth/auth_decision_page.dart';
 import '../../../core/utils/responsive.dart';
 
 class SplashPage extends StatefulWidget {
@@ -16,7 +17,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _logoAnimation;
   late Animation<double> _fadeAnimation;
-  
+
   final AnonymousAuthService _authService = AnonymousAuthService();
   final ImagePreloaderService _imagePreloader = ImagePreloaderService();
   bool _isInitialized = false;
@@ -34,30 +35,23 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _fadeController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
-    _logoAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.elasticOut,
-    ));
+    _logoAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _logoController, curve: Curves.elasticOut),
+    );
 
     _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeIn,
-    ));
+    ).animate(CurvedAnimation(parent: _fadeController, curve: Curves.easeIn));
 
     _logoController.forward();
-    
+
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         _fadeController.forward();
@@ -71,33 +65,39 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       setState(() {
         _currentStatus = 'Initialisation de l\'utilisateur...';
       });
-      
+
       final initSuccess = await _authService.initializeAnonymousUser();
-      
+
       if (initSuccess) {
         print('Utilisateur anonyme initialisé avec succès');
         print('ID: ${_authService.currentAnonymousUser?.anonymousId}');
       } else {
-        print('Échec de l\'initialisation utilisateur anonyme - continuant en mode dégradé');
+        print(
+          'Échec de l\'initialisation utilisateur anonyme - continuant en mode dégradé',
+        );
       }
 
       // Phase 2: Préchargement des images
       setState(() {
         _currentStatus = 'Préchargement des images...';
       });
-      
+
       // Démarrer le préchargement des images en arrière-plan
-      // Ne pas attendre que cela termine pour ne pas ralentir l'ouverture
-      _imagePreloader.startPreloading(context).then((value) {
-        final stats = _imagePreloader.getPreloadingStats();
-        print('[SPLASH] Images préchargées: ${stats['preloaded']}/${stats['total']}');
-      }).catchError((e) {
-        print('[SPLASH] Erreur lors du préchargement: $e');
-      });
-      
+      _imagePreloader
+          .startPreloading(context)
+          .then((value) {
+            final stats = _imagePreloader.getPreloadingStats();
+            print(
+              '[SPLASH] Images préchargées: ${stats['preloaded']}/${stats['total']}',
+            );
+          })
+          .catchError((e) {
+            print('[SPLASH] Erreur lors du préchargement: $e');
+          });
+
       // Délai minimum pour l'affichage des phases
       await Future.delayed(const Duration(milliseconds: 2000));
-      
+
       setState(() {
         _isInitialized = true;
         _currentStatus = 'Prêt !';
@@ -105,32 +105,35 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
       // Naviguer vers la page principale
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       if (mounted) {
+        final isLoggedIn = _authService.isLoggedIn;
+
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => const MainNavigationPage(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return isLoggedIn
+                  ? const MainNavigationPage()
+                  : const AuthDecisionPage();
             },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
             transitionDuration: const Duration(milliseconds: 500),
           ),
         );
       }
-      
     } catch (e) {
       print('Erreur lors de linitialisation: $e');
-      
+
       setState(() {
         _isInitialized = true;
       });
-      
+
       // Continuer vers la page principale même en cas d'erreur
       await Future.delayed(const Duration(milliseconds: 1000));
-      
+
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainNavigationPage()),
@@ -150,10 +153,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Colors.white,
-              Colors.grey.shade50,
-            ],
+            colors: [Colors.white, Colors.grey.shade50],
           ),
         ),
         child: SafeArea(
@@ -165,95 +165,105 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
               return Column(
                 children: [
                   // Espace flexible en haut
-                  Flexible(flex: isSmallScreen ? 1 : 2, child: const SizedBox()),
+                  Flexible(
+                    flex: isSmallScreen ? 1 : 2,
+                    child: const SizedBox(),
+                  ),
 
                   // Logo et titre
                   Flexible(
                     flex: isSmallScreen ? 2 : 3,
                     child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Logo animé
-                    AnimatedBuilder(
-                      animation: _logoAnimation,
-                      builder: (context, child) {
-                        final logoSize = isSmallScreen ? 100.0 : 140.0;
-                        final logoPadding = isSmallScreen ? 16.0 : 24.0;
-                        final iconSize = isSmallScreen ? 50.0 : 70.0;
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Logo animé
+                        AnimatedBuilder(
+                          animation: _logoAnimation,
+                          builder: (context, child) {
+                            final logoSize = isSmallScreen ? 100.0 : 140.0;
+                            final logoPadding = isSmallScreen ? 16.0 : 24.0;
+                            final iconSize = isSmallScreen ? 50.0 : 70.0;
 
-                        return Transform.scale(
-                          scale: _logoAnimation.value,
-                          child: Container(
-                            width: logoSize,
-                            height: logoSize,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(isSmallScreen ? 20 : 28),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF3860F8).withValues(alpha: 0.15),
-                                  blurRadius: 30,
-                                  offset: const Offset(0, 10),
-                                  spreadRadius: 0,
+                            return Transform.scale(
+                              scale: _logoAnimation.value,
+                              child: Container(
+                                width: logoSize,
+                                height: logoSize,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    isSmallScreen ? 20 : 28,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(
+                                        0xFF3860F8,
+                                      ).withOpacity(0.15),
+                                      blurRadius: 30,
+                                      offset: const Offset(0, 10),
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            padding: EdgeInsets.all(logoPadding),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16.r),
-                              child: Image.asset(
-                                'assets/images/logo_visitdjibouti.png',
-                                fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) => Icon(
-                                  Icons.travel_explore,
-                                  color: const Color(0xFF3860F8),
-                                  size: iconSize,
+                                padding: EdgeInsets.all(logoPadding),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  child: Image.asset(
+                                    'assets/images/logo_visitdjibouti.png',
+                                    fit: BoxFit.contain,
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
+                                          Icons.travel_explore,
+                                          color: const Color(0xFF3860F8),
+                                          size: iconSize,
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
 
-                    SizedBox(height: isSmallScreen ? 16 : 32),
+                        SizedBox(height: isSmallScreen ? 16 : 32),
 
-                    // Titre animé
-                    FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: Column(
-                        children: [
-                          Text(
-                            'Visit Djibouti',
-                            style: TextStyle(
-                              fontSize: isSmallScreen ? 26 : 32,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF1D2233),
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          SizedBox(height: isSmallScreen ? 8 : 12),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 24 : 48),
-                            child: Text(
-                              'Découvrez les merveilles de Djibouti',
-                              style: TextStyle(
-                                fontSize: isSmallScreen ? 14 : 16,
-                                color: const Color(0xFF6B7280),
-                                fontWeight: FontWeight.w400,
-                                height: 1.5,
+                        // Titre animé
+                        FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Visit Djibouti',
+                                style: TextStyle(
+                                  fontSize: isSmallScreen ? 26 : 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF1D2233),
+                                  letterSpacing: -0.5,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                              SizedBox(height: isSmallScreen ? 8 : 12),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isSmallScreen ? 24 : 48,
+                                ),
+                                child: Text(
+                                  'Découvrez les merveilles de Djibouti',
+                                  style: TextStyle(
+                                    fontSize: isSmallScreen ? 14 : 16,
+                                    color: const Color(0xFF6B7280),
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.5,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
 
                   // Indicateur de chargement et status
                   Flexible(
@@ -266,7 +276,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             width: 32.w,
                             height: 32.h,
                             child: CircularProgressIndicator(
-                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                Color(0xFF3860F8),
+                              ),
                               strokeWidth: 3,
                             ),
                           ),
@@ -275,7 +287,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             opacity: _fadeAnimation,
                             child: Text(
                               _currentStatus,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 color: Color(0xFF6B7280),
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -287,7 +299,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             width: 48.w,
                             height: 48.h,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF009639).withValues(alpha: 0.1),
+                              color: const Color(0xFF009639).withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -297,7 +309,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             ),
                           ),
                           SizedBox(height: 12.h),
-                           Text(
+                          Text(
                             'Prêt !',
                             style: TextStyle(
                               color: Color(0xFF009639),
@@ -343,7 +355,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                                 ),
                               ),
                               SizedBox(width: 12.w),
-                               Text(
+                              Text(
                                 'République de Djibouti',
                                 style: TextStyle(
                                   color: Color(0xFF6B7280),

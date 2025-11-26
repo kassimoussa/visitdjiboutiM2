@@ -38,6 +38,8 @@
   "authSuccessTitle": "Success",
   "authTermsAndConditions": "Terms and Conditions",
   "authWelcomeBack": "Welcome back",
+  "authContinueGuest": "Continue as guest",
+  "authWelcomeSubtitle": "Sign in for a personalized experience or explore freely.",
   "authErrorEmailNotFound": "No account associated with this email",
   "authErrorOtpExpired": "Code expired, please request a new one",
   "authErrorInvalidOtp": "Invalid code",
@@ -728,6 +730,24 @@
   "reservationsRegistrationDeleted": "Registration deleted",
   "reservationsRegistrationCancelError": "Error during cancellation",
   "reservationsRegistrationDeleteError": "Error during deletion",
+  "reservationsTourCancelConfirm": "Are you sure you want to cancel reservation #{id}?",
+  "@reservationsTourCancelConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsTourDeleteConfirm": "Are you sure you want to permanently delete reservation #{id}? This action is irreversible.",
+  "@reservationsTourDeleteConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsPhone": "Phone",
+  "reservationsEmail": "Email",
   "reservationsNameNotAvailable": "Name not available",
   "reservationsTime": "Time",
   "reservationsPeople": "People",

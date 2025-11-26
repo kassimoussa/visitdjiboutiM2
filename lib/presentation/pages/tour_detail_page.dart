@@ -197,7 +197,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
   Widget _buildErrorState() {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.tour.title),
+        title: Text(widget.tour.displayTitle),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
       ),
@@ -344,7 +344,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
                         child: Padding(
                           padding: Responsive.symmetric(horizontal: 16),
                           child: Text(
-                            tour.title,
+                            tour.displayTitle,
                             style:  TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.bold,
@@ -477,7 +477,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
           context,
           MaterialPageRoute(
             builder: (context) => TourGalleryPage(
-              tourName: tour.title,
+              tourName: tour.displayTitle,
               imageUrls: imageUrls,
             ),
           ),
@@ -565,7 +565,7 @@ class _TourDetailPageState extends State<TourDetailPage> {
     return Container(
       padding: Responsive.all(24),
       child: Text(
-        tour.title,
+        tour.displayTitle,
         style:  TextStyle(
           fontSize: 28.sp,
           fontWeight: FontWeight.bold,

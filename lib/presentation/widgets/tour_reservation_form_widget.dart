@@ -156,7 +156,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.tour.title,
+                  widget.tour.displayTitle,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.sp,

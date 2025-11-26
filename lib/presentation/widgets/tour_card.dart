@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:intl/intl.dart';
 import '../../core/models/tour.dart';
 import '../../core/services/favorites_service.dart';
 import '../pages/tour_detail_page.dart';
@@ -60,7 +61,7 @@ class _TourCardState extends State<TourCard> {
                     children: [
                       Expanded(
                         child: Text(
-                          tour.title,
+                          tour.displayTitle,
                           style: TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
@@ -204,17 +205,42 @@ class _TourCardState extends State<TourCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.access_time_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
-            SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
-            Text(
-              tour.displayDuration,
-              style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
+            // Durée à gauche
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.access_time_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
+                SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
+                Text(
+                  tour.displayDuration,
+                  style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
+                ),
+              ],
             ),
+            // Date range à droite
+            if (tour.startDate != null && tour.endDate != null)
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.calendar_today_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
+                    SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
+                    Flexible(
+                      child: Text(
+                        _formatDateRange(tour.startDate!, tour.endDate!),
+                        style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
-        SizedBox(height: ResponsiveConstants.tinySpace),
-        if (tour.meetingPoint != null)
+        if (tour.meetingPoint != null) ...[
+          SizedBox(height: ResponsiveConstants.tinySpace),
           Row(
             children: [
               Icon(Icons.location_on_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
@@ -229,6 +255,7 @@ class _TourCardState extends State<TourCard> {
               ),
             ],
           ),
+        ],
       ],
     );
   }
@@ -368,5 +395,25 @@ class _TourCardState extends State<TourCard> {
         color: Colors.white,
       ),
     );
+  }
+
+  /// Formater une plage de dates au format DD/MM/YYYY
+  String _formatDateRange(String startDate, String endDate) {
+    try {
+      final start = DateTime.parse(startDate);
+      final end = DateTime.parse(endDate);
+
+      final formatter = DateFormat('dd/MM/yyyy');
+
+      // Si même date, afficher une seule fois
+      if (start.year == end.year && start.month == end.month && start.day == end.day) {
+        return formatter.format(start);
+      }
+
+      // Sinon, afficher la plage
+      return '${formatter.format(start)} - ${formatter.format(end)}';
+    } catch (e) {
+      return '$startDate - $endDate';
+    }
   }
 }

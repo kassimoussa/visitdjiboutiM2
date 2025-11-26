@@ -31,8 +31,6 @@ class TourReservation {
   final ReservationStatus status;
 
   // Relation tour (optionnelle, incluse dans certaines réponses)
-  // Ignore le parsing car l'objet tour peut avoir des champs incompatibles
-  @JsonKey(includeFromJson: false, includeToJson: false)
   final Tour? tour;
 
   // Timestamps
@@ -63,10 +61,12 @@ class TourReservation {
   // Getters utiles
   bool get isGuest => appUserId == null;
   bool get isAuthenticated => appUserId != null;
-  bool get canCancel => status == ReservationStatus.pending ||
-                        status == ReservationStatus.confirmed;
-  bool get canUpdate => status == ReservationStatus.pending ||
-                        status == ReservationStatus.confirmed;
+  bool get canCancel =>
+      status == ReservationStatus.pending ||
+      status == ReservationStatus.confirmed;
+  bool get canUpdate =>
+      status == ReservationStatus.pending ||
+      status == ReservationStatus.confirmed;
   String get displayStatus => status.label;
   String get displayName => guestName ?? 'Utilisateur authentifié';
   String get displayEmail => guestEmail ?? '';
@@ -130,10 +130,7 @@ class TourReservationListResponse {
   final bool success;
   final TourReservationListData data;
 
-  TourReservationListResponse({
-    required this.success,
-    required this.data,
-  });
+  TourReservationListResponse({required this.success, required this.data});
 
   factory TourReservationListResponse.fromJson(Map<String, dynamic> json) =>
       _$TourReservationListResponseFromJson(json);

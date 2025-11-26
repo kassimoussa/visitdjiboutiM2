@@ -8,8 +8,8 @@ part of 'tour.dart';
 
 Tour _$TourFromJson(Map<String, dynamic> json) => Tour(
   id: (json['id'] as num).toInt(),
-  slug: json['slug'] as String,
-  title: json['title'] as String,
+  slug: json['slug'] as String?,
+  title: json['title'] as String?,
   shortDescription: json['short_description'] as String?,
   description: json['description'] as String?,
   itinerary: json['itinerary'] as String?,

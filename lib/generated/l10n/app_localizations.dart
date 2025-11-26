@@ -292,6 +292,18 @@ abstract class AppLocalizations {
   /// **'Bon retour'**
   String get authWelcomeBack;
 
+  /// No description provided for @authContinueGuest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer en tant qu\'invité'**
+  String get authContinueGuest;
+
+  /// No description provided for @authWelcomeSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connectez-vous pour une expérience personnalisée ou explorez librement.'**
+  String get authWelcomeSubtitle;
+
   /// No description provided for @authErrorEmailNotFound.
   ///
   /// In fr, this message translates to:
@@ -3249,6 +3261,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Erreur lors de la suppression'**
   String get reservationsRegistrationDeleteError;
+
+  /// No description provided for @reservationsTourCancelConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir annuler la réservation #{id}?'**
+  String reservationsTourCancelConfirm(String id);
+
+  /// No description provided for @reservationsTourDeleteConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir supprimer définitivement la réservation #{id}? Cette action est irréversible.'**
+  String reservationsTourDeleteConfirm(String id);
+
+  /// No description provided for @reservationsPhone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléphone'**
+  String get reservationsPhone;
+
+  /// No description provided for @reservationsEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email'**
+  String get reservationsEmail;
 
   /// No description provided for @reservationsNameNotAvailable.
   ///

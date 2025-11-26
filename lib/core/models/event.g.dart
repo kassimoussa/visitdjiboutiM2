@@ -12,7 +12,7 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
   title: json['title'] as String? ?? '',
   shortDescription: json['short_description'] as String? ?? '',
   description: json['description'] as String?,
-  region: json['region'] as String? ?? '',
+  region: json['region'] as String? ?? 'region',
   location: json['location'] as String? ?? '',
   locationDetails: json['location_details'] as String?,
   fullLocation: json['full_location'] as String?,

@@ -49,7 +49,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       _loadFavorites();
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _conversionService.checkAndShowConversionTrigger(context);
+      // _conversionService.checkAndShowConversionTrigger(context);
     });
   }
 
@@ -366,7 +366,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           } else if (a is Event) {
             aName = a.title;
           } else if (a is Tour) {
-            aName = a.title;
+            aName = a.displayTitle;
           } else if (a is Activity) {
             aName = a.title;
           }
@@ -375,7 +375,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           } else if (b is Event) {
             bName = b.title;
           } else if (b is Tour) {
-            bName = b.title;
+            bName = b.displayTitle;
           } else if (b is Activity) {
             bName = b.title;
           }

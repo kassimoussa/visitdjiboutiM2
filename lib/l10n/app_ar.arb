@@ -729,6 +729,24 @@
   "reservationsRegistrationDeleted": "تم حذف التسجيل",
   "reservationsRegistrationCancelError": "خطأ أثناء الإلغاء",
   "reservationsRegistrationDeleteError": "خطأ أثناء الحذف",
+  "reservationsTourCancelConfirm": "هل أنت متأكد من أنك تريد إلغاء الحجز #{id}؟",
+  "@reservationsTourCancelConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsTourDeleteConfirm": "هل أنت متأكد من أنك تريد حذف الحجز #{id} نهائيًا؟ هذا الإجراء لا رجعة فيه.",
+  "@reservationsTourDeleteConfirm": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "reservationsPhone": "الهاتف",
+  "reservationsEmail": "البريد الإلكتروني",
   "reservationsNameNotAvailable": "الاسم غير متاح",
   "reservationsTime": "الوقت",
   "reservationsPeople": "الأشخاص",

@@ -1,4 +1,9 @@
 {
+  "ar": [
+    "authContinueGuest",
+    "authWelcomeSubtitle"
+  ],
+
   "en": [
     "commonErrorLoading"
   ]

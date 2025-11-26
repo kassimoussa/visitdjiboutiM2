@@ -59,18 +59,6 @@ class _ReservationsPageState extends State<ReservationsPage>
     super.dispose();
   }
 
-  String _formatDate(String? dateString) {
-    if (dateString == null || dateString.isEmpty) {
-      return AppLocalizations.of(context)!.reservationsNA;
-    }
-    try {
-      final dateTime = DateTime.parse(dateString);
-      return DateFormat('dd/MM/yyyy').format(dateTime);
-    } catch (e) {
-      return dateString; // Retourne la date originale si le parsing échoue
-    }
-  }
-
   Future<void> _loadReservations() async {
     setState(() {
       _isLoading = true;
@@ -455,7 +443,7 @@ class _ReservationsPageState extends State<ReservationsPage>
               _buildInfoRow(
                 Icons.calendar_today,
                 AppLocalizations.of(context)!.reservationsDate,
-                reservation.reservationDate,
+                _formatDate(reservation.reservationDate),
               ),
               if (reservation.reservationTime != null)
                 _buildInfoRow(
@@ -609,7 +597,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          tour?.title ??
+                          tour?.displayTitle ??
                               AppLocalizations.of(
                                 context,
                               )!.reservationsTourUnavailable,
@@ -651,7 +639,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                 _buildInfoRow(
                   Icons.calendar_today,
                   AppLocalizations.of(context)!.reservationsDates,
-                  '${tour!.startDate} - ${tour.endDate}',
+                  _formatDateRange(tour!.startDate, tour.endDate),
                 ),
               _buildInfoRow(
                 Icons.people,
@@ -819,7 +807,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                 _buildInfoRow(
                   Icons.calendar_today,
                   AppLocalizations.of(context)!.reservationsPreferredDate,
-                  registration.preferredDate!,
+                  _formatDate(registration.preferredDate),
                 ),
               _buildInfoRow(
                 Icons.people,
@@ -1183,7 +1171,7 @@ class _ReservationsPageState extends State<ReservationsPage>
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir annuler la réservation n°${reservation.confirmationNumber}?',
+          AppLocalizations.of(context)!.reservationsCancelConfirm(reservation.confirmationNumber),
         ),
         actions: [
           TextButton(
@@ -1211,7 +1199,7 @@ class _ReservationsPageState extends State<ReservationsPage>
         if (response.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Réservation annulée'),
+              content: Text('${response.message ?? AppLocalizations.of(context)!.reservationsCancelled}'),
               backgroundColor: Colors.green,
             ),
           );
@@ -1219,7 +1207,7 @@ class _ReservationsPageState extends State<ReservationsPage>
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Erreur lors de l\'annulation'),
+              content: Text('${response.message ?? AppLocalizations.of(context)!.reservationsCancelError}'),
               backgroundColor: Colors.red,
             ),
           );
@@ -1266,7 +1254,7 @@ class _ReservationsPageState extends State<ReservationsPage>
         if (response.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? 'Réservation supprimée'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsDeleted),
               backgroundColor: Colors.green,
             ),
           );
@@ -1275,7 +1263,7 @@ class _ReservationsPageState extends State<ReservationsPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                response.message ?? 'Erreur lors de la suppression',
+                response.message ?? AppLocalizations.of(context)!.reservationsDeleteError,
               ),
               backgroundColor: Colors.red,
             ),
@@ -1335,13 +1323,13 @@ class _ReservationsPageState extends State<ReservationsPage>
                 if (reservation.tour != null) ...[
                   _buildDetailRow(
                     AppLocalizations.of(context)!.reservationsTour,
-                    reservation.tour!.title,
+                    reservation.tour!.displayTitle,
                   ),
                   if (reservation.tour!.startDate != null &&
                       reservation.tour!.endDate != null)
                     _buildDetailRow(
                       AppLocalizations.of(context)!.reservationsDates,
-                      '${reservation.tour!.startDate} - ${reservation.tour!.endDate}',
+                      _formatDateRange(reservation.tour!.startDate, reservation.tour!.endDate),
                     ),
                   const Divider(),
                 ],
@@ -1384,9 +1372,9 @@ class _ReservationsPageState extends State<ReservationsPage>
 
                 // Dates système
                 if (reservation.createdAt != null)
-                  _buildDetailRow('Créée le', reservation.createdAt!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsCreatedAt, reservation.createdAt!),
                 if (reservation.updatedAt != null)
-                  _buildDetailRow('Mise à jour', reservation.updatedAt!),
+                  _buildDetailRow(AppLocalizations.of(context)!.reservationsUpdatedAt, reservation.updatedAt!),
 
                 // Actions
                 if (reservation.canCancel) ...[
@@ -1443,7 +1431,7 @@ class _ReservationsPageState extends State<ReservationsPage>
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir annuler la réservation #${reservation.id}?',
+          AppLocalizations.of(context)!.reservationsTourCancelConfirm(reservation.id.toString()),
         ),
         actions: [
           TextButton(
@@ -1468,19 +1456,19 @@ class _ReservationsPageState extends State<ReservationsPage>
 
         if (mounted) {
           if (response.success) {
+            final message = response.message;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(response.message ?? 'Réservation annulée'),
+                content: Text(message),
                 backgroundColor: Colors.green,
               ),
             );
             _loadReservations(); // Recharger la liste
           } else {
+            final message = response.message;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                  response.message ?? 'Erreur lors de l\'annulation',
-                ),
+                content: Text(message),
                 backgroundColor: Colors.red,
               ),
             );
@@ -1509,7 +1497,7 @@ class _ReservationsPageState extends State<ReservationsPage>
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsDeleteTitle),
         content: Text(
-          'Êtes-vous sûr de vouloir supprimer définitivement la réservation #${reservation.id}? Cette action est irréversible.',
+          AppLocalizations.of(context)!.reservationsTourDeleteConfirm(reservation.id.toString()),
         ),
         actions: [
           TextButton(
@@ -1660,31 +1648,31 @@ class _ReservationsPageState extends State<ReservationsPage>
                 // Informations utilisateur (si invité)
                 if (registration.isGuest) ...[
                   if (registration.guestEmail != null)
-                    _buildDetailRow('Email', registration.guestEmail!),
+                    _buildDetailRow(AppLocalizations.of(context)!.reservationsEmail, registration.guestEmail!),
                   if (registration.guestPhone != null)
-                    _buildDetailRow('Téléphone', registration.guestPhone!),
+                    _buildDetailRow(AppLocalizations.of(context)!.reservationsPhone, registration.guestPhone!),
                   const Divider(),
                 ],
 
                 // Dates système
                 if (registration.createdAt != null)
                   _buildDetailRow(
-                    'Créée le',
+                    AppLocalizations.of(context)!.reservationsCreatedAt,
                     _formatDate(registration.createdAt),
                   ),
                 if (registration.updatedAt != null)
                   _buildDetailRow(
-                    'Mise à jour',
+                    AppLocalizations.of(context)!.reservationsUpdatedAt,
                     _formatDate(registration.updatedAt),
                   ),
                 if (registration.confirmedAt != null)
                   _buildDetailRow(
-                    'Confirmée le',
+                    AppLocalizations.of(context)!.reservationsConfirmedAt,
                     _formatDate(registration.confirmedAt),
                   ),
                 if (registration.cancelledAt != null)
                   _buildDetailRow(
-                    'Annulée le',
+                    AppLocalizations.of(context)!.reservationsCancelledAt,
                     _formatDate(registration.cancelledAt),
                   ),
 
@@ -1751,12 +1739,14 @@ class _ReservationsPageState extends State<ReservationsPage>
     bool isCancel = false,
   }) async {
     final title = isCancel
-        ? 'Annuler l\'inscription'
-        : 'Supprimer l\'inscription';
+        ? AppLocalizations.of(context)!.reservationsRegistrationCancelTitle
+        : AppLocalizations.of(context)!.reservationsRegistrationDeleteTitle;
     final content = isCancel
-        ? 'Êtes-vous sûr de vouloir annuler cette inscription ? Son statut passera à "Annulé".'
-        : 'Êtes-vous sûr de vouloir supprimer définitivement l\'inscription #${registration.id}? Cette action est irréversible.';
-    final confirmText = isCancel ? 'Oui, annuler' : 'Oui, supprimer';
+        ? AppLocalizations.of(context)!.reservationsRegistrationCancelConfirm
+        : AppLocalizations.of(context)!.reservationsRegistrationDeleteConfirm(registration.id.toString());
+    final confirmText = isCancel
+        ? AppLocalizations.of(context)!.reservationsYesCancel
+        : AppLocalizations.of(context)!.reservationsYesDelete;
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -1798,7 +1788,7 @@ class _ReservationsPageState extends State<ReservationsPage>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  isCancel ? 'Inscription annulée' : 'Inscription supprimée',
+                  isCancel ? AppLocalizations.of(context)!.reservationsRegistrationCancelled : AppLocalizations.of(context)!.reservationsRegistrationDeleted,
                 ),
                 backgroundColor: Colors.green,
               ),
@@ -1809,8 +1799,8 @@ class _ReservationsPageState extends State<ReservationsPage>
               SnackBar(
                 content: Text(
                   isCancel
-                      ? 'Erreur lors de l\'annulation'
-                      : 'Erreur lors de la suppression',
+                      ? AppLocalizations.of(context)!.reservationsRegistrationCancelError
+                      : AppLocalizations.of(context)!.reservationsRegistrationDeleteError,
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -1829,6 +1819,56 @@ class _ReservationsPageState extends State<ReservationsPage>
           );
         }
       }
+    }
+  }
+
+  /// Formater une date ISO au format lisible
+  /// Exemple: "2025-10-31T21:00:00.000000Z" → "31/10/2025"
+  /// Accepte String, DateTime, ou Object (conversion automatique)
+  String _formatDate(dynamic dateInput) {
+    if (dateInput == null) return 'N/A';
+
+    try {
+      DateTime date;
+
+      // Gérer les différents types d'entrée
+      if (dateInput is DateTime) {
+        date = dateInput;
+      } else if (dateInput is String) {
+        if (dateInput.isEmpty) return 'N/A';
+        date = DateTime.parse(dateInput);
+      } else {
+        // Essayer de convertir en String puis parser
+        date = DateTime.parse(dateInput.toString());
+      }
+
+      final formatter = DateFormat('dd/MM/yyyy');
+      return formatter.format(date);
+    } catch (e) {
+      return dateInput.toString(); // Retourner la représentation string en cas d'erreur
+    }
+  }
+
+  /// Formater une plage de dates
+  /// Exemple: "31/10/2025 - 07/11/2025"
+  String _formatDateRange(String? startDate, String? endDate) {
+    if (startDate == null || endDate == null) return 'N/A';
+
+    try {
+      final start = DateTime.parse(startDate);
+      final end = DateTime.parse(endDate);
+
+      // Si même date, afficher une seule fois
+      if (start.year == end.year && start.month == end.month && start.day == end.day) {
+        final formatter = DateFormat('dd/MM/yyyy');
+        return formatter.format(start);
+      }
+
+      // Sinon, afficher la plage
+      final formatter = DateFormat('dd/MM/yyyy');
+      return '${formatter.format(start)} - ${formatter.format(end)}';
+    } catch (e) {
+      return '$startDate - $endDate';
     }
   }
 }
