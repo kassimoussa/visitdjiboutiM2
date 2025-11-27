@@ -798,6 +798,29 @@
   "reservationsTypeEvent": "Événement",
   "settingsLanguageFrench": "Français",
   "settingsRegionAll": "Toutes les régions",
+  "commentModalTitle": "Laisser un commentaire",
+  "@commentModalTitle": {
+    "description": "Titre du modal de commentaire"
+  },
+  "commentModalMessageType": "Type de message",
+  "commentModalTypeQuestion": "Question",
+  "commentModalTypeReport": "Signalement",
+  "commentModalTypeSuggestion": "Suggestion",
+  "commentModalMessageLabel": "Votre commentaire",
+  "commentModalHint": "Écrivez votre commentaire ici...",
+  "commentModalSend": "Envoyer",
+  "commentModalSuccess": "Commentaire envoyé avec succès",
+  "@commentModalSuccess": {
+    "description": "Message de succès après l'envoi d'un commentaire"
+  },
+  "commentModalError": "Erreur lors de l'envoi du commentaire : {error}",
+  "@commentModalError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "settingsCacheSizeCalculating": "Calcul en cours...",
   "settingsChooseLanguage": "Choisir la langue",
   "settingsLanguageFrenchFlag": "🇫🇷",
@@ -1210,5 +1233,11 @@
   "offlineClear": "Vider",
   "offlineClearCacheSuccess": "Cache vidé avec succès",
   "offlineClearCacheError": "Erreur lors du vidage du cache",
-  "offlineConnectionRestored": "Connexion rétablie !"
+  "offlineConnectionRestored": "Connexion rétablie !",
+  "contentTypePoi": "Point d'intérêt",
+  "contentTypeEvent": "Événement",
+  "contentTypeActivity": "Activité",
+  "contentTypeTour": "Tour",
+  "contentViewDetails": "Voir détails",
+  "contentDirections": "Itinéraire"
 }

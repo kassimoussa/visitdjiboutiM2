@@ -3,8 +3,7 @@ import '../../core/utils/responsive.dart';
 import '../../core/services/comment_service.dart';
 import '../../generated/l10n/app_localizations.dart';
 
-/// Modal pour contacter un opérateur/administration
-/// Les commentaires ne sont PAS affichés dans l'app mais envoyés aux opérateurs
+/// Modal pour laisser un commentaire à un opérateur/administration
 class ContactOperatorModal extends StatefulWidget {
   final String resourceType;
   final int resourceId;
@@ -53,7 +52,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: const Icon(
-                    Icons.email,
+                    Icons.comment_outlined,
                     color: Color(0xFF3860F8),
                     size: 20,
                   ),
@@ -61,7 +60,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
-                    'Contacter ${widget.operatorName ?? 'l\'opérateur'}',
+                    AppLocalizations.of(context)!.commentModalTitle,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -78,11 +77,8 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
 
             // Type de message
             Text(
-              'Type de message',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
-              ),
+              AppLocalizations.of(context)!.commentModalMessageType,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
             ),
             SizedBox(height: 12.h),
             _buildMessageTypeChips(),
@@ -90,11 +86,8 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
 
             // Message
             Text(
-              'Votre message',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
-              ),
+              AppLocalizations.of(context)!.commentModalMessageLabel,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
             ),
             SizedBox(height: 12.h),
             TextFormField(
@@ -102,7 +95,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
               maxLines: 5,
               maxLength: 1000,
               decoration: InputDecoration(
-                hintText: 'Écrivez votre message ici...',
+                hintText: AppLocalizations.of(context)!.commentModalHint,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
@@ -112,17 +105,20 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(color: Color(0xFF3860F8), width: 2.w),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF3860F8),
+                    width: 2.w,
+                  ),
                 ),
                 filled: true,
                 fillColor: Colors.grey[50],
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Veuillez écrire un message';
+                  return AppLocalizations.of(context)!.commonFieldRequired;
                 }
                 if (value.trim().length < 3) {
-                  return 'Le message doit contenir au moins 3 caractères';
+                  return 'Le message doit contenir au moins 3 caractères'; // TODO: Add to localization if needed, or reuse generic error
                 }
                 return null;
               },
@@ -134,7 +130,9 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: _isSubmitting ? null : () => Navigator.pop(context),
+                    onPressed: _isSubmitting
+                        ? null
+                        : () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
                       padding: Responsive.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -160,12 +158,12 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                         ? SizedBox(
                             height: 20.h,
                             width: 20.w,
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               color: Colors.white,
                             ),
                           )
-                        : Text('Envoyer'),
+                        : Text(AppLocalizations.of(context)!.commentModalSend),
                   ),
                 ),
               ],
@@ -180,15 +178,27 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
     return Row(
       children: [
         Expanded(
-          child: _buildChip('Question', 'question', Icons.help_outline),
+          child: _buildChip(
+            AppLocalizations.of(context)!.commentModalTypeQuestion,
+            'question',
+            Icons.help_outline,
+          ),
         ),
         SizedBox(width: 8.w),
         Expanded(
-          child: _buildChip('Signalement', 'report', Icons.flag_outlined),
+          child: _buildChip(
+            AppLocalizations.of(context)!.commentModalTypeReport,
+            'report',
+            Icons.flag_outlined,
+          ),
         ),
         SizedBox(width: 8.w),
         Expanded(
-          child: _buildChip('Suggestion', 'suggestion', Icons.lightbulb_outline),
+          child: _buildChip(
+            AppLocalizations.of(context)!.commentModalTypeSuggestion,
+            'suggestion',
+            Icons.lightbulb_outline,
+          ),
         ),
       ],
     );
@@ -244,11 +254,30 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
 
     try {
       // Préfixer le message avec le type
-      final messagePrefix = {
-        'question': '❓ Question: ',
-        'report': '⚠️ Signalement: ',
-        'suggestion': '💡 Suggestion: ',
-      }[_messageType] ?? '';
+      // Note: We keep the internal values 'question', 'report', 'suggestion' for backend consistency
+      // but we could also localize the prefix if needed. For now, let's keep it simple or use the localized label.
+      // Using localized label might be better for the operator to understand.
+
+      String typeLabel = '';
+      switch (_messageType) {
+        case 'question':
+          typeLabel = AppLocalizations.of(context)!.commentModalTypeQuestion;
+          break;
+        case 'report':
+          typeLabel = AppLocalizations.of(context)!.commentModalTypeReport;
+          break;
+        case 'suggestion':
+          typeLabel = AppLocalizations.of(context)!.commentModalTypeSuggestion;
+          break;
+      }
+
+      final messagePrefix =
+          {
+            'question': '❓ $typeLabel: ',
+            'report': '⚠️ $typeLabel: ',
+            'suggestion': '💡 $typeLabel: ',
+          }[_messageType] ??
+          '';
 
       final fullMessage = '$messagePrefix${_messageController.text.trim()}';
 
@@ -271,7 +300,7 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
-                    'Message envoyé avec succès à ${widget.operatorName ?? 'l\'opérateur'}',
+                    AppLocalizations.of(context)!.commentModalSuccess,
                   ),
                 ),
               ],
@@ -290,7 +319,9 @@ class _ContactOperatorModalState extends State<ContactOperatorModal> {
         setState(() => _isSubmitting = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.commonErrorSending(e.toString())),
+            content: Text(
+              AppLocalizations.of(context)!.commentModalError(e.toString()),
+            ),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(

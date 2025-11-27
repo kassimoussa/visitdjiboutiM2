@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
+import '../../core/models/content.dart';
 import '../../core/services/poi_service.dart';
+import '../../core/services/content_service.dart';
 import '../../core/services/connectivity_service.dart';
 import '../../core/services/location_service.dart';
 import '../../core/services/directions_service.dart';
@@ -23,6 +25,7 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   GoogleMapController? _mapController;
   final PoiService _poiService = PoiService();
+  final ContentService _contentService = ContentService();
   final ConnectivityService _connectivityService = ConnectivityService();
   final LocationService _locationService = LocationService();
   final DirectionsService _directionsService = DirectionsService();
@@ -30,9 +33,19 @@ class _MapPageState extends State<MapPage> {
   // Cluster Manager natif pour grouper les markers
   late ClusterManager _clusterManager;
   Map<MarkerId, Poi> _markerPoiMap = {}; // Association marker ID -> POI
+  Map<MarkerId, Content> _markerContentMap = {}; // Association marker ID -> Content
 
+  // Mode d'affichage : true = tous les contenus, false = POIs seulement
+  final bool _showAllContent = true;
+
+  // Données pour le mode POI uniquement
   List<Poi> _pois = [];
   List<Poi> _filteredPois = [];
+
+  // Données pour le mode "tous les contenus"
+  List<Content> _allContent = [];
+  List<Content> _filteredContent = [];
+
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
   bool _isLoading = true;
@@ -45,8 +58,9 @@ class _MapPageState extends State<MapPage> {
   Position? _userPosition;
   bool _isLocatingUser = false;
 
-  // POI sélectionné pour les directions
+  // POI ou Content sélectionné pour les directions
   Poi? _selectedPoiForDirections;
+  Content? _selectedContentForDirections;
 
   // Coordonnées centrées sur le pays de Djibouti
   static const CameraPosition _initialPosition = CameraPosition(
@@ -58,8 +72,17 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     _initializeClusterManager();
-    _loadPois();
+    _loadData();
     _getUserLocation();
+  }
+
+  /// Charge les données selon le mode sélectionné
+  Future<void> _loadData() async {
+    if (_showAllContent) {
+      await _loadAllContent();
+    } else {
+      await _loadPois();
+    }
   }
 
   @override
@@ -76,7 +99,7 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  /// Crée les markers avec clustering natif
+  /// Crée les markers avec clustering natif (pour POIs)
   Future<void> _createMarkers(List<Poi> pois) async {
     final markers = <Marker>{};
     final markerPoiMap = <MarkerId, Poi>{};
@@ -102,6 +125,75 @@ class _MapPageState extends State<MapPage> {
       _markers = markers;
       _markerPoiMap = markerPoiMap;
     });
+  }
+
+  /// Crée les markers à partir de tous les types de contenus
+  Future<void> _createMarkersFromContent(List<Content> contents) async {
+    final markers = <Marker>{};
+    final markerContentMap = <MarkerId, Content>{};
+
+    for (final content in contents) {
+      final markerId = MarkerId('${content.type.name}_${content.id}');
+      markerContentMap[markerId] = content;
+
+      // Choisir l'icône selon le type de contenu
+      BitmapDescriptor icon;
+      switch (content.type) {
+        case ContentType.poi:
+          icon = await MapMarkerHelper.createCustomMarkerIcon(
+            category: content.primaryCategorySlug,
+            size: 120,
+          );
+          break;
+        case ContentType.event:
+          icon = await _createEventMarkerIcon();
+          break;
+        case ContentType.activity:
+          icon = await _createActivityMarkerIcon();
+          break;
+        case ContentType.tour:
+          icon = await _createTourMarkerIcon();
+          break;
+      }
+
+      final marker = Marker(
+        markerId: markerId,
+        position: LatLng(content.latitudeDouble, content.longitudeDouble),
+        clusterManagerId: _clusterManager.clusterManagerId,
+        onTap: () => _showContentBottomSheet(content),
+        icon: icon,
+      );
+      markers.add(marker);
+    }
+
+    setState(() {
+      _markers = markers;
+      _markerContentMap = markerContentMap;
+    });
+  }
+
+  /// Crée une icône pour les événements (utilise 'cultural' qui est violet/rose)
+  Future<BitmapDescriptor> _createEventMarkerIcon() async {
+    return MapMarkerHelper.createCustomMarkerIcon(
+      category: 'cultural', // Rose pour les événements
+      size: 120,
+    );
+  }
+
+  /// Crée une icône pour les activités (utilise 'activity' qui est teal/vert)
+  Future<BitmapDescriptor> _createActivityMarkerIcon() async {
+    return MapMarkerHelper.createCustomMarkerIcon(
+      category: 'activity', // Teal pour les activités
+      size: 120,
+    );
+  }
+
+  /// Crée une icône pour les tours (utilise 'adventure' qui est bleu-gris)
+  Future<BitmapDescriptor> _createTourMarkerIcon() async {
+    return MapMarkerHelper.createCustomMarkerIcon(
+      category: 'adventure', // Bleu-gris pour les tours
+      size: 120,
+    );
   }
 
   /// Obtient la position de l'utilisateur
@@ -174,6 +266,20 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  /// Zoom in sur la carte
+  Future<void> _zoomIn() async {
+    if (_mapController != null) {
+      _mapController!.animateCamera(CameraUpdate.zoomIn());
+    }
+  }
+
+  /// Zoom out sur la carte
+  Future<void> _zoomOut() async {
+    if (_mapController != null) {
+      _mapController!.animateCamera(CameraUpdate.zoomOut());
+    }
+  }
+
   Future<void> _loadPois() async {
     setState(() {
       _isLoading = true;
@@ -224,6 +330,62 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  /// Charge tous les types de contenus (POIs, Events, Activities)
+  Future<void> _loadAllContent() async {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _errorMessage = null;
+    });
+
+    try {
+      // Utiliser retry automatique
+      final response = await RetryHelper.apiCall(
+        apiRequest: () => _contentService.getMappableContent(useCache: false),
+        maxAttempts: 3,
+        operationName: "Chargement de tous les contenus sur carte",
+      );
+
+      if (response.success && response.data != null) {
+        final contents = response.data!;
+
+        // Créer les markers pour tous les contenus
+        await _createMarkersFromContent(contents);
+
+        setState(() {
+          _allContent = contents;
+          _filteredContent = contents;
+          _isLoading = false;
+          _hasError = false;
+        });
+
+        print('[MAP] Contenus chargés: ${contents.length} items');
+        print('[MAP] POIs: ${contents.where((c) => c.type == ContentType.poi).length}');
+        print('[MAP] Events: ${contents.where((c) => c.type == ContentType.event).length}');
+        print('[MAP] Activities: ${contents.where((c) => c.type == ContentType.activity).length}');
+      } else {
+        throw Exception(
+          response.message ?? 'Erreur lors du chargement des contenus',
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+        _errorMessage = RetryHelper.getErrorMessage(e);
+      });
+
+      if (mounted) {
+        ErrorSnackBar.show(
+          context,
+          title: 'Erreur de chargement',
+          message: RetryHelper.getErrorMessage(e),
+          onRetry: _loadAllContent,
+        );
+      }
+    }
+  }
+
   void _navigateToPoiDetail(Poi poi) {
     Navigator.push(
       context,
@@ -248,6 +410,47 @@ class _MapPageState extends State<MapPage> {
 
     // Recréer les markers avec les POIs filtrés
     await _createMarkers(_filteredPois);
+  }
+
+  /// Filtrer les contenus unifiés (POIs, Events, Activities, Tours)
+  void _filterContent(String query) async {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredContent = _allContent;
+      } else {
+        _filteredContent = _allContent.where((content) {
+          final searchQuery = query.toLowerCase();
+
+          // Recherche dans le nom d'affichage
+          final matchesName = content.displayName.toLowerCase().contains(searchQuery);
+
+          // Recherche dans la description
+          final matchesDescription = content.description.toLowerCase().contains(searchQuery);
+
+          // Recherche dans la description courte
+          final matchesShortDesc = (content.shortDescription ?? '').toLowerCase().contains(searchQuery);
+
+          // Recherche dans la catégorie principale
+          final matchesCategory = content.primaryCategory.toLowerCase().contains(searchQuery);
+
+          // Recherche dans le type de contenu
+          final matchesType = content.typeKey.toLowerCase().contains(searchQuery);
+
+          // Recherche dans la localisation (pour les events)
+          final matchesLocation = (content.location ?? '').toLowerCase().contains(searchQuery);
+
+          return matchesName ||
+                 matchesDescription ||
+                 matchesShortDesc ||
+                 matchesCategory ||
+                 matchesType ||
+                 matchesLocation;
+        }).toList();
+      }
+    });
+
+    // Recréer les markers avec les contenus filtrés
+    await _createMarkersFromContent(_filteredContent);
   }
 
   @override
@@ -381,6 +584,338 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
     );
+  }
+
+  /// Affiche le bottom sheet pour un contenu (POI, Event, Activity)
+  void _showContentBottomSheet(Content content) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        margin: Responsive.all(16),
+        padding: Responsive.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.r),
+                  child: content.imageUrl.isNotEmpty
+                      ? Image.network(
+                          content.imageUrl,
+                          width: 60.w,
+                          height: 60.h,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                width: 60.w,
+                                height: 60.h,
+                                color: _getContentTypeColor(content.type).withOpacity(0.1),
+                                child: Icon(
+                                  _getContentTypeIcon(content.type),
+                                  color: _getContentTypeColor(content.type),
+                                ),
+                              ),
+                        )
+                      : Container(
+                          width: 60.w,
+                          height: 60.h,
+                          color: _getContentTypeColor(content.type).withOpacity(0.1),
+                          child: Icon(
+                            _getContentTypeIcon(content.type),
+                            color: _getContentTypeColor(content.type),
+                          ),
+                        ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Badge du type de contenu
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: _getContentTypeColor(content.type).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                        child: Text(
+                          content.getLocalizedTypeLabel(context),
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: _getContentTypeColor(content.type),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        content.displayName,
+                        style: TextStyle(
+                          fontSize: ResponsiveConstants.body1,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        content.primaryCategory,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      if (content.shortDescription?.isNotEmpty == true)
+                        Text(
+                          content.shortDescription!,
+                          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _navigateToContentDetail(content);
+                    },
+                    icon: const Icon(Icons.info),
+                    label: Text(AppLocalizations.of(context)!.contentViewDetails),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _getContentTypeColor(content.type),
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),
+                /* SizedBox(width: 8.w),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showDirectionsOptionsForContent(content);
+                    },
+                    icon: const Icon(Icons.directions),
+                    label: Text('Itinéraire'),
+                  ),
+                ), */
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Retourne la couleur selon le type de contenu
+  Color _getContentTypeColor(ContentType type) {
+    switch (type) {
+      case ContentType.poi:
+        return const Color(0xFF3860F8); // Bleu
+      case ContentType.event:
+        return const Color(0xFFE91E63); // Rose
+      case ContentType.activity:
+        return const Color(0xFF009688); // Teal
+      case ContentType.tour:
+        return const Color(0xFF607D8B); // Bleu-gris
+    }
+  }
+
+  /// Retourne l'icône selon le type de contenu
+  IconData _getContentTypeIcon(ContentType type) {
+    switch (type) {
+      case ContentType.poi:
+        return Icons.place;
+      case ContentType.event:
+        return Icons.event;
+      case ContentType.activity:
+        return Icons.sports_tennis;
+      case ContentType.tour:
+        return Icons.hiking;
+    }
+  }
+
+  /// Navigate vers les détails d'un contenu
+  void _navigateToContentDetail(Content content) {
+    // Pour le moment, on navigue seulement vers POI detail
+    // TODO: Créer des pages de détails pour Event et Activity
+    if (content.type == ContentType.poi) {
+      // Conversion simplifiée de Content vers Poi (pour les POIs seulement)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ouverture des détails de: ${content.displayName}')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Page de détails ${content.getLocalizedTypeLabel(context)} - Bientôt disponible')),
+      );
+    }
+  }
+
+  /// Affiche les options de directions pour un Content
+  void _showDirectionsOptionsForContent(Content content) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        margin: Responsive.all(16),
+        padding: Responsive.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.mapGetDirections,
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Vers: ${content.displayName}',
+              style: const TextStyle(color: Colors.grey),
+            ),
+            SizedBox(height: 16.h),
+            ListTile(
+              leading: Icon(Icons.navigation, color: _getContentTypeColor(content.type)),
+              title: Text(AppLocalizations.of(context)!.mapOpenGoogleMaps),
+              subtitle: Text(AppLocalizations.of(context)!.mapNavigationGPS),
+              onTap: () async {
+                Navigator.pop(context);
+                final success = await _directionsService
+                    .openGoogleMapsDirections(
+                      destination: LatLng(content.latitudeDouble, content.longitudeDouble),
+                      destinationName: content.displayName,
+                    );
+
+                if (!success && mounted) {
+                  ErrorSnackBar.show(
+                    context,
+                    message: AppLocalizations.of(context)!.mapErrorOpenMaps,
+                  );
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.map, color: _getContentTypeColor(content.type)),
+              title: Text(AppLocalizations.of(context)!.mapShowOnMap),
+              subtitle: Text(AppLocalizations.of(context)!.mapRouteInApp),
+              onTap: () async {
+                Navigator.pop(context);
+                await _showDirectionsOnMapForContent(content);
+              },
+            ),
+            if (_userPosition != null) ...[
+              const Divider(),
+              Padding(
+                padding: Responsive.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Text(
+                        'Distance: ${_locationService.formatDistance(_locationService.calculateDistance(_userPosition!.latitude, _userPosition!.longitude, content.latitudeDouble, content.longitudeDouble))}',
+                        style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Affiche l'itinéraire sur la carte pour un Content
+  Future<void> _showDirectionsOnMapForContent(Content content) async {
+    if (_userPosition == null) {
+      ErrorSnackBar.showWarning(
+        context,
+        message: AppLocalizations.of(context)!.mapErrorLocationUnavailable,
+        onAction: _getUserLocation,
+        actionLabel: AppLocalizations.of(context)!.mapActivate,
+      );
+      return;
+    }
+
+    // Afficher un indicateur de chargement
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: Card(
+          child: Padding(
+            padding: Responsive.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16.h),
+                Text(AppLocalizations.of(context)!.mapCalculatingRoute),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    // Obtenir les directions
+    final result = await _directionsService.getDirections(
+      origin: LatLng(_userPosition!.latitude, _userPosition!.longitude),
+      destination: LatLng(content.latitudeDouble, content.longitudeDouble),
+    );
+
+    // Fermer le dialog
+    if (mounted) {
+      Navigator.pop(context);
+    }
+
+    if (result != null && mounted) {
+      // Créer la polyline
+      final polyline = _directionsService.createPolyline(
+        id: 'route_to_${content.type.name}_${content.id}',
+        points: result.points,
+      );
+
+      setState(() {
+        _polylines = {polyline};
+        _selectedContentForDirections = content;
+      });
+
+      // Ajuster la caméra pour afficher tout l'itinéraire
+      final bounds = _directionsService.calculateBounds(result.points);
+      _mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+
+      // Afficher les infos de l'itinéraire
+      ErrorSnackBar.showInfo(
+        context,
+        message: 'Distance: ${result.distance} • Durée: ${result.duration}',
+        duration: const Duration(seconds: 10),
+      );
+    } else if (mounted) {
+      ErrorSnackBar.show(
+        context,
+        message: AppLocalizations.of(context)!.mapErrorCalculatingRoute,
+        onRetry: () => _showDirectionsOnMapForContent(content),
+      );
+    }
   }
 
   /// Affiche les options de directions pour un POI
@@ -623,7 +1158,7 @@ class _MapPageState extends State<MapPage> {
             ),
             child: TextField(
               controller: _searchController,
-              onChanged: _filterPois,
+              onChanged: _showAllContent ? _filterContent : _filterPois,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.discoverSearchHint,
                 prefixIcon: const Icon(Icons.search),
@@ -632,7 +1167,11 @@ class _MapPageState extends State<MapPage> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
-                          _filterPois('');
+                          if (_showAllContent) {
+                            _filterContent('');
+                          } else {
+                            _filterPois('');
+                          }
                         },
                       )
                     : null,
@@ -755,24 +1294,13 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
 
-        // Boutons de contrôle
+        // Boutons de contrôle (haut)
         Positioned(
           top: isSmallScreen ? 12 : 16,
           right: isSmallScreen ? 12 : 16,
           child: Column(
             children: [
-              FloatingActionButton.small(
-                heroTag: 'toggle',
-                onPressed: () {
-                  setState(() {
-                    _showNearbyList = !_showNearbyList;
-                  });
-                },
-                backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF3860F8),
-                child: Icon(_showNearbyList ? Icons.map : Icons.list),
-              ),
-              SizedBox(height: 8.h),
+              // Bouton Ma position
               FloatingActionButton.small(
                 heroTag: 'location',
                 onPressed: _centerOnUserLocation,
@@ -789,12 +1317,40 @@ class _MapPageState extends State<MapPage> {
                     : const Icon(Icons.my_location),
               ),
               SizedBox(height: 8.h),
+              // Bouton Actualiser
               FloatingActionButton.small(
                 heroTag: 'refresh',
-                onPressed: _loadPois,
+                onPressed: _loadAllContent,
                 backgroundColor: Colors.white,
                 foregroundColor: const Color(0xFF3860F8),
                 child: const Icon(Icons.refresh),
+              ),
+            ],
+          ),
+        ),
+
+        // Boutons de zoom (bas)
+        Positioned(
+          bottom: isSmallScreen ? 80 : 100,
+          right: isSmallScreen ? 12 : 16,
+          child: Column(
+            children: [
+              // Bouton Zoom In
+              FloatingActionButton.small(
+                heroTag: 'zoom_in',
+                onPressed: _zoomIn,
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF3860F8),
+                child: const Icon(Icons.add),
+              ),
+              SizedBox(height: 8.h),
+              // Bouton Zoom Out
+              FloatingActionButton.small(
+                heroTag: 'zoom_out',
+                onPressed: _zoomOut,
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF3860F8),
+                child: const Icon(Icons.remove),
               ),
             ],
           ),
@@ -854,7 +1410,7 @@ class _MapPageState extends State<MapPage> {
           padding: const EdgeInsets.all(16.0),
           child: TextField(
             controller: _searchController,
-            onChanged: _filterPois,
+            onChanged: _showAllContent ? _filterContent : _filterPois,
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.discoverSearchHint,
               prefixIcon: const Icon(Icons.search),
@@ -863,7 +1419,11 @@ class _MapPageState extends State<MapPage> {
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         _searchController.clear();
-                        _filterPois('');
+                        if (_showAllContent) {
+                          _filterContent('');
+                        } else {
+                          _filterPois('');
+                        }
                       },
                     )
                   : null,

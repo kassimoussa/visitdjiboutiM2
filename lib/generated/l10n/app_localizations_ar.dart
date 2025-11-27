@@ -1817,6 +1817,38 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settingsRegionAll => 'جميع المناطق';
 
   @override
+  String get commentModalTitle => 'اترك تعليقًا';
+
+  @override
+  String get commentModalMessageType => 'نوع الرسالة';
+
+  @override
+  String get commentModalTypeQuestion => 'سؤال';
+
+  @override
+  String get commentModalTypeReport => 'إبلاغ';
+
+  @override
+  String get commentModalTypeSuggestion => 'اقتراح';
+
+  @override
+  String get commentModalMessageLabel => 'تعليقك';
+
+  @override
+  String get commentModalHint => 'اكتب تعليقك هنا...';
+
+  @override
+  String get commentModalSend => 'إرسال';
+
+  @override
+  String get commentModalSuccess => 'تم إرسال التعليق بنجاح';
+
+  @override
+  String commentModalError(String error) {
+    return 'خطأ في إرسال التعليق: $error';
+  }
+
+  @override
   String get settingsCacheSizeCalculating => 'جاري الحساب...';
 
   @override
@@ -2801,4 +2833,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offlineConnectionRestored => 'تم استعادة الاتصال!';
+
+  @override
+  String get contentTypePoi => 'نقطة اهتمام';
+
+  @override
+  String get contentTypeEvent => 'حدث';
+
+  @override
+  String get contentTypeActivity => 'نشاط';
+
+  @override
+  String get contentTypeTour => 'جولة';
+
+  @override
+  String get contentViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get contentDirections => 'الاتجاهات';
 }

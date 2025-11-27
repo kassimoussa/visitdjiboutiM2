@@ -798,6 +798,29 @@
   "settingsLanguageFrench": "French",
   "settingsRegionAll": "All regions",
   "settingsCacheSizeCalculating": "Calculating...",
+  "commentModalTitle": "Leave a comment",
+  "@commentModalTitle": {
+    "description": "Title for the comment modal"
+  },
+  "commentModalMessageType": "Message type",
+  "commentModalTypeQuestion": "Question",
+  "commentModalTypeReport": "Report",
+  "commentModalTypeSuggestion": "Suggestion",
+  "commentModalMessageLabel": "Your comment",
+  "commentModalHint": "Write your comment here...",
+  "commentModalSend": "Send",
+  "commentModalSuccess": "Comment sent successfully",
+  "@commentModalSuccess": {
+    "description": "Success message after sending a comment"
+  },
+  "commentModalError": "Error sending comment: {error}",
+  "@commentModalError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "settingsChooseLanguage": "Choose language",
   "settingsLanguageFrenchFlag": "🇫🇷",
   "settingsLanguageEnglishFlag": "🇬🇧",
@@ -1209,5 +1232,11 @@
   "offlineClear": "Clear",
   "offlineClearCacheSuccess": "Cache cleared successfully",
   "offlineClearCacheError": "Error clearing cache",
-  "offlineConnectionRestored": "Connection restored!"
+  "offlineConnectionRestored": "Connection restored!",
+  "contentTypePoi": "Point of Interest",
+  "contentTypeEvent": "Event",
+  "contentTypeActivity": "Activity",
+  "contentTypeTour": "Tour",
+  "contentViewDetails": "View Details",
+  "contentDirections": "Directions"
 }

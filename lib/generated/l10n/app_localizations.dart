@@ -3538,6 +3538,66 @@ abstract class AppLocalizations {
   /// **'Toutes les régions'**
   String get settingsRegionAll;
 
+  /// Titre du modal de commentaire
+  ///
+  /// In fr, this message translates to:
+  /// **'Laisser un commentaire'**
+  String get commentModalTitle;
+
+  /// No description provided for @commentModalMessageType.
+  ///
+  /// In fr, this message translates to:
+  /// **'Type de message'**
+  String get commentModalMessageType;
+
+  /// No description provided for @commentModalTypeQuestion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Question'**
+  String get commentModalTypeQuestion;
+
+  /// No description provided for @commentModalTypeReport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Signalement'**
+  String get commentModalTypeReport;
+
+  /// No description provided for @commentModalTypeSuggestion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suggestion'**
+  String get commentModalTypeSuggestion;
+
+  /// No description provided for @commentModalMessageLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre commentaire'**
+  String get commentModalMessageLabel;
+
+  /// No description provided for @commentModalHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écrivez votre commentaire ici...'**
+  String get commentModalHint;
+
+  /// No description provided for @commentModalSend.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer'**
+  String get commentModalSend;
+
+  /// Message de succès après l'envoi d'un commentaire
+  ///
+  /// In fr, this message translates to:
+  /// **'Commentaire envoyé avec succès'**
+  String get commentModalSuccess;
+
+  /// No description provided for @commentModalError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur lors de l\'envoi du commentaire : {error}'**
+  String commentModalError(String error);
+
   /// No description provided for @settingsCacheSizeCalculating.
   ///
   /// In fr, this message translates to:
@@ -5343,6 +5403,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Connexion rétablie !'**
   String get offlineConnectionRestored;
+
+  /// No description provided for @contentTypePoi.
+  ///
+  /// In fr, this message translates to:
+  /// **'Point d\'intérêt'**
+  String get contentTypePoi;
+
+  /// No description provided for @contentTypeEvent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Événement'**
+  String get contentTypeEvent;
+
+  /// No description provided for @contentTypeActivity.
+  ///
+  /// In fr, this message translates to:
+  /// **'Activité'**
+  String get contentTypeActivity;
+
+  /// No description provided for @contentTypeTour.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tour'**
+  String get contentTypeTour;
+
+  /// No description provided for @contentViewDetails.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir détails'**
+  String get contentViewDetails;
+
+  /// No description provided for @contentDirections.
+  ///
+  /// In fr, this message translates to:
+  /// **'Itinéraire'**
+  String get contentDirections;
 }
 
 class _AppLocalizationsDelegate

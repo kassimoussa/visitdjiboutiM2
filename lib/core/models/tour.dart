@@ -352,7 +352,7 @@ class Tour {
         createdAt: tour.createdAt,
         updatedAt: tour.updatedAt,
       );
-    } catch (e, stack) {
+    } catch (e) {
       print('[Tour.fromJson] Error parsing tour id=${json['id']}: $e');
       print('[Tour.fromJson] JSON keys: ${json.keys.toList()}');
       rethrow;

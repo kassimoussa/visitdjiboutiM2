@@ -60,9 +60,7 @@ class _RegionListPageState extends State<RegionListPage> {
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (_errorMessage != null) {
@@ -70,15 +68,11 @@ class _RegionListPageState extends State<RegionListPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.red,
-            ),
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
             SizedBox(height: 16.h),
             Text(
               _errorMessage!,
-              style:  TextStyle(fontSize: 16.sp),
+              style: TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -92,20 +86,13 @@ class _RegionListPageState extends State<RegionListPage> {
     }
 
     if (_regions.isEmpty) {
-      return  Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.location_off,
-              size: 64,
-              color: Colors.grey,
-            ),
+            Icon(Icons.location_off, size: 64, color: Colors.grey),
             SizedBox(height: 16.h),
-            Text(
-              'Aucune région disponible',
-              style: TextStyle(fontSize: 16.sp),
-            ),
+            Text('Aucune région disponible', style: TextStyle(fontSize: 16.sp)),
           ],
         ),
       );
@@ -113,8 +100,14 @@ class _RegionListPageState extends State<RegionListPage> {
 
     return RefreshIndicator(
       onRefresh: _loadRegions,
-      child: ListView.builder(
+      child: GridView.builder(
         padding: Responsive.all(16),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 400,
+          mainAxisExtent: 200, // Hauteur fixe pour les cartes
+          crossAxisSpacing: 16.w,
+          mainAxisSpacing: 16.h,
+        ),
         itemCount: _regions.length,
         itemBuilder: (context, index) {
           return _buildRegionCard(_regions[index]);
@@ -125,11 +118,8 @@ class _RegionListPageState extends State<RegionListPage> {
 
   Widget _buildRegionCard(Region region) {
     return Card(
-      margin: Responsive.only(bottom: 16),
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -167,7 +157,7 @@ class _RegionListPageState extends State<RegionListPage> {
                       children: [
                         Text(
                           region.name,
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -183,10 +173,7 @@ class _RegionListPageState extends State<RegionListPage> {
                       ],
                     ),
                   ),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: Colors.grey,
-                  ),
+                  const Icon(Icons.chevron_right, color: Colors.grey),
                 ],
               ),
 
@@ -240,26 +227,16 @@ class _RegionListPageState extends State<RegionListPage> {
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 24,
-          ),
+          child: Icon(icon, color: color, size: 24),
         ),
         SizedBox(height: 8.h),
         Text(
           count.toString(),
-          style:  TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: Colors.grey[600],
-          ),
+          style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
         ),
       ],
     );

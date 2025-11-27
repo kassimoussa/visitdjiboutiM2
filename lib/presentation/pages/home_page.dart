@@ -741,12 +741,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildRegionGrid(bool isSmallScreen) {
     return GridView.count(
-      crossAxisCount: isSmallScreen ? 1 : 2,
+      crossAxisCount: isSmallScreen ? 2 : 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: isSmallScreen ? 8 : 12,
-      crossAxisSpacing: isSmallScreen ? 8 : 12,
-      childAspectRatio: isSmallScreen ? 2.5 : 1.5,
+      mainAxisSpacing: isSmallScreen ? 12 : 12,
+      crossAxisSpacing: isSmallScreen ? 12 : 12,
+      childAspectRatio: isSmallScreen ? 1.5 : 1.5,
       children: [
         _buildRegionCard(AppLocalizations.of(context)!.homeRegionDjibouti, '🏙️', const Color(0xFF3860F8)),
         _buildRegionCard(AppLocalizations.of(context)!.homeRegionTadjourah, '🏔️', const Color(0xFF009639)),

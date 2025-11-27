@@ -798,6 +798,29 @@
   "settingsRegionAll": "جميع المناطق",
   "settingsCacheSizeCalculating": "جاري الحساب...",
   "settingsChooseLanguage": "اختر اللغة",
+  "commentModalTitle": "اترك تعليقًا",
+  "@commentModalTitle": {
+    "description": "عنوان نافذة التعليق"
+  },
+  "commentModalMessageType": "نوع الرسالة",
+  "commentModalTypeQuestion": "سؤال",
+  "commentModalTypeReport": "إبلاغ",
+  "commentModalTypeSuggestion": "اقتراح",
+  "commentModalMessageLabel": "تعليقك",
+  "commentModalHint": "اكتب تعليقك هنا...",
+  "commentModalSend": "إرسال",
+  "commentModalSuccess": "تم إرسال التعليق بنجاح",
+  "@commentModalSuccess": {
+    "description": "رسالة نجاح بعد إرسال تعليق"
+  },
+  "commentModalError": "خطأ في إرسال التعليق: {error}",
+  "@commentModalError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "settingsLanguageFrenchFlag": "🇫🇷",
   "settingsLanguageEnglishFlag": "🇬🇧",
   "settingsLanguageArabicFlag": "🇸🇦",
@@ -1208,5 +1231,11 @@
   "offlineClear": "مسح",
   "offlineClearCacheSuccess": "تم مسح ذاكرة التخزين المؤقت بنجاح",
   "offlineClearCacheError": "خطأ أثناء مسح ذاكرة التخزين المؤقت",
-  "offlineConnectionRestored": "تم استعادة الاتصال!"
+  "offlineConnectionRestored": "تم استعادة الاتصال!",
+  "contentTypePoi": "نقطة اهتمام",
+  "contentTypeEvent": "حدث",
+  "contentTypeActivity": "نشاط",
+  "contentTypeTour": "جولة",
+  "contentViewDetails": "عرض التفاصيل",
+  "contentDirections": "الاتجاهات"
 }

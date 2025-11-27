@@ -1842,6 +1842,38 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsRegionAll => 'Toutes les régions';
 
   @override
+  String get commentModalTitle => 'Laisser un commentaire';
+
+  @override
+  String get commentModalMessageType => 'Type de message';
+
+  @override
+  String get commentModalTypeQuestion => 'Question';
+
+  @override
+  String get commentModalTypeReport => 'Signalement';
+
+  @override
+  String get commentModalTypeSuggestion => 'Suggestion';
+
+  @override
+  String get commentModalMessageLabel => 'Votre commentaire';
+
+  @override
+  String get commentModalHint => 'Écrivez votre commentaire ici...';
+
+  @override
+  String get commentModalSend => 'Envoyer';
+
+  @override
+  String get commentModalSuccess => 'Commentaire envoyé avec succès';
+
+  @override
+  String commentModalError(String error) {
+    return 'Erreur lors de l\'envoi du commentaire : $error';
+  }
+
+  @override
   String get settingsCacheSizeCalculating => 'Calcul en cours...';
 
   @override
@@ -2843,4 +2875,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get offlineConnectionRestored => 'Connexion rétablie !';
+
+  @override
+  String get contentTypePoi => 'Point d\'intérêt';
+
+  @override
+  String get contentTypeEvent => 'Événement';
+
+  @override
+  String get contentTypeActivity => 'Activité';
+
+  @override
+  String get contentTypeTour => 'Tour';
+
+  @override
+  String get contentViewDetails => 'Voir détails';
+
+  @override
+  String get contentDirections => 'Itinéraire';
 }

@@ -1207,7 +1207,7 @@ class _ReservationsPageState extends State<ReservationsPage>
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${response.message ?? AppLocalizations.of(context)!.reservationsCancelError}'),
+              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsCancelError),
               backgroundColor: Colors.red,
             ),
           );

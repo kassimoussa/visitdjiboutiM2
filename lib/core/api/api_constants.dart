@@ -6,6 +6,9 @@ class ApiConstants {
   static const String poisNearby = '/pois/nearby';
   static String poisById(dynamic id) => '/pois/$id';
   static String poisByCategory(int categoryId) => '/pois/category/$categoryId';
+
+  // Unified content endpoint (POIs + Events + Activities + Tours)
+  static const String contentAll = '/content/all';
   
   // Events endpoints
   static const String events = '/events';

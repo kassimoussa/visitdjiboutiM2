@@ -40,7 +40,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
             // Menu principal
             Padding(
-              padding: Responsive.symmetric(horizontal: 16),
+              padding: Responsive.symmetric(horizontal: 12),
               child: Column(
                 children: [
                   _buildMenuItem(
