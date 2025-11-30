@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/services/event_service.dart';
 import '../../core/services/localization_service.dart';
@@ -22,7 +23,8 @@ class _EventsPageState extends State<EventsPage> {
   final EventService _eventService = EventService();
   final LocalizationService _localizationService = LocalizationService();
   final TextEditingController _searchController = TextEditingController();
-  
+  Timer? _debounce;
+
   List<Event> _events = [];
   List<Category> _categories = [];
   bool _isLoading = true;
@@ -32,21 +34,22 @@ class _EventsPageState extends State<EventsPage> {
   int _currentPage = 1;
   bool _hasMorePages = false;
   bool _isLoadingMore = false;
+  bool _isSearching = false;
 
   @override
   void initState() {
     super.initState();
-    
+
     // Écouter les changements de langue
     _localizationService.addListener(_onLanguageChanged);
-    
+
     _loadEvents();
   }
 
   void _onLanguageChanged() {
     // Recharger les données quand la langue change
     print('[EVENTS PAGE] Langue changée - Rechargement forcé des données');
-    
+
     // Réinitialiser et recharger
     _resetPagination();
     _loadEventsForced();
@@ -68,17 +71,25 @@ class _EventsPageState extends State<EventsPage> {
     try {
       final ApiResponse<EventListData> response = await RetryHelper.apiCall(
         apiRequest: () => _eventService.getEvents(
-          search: _searchController.text.isEmpty ? null : _searchController.text,
-          categoryId: _selectedCategory == 'Tous' ? null :
-              _categories.firstWhere((c) => c.name == _selectedCategory,
-                  orElse: () => const Category(id: -1, name: '', slug: '')).id,
+          search: _searchController.text.isEmpty
+              ? null
+              : _searchController.text,
+          categoryId: _selectedCategory == 'Tous'
+              ? null
+              : _categories
+                    .firstWhere(
+                      (c) => c.name == _selectedCategory,
+                      orElse: () => const Category(id: -1, name: '', slug: ''),
+                    )
+                    .id,
           status: _selectedStatus == 'all' ? null : _selectedStatus,
           page: loadMore ? _currentPage + 1 : 1,
           perPage: 10,
           useCache: false,
         ),
         maxAttempts: 3,
-        operationName: "Chargement événements EventsPage${loadMore ? ' (load more)' : ''}",
+        operationName:
+            "Chargement événements EventsPage${loadMore ? ' (load more)' : ''}",
       );
 
       if (response.isSuccess && response.hasData) {
@@ -95,11 +106,17 @@ class _EventsPageState extends State<EventsPage> {
                 .toList();
             _categories = [
               const Category(id: -1, name: 'Tous', slug: 'tous'),
-              ...parentCategories
+              ...parentCategories,
             ];
-            print('[EVENTS PAGE] Catégories reçues: ${eventsData.filters.categories.length}');
-            print('[EVENTS PAGE] Catégories parentes: ${parentCategories.length}');
-            print('[EVENTS PAGE] Total catégories avec "Tous": ${_categories.length}');
+            print(
+              '[EVENTS PAGE] Catégories reçues: ${eventsData.filters.categories.length}',
+            );
+            print(
+              '[EVENTS PAGE] Catégories parentes: ${parentCategories.length}',
+            );
+            print(
+              '[EVENTS PAGE] Total catégories avec "Tous": ${_categories.length}',
+            );
             _currentPage = eventsData.pagination.currentPage;
           }
           _hasMorePages = eventsData.pagination.hasNextPage;
@@ -131,89 +148,18 @@ class _EventsPageState extends State<EventsPage> {
     }
   }
 
-  Future<void> _refreshEvents() async {
-    await _loadEvents();
-  }
-
-  /// Remet à zéro la pagination
   void _resetPagination() {
     _currentPage = 1;
     _hasMorePages = true;
     _events.clear();
   }
 
-  /// Version forcée qui bypass le cache pour les changements de langue
   Future<void> _loadEventsForced() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      final searchQuery = _searchController.text.trim();
-      final ApiResponse<EventListData> response = await RetryHelper.apiCall(
-        apiRequest: () => _eventService.getEvents(
-          search: searchQuery.isEmpty ? null : searchQuery,
-          status: _selectedStatus,
-          sortBy: 'start_date',
-          sortOrder: 'asc',
-          perPage: 20,
-          page: 1,
-          useCache: false,
-        ),
-        maxAttempts: 3,
-        operationName: "Rechargement événements forcé (changement langue)",
-      );
-
-      if (response.isSuccess && response.hasData) {
-        final eventsData = response.data!;
-
-        setState(() {
-          _events = eventsData.events;
-          _currentPage = eventsData.pagination.currentPage + 1;
-          _hasMorePages = eventsData.pagination.hasNextPage;
-          _isLoading = false;
-          _errorMessage = null;
-        });
-
-        print('[EVENTS PAGE] Événements rechargés: ${_events.length} items (langue: ${_localizationService.currentLanguageCode})');
-      } else {
-        throw Exception(response.message ?? 'Erreur rechargement événements');
-      }
-    } catch (e) {
-      print('[EVENTS PAGE] Erreur rechargement forcé: $e');
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _errorMessage = RetryHelper.getErrorMessage(e);
-        });
-
-        ErrorSnackBar.show(
-          context,
-          title: 'Erreur rechargement',
-          message: RetryHelper.getErrorMessage(e),
-          onRetry: _loadEventsForced,
-        );
-      }
-    }
+    await _loadEvents();
   }
 
-  void _onSearchChanged() {
-    // Délai pour éviter trop de requêtes
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (_searchController.text == _searchController.text) {
-        _loadEvents();
-      }
-    });
-  }
-
-  void _onCategoryChanged(String category) {
-    if (_selectedCategory != category) {
-      setState(() {
-        _selectedCategory = category;
-      });
-      _loadEvents();
-    }
+  Future<void> _refreshEvents() async {
+    await _loadEvents();
   }
 
   void _onStatusChanged(String status) {
@@ -225,81 +171,92 @@ class _EventsPageState extends State<EventsPage> {
     }
   }
 
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _loadEvents();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Responsive.init(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
 
-    return Column(
-      children: [
-        _buildSearchAndFilters(),
-        if (_hasActiveFilters()) ...[
-          SizedBox(height: 8.h),
-          _buildActiveFiltersChips(),
-        ],
-        SizedBox(height: ResponsiveConstants.smallSpace),
-        // Contenu principal
-        Expanded(
-          child: _buildContent(isSmallScreen),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                onChanged: _onSearchChanged,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.eventsSearchHint,
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              )
+            : Text(
+                AppLocalizations.of(context)!.eventsTitle,
+                style: TextStyle(
+                  fontSize: ResponsiveConstants.headline5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+        leading: IconButton(
+          icon: Icon(
+            _isSearching ? Icons.close : Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            if (_isSearching) {
+              setState(() {
+                _isSearching = false;
+                _searchController.clear();
+                _loadEvents();
+              });
+            } else {
+              Scaffold.of(context).openDrawer();
+            }
+          },
         ),
-      ],
-    );
-  }
-
-  Widget _buildSearchAndFilters() {
-    return Container(
-      padding: Responsive.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchController.clear();
+                  _loadEvents();
+                }
+              });
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.tune, color: Colors.white),
+            onPressed: _showFiltersBottomSheet,
+            tooltip: 'Filtres',
           ),
         ],
       ),
-      child: Row(
+      body: Column(
         children: [
-          Expanded(
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.eventsSearchHint,
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(color: Colors.grey[300]!),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide(color: Colors.grey[300]!),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: const BorderSide(color: Color(0xFF3860F8)),
-                ),
-                contentPadding: Responsive.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
-              onSubmitted: (_) => _loadEvents(),
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF3860F8),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: IconButton(
-              onPressed: _showFiltersBottomSheet,
-              icon: const Icon(Icons.tune, color: Colors.white),
-              tooltip: 'Filtres',
-            ),
-          ),
+          if (_hasActiveFilters()) ...[
+            SizedBox(height: 8.h),
+            _buildActiveFiltersChips(),
+          ],
+          SizedBox(height: ResponsiveConstants.smallSpace),
+          // Contenu principal
+          Expanded(child: _buildContent(isSmallScreen)),
         ],
       ),
     );
@@ -437,7 +394,9 @@ class _EventsPageState extends State<EventsPage> {
                         checkmarkColor: const Color(0xFF3860F8),
                       ),
                       FilterChip(
-                        label: Text(AppLocalizations.of(context)!.eventsUpcoming),
+                        label: Text(
+                          AppLocalizations.of(context)!.eventsUpcoming,
+                        ),
                         selected: _selectedStatus == 'upcoming',
                         onSelected: (selected) {
                           setModalState(() {
@@ -451,7 +410,9 @@ class _EventsPageState extends State<EventsPage> {
                         checkmarkColor: const Color(0xFF3860F8),
                       ),
                       FilterChip(
-                        label: Text(AppLocalizations.of(context)!.eventsOngoing),
+                        label: Text(
+                          AppLocalizations.of(context)!.eventsOngoing,
+                        ),
                         selected: _selectedStatus == 'ongoing',
                         onSelected: (selected) {
                           setModalState(() {
@@ -488,13 +449,19 @@ class _EventsPageState extends State<EventsPage> {
                           selected: isSelected,
                           onSelected: (selected) {
                             setModalState(() {
-                              _selectedCategory = selected ? category.name : 'Tous';
+                              _selectedCategory = selected
+                                  ? category.name
+                                  : 'Tous';
                             });
                             setState(() {
-                              _selectedCategory = selected ? category.name : 'Tous';
+                              _selectedCategory = selected
+                                  ? category.name
+                                  : 'Tous';
                             });
                           },
-                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          selectedColor: const Color(
+                            0xFF3860F8,
+                          ).withOpacity(0.2),
                           checkmarkColor: const Color(0xFF3860F8),
                         );
                       }).toList(),
@@ -543,9 +510,7 @@ class _EventsPageState extends State<EventsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircularProgressIndicator(
-              color: Color(0xFF3860F8),
-            ),
+            const CircularProgressIndicator(color: Color(0xFF3860F8)),
             SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(AppLocalizations.of(context)!.commonLoading),
           ],
@@ -566,11 +531,7 @@ class _EventsPageState extends State<EventsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.event_busy,
-              size: 64,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.event_busy, size: 64, color: Colors.grey[400]),
             SizedBox(height: ResponsiveConstants.mediumSpace),
             Text(
               AppLocalizations.of(context)!.eventsNoEventsFound,
@@ -579,7 +540,9 @@ class _EventsPageState extends State<EventsPage> {
                 fontSize: ResponsiveConstants.body1,
               ),
             ),
-            if (_searchController.text.isNotEmpty || _selectedCategory != 'Tous' || _selectedStatus != 'upcoming')
+            if (_searchController.text.isNotEmpty ||
+                _selectedCategory != 'Tous' ||
+                _selectedStatus != 'upcoming')
               TextButton(
                 onPressed: () {
                   _searchController.clear();
@@ -598,7 +561,9 @@ class _EventsPageState extends State<EventsPage> {
       onRefresh: _refreshEvents,
       color: const Color(0xFF3860F8),
       child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
+        padding: EdgeInsets.symmetric(
+          horizontal: ResponsiveConstants.mediumSpace,
+        ),
         itemCount: _events.length + (_hasMorePages ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= _events.length) {
@@ -610,9 +575,7 @@ class _EventsPageState extends State<EventsPage> {
             return Container(
               padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
               child: const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFF3860F8),
-                ),
+                child: CircularProgressIndicator(color: Color(0xFF3860F8)),
               ),
             );
           }
@@ -628,6 +591,7 @@ class _EventsPageState extends State<EventsPage> {
   void dispose() {
     _localizationService.removeListener(_onLanguageChanged);
     _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 }

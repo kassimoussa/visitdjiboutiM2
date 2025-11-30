@@ -41,12 +41,21 @@ class _FavoritesPageState extends State<FavoritesPage> {
   String _sortBy = 'recent';
   final List<String> _sortOptions = ['recent', 'alphabetical'];
 
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
     _syncAndLoadFavorites();
     _favoritesSubscription = _favoritesService.favoritesStream.listen((_) {
       _loadFavorites();
+    });
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text;
+      });
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // _conversionService.checkAndShowConversionTrigger(context);
@@ -64,6 +73,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   void dispose() {
     _favoritesSubscription.cancel();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -131,58 +141,81 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Colors.grey[50],
+        // backgroundColor: Colors.grey[50], // Removed to use theme color
         elevation: 0,
-        centerTitle: false,
-        title: Text(
-          AppLocalizations.of(context)!.favoritesTitle,
-          style: TextStyle(
-            fontSize: ResponsiveConstants.headline5,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1D2233),
-          ),
-        ),
+        centerTitle: true, // Changed to true to match theme
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  hintText: MaterialLocalizations.of(context).searchFieldLabel,
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              )
+            : Text(
+                AppLocalizations.of(context)!.favoritesTitle,
+                style: TextStyle(
+                  fontSize: ResponsiveConstants.headline5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Color(0xFF1D2233)),
-          onPressed: () => Scaffold.of(context).openDrawer(),
+          icon: Icon(
+            _isSearching ? Icons.close : Icons.menu,
+            color: Colors.white,
+          ), // Changed to white
+          onPressed: () {
+            if (_isSearching) {
+              setState(() {
+                _isSearching = false;
+                _searchQuery = '';
+                _searchController.clear();
+              });
+            } else {
+              Scaffold.of(context).openDrawer();
+            }
+          },
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchQuery = '';
+                  _searchController.clear();
+                }
+              });
+            },
+          ),
           if (!_isLoading &&
               (_favoritePois.isNotEmpty ||
                   _favoriteEvents.isNotEmpty ||
                   _favoriteTours.isNotEmpty ||
-                  _favoriteActivities.isNotEmpty))
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Center(
-                child: PopupMenuButton<String>(
-                  initialValue: _sortBy,
-                  onSelected: (value) {
-                    setState(() {
-                      _sortBy = value;
-                    });
-                  },
-                  itemBuilder: (context) => _sortOptions.map((option) {
-                    return PopupMenuItem<String>(
-                      value: option,
-                      child: Text(_getSortLabel(option)),
-                    );
-                  }).toList(),
-                  child: Container(
-                    padding: Responsive.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: Colors.grey[300]!),
-                    ),
-                    child: const Icon(
-                      Icons.sort,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
+                  _favoriteActivities.isNotEmpty) &&
+              !_isSearching)
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.sort, color: Colors.white),
+              initialValue: _sortBy,
+              onSelected: (value) {
+                setState(() {
+                  _sortBy = value;
+                });
+              },
+              itemBuilder: (context) => _sortOptions.map((option) {
+                return PopupMenuItem<String>(
+                  value: option,
+                  child: Text(_getSortLabel(option)),
+                );
+              }).toList(),
             ),
         ],
       ),
@@ -281,6 +314,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
     final items = _getFilteredItems();
 
     if (items.isEmpty) {
+      if (_searchQuery.isNotEmpty) {
+        return Center(
+          child: Text(
+            'Aucun résultat pour "$_searchQuery"',
+            style: TextStyle(
+              fontSize: ResponsiveConstants.body1,
+              color: Colors.grey[600],
+            ),
+          ),
+        );
+      }
       return _buildEmptyFilterState();
     }
 
@@ -330,6 +374,23 @@ class _FavoritesPageState extends State<FavoritesPage> {
       case 'activities':
         items.addAll(_favoriteActivities);
         break;
+    }
+
+    // Filter by search query
+    if (_searchQuery.isNotEmpty) {
+      final query = _searchQuery.toLowerCase();
+      items = items.where((item) {
+        if (item is Poi) {
+          return item.name.toLowerCase().contains(query);
+        } else if (item is Event) {
+          return item.title.toLowerCase().contains(query);
+        } else if (item is Tour) {
+          return item.displayTitle.toLowerCase().contains(query);
+        } else if (item is Activity) {
+          return item.title.toLowerCase().contains(query);
+        }
+        return false;
+      }).toList();
     }
 
     items.sort((a, b) {

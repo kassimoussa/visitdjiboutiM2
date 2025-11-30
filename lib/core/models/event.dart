@@ -150,11 +150,13 @@ class Event {
 
     return parentCategory.name;
   }
+
   String get imageUrl => featuredImage?.imageUrl ?? '';
-  String get displayLocation => fullLocation ?? location ?? '';
+  String get displayLocation => fullLocation ?? location;
   bool get hasMedia => media != null && media!.isNotEmpty;
   // Note: Use getPriceText(context) instead for localized text
-  String get priceText => isFree ? 'Gratuit' : '${price.toStringAsFixed(0)} DJF';
+  String get priceText =>
+      isFree ? 'Gratuit' : '${price.toStringAsFixed(0)} DJF';
   // Note: Use getStatusText(context) instead for localized text
   String get statusText {
     if (hasEnded) return 'Terminé';
@@ -162,29 +164,30 @@ class Event {
     if (isSoldOut) return 'Complet';
     return 'À venir';
   }
-  
+
   bool get canRegister => isActive && !hasEnded && !isSoldOut;
-  
+
   // Localized methods
   String getPriceText(BuildContext context) {
-    return isFree 
-      ? AppLocalizations.of(context)!.eventsFree
-      : '${price.toStringAsFixed(0)} DJF';
+    return isFree
+        ? AppLocalizations.of(context)!.eventsFree
+        : '${price.toStringAsFixed(0)} DJF';
   }
-  
+
   String getStatusText(BuildContext context) {
     if (hasEnded) return AppLocalizations.of(context)!.eventsPast;
     if (isOngoing) return AppLocalizations.of(context)!.eventsOngoing;
     if (isSoldOut) return AppLocalizations.of(context)!.eventsSoldOut;
     return AppLocalizations.of(context)!.eventsUpcoming;
   }
-  
+
   String getParticipantsText(BuildContext context) {
     if (maxParticipants != null) {
       return '$currentParticipants / $maxParticipants participants';
     }
     return '$currentParticipants participants';
   }
+
   // Note: Use getParticipantsText(context) instead for localized text
   String get participantsText {
     if (maxParticipants != null) {

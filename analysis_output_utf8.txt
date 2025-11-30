@@ -1,0 +1,34 @@
+﻿Analyzing 3 items...                                            
+
+warning - The value of the field '_favoritesService' isn't used - lib\presentation\pages\discover_page.dart:25:26 - unused_field
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:65:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:100:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:106:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:193:11 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:204:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:269:5 - avoid_print
+warning - The declaration '_onSearchChanged' isn't referenced - lib\presentation\pages\discover_page.dart:278:8 - unused_element
+warning - The declaration '_onCategoryChanged' isn't referenced - lib\presentation\pages\discover_page.dart:290:8 - unused_element
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:301:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\discover_page.dart:308:7 - avoid_print
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\discover_page.dart:372:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\discover_page.dart:551:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\discover_page.dart:586:29 - deprecated_member_use
+  error - The getter 'commonNoResultsFound' isn't defined for the type 'AppLocalizations' - lib\presentation\pages\discover_page.dart:659:45 - undefined_getter
+warning - The declaration '_getCategoryIcon' isn't referenced - lib\presentation\pages\discover_page.dart:715:12 - unused_element
+   info - Don't invoke 'print' in production code - lib\presentation\pages\events_page.dart:48:5 - avoid_print
+  error - The method '_resetPagination' isn't defined for the type '_EventsPageState' - lib\presentation\pages\events_page.dart:51:5 - undefined_method
+  error - The method '_loadEventsForced' isn't defined for the type '_EventsPageState' - lib\presentation\pages\events_page.dart:52:5 - undefined_method
+   info - Don't invoke 'print' in production code - lib\presentation\pages\events_page.dart:100:13 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\events_page.dart:101:13 - avoid_print
+   info - Don't invoke 'print' in production code - lib\presentation\pages\events_page.dart:102:13 - avoid_print
+  error - Undefined name 'status' - lib\presentation\pages\events_page.dart:118:27 - undefined_identifier
+  error - Expected to find '}' - lib\presentation\pages\events_page.dart:121:5 - expected_token
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\events_page.dart:145:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\events_page.dart:340:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\events_page.dart:354:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\events_page.dart:368:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\events_page.dart:401:66 - deprecated_member_use
+  error - Undefined name '_refreshEvents' - lib\presentation\pages\events_page.dart:502:18 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\main_navigation_page.dart:113:45 - deprecated_member_use
+

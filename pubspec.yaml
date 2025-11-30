@@ -76,6 +76,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.10
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -87,6 +88,7 @@ dev_dependencies:
   # Code generation for JSON serialization
   json_serializable: ^6.7.1
   build_runner: ^2.4.6
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -137,3 +139,10 @@ flutter_launcher_icons:
   image_path: "assets/images/logo_visitdjibouti.png"
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/images/logo_visitdjibouti.png"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/logo_visitdjibouti.png"
+  android_12:
+    image: "assets/images/logo_visitdjibouti.png"
+    color: "#FFFFFF"

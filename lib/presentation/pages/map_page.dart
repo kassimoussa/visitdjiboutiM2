@@ -33,7 +33,8 @@ class _MapPageState extends State<MapPage> {
   // Cluster Manager natif pour grouper les markers
   late ClusterManager _clusterManager;
   Map<MarkerId, Poi> _markerPoiMap = {}; // Association marker ID -> POI
-  Map<MarkerId, Content> _markerContentMap = {}; // Association marker ID -> Content
+  Map<MarkerId, Content> _markerContentMap =
+      {}; // Association marker ID -> Content
 
   // Mode d'affichage : true = tous les contenus, false = POIs seulement
   final bool _showAllContent = true;
@@ -57,6 +58,7 @@ class _MapPageState extends State<MapPage> {
   // Position de l'utilisateur
   Position? _userPosition;
   bool _isLocatingUser = false;
+  bool _isSearching = false;
 
   // POI ou Content sélectionné pour les directions
   Poi? _selectedPoiForDirections;
@@ -360,9 +362,15 @@ class _MapPageState extends State<MapPage> {
         });
 
         print('[MAP] Contenus chargés: ${contents.length} items');
-        print('[MAP] POIs: ${contents.where((c) => c.type == ContentType.poi).length}');
-        print('[MAP] Events: ${contents.where((c) => c.type == ContentType.event).length}');
-        print('[MAP] Activities: ${contents.where((c) => c.type == ContentType.activity).length}');
+        print(
+          '[MAP] POIs: ${contents.where((c) => c.type == ContentType.poi).length}',
+        );
+        print(
+          '[MAP] Events: ${contents.where((c) => c.type == ContentType.event).length}',
+        );
+        print(
+          '[MAP] Activities: ${contents.where((c) => c.type == ContentType.activity).length}',
+        );
       } else {
         throw Exception(
           response.message ?? 'Erreur lors du chargement des contenus',
@@ -422,29 +430,41 @@ class _MapPageState extends State<MapPage> {
           final searchQuery = query.toLowerCase();
 
           // Recherche dans le nom d'affichage
-          final matchesName = content.displayName.toLowerCase().contains(searchQuery);
+          final matchesName = content.displayName.toLowerCase().contains(
+            searchQuery,
+          );
 
           // Recherche dans la description
-          final matchesDescription = content.description.toLowerCase().contains(searchQuery);
+          final matchesDescription = content.description.toLowerCase().contains(
+            searchQuery,
+          );
 
           // Recherche dans la description courte
-          final matchesShortDesc = (content.shortDescription ?? '').toLowerCase().contains(searchQuery);
+          final matchesShortDesc = (content.shortDescription ?? '')
+              .toLowerCase()
+              .contains(searchQuery);
 
           // Recherche dans la catégorie principale
-          final matchesCategory = content.primaryCategory.toLowerCase().contains(searchQuery);
+          final matchesCategory = content.primaryCategory
+              .toLowerCase()
+              .contains(searchQuery);
 
           // Recherche dans le type de contenu
-          final matchesType = content.typeKey.toLowerCase().contains(searchQuery);
+          final matchesType = content.typeKey.toLowerCase().contains(
+            searchQuery,
+          );
 
           // Recherche dans la localisation (pour les events)
-          final matchesLocation = (content.location ?? '').toLowerCase().contains(searchQuery);
+          final matchesLocation = (content.location ?? '')
+              .toLowerCase()
+              .contains(searchQuery);
 
           return matchesName ||
-                 matchesDescription ||
-                 matchesShortDesc ||
-                 matchesCategory ||
-                 matchesType ||
-                 matchesLocation;
+              matchesDescription ||
+              matchesShortDesc ||
+              matchesCategory ||
+              matchesType ||
+              matchesLocation;
         }).toList();
       }
     });
@@ -615,7 +635,9 @@ class _MapPageState extends State<MapPage> {
                               Container(
                                 width: 60.w,
                                 height: 60.h,
-                                color: _getContentTypeColor(content.type).withOpacity(0.1),
+                                color: _getContentTypeColor(
+                                  content.type,
+                                ).withOpacity(0.1),
                                 child: Icon(
                                   _getContentTypeIcon(content.type),
                                   color: _getContentTypeColor(content.type),
@@ -625,7 +647,9 @@ class _MapPageState extends State<MapPage> {
                       : Container(
                           width: 60.w,
                           height: 60.h,
-                          color: _getContentTypeColor(content.type).withOpacity(0.1),
+                          color: _getContentTypeColor(
+                            content.type,
+                          ).withOpacity(0.1),
                           child: Icon(
                             _getContentTypeIcon(content.type),
                             color: _getContentTypeColor(content.type),
@@ -639,9 +663,14 @@ class _MapPageState extends State<MapPage> {
                     children: [
                       // Badge du type de contenu
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 4.h,
+                        ),
                         decoration: BoxDecoration(
-                          color: _getContentTypeColor(content.type).withOpacity(0.1),
+                          color: _getContentTypeColor(
+                            content.type,
+                          ).withOpacity(0.1),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                         child: Text(
@@ -689,7 +718,9 @@ class _MapPageState extends State<MapPage> {
                       _navigateToContentDetail(content);
                     },
                     icon: const Icon(Icons.info),
-                    label: Text(AppLocalizations.of(context)!.contentViewDetails),
+                    label: Text(
+                      AppLocalizations.of(context)!.contentViewDetails,
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _getContentTypeColor(content.type),
                       foregroundColor: Colors.white,
@@ -750,11 +781,17 @@ class _MapPageState extends State<MapPage> {
     if (content.type == ContentType.poi) {
       // Conversion simplifiée de Content vers Poi (pour les POIs seulement)
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ouverture des détails de: ${content.displayName}')),
+        SnackBar(
+          content: Text('Ouverture des détails de: ${content.displayName}'),
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Page de détails ${content.getLocalizedTypeLabel(context)} - Bientôt disponible')),
+        SnackBar(
+          content: Text(
+            'Page de détails ${content.getLocalizedTypeLabel(context)} - Bientôt disponible',
+          ),
+        ),
       );
     }
   }
@@ -786,14 +823,20 @@ class _MapPageState extends State<MapPage> {
             ),
             SizedBox(height: 16.h),
             ListTile(
-              leading: Icon(Icons.navigation, color: _getContentTypeColor(content.type)),
+              leading: Icon(
+                Icons.navigation,
+                color: _getContentTypeColor(content.type),
+              ),
               title: Text(AppLocalizations.of(context)!.mapOpenGoogleMaps),
               subtitle: Text(AppLocalizations.of(context)!.mapNavigationGPS),
               onTap: () async {
                 Navigator.pop(context);
                 final success = await _directionsService
                     .openGoogleMapsDirections(
-                      destination: LatLng(content.latitudeDouble, content.longitudeDouble),
+                      destination: LatLng(
+                        content.latitudeDouble,
+                        content.longitudeDouble,
+                      ),
                       destinationName: content.displayName,
                     );
 
@@ -807,7 +850,10 @@ class _MapPageState extends State<MapPage> {
             ),
             const Divider(),
             ListTile(
-              leading: Icon(Icons.map, color: _getContentTypeColor(content.type)),
+              leading: Icon(
+                Icons.map,
+                color: _getContentTypeColor(content.type),
+              ),
               title: Text(AppLocalizations.of(context)!.mapShowOnMap),
               subtitle: Text(AppLocalizations.of(context)!.mapRouteInApp),
               onTap: () async {
@@ -1085,277 +1131,302 @@ class _MapPageState extends State<MapPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 400;
 
-    return Stack(
-      children: [
-        // Carte Google Maps avec POIs
-        _isLoading
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      const Color(0xFF006B96).withOpacity(0.3),
-                      const Color(0xFFE8D5A3).withOpacity(0.3),
-                    ],
-                  ),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(0xFF3860F8),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        AppLocalizations.of(context)!.mapLoading,
-                        style: TextStyle(
-                          fontSize: ResponsiveConstants.body1,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                onChanged: _showAllContent ? _filterContent : _filterPois,
+                decoration: InputDecoration(
+                  hintText: MaterialLocalizations.of(context).searchFieldLabel,
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                 ),
               )
-            : GoogleMap(
-                initialCameraPosition: _initialPosition,
-                markers: _markers,
-                polylines: _polylines,
-                clusterManagers: {_clusterManager},
-                onMapCreated: (GoogleMapController controller) {
-                  _mapController = controller;
-                },
-                mapType: MapType.normal,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                zoomControlsEnabled: false,
-                compassEnabled: true,
-                mapToolbarEnabled: false,
-              ),
-
-        // Barre de recherche en overlay
-        Positioned(
-          top: isSmallScreen ? 12 : 16,
-          left: isSmallScreen ? 12 : 16,
-          right: isSmallScreen ? 60 : 80,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(25.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+            : Text(
+                AppLocalizations.of(context)!.mapTitle,
+                style: TextStyle(
+                  fontSize: ResponsiveConstants.headline5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-              ],
-            ),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _showAllContent ? _filterContent : _filterPois,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.discoverSearchHint,
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          if (_showAllContent) {
-                            _filterContent('');
-                          } else {
-                            _filterPois('');
-                          }
-                        },
-                      )
-                    : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.r),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.white,
               ),
-            ),
+        leading: IconButton(
+          icon: Icon(
+            _isSearching ? Icons.close : Icons.menu,
+            color: Colors.white,
           ),
+          onPressed: () {
+            if (_isSearching) {
+              setState(() {
+                _isSearching = false;
+                _searchController.clear();
+                if (_showAllContent) {
+                  _filterContent('');
+                } else {
+                  _filterPois('');
+                }
+              });
+            } else {
+              Scaffold.of(context).openDrawer();
+            }
+          },
         ),
-
-        // Liste des POIs proches (conditionnelle)
-        if (_showNearbyList)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height:
-                  MediaQuery.of(context).size.height *
-                  (isSmallScreen ? 0.45 : 0.4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-              ),
-              child: Column(
-                children: [
-                  // Handle pour drag
-                  Container(
-                    margin: Responsive.symmetric(vertical: 8),
-                    width: 40.w,
-                    height: 4.h,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2.r),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchController.clear();
+                  if (_showAllContent) {
+                    _filterContent('');
+                  } else {
+                    _filterPois('');
+                  }
+                }
+              });
+            },
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          // Carte Google Maps avec POIs
+          _isLoading
+              ? Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        const Color(0xFF006B96).withOpacity(0.3),
+                        const Color(0xFFE8D5A3).withOpacity(0.3),
+                      ],
                     ),
                   ),
-
-                  // Titre
-                  Padding(
-                    padding: Responsive.symmetric(horizontal: 16),
-                    child: Row(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.mapNearbyPois,
-                          style: TextStyle(
-                            fontSize: ResponsiveConstants.subtitle2,
-                            fontWeight: FontWeight.bold,
+                        CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Color(0xFF3860F8),
                           ),
                         ),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _showNearbyList = false;
-                            });
-                          },
-                          child: Text(
-                            AppLocalizations.of(context)!.commonClose,
+                        SizedBox(height: 16.h),
+                        Text(
+                          AppLocalizations.of(context)!.mapLoading,
+                          style: TextStyle(
+                            fontSize: ResponsiveConstants.body1,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
                     ),
                   ),
+                )
+              : GoogleMap(
+                  initialCameraPosition: _initialPosition,
+                  markers: _markers,
+                  polylines: _polylines,
+                  clusterManagers: {_clusterManager},
+                  onMapCreated: (GoogleMapController controller) {
+                    _mapController = controller;
+                  },
+                  mapType: MapType.normal,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  compassEnabled: true,
+                  mapToolbarEnabled: false,
+                ),
 
-                  // Liste
-                  Expanded(
-                    child: ListView.builder(
-                      padding: Responsive.symmetric(horizontal: 16),
-                      itemCount: _filteredPois.length,
-                      itemBuilder: (context, index) {
-                        final poi = _filteredPois[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: const Color(
-                              0xFF3860F8,
-                            ).withOpacity(0.1),
-                            backgroundImage: poi.imageUrl.isNotEmpty
-                                ? NetworkImage(poi.imageUrl)
-                                : null,
-                            child: poi.imageUrl.isEmpty
-                                ? const Icon(
-                                    Icons.place,
-                                    color: Color(0xFF3860F8),
-                                  )
-                                : null,
-                          ),
-                          title: Text(
-                            poi.name,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          subtitle: Text(poi.primaryCategory),
-                          trailing: const Icon(
-                            Icons.place,
-                            color: Color(0xFF3860F8),
-                          ),
-                          onTap: () {
-                            // Centrer la carte sur le POI
-                            _mapController?.animateCamera(
-                              CameraUpdate.newCameraPosition(
-                                CameraPosition(
-                                  target: LatLng(poi.latitude, poi.longitude),
-                                  zoom: 15.0,
-                                ),
-                              ),
-                            );
-                            setState(() {
-                              _showNearbyList = false;
-                            });
-                          },
-                        );
-                      },
-                    ),
+          // Liste des POIs proches (conditionnelle)
+          if (_showNearbyList)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height:
+                    MediaQuery.of(context).size.height *
+                    (isSmallScreen ? 0.45 : 0.4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
                   ),
-                ],
+                ),
+                child: Column(
+                  children: [
+                    // Handle pour drag
+                    Container(
+                      margin: Responsive.symmetric(vertical: 8),
+                      width: 40.w,
+                      height: 4.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                    ),
+
+                    // Titre
+                    Padding(
+                      padding: Responsive.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.mapNearbyPois,
+                            style: TextStyle(
+                              fontSize: ResponsiveConstants.subtitle2,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _showNearbyList = false;
+                              });
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.commonClose,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Liste
+                    Expanded(
+                      child: ListView.builder(
+                        padding: Responsive.symmetric(horizontal: 16),
+                        itemCount: _filteredPois.length,
+                        itemBuilder: (context, index) {
+                          final poi = _filteredPois[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: const Color(
+                                0xFF3860F8,
+                              ).withOpacity(0.1),
+                              backgroundImage: poi.imageUrl.isNotEmpty
+                                  ? NetworkImage(poi.imageUrl)
+                                  : null,
+                              child: poi.imageUrl.isEmpty
+                                  ? const Icon(
+                                      Icons.place,
+                                      color: Color(0xFF3860F8),
+                                    )
+                                  : null,
+                            ),
+                            title: Text(
+                              poi.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            subtitle: Text(poi.primaryCategory),
+                            trailing: const Icon(
+                              Icons.place,
+                              color: Color(0xFF3860F8),
+                            ),
+                            onTap: () {
+                              // Centrer la carte sur le POI
+                              _mapController?.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(poi.latitude, poi.longitude),
+                                    zoom: 15.0,
+                                  ),
+                                ),
+                              );
+                              setState(() {
+                                _showNearbyList = false;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
+            ),
+
+          // Boutons de contrôle (haut)
+          Positioned(
+            top: isSmallScreen ? 12 : 16,
+            right: isSmallScreen ? 12 : 16,
+            child: Column(
+              children: [
+                // Bouton Ma position
+                FloatingActionButton.small(
+                  heroTag: 'location',
+                  onPressed: _centerOnUserLocation,
+                  backgroundColor: _isLocatingUser
+                      ? Colors.grey.shade300
+                      : Colors.white,
+                  foregroundColor: const Color(0xFF3860F8),
+                  child: _isLocatingUser
+                      ? SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.my_location),
+                ),
+                SizedBox(height: 8.h),
+                // Bouton Actualiser
+                FloatingActionButton.small(
+                  heroTag: 'refresh',
+                  onPressed: _loadAllContent,
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF3860F8),
+                  child: const Icon(Icons.refresh),
+                ),
+              ],
             ),
           ),
 
-        // Boutons de contrôle (haut)
-        Positioned(
-          top: isSmallScreen ? 12 : 16,
-          right: isSmallScreen ? 12 : 16,
-          child: Column(
-            children: [
-              // Bouton Ma position
-              FloatingActionButton.small(
-                heroTag: 'location',
-                onPressed: _centerOnUserLocation,
-                backgroundColor: _isLocatingUser
-                    ? Colors.grey.shade300
-                    : Colors.white,
-                foregroundColor: const Color(0xFF3860F8),
-                child: _isLocatingUser
-                    ? SizedBox(
-                        width: 20.w,
-                        height: 20.h,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.my_location),
-              ),
-              SizedBox(height: 8.h),
-              // Bouton Actualiser
-              FloatingActionButton.small(
-                heroTag: 'refresh',
-                onPressed: _loadAllContent,
-                backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF3860F8),
-                child: const Icon(Icons.refresh),
-              ),
-            ],
+          // Boutons de zoom (bas)
+          Positioned(
+            bottom: isSmallScreen ? 80 : 100,
+            right: isSmallScreen ? 12 : 16,
+            child: Column(
+              children: [
+                // Bouton Zoom In
+                FloatingActionButton.small(
+                  heroTag: 'zoom_in',
+                  onPressed: _zoomIn,
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF3860F8),
+                  child: const Icon(Icons.add),
+                ),
+                SizedBox(height: 8.h),
+                // Bouton Zoom Out
+                FloatingActionButton.small(
+                  heroTag: 'zoom_out',
+                  onPressed: _zoomOut,
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF3860F8),
+                  child: const Icon(Icons.remove),
+                ),
+              ],
+            ),
           ),
-        ),
-
-        // Boutons de zoom (bas)
-        Positioned(
-          bottom: isSmallScreen ? 80 : 100,
-          right: isSmallScreen ? 12 : 16,
-          child: Column(
-            children: [
-              // Bouton Zoom In
-              FloatingActionButton.small(
-                heroTag: 'zoom_in',
-                onPressed: _zoomIn,
-                backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF3860F8),
-                child: const Icon(Icons.add),
-              ),
-              SizedBox(height: 8.h),
-              // Bouton Zoom Out
-              FloatingActionButton.small(
-                heroTag: 'zoom_out',
-                onPressed: _zoomOut,
-                backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF3860F8),
-                child: const Icon(Icons.remove),
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

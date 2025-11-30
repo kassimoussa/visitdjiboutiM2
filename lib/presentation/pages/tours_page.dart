@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart'; 
+import 'dart:async';
+import 'package:flutter/material.dart';
 import '../../core/models/tour.dart';
 import '../../core/models/tour_operator.dart';
 import '../../core/services/tour_service.dart';
@@ -12,11 +13,7 @@ class ToursPage extends StatefulWidget {
   final int? operatorId;
   final bool showFeaturedOnly;
 
-  const ToursPage({
-    super.key,
-    this.operatorId,
-    this.showFeaturedOnly = false,
-  });
+  const ToursPage({super.key, this.operatorId, this.showFeaturedOnly = false});
 
   @override
   State<ToursPage> createState() => _ToursPageState();
@@ -26,6 +23,7 @@ class _ToursPageState extends State<ToursPage> {
   final TourService _tourService = TourService();
   final TourOperatorService _tourOperatorService = TourOperatorService();
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   List<Tour> _tours = [];
   List<TourOperator> _operators = [];
@@ -34,6 +32,7 @@ class _ToursPageState extends State<ToursPage> {
   String? _errorMessage;
   int _currentPage = 1;
   bool _hasMoreData = true;
+  bool _isSearching = false;
 
   // Filtres
   TourType? _selectedType;
@@ -54,12 +53,15 @@ class _ToursPageState extends State<ToursPage> {
   void dispose() {
     _searchController.dispose();
     _scrollController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent &&
-        !_isLoadingMore && _hasMoreData) {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !_isLoadingMore &&
+        _hasMoreData) {
       _loadMoreTours();
     }
   }
@@ -98,7 +100,9 @@ class _ToursPageState extends State<ToursPage> {
 
     try {
       final response = await _tourService.getTours(
-        search: _searchController.text.isNotEmpty ? _searchController.text : null,
+        search: _searchController.text.isNotEmpty
+            ? _searchController.text
+            : null,
         type: _selectedType,
         difficulty: _selectedDifficulty,
         operatorId: _selectedOperatorId,
@@ -163,24 +167,63 @@ class _ToursPageState extends State<ToursPage> {
     _applyFilters();
   }
 
-  List<Tour> get _filteredTours {
-    if (_searchController.text.isEmpty) return _tours;
-    return _tours.where((tour) =>
-      tour.displayTitle.toLowerCase().contains(_searchController.text.toLowerCase()) ||
-      (tour.tourOperator?.name.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false)
-    ).toList();
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _loadTours(reset: true);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.showFeaturedOnly
-          ? AppLocalizations.of(context)!.homeFeaturedTours
-          : 'Tours'),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                onChanged: _onSearchChanged,
+                decoration: InputDecoration(
+                  hintText: 'Rechercher un tour...',
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              )
+            : Text(
+                widget.showFeaturedOnly
+                    ? AppLocalizations.of(context)!.homeFeaturedTours
+                    : 'Tours',
+              ),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(_isSearching ? Icons.close : Icons.arrow_back),
+          onPressed: () {
+            if (_isSearching) {
+              setState(() {
+                _isSearching = false;
+                _searchController.clear();
+                _loadTours(reset: true);
+              });
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
         actions: [
+          if (!_isSearching)
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  _isSearching = true;
+                });
+              },
+            ),
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: _showFilterDialog,
@@ -189,53 +232,22 @@ class _ToursPageState extends State<ToursPage> {
       ),
       body: Column(
         children: [
-          _buildSearchBar(),
           _buildActiveFilters(),
           Expanded(
             child: _isLoading
                 ? _buildLoadingState()
                 : _errorMessage != null
-                    ? _buildErrorState()
-                    : _buildToursList(),
+                ? _buildErrorState()
+                : _buildToursList(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          hintText: 'Rechercher un tour...',
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      _searchController.clear();
-                    });
-                  },
-                )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
-          ),
-          filled: true,
-          fillColor: Colors.grey[100],
-        ),
-        onChanged: (value) {
-          setState(() {});
-        },
-      ),
-    );
-  }
-
   Widget _buildActiveFilters() {
-    final hasFilters = _selectedType != null ||
+    final hasFilters =
+        _selectedType != null ||
         _selectedDifficulty != null ||
         (_selectedOperatorId != null && widget.operatorId == null);
 
@@ -262,11 +274,13 @@ class _ToursPageState extends State<ToursPage> {
                   }),
                 if (_selectedOperatorId != null && widget.operatorId == null)
                   _buildFilterChip(
-                    _operators.firstWhere((op) => op.id == _selectedOperatorId).name,
+                    _operators
+                        .firstWhere((op) => op.id == _selectedOperatorId)
+                        .name,
                     () {
                       setState(() => _selectedOperatorId = null);
                       _applyFilters();
-                    }
+                    },
                   ),
               ],
             ),
@@ -298,9 +312,7 @@ class _ToursPageState extends State<ToursPage> {
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.only(bottom: ResponsiveConstants.mediumSpace),
         child: ShimmerLoading(
-          child: Card(
-            child: SizedBox(height: 200.h),
-          ),
+          child: Card(child: SizedBox(height: 200.h)),
         ),
       ),
     );
@@ -333,7 +345,7 @@ class _ToursPageState extends State<ToursPage> {
   }
 
   Widget _buildToursList() {
-    if (_filteredTours.isEmpty) {
+    if (_tours.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -357,10 +369,10 @@ class _ToursPageState extends State<ToursPage> {
       child: ListView.builder(
         controller: _scrollController,
         padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
-        itemCount: _filteredTours.length + (_isLoadingMore ? 1 : 0),
+        itemCount: _tours.length + (_isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index == _filteredTours.length) {
-            return  Center(
+          if (index == _tours.length) {
+            return Center(
               child: Padding(
                 padding: Responsive.all(16),
                 child: CircularProgressIndicator(color: Color(0xFF3860F8)),
@@ -368,7 +380,7 @@ class _ToursPageState extends State<ToursPage> {
             );
           }
 
-          final tour = _filteredTours[index];
+          final tour = _tours[index];
           return Padding(
             padding: EdgeInsets.only(bottom: ResponsiveConstants.mediumSpace),
             child: TourCard(tour: tour),
@@ -426,7 +438,9 @@ class _ToursPageState extends State<ToursPage> {
                               }
                             });
                           },
-                          child: Text(AppLocalizations.of(context)!.commonReset),
+                          child: Text(
+                            AppLocalizations.of(context)!.commonReset,
+                          ),
                         ),
                       ],
                     ),
@@ -457,7 +471,9 @@ class _ToursPageState extends State<ToursPage> {
                               _selectedType = selected ? type : null;
                             });
                           },
-                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          selectedColor: const Color(
+                            0xFF3860F8,
+                          ).withOpacity(0.2),
                           checkmarkColor: const Color(0xFF3860F8),
                         );
                       }).toList(),
@@ -483,13 +499,19 @@ class _ToursPageState extends State<ToursPage> {
                           selected: isSelected,
                           onSelected: (selected) {
                             setModalState(() {
-                              _selectedDifficulty = selected ? difficulty : null;
+                              _selectedDifficulty = selected
+                                  ? difficulty
+                                  : null;
                             });
                             setState(() {
-                              _selectedDifficulty = selected ? difficulty : null;
+                              _selectedDifficulty = selected
+                                  ? difficulty
+                                  : null;
                             });
                           },
-                          selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                          selectedColor: const Color(
+                            0xFF3860F8,
+                          ).withOpacity(0.2),
                           checkmarkColor: const Color(0xFF3860F8),
                         );
                       }).toList(),
@@ -516,13 +538,19 @@ class _ToursPageState extends State<ToursPage> {
                             selected: isSelected,
                             onSelected: (selected) {
                               setModalState(() {
-                                _selectedOperatorId = selected ? operator.id : null;
+                                _selectedOperatorId = selected
+                                    ? operator.id
+                                    : null;
                               });
                               setState(() {
-                                _selectedOperatorId = selected ? operator.id : null;
+                                _selectedOperatorId = selected
+                                    ? operator.id
+                                    : null;
                               });
                             },
-                            selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                            selectedColor: const Color(
+                              0xFF3860F8,
+                            ).withOpacity(0.2),
                             checkmarkColor: const Color(0xFF3860F8),
                           );
                         }).toList(),
@@ -565,5 +593,4 @@ class _ToursPageState extends State<ToursPage> {
       ),
     );
   }
-
 }

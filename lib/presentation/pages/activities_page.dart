@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/models/activity.dart';
@@ -18,11 +19,13 @@ class ActivitiesPage extends StatefulWidget {
 class _ActivitiesPageState extends State<ActivitiesPage> {
   final ActivityService _activityService = ActivityService();
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   List<Activity> _activities = [];
   bool _isLoading = true;
   bool _hasError = false;
   String? _errorMessage;
+  bool _isSearching = false;
 
   // Filtres
   String? _selectedRegion;
@@ -49,6 +52,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   @override
   void dispose() {
     _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -85,6 +89,13 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
         });
       }
     }
+  }
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _loadActivities();
+    });
   }
 
   void _showFiltersBottomSheet() {
@@ -266,96 +277,76 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.showFeaturedOnly ? 'Activités populaires' : 'Activités',
-          style: const TextStyle(color: Colors.white),
-        ),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
+                onChanged: _onSearchChanged,
+                decoration: InputDecoration(
+                  hintText: 'Rechercher une activité...',
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              )
+            : Text(
+                widget.showFeaturedOnly ? 'Activités populaires' : 'Activités',
+                style: const TextStyle(color: Colors.white),
+              ),
         backgroundColor: const Color(0xFF3860F8),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(_isSearching ? Icons.close : Icons.arrow_back),
+          onPressed: () {
+            if (_isSearching) {
+              setState(() {
+                _isSearching = false;
+                _searchController.clear();
+                _loadActivities();
+              });
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+        actions: [
+          if (!_isSearching)
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  _isSearching = true;
+                });
+              },
+            ),
+          IconButton(
+            onPressed: _showFiltersBottomSheet,
+            icon: const Icon(Icons.tune, color: Colors.white),
+            tooltip: 'Filtres',
+          ),
+        ],
       ),
       body: Column(
         children: [
-          _buildSearchAndFilters(),
-          Expanded(
-            child: _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFF3860F8),
-                    ),
-                  )
-                : _hasError
-                    ? _buildErrorWidget()
-                    : _activities.isEmpty
-                        ? _buildEmptyWidget()
-                        : _buildActivitiesList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchAndFilters() {
-    return Container(
-      padding: Responsive.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Rechercher une activité...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide(color: Colors.grey[300]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                      borderSide: const BorderSide(color: Color(0xFF3860F8)),
-                    ),
-                    contentPadding: Responsive.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                  ),
-                  onSubmitted: (_) => _loadActivities(),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: IconButton(
-                  onPressed: _showFiltersBottomSheet,
-                  icon: const Icon(Icons.tune, color: Colors.white),
-                  tooltip: 'Filtres',
-                ),
-              ),
-            ],
-          ),
           if (_hasActiveFilters()) ...[
             SizedBox(height: 12.h),
             _buildActiveFiltersChips(),
           ],
+          Expanded(
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF3860F8)),
+                  )
+                : _hasError
+                ? _buildErrorWidget()
+                : _activities.isEmpty
+                ? _buildEmptyWidget()
+                : _buildActivitiesList(),
+          ),
         ],
       ),
     );
@@ -370,44 +361,48 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   }
 
   Widget _buildActiveFiltersChips() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        if (_selectedRegion != null)
-          Chip(
-            label: Text(_selectedRegion!),
-            deleteIcon: const Icon(Icons.close, size: 18),
-            onDeleted: () {
-              setState(() {
-                _selectedRegion = null;
-              });
-              _loadActivities();
-            },
-          ),
-        if (_selectedDifficulty != null)
-          Chip(
-            label: Text(_selectedDifficulty!.label),
-            deleteIcon: const Icon(Icons.close, size: 18),
-            onDeleted: () {
-              setState(() {
-                _selectedDifficulty = null;
-              });
-              _loadActivities();
-            },
-          ),
-        if (_hasSpots ?? false)
-          Chip(
-            label: const Text('Places disponibles'),
-            deleteIcon: const Icon(Icons.close, size: 18),
-            onDeleted: () {
-              setState(() {
-                _hasSpots = null;
-              });
-              _loadActivities();
-            },
-          ),
-      ],
+    return Container(
+      padding: Responsive.symmetric(horizontal: 16),
+      width: double.infinity,
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          if (_selectedRegion != null)
+            Chip(
+              label: Text(_selectedRegion!),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _selectedRegion = null;
+                });
+                _loadActivities();
+              },
+            ),
+          if (_selectedDifficulty != null)
+            Chip(
+              label: Text(_selectedDifficulty!.label),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _selectedDifficulty = null;
+                });
+                _loadActivities();
+              },
+            ),
+          if (_hasSpots ?? false)
+            Chip(
+              label: const Text('Places disponibles'),
+              deleteIcon: const Icon(Icons.close, size: 18),
+              onDeleted: () {
+                setState(() {
+                  _hasSpots = null;
+                });
+                _loadActivities();
+              },
+            ),
+        ],
+      ),
     );
   }
 
@@ -439,13 +434,13 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             featuredImage: activity.featuredImage != null
                 ? {
                     'url': activity.featuredImage!.url,
-                    'thumbnail_url': activity.featuredImage!.thumbnailUrl ?? activity.featuredImage!.url,
+                    'thumbnail_url':
+                        activity.featuredImage!.thumbnailUrl ??
+                        activity.featuredImage!.url,
                   }
                 : null,
             tourOperator: activity.tourOperator != null
-                ? {
-                    'name': activity.tourOperator!.name,
-                  }
+                ? {'name': activity.tourOperator!.name}
                 : null,
           );
           return SimpleActivityCard(activity: simpleActivity);
@@ -459,11 +454,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.kayaking,
-            size: 80,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.kayaking, size: 80, color: Colors.grey[400]),
           SizedBox(height: 16.h),
           Text(
             'Aucune activité trouvée',
@@ -476,10 +467,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           SizedBox(height: 8.h),
           Text(
             'Essayez de modifier vos filtres',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
           ),
         ],
       ),
@@ -491,11 +479,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 80,
-            color: Colors.red[300],
-          ),
+          Icon(Icons.error_outline, size: 80, color: Colors.red[300]),
           SizedBox(height: 16.h),
           Text(
             'Erreur de chargement',
@@ -510,10 +494,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             padding: Responsive.symmetric(horizontal: 40),
             child: Text(
               _errorMessage ?? 'Une erreur est survenue',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
           ),

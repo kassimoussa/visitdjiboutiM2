@@ -9,6 +9,8 @@ import 'package:vd_gem/presentation/pages/splash_page.dart';
 import 'package:vd_gem/presentation/pages/main_navigation_page.dart';
 import 'package:vd_gem/presentation/pages/auth/signup_page.dart';
 import 'package:vd_gem/presentation/pages/auth/login_page.dart';
+import 'dart:async';
+import 'package:vd_gem/presentation/widgets/error_state_widget.dart';
 
 import 'package:vd_gem/presentation/pages/profile_page.dart';
 import 'package:vd_gem/presentation/pages/legal/privacy_policy_page.dart';
@@ -36,46 +38,78 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded<Future<void>>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+      // Initialize Firebase
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
-  // Configure Firebase Messaging background handler
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      // Configure Flutter Error Handling (UI Errors)
+      FlutterError.onError = (FlutterErrorDetails details) {
+        FlutterError.dumpErrorToConsole(details);
+        // Ici on pourrait envoyer l'erreur à Crashlytics
+      };
 
-  // Initialize services in correct order
+      // Customize Error Widget (Replace Red/Grey Screen)
+      ErrorWidget.builder = (FlutterErrorDetails details) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            body: ErrorStateWidget.generic(
+              title: "Une erreur est survenue",
+              message:
+                  "L'application a rencontré un problème inattendu. Veuillez redémarrer.",
+            ),
+          ),
+        );
+      };
 
-  // 1. Initialize LocalizationService FIRST (to load saved language)
-  await LocalizationService().initialize();
+      // Configure Firebase Messaging background handler
+      FirebaseMessaging.onBackgroundMessage(
+        _firebaseMessagingBackgroundHandler,
+      );
 
-  // 2. Initialize ApiClient AFTER localization (so it gets correct headers)
-  ApiClient().init();
+      // Initialize services in correct order
 
-  // 3. Initialize other services
-  await AnonymousAuthService().initializeAnonymousUser();
+      // 1. Initialize LocalizationService FIRST (to load saved language)
+      await LocalizationService().initialize();
 
-  // 3.1 Sync favorites from API
-  await FavoritesService().syncFromAPI();
+      // 2. Initialize ApiClient AFTER localization (so it gets correct headers)
+      ApiClient().init();
 
-  // 4. Initialize API-UI language synchronization
-  ApiLanguageSyncService().initialize();
+      // 3. Initialize other services
+      await AnonymousAuthService().initializeAnonymousUser();
 
-  // 5. Force initial language sync (should be redundant now but keep it)
-  ApiClient().updateLanguageHeader();
+      // 3.1 Sync favorites from API
+      await FavoritesService().syncFromAPI();
 
-  // Initialize simple connectivity service
-  await ConnectivityService().initialize();
+      // 4. Initialize API-UI language synchronization
+      ApiLanguageSyncService().initialize();
 
-  // Initialize preloading service
-  PreloadService().initialize();
+      // 5. Force initial language sync (should be redundant now but keep it)
+      ApiClient().updateLanguageHeader();
 
-  // Initialize FCM service
-  await FCMService().initialize();
+      // Initialize simple connectivity service
+      await ConnectivityService().initialize();
 
-  await FCMService().initialize();
+      // Initialize preloading service
+      PreloadService().initialize();
 
-  runApp(const ProviderScope(child: VdGemApp()));
+      // Initialize FCM service
+      await FCMService().initialize();
+
+      runApp(const ProviderScope(child: VdGemApp()));
+    },
+    (error, stack) {
+      // Catch Async Dart Errors
+      print('[CRITICAL ERROR] $error');
+      print('[STACK TRACE] $stack');
+      // Ici on pourrait envoyer l'erreur à Crashlytics
+    },
+  );
 }
 
 class VdGemApp extends StatelessWidget {

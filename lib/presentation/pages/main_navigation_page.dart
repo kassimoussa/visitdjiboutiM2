@@ -43,7 +43,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   Widget build(BuildContext context) {
     return OfflineIndicator(
       child: Scaffold(
-        appBar: _currentIndex == 4
+        appBar:
+            (_currentIndex == 1 ||
+                _currentIndex == 2 ||
+                _currentIndex == 3 ||
+                _currentIndex == 4)
             ? null
             : AppBar(
                 title: Text(_getPageTitle()),
