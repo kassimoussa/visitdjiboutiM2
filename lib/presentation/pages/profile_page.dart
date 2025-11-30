@@ -107,8 +107,8 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             children: [
               SizedBox(height: ResponsiveConstants.largeSpace),
-              _buildStatsCards(),
-              SizedBox(height: ResponsiveConstants.extraLargeSpace),
+              /* _buildStatsCards(),
+              SizedBox(height: ResponsiveConstants.extraLargeSpace), */
               _buildProfileSections(),
             ],
           ),
@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 40.h),
+                Spacer(),
                 CircleAvatar(
                   radius: 40.r,
                   backgroundColor: Colors.white.withOpacity(0.2),
@@ -182,6 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white,
                   ),
                 ),
+                SizedBox(height: 4.h),
                 Text(
                   _user?.email ?? '',
                   style: TextStyle(
@@ -189,6 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white.withOpacity(0.9),
                   ),
                 ),
+                Spacer(),
               ],
             ),
           ),
@@ -219,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 40.h),
+                Spacer(),
                 Container(
                   width: 100.w,
                   height: 100.h,
@@ -265,6 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white70,
                   ),
                 ),
+                Spacer(),
               ],
             ),
           ),
