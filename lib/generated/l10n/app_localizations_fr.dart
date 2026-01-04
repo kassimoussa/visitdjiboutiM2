@@ -1830,6 +1830,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reservationsStatusUnknown => 'Inconnue';
 
   @override
+  String get reservationsStatusPast => 'Passée';
+
+  @override
   String get reservationsTypePoi => 'Lieu';
 
   @override

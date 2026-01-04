@@ -24,15 +24,30 @@ class AboutPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Logo
+              // Logo
               Container(
                 width: 120.w,
                 height: 120.h,
+                clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(60.r),
                 ),
-                child: Center(
-                  child: Text('🇩🇯', style: TextStyle(fontSize: 60.sp)),
+                child: Image.asset(
+                  'assets/images/logo_visitdjibouti.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 120.w,
+                      height: 120.h,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(60.r),
+                      ),
+                      child: Center(
+                        child: Text('🇩🇯', style: TextStyle(fontSize: 60.sp)),
+                      ),
+                    );
+                  },
                 ),
               ),
 

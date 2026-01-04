@@ -72,6 +72,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   flutter_riverpod: ^2.6.1
   pinput: ^6.0.0
+  share_plus: ^12.0.1
 
 dev_dependencies:
   flutter_test:

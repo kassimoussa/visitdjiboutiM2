@@ -3514,6 +3514,12 @@ abstract class AppLocalizations {
   /// **'Inconnue'**
   String get reservationsStatusUnknown;
 
+  /// No description provided for @reservationsStatusPast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passée'**
+  String get reservationsStatusPast;
+
   /// No description provided for @reservationsTypePoi.
   ///
   /// In fr, this message translates to:

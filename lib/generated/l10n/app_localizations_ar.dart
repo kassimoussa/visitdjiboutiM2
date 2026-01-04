@@ -1805,6 +1805,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reservationsStatusUnknown => 'غير معروف';
 
   @override
+  String get reservationsStatusPast => 'منتهية';
+
+  @override
   String get reservationsTypePoi => 'مكان';
 
   @override

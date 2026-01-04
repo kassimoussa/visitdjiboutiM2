@@ -1811,6 +1811,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reservationsStatusUnknown => 'Unknown';
 
   @override
+  String get reservationsStatusPast => 'Past';
+
+  @override
   String get reservationsTypePoi => 'Place';
 
   @override

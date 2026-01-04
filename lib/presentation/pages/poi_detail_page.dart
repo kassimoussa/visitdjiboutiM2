@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 // Google Maps import - utilisé seulement sur Android
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/models/poi.dart';
@@ -44,7 +45,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     _loadPoiDetails();
     _scrollController.addListener(_onScroll);
   }
-  
+
   void _onScroll() {
     const imageGalleryHeight = 350.0;
     final shouldShowTitle = _scrollController.offset > imageGalleryHeight;
@@ -105,10 +106,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             Expanded(
               child: SingleChildScrollView(
                 controller: scrollController,
-                child: ReviewsSection(
-                  poiId: poi.id,
-                  poiName: poi.name,
-                ),
+                child: ReviewsSection(poiId: poi.id, poiName: poi.name),
               ),
             ),
           ],
@@ -119,8 +117,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Future<void> _loadPoiDetails() async {
     try {
-      final ApiResponse<Poi> response = await _poiService.getPoiById(widget.poi.id);
-      
+      final ApiResponse<Poi> response = await _poiService.getPoiById(
+        widget.poi.id,
+      );
+
       if (response.isSuccess && response.hasData) {
         setState(() {
           _detailedPoi = response.data!;
@@ -128,7 +128,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         });
       } else {
         setState(() {
-          _errorMessage = response.message ?? AppLocalizations.of(context)!.commonError;
+          _errorMessage =
+              response.message ?? AppLocalizations.of(context)!.commonError;
           _isLoading = false;
         });
       }
@@ -157,7 +158,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.commonNoNavigationApp),
+              content: Text(
+                AppLocalizations.of(context)!.commonNoNavigationApp,
+              ),
               backgroundColor: Colors.red,
             ),
           );
@@ -168,9 +171,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Future<void> _openInGoogleMaps(Poi poi) async {
     final url = Uri.parse(
-      'https://www.google.com/maps/dir/?api=1&destination=${poi.latitude},${poi.longitude}&destination_place_id=${Uri.encodeComponent(poi.name ?? '')}'
+      'https://www.google.com/maps/dir/?api=1&destination=${poi.latitude},${poi.longitude}&destination_place_id=${Uri.encodeComponent(poi.name ?? '')}',
     );
-    
+
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -180,9 +183,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
 
   Future<void> _openInAppleMaps(Poi poi) async {
     final url = Uri.parse(
-      'https://maps.apple.com/?daddr=${poi.latitude},${poi.longitude}&q=${Uri.encodeComponent(poi.name ?? '')}'
+      'https://maps.apple.com/?daddr=${poi.latitude},${poi.longitude}&q=${Uri.encodeComponent(poi.name ?? '')}',
     );
-    
+
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -213,9 +216,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         body: Stack(
           children: [
             const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF3860F8),
-              ),
+              child: CircularProgressIndicator(color: Color(0xFF3860F8)),
             ),
             Positioned(
               top: MediaQuery.of(context).padding.top + 10,
@@ -227,10 +228,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
               ),
             ),
@@ -247,11 +245,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: Colors.grey[400],
-                  ),
+                  Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
                   SizedBox(height: 16.h),
                   Text(
                     _errorMessage!,
@@ -289,10 +283,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
               ),
             ),
@@ -317,7 +308,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     Transform.translate(
                       offset: const Offset(0, -30),
                       child: Container(
-                        decoration:  BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.r),
@@ -339,17 +330,16 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                             _buildCategoriesSection(poi),
                             if (poi.tips?.isNotEmpty == true)
                               _buildTipsSection(poi),
-                            if (poi.hasContacts)
-                              _buildContactSection(poi),
+                            if (poi.hasContacts) _buildContactSection(poi),
                             if (poi.hasTourOperators)
                               _buildTourOperatorsSection(poi),
                             SizedBox(height: 24.h),
                             if (poi.allowReservations)
                               _buildReservationSection(poi),
 
-                            SizedBox(height: 32.h),
-                            _buildShareSection(poi),
-                            SizedBox(height: 32.h),
+                            // SizedBox(height: 32.h),
+                            // _buildShareSection(poi),
+                            // SizedBox(height: 32.h),
                           ],
                         ),
                       ),
@@ -359,7 +349,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
             ],
           ),
-          
+
           AnimatedPositioned(
             duration: const Duration(milliseconds: 200),
             top: 0,
@@ -401,8 +391,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                           child: Padding(
                             padding: Responsive.symmetric(horizontal: 16),
                             child: Text(
-                              poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
-                              style:  TextStyle(
+                              poi.name ??
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.commonUnknownPlace,
+                              style: TextStyle(
                                 fontSize: ResponsiveConstants.subtitle2,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
@@ -449,14 +442,16 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                                   content: Text(
                                     _isFavorite
                                         ? 'Ajouté aux favoris'
-                                        : 'Retiré des favoris'
+                                        : 'Retiré des favoris',
                                   ),
                                   duration: const Duration(seconds: 2),
                                 ),
                               );
                             },
                             icon: Icon(
-                              _isFavorite ? Icons.favorite : Icons.favorite_border,
+                              _isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
                               color: _isFavorite ? Colors.red : Colors.black87,
                             ),
                           ),
@@ -468,7 +463,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
             ),
           ),
-          
+
           if (!_showTitle) ...[
             Positioned(
               top: MediaQuery.of(context).padding.top + 10,
@@ -480,14 +475,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 ),
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
               ),
             ),
-            
+
             Positioned(
               top: MediaQuery.of(context).padding.top + 10,
               right: 16,
@@ -504,9 +496,13 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          _isFavorite 
-                              ? AppLocalizations.of(context)!.favoritesAddedToFavorites 
-                              : AppLocalizations.of(context)!.favoritesRemovedFromFavorites
+                          _isFavorite
+                              ? AppLocalizations.of(
+                                  context,
+                                )!.favoritesAddedToFavorites
+                              : AppLocalizations.of(
+                                  context,
+                                )!.favoritesRemovedFromFavorites,
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -520,7 +516,6 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               ),
             ),
           ],
-          
         ],
       ),
     );
@@ -535,11 +530,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         height: 350.h,
         color: const Color(0xFFE8D5A3),
         child: const Center(
-          child: Icon(
-            Icons.place,
-            size: 80,
-            color: Color(0xFF3860F8),
-          ),
+          child: Icon(Icons.place, size: 80, color: Color(0xFF3860F8)),
         ),
       );
     }
@@ -549,10 +540,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PoiGalleryPage(
-              poiName: poi.name,
-              imageUrls: imageUrls,
-            ),
+            builder: (context) =>
+                PoiGalleryPage(poiName: poi.name, imageUrls: imageUrls),
           ),
         );
       },
@@ -621,8 +610,15 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       margin: Responsive.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.6),
-                        border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
+                        color: isActive
+                            ? Colors.white
+                            : Colors.white.withValues(alpha: 0.6),
+                        border: isActive
+                            ? Border.all(
+                                color: const Color(0xFF3860F8),
+                                width: 2.w,
+                              )
+                            : null,
                       ),
                     ),
                   );
@@ -643,7 +639,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
         children: [
           Text(
             poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace,
-            style:  TextStyle(
+            style: TextStyle(
               fontSize: ResponsiveConstants.headline5,
               fontWeight: FontWeight.bold,
               height: 1.2,
@@ -652,30 +648,19 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           SizedBox(height: 8.h),
           Row(
             children: [
-              Icon(
-                Icons.location_on,
-                size: 20,
-                color: Colors.grey[600],
-              ),
+              Icon(Icons.location_on, size: 20, color: Colors.grey[600]),
               SizedBox(width: 4.w),
               Text(
                 poi.region ?? AppLocalizations.of(context)!.commonUnknown,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
               ),
               const Spacer(),
               if (poi.favoritesCount > 0) ...[
-                Icon(
-                  Icons.favorite,
-                  size: 16,
-                  color: Colors.pink,
-                ),
+                Icon(Icons.favorite, size: 16, color: Colors.pink),
                 SizedBox(width: 4.w),
                 Text(
                   '${poi.favoritesCount}',
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: 14.sp,
                     color: Colors.pink,
                     fontWeight: FontWeight.w500,
@@ -702,9 +687,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       decoration: BoxDecoration(
         color: Colors.grey[50],
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: Colors.grey[200]!,
-        ),
+        border: Border.all(color: Colors.grey[200]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -726,10 +709,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.commonDescription,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -754,9 +734,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       decoration: BoxDecoration(
         color: Colors.grey[50],
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: Colors.grey[200]!,
-        ),
+        border: Border.all(color: Colors.grey[200]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -778,10 +756,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               SizedBox(width: 12.w),
               Text(
                 AppLocalizations.of(context)!.commonOverview,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -806,9 +781,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       decoration: BoxDecoration(
         color: Colors.blue[50],
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: Colors.blue[100]!,
-        ),
+        border: Border.all(color: Colors.blue[100]!),
       ),
       child: Row(
         children: [
@@ -913,7 +886,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         SizedBox(height: 8.h),
                         Text(
                           poi.name ?? 'Lieu',
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -1032,7 +1005,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         SizedBox(height: 8.h),
                         Text(
                           poi.name ?? 'Lieu',
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: ResponsiveConstants.body1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -1074,8 +1047,11 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     final hasEntryFee = poi.entryFee?.isNotEmpty == true;
     final hasWebsite = poi.website?.isNotEmpty == true;
     final allowsReservations = poi.allowReservations;
-    
-    if (!hasOpeningHours && !hasEntryFee && !hasWebsite && !allowsReservations) {
+
+    if (!hasOpeningHours &&
+        !hasEntryFee &&
+        !hasWebsite &&
+        !allowsReservations) {
       return const SizedBox.shrink();
     }
 
@@ -1090,7 +1066,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               AppLocalizations.of(context)!.commonOpeningHours,
               poi.openingHours!,
             ),
-          
+
           if (hasEntryFee) ...[
             if (hasOpeningHours) SizedBox(height: 12.h),
             _buildInfoRow(
@@ -1099,7 +1075,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               poi.entryFee!,
             ),
           ],
-          
+
           if (hasWebsite) ...[
             if (hasOpeningHours || hasEntryFee) SizedBox(height: 12.h),
             _buildInfoRow(
@@ -1109,9 +1085,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               isLink: true,
             ),
           ],
-          
+
           if (allowsReservations) ...[
-            if (hasOpeningHours || hasEntryFee || hasWebsite) SizedBox(height: 12.h),
+            if (hasOpeningHours || hasEntryFee || hasWebsite)
+              SizedBox(height: 12.h),
             Container(
               padding: Responsive.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
@@ -1165,7 +1142,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             ),
             child: Text(
               category.name ?? AppLocalizations.of(context)!.commonCategory,
-              style:  TextStyle(
+              style: TextStyle(
                 color: Color(0xFF3860F8),
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
@@ -1191,7 +1168,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     return _buildInfoSection(
       icon: Icons.contact_phone,
       title: AppLocalizations.of(context)!.commonContact,
-      child: _buildFormattedContact(poi.primaryContact?.phone ?? 'Aucun contact disponible'),
+      child: _buildFormattedContact(
+        poi.primaryContact?.phone ?? 'Aucun contact disponible',
+      ),
     );
   }
 
@@ -1279,7 +1258,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     children: [
                       Text(
                         operator.name ?? 'Opérateur',
-                        style:  TextStyle(
+                        style: TextStyle(
                           fontSize: ResponsiveConstants.body1,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1310,7 +1289,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   if (operator.hasPhone)
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: () => _launchOperatorPhone(operator.displayPhone ?? ''),
+                        onPressed: () =>
+                            _launchOperatorPhone(operator.displayPhone ?? ''),
                         icon: const Icon(Icons.phone, size: 18),
                         label: Text(AppLocalizations.of(context)!.tourCall),
                         style: ElevatedButton.styleFrom(
@@ -1328,7 +1308,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   if (operator.hasEmail)
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: () => _launchOperatorEmail(operator.displayEmail ?? ''),
+                        onPressed: () =>
+                            _launchOperatorEmail(operator.displayEmail ?? ''),
                         icon: const Icon(Icons.email, size: 18),
                         label: Text(AppLocalizations.of(context)!.tourEmail),
                         style: ElevatedButton.styleFrom(
@@ -1369,7 +1350,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.poiCallError(e.toString())),
+            content: Text(
+              AppLocalizations.of(context)!.poiCallError(e.toString()),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -1396,7 +1379,9 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.poiEmailError(e.toString())),
+            content: Text(
+              AppLocalizations.of(context)!.poiEmailError(e.toString()),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -1423,13 +1408,15 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
     );
   }
 
+  // ignore: unused_element
   Widget _buildShareSection(Poi poi) {
     return Container(
       margin: Responsive.symmetric(horizontal: 24),
       child: ElevatedButton.icon(
         onPressed: () {
           HapticFeedback.lightImpact();
-          final shareText = '''
+          final shareText =
+              '''
 🏛️ ${poi.name ?? AppLocalizations.of(context)!.commonUnknownPlace}
 
 📍 ${poi.displayAddress}
@@ -1439,18 +1426,8 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
 
 📱 ${AppLocalizations.of(context)!.commonSharedFrom}
 ''';
-          
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.commonCopiedToClipboard),
-              action: SnackBarAction(
-                label: 'OK',
-                onPressed: () {},
-              ),
-            ),
-          );
-          
-          Clipboard.setData(ClipboardData(text: shareText));
+
+          Share.share(shareText, subject: poi.name);
         },
         icon: const Icon(Icons.share),
         label: Text(AppLocalizations.of(context)!.commonSharePlace),
@@ -1468,21 +1445,30 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
 
   Widget _buildFormattedContact(String contact) {
     final lines = contact.split('\n');
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: lines.map((line) {
         if (line.trim().isEmpty) return SizedBox(height: 4.h);
-        
-        if (line.toLowerCase().contains('telephone') || 
+
+        if (line.toLowerCase().contains('telephone') ||
             line.toLowerCase().contains('téléphone') ||
             line.toLowerCase().contains('tél')) {
-          return _buildContactHeader(AppLocalizations.of(context)!.commonPhone, Icons.phone);
+          return _buildContactHeader(
+            AppLocalizations.of(context)!.commonPhone,
+            Icons.phone,
+          );
         } else if (line.toLowerCase().contains('email')) {
-          return _buildContactHeader(AppLocalizations.of(context)!.commonEmail, Icons.email);
-        } else if (line.toLowerCase().contains('site web') || 
-                   line.toLowerCase().contains('website')) {
-          return _buildContactHeader(AppLocalizations.of(context)!.commonWebsite, Icons.language);
+          return _buildContactHeader(
+            AppLocalizations.of(context)!.commonEmail,
+            Icons.email,
+          );
+        } else if (line.toLowerCase().contains('site web') ||
+            line.toLowerCase().contains('website')) {
+          return _buildContactHeader(
+            AppLocalizations.of(context)!.commonWebsite,
+            Icons.language,
+          );
         } else if (line.startsWith('+') || RegExp(r'^\d').hasMatch(line)) {
           return _buildContactInfo(line, Icons.phone, false);
         } else if (line.contains('@')) {
@@ -1496,10 +1482,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
             padding: Responsive.only(bottom: 4),
             child: Text(
               line,
-              style: TextStyle(
-                color: Colors.grey[700],
-                fontSize: 14.sp,
-              ),
+              style: TextStyle(color: Colors.grey[700], fontSize: 14.sp),
             ),
           );
         }
@@ -1516,7 +1499,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           SizedBox(width: 8.w),
           Text(
             title,
-            style:  TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14.sp,
               color: Color(0xFF3860F8),
@@ -1535,7 +1518,9 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
           HapticFeedback.lightImpact();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${AppLocalizations.of(context)!.commonContact}: $info'),
+              content: Text(
+                '${AppLocalizations.of(context)!.commonContact}: $info',
+              ),
               action: SnackBarAction(
                 label: AppLocalizations.of(context)!.commonCopy,
                 onPressed: () {
@@ -1547,10 +1532,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
         },
         child: Text(
           info.trim(),
-          style: TextStyle(
-            color: Colors.grey[700],
-            fontSize: 14.sp,
-          ),
+          style: TextStyle(color: Colors.grey[700], fontSize: 14.sp),
         ),
       ),
     );
@@ -1586,7 +1568,9 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
               Container(
                 padding: Responsive.all(8),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? const Color(0xFF3860F8)).withValues(alpha: 0.1),
+                  color: (iconColor ?? const Color(0xFF3860F8)).withValues(
+                    alpha: 0.1,
+                  ),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Icon(
@@ -1623,17 +1607,18 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value, {bool isLink = false}) {
+  Widget _buildInfoRow(
+    IconData icon,
+    String label,
+    String value, {
+    bool isLink = false,
+  }) {
     return Padding(
       padding: Responsive.only(bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            size: 18,
-            color: Colors.grey[600],
-          ),
+          Icon(icon, size: 18, color: Colors.grey[600]),
           SizedBox(width: 12.w),
           Expanded(
             child: Column(
@@ -1641,7 +1626,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
               children: [
                 Text(
                   label,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,

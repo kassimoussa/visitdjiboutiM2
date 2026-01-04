@@ -792,6 +792,7 @@
   "reservationsStatusConfirmed": "مؤكدة",
   "reservationsStatusCancelled": "ملغاة",
   "reservationsStatusUnknown": "غير معروف",
+  "reservationsStatusPast": "منتهية",
   "reservationsTypePoi": "مكان",
   "reservationsTypeEvent": "حدث",
   "settingsLanguageFrench": "الفرنسية",
