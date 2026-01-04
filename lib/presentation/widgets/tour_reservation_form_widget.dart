@@ -219,7 +219,7 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
       width: 60.w,
       height: 60.h,
       decoration: BoxDecoration(
-        color: const Color(0xFF3860F8).withOpacity(0.1),
+        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: const Icon(
@@ -411,10 +411,10 @@ class _TourReservationFormWidgetState extends State<TourReservationFormWidget> {
     return Container(
       padding: Responsive.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF3860F8).withOpacity(0.1),
+        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: const Color(0xFF3860F8).withOpacity(0.3),
+          color: const Color(0xFF3860F8).withValues(alpha: 0.3),
         ),
       ),
       child: Row(

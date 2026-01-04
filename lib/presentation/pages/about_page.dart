@@ -28,7 +28,7 @@ class AboutPage extends StatelessWidget {
                 width: 120.w,
                 height: 120.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(60.r),
                 ),
                 child: Center(
@@ -67,7 +67,7 @@ class AboutPage extends StatelessWidget {
               Container(
                 padding: Responsive.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.05),
+                  color: const Color(0xFF3860F8).withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(

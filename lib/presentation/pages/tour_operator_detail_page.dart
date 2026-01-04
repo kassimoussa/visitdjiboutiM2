@@ -199,10 +199,10 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
               duration: const Duration(milliseconds: 200),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.95),
+                  color: Colors.white.withValues(alpha: 0.95),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -248,11 +248,11 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
               left: 8,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -299,10 +299,10 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                   imageUrl: logoUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                   ),
                   errorWidget: (context, url, error) => Container(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     child: const Icon(
                       Icons.business_center,
                       size: 120,
@@ -314,7 +314,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 Icon(
                   Icons.business_center,
                   size: 120,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                 ),
               Container(
                 decoration: BoxDecoration(
@@ -323,7 +323,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.4),
+                      Colors.black.withValues(alpha: 0.4),
                     ],
                     stops: const [0.5, 1.0],
                   ),
@@ -363,7 +363,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -399,7 +399,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                 Container(
                   padding: Responsive.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3860F8).withOpacity(0.1),
+                    color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: const Icon(
@@ -452,7 +452,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -502,7 +502,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -685,7 +685,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -809,10 +809,10 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+          border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -851,7 +851,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         )
                       : Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xFF3860F8).withOpacity(0.1),
+                            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                             borderRadius:  BorderRadius.vertical(top: Radius.circular(12.r)),
                           ),
                           child: const Center(
@@ -876,7 +876,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -924,7 +924,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         Container(
                           padding: Responsive.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF3860F8).withOpacity(0.1),
+                            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
@@ -940,7 +940,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         Container(
                           padding: Responsive.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.1),
+                            color: Colors.grey.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
@@ -1037,7 +1037,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -1162,7 +1162,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         width: 80.w,
                         height: 80.h,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: const Icon(
@@ -1176,7 +1176,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                       width: 80.w,
                       height: 80.h,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF3860F8).withOpacity(0.1),
+                        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: const Icon(
@@ -1233,7 +1233,7 @@ class _TourOperatorDetailPageState extends State<TourOperatorDetailPage> {
                         return Container(
                           padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF3860F8).withOpacity(0.1),
+                            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Text(

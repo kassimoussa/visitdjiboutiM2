@@ -295,7 +295,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -363,10 +363,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
               duration: const Duration(milliseconds: 200),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -379,7 +379,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -408,7 +408,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: ContactOperatorButton(
@@ -427,7 +427,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                         SizedBox(width: ResponsiveConstants.smallSpace),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -452,7 +452,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -469,7 +469,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               right: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -582,7 +582,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       margin: Responsive.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                        color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.6),
                         border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
                       ),
                     ),
@@ -685,7 +685,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Text(
                 event.priceText,
                 style: TextStyle(
-                  color: event.isFree ? Colors.green : const Color(0xFF3860F8),
+                  color: event.isActuallyFree ? Colors.green : const Color(0xFF3860F8),
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -746,7 +746,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
 
   Widget _buildRegistrationButton(Event event) {
-    if (event.hasEnded) {
+    if (event.isActuallyEnded) {
       return Container(
         width: double.infinity,
         padding: Responsive.all(16),
@@ -796,10 +796,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
           width: double.infinity,
           padding: Responsive.all(12),
           decoration: BoxDecoration(
-            color: const Color(0xFF3860F8).withOpacity(0.1),
+            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8.r),
             border: Border.all(
-              color: const Color(0xFF3860F8).withOpacity(0.3),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.3),
             ),
           ),
           child: Row(
@@ -906,9 +906,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
             margin: Responsive.all(16),
             padding: Responsive.all(12),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: Colors.orange.withOpacity(0.3)),
+              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -932,7 +932,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             children: [
               _buildStatusChip(event),
               if (event.isFeatured) _buildFeaturedChip(),
-              if (event.isFree) _buildFreeChip(),
+              if (event.isActuallyFree) _buildFreeChip(),
             ],
           ),
         ),
@@ -955,7 +955,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   Container(
                     padding: Responsive.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: const Icon(
@@ -1002,9 +1002,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   Widget _buildStatusChip(Event event) {
     Color color;
-    if (event.hasEnded) {
+    if (event.isActuallyEnded) {
       color = Colors.grey;
-    } else if (event.isOngoing) {
+    } else if (event.isActuallyOngoing) {
       color = const Color(0xFF009639);
     } else if (event.isSoldOut) {
       color = Colors.red;
@@ -1071,7 +1071,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -1085,7 +1085,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Container(
                 padding: Responsive.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
@@ -1108,12 +1108,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ),
           SizedBox(height: ResponsiveConstants.mediumSpace),
 
-          _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, event.formattedDateRange ?? event.startDate),
+          _buildInfoRow(Icons.calendar_today, AppLocalizations.of(context)!.commonDate, event.calculatedFormattedDateRange),
           SizedBox(height: ResponsiveConstants.smallSpace),
 
           _buildInfoRow(Icons.location_on, AppLocalizations.of(context)!.eventDetailVenue, event.displayLocation),
 
-          if (!event.isFree) ...[
+          if (!event.isActuallyFree) ...[
             SizedBox(height: ResponsiveConstants.smallSpace),
             _buildInfoRow(Icons.attach_money, AppLocalizations.of(context)!.eventDetailPrice, event.priceText),
           ],
@@ -1177,7 +1177,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -1191,7 +1191,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               Container(
                 padding: Responsive.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
@@ -1218,7 +1218,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             height: 250.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.r),
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
@@ -1516,15 +1516,15 @@ class _RegistrationBottomSheetState extends State<_RegistrationBottomSheet> {
                       ),
                       
                       SizedBox(height: 24.h),
-                      
-                      if (!widget.event.isFree)
+
+                      if (!widget.event.isActuallyFree)
                         Container(
                           padding: Responsive.all(16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF3860F8).withOpacity(0.1),
+                            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8.r),
                             border: Border.all(
-                              color: const Color(0xFF3860F8).withOpacity(0.3),
+                              color: const Color(0xFF3860F8).withValues(alpha: 0.3),
                             ),
                           ),
                           child: Row(

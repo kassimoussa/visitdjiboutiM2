@@ -349,7 +349,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                     decoration: BoxDecoration(
                       color: _getStatusColor(
                         reservation.status,
-                      ).withOpacity(0.1),
+                      ).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(
                         color: _getStatusColor(reservation.status),
@@ -367,7 +367,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   Container(
                     padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Row(
@@ -550,7 +550,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   Container(
                     padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: statusColor.withOpacity(0.1),
+                      color: statusColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(color: statusColor),
                     ),
@@ -566,7 +566,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   Container(
                     padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Row(
@@ -718,7 +718,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   Container(
                     padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: statusColor.withOpacity(0.1),
+                      color: statusColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(color: statusColor),
                     ),
@@ -734,7 +734,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   Container(
                     padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Row(

@@ -33,13 +33,13 @@ class ActivityGalleryPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(activityName),
-        backgroundColor: Colors.black.withOpacity(0.3),
+        backgroundColor: Colors.black.withValues(alpha: 0.3),
         foregroundColor: Colors.white,
         elevation: 0,
         leading: Container(
           margin: Responsive.all(8),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withValues(alpha: 0.4),
             shape: BoxShape.circle,
           ),
           child: IconButton(

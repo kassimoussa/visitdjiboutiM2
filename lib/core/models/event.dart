@@ -154,29 +154,121 @@ class Event {
   String get imageUrl => featuredImage?.imageUrl ?? '';
   String get displayLocation => fullLocation ?? location;
   bool get hasMedia => media != null && media!.isNotEmpty;
+
+  // Calcul automatique de formatted_date_range si non fourni par l'API
+  String get calculatedFormattedDateRange {
+    // Si formattedDateRange est déjà fourni par l'API, l'utiliser
+    if (formattedDateRange != null && formattedDateRange!.isNotEmpty) {
+      return formattedDateRange!;
+    }
+
+    // Sinon, calculer à partir de start_date et end_date
+    if (endDate != null && endDate!.isNotEmpty && endDate != startDate) {
+      try {
+        // Parser les dates (format: "2025-12-28")
+        final start = DateTime.parse(startDate);
+        final end = DateTime.parse(endDate!);
+
+        // Formater au format "28/12/2025 - 30/12/2025"
+        final startFormatted = '${start.day.toString().padLeft(2, '0')}/${start.month.toString().padLeft(2, '0')}/${start.year}';
+        final endFormatted = '${end.day.toString().padLeft(2, '0')}/${end.month.toString().padLeft(2, '0')}/${end.year}';
+
+        return '$startFormatted - $endFormatted';
+      } catch (e) {
+        // En cas d'erreur de parsing, retourner juste la date de début
+        return startDate;
+      }
+    }
+
+    // Si pas de end_date ou end_date == start_date, retourner juste start_date
+    return startDate;
+  }
+
   // Note: Use getPriceText(context) instead for localized text
   String get priceText =>
-      isFree ? 'Gratuit' : '${price.toStringAsFixed(0)} DJF';
+      isActuallyFree ? 'Gratuit' : '${price.toStringAsFixed(0)} DJF';
   // Note: Use getStatusText(context) instead for localized text
   String get statusText {
-    if (hasEnded) return 'Terminé';
-    if (isOngoing) return 'En cours';
+    if (isActuallyEnded) return 'Terminé';
+    if (isActuallyOngoing) return 'En cours';
     if (isSoldOut) return 'Complet';
     return 'À venir';
   }
 
-  bool get canRegister => isActive && !hasEnded && !isSoldOut;
+  bool get canRegister => isActive && !isActuallyEnded && !isSoldOut;
+
+  // Calcul automatique si l'événement est gratuit
+  bool get isActuallyFree {
+    // Si is_free est fourni par l'API, l'utiliser
+    if (isFree) return true;
+
+    // Sinon, considérer gratuit si price est null ou 0
+    return price == 0.0;
+  }
+
+  // Calcul automatique du statut de l'événement basé sur les dates
+  bool get isActuallyEnded {
+    // Si has_ended est fourni par l'API, l'utiliser
+    if (hasEnded) return true;
+
+    // Sinon, calculer à partir de end_date ou start_date
+    try {
+      final now = DateTime.now();
+
+      if (endDate != null && endDate!.isNotEmpty) {
+        final end = DateTime.parse(endDate!);
+        // Comparer seulement la date (ignorer l'heure)
+        final endDateOnly = DateTime(end.year, end.month, end.day);
+        final nowDateOnly = DateTime(now.year, now.month, now.day);
+        return nowDateOnly.isAfter(endDateOnly);
+      } else {
+        final start = DateTime.parse(startDate);
+        final startDateOnly = DateTime(start.year, start.month, start.day);
+        final nowDateOnly = DateTime(now.year, now.month, now.day);
+        return nowDateOnly.isAfter(startDateOnly);
+      }
+    } catch (e) {
+      return hasEnded; // Fallback à la valeur de l'API
+    }
+  }
+
+  bool get isActuallyOngoing {
+    // Si is_ongoing est fourni par l'API, l'utiliser
+    if (isOngoing) return true;
+
+    // Sinon, calculer à partir des dates
+    try {
+      final now = DateTime.now();
+      final start = DateTime.parse(startDate);
+      final startDateOnly = DateTime(start.year, start.month, start.day);
+      final nowDateOnly = DateTime(now.year, now.month, now.day);
+
+      if (endDate != null && endDate!.isNotEmpty) {
+        final end = DateTime.parse(endDate!);
+        final endDateOnly = DateTime(end.year, end.month, end.day);
+
+        // En cours si aujourd'hui est entre start_date et end_date (inclusif)
+        return (nowDateOnly.isAtSameMomentAs(startDateOnly) || nowDateOnly.isAfter(startDateOnly)) &&
+               (nowDateOnly.isAtSameMomentAs(endDateOnly) || nowDateOnly.isBefore(endDateOnly));
+      } else {
+        // Si pas de end_date, en cours si c'est aujourd'hui
+        return nowDateOnly.isAtSameMomentAs(startDateOnly);
+      }
+    } catch (e) {
+      return isOngoing; // Fallback à la valeur de l'API
+    }
+  }
 
   // Localized methods
   String getPriceText(BuildContext context) {
-    return isFree
+    return isActuallyFree
         ? AppLocalizations.of(context)!.eventsFree
         : '${price.toStringAsFixed(0)} DJF';
   }
 
   String getStatusText(BuildContext context) {
-    if (hasEnded) return AppLocalizations.of(context)!.eventsPast;
-    if (isOngoing) return AppLocalizations.of(context)!.eventsOngoing;
+    if (isActuallyEnded) return AppLocalizations.of(context)!.eventsPast;
+    if (isActuallyOngoing) return AppLocalizations.of(context)!.eventsOngoing;
     if (isSoldOut) return AppLocalizations.of(context)!.eventsSoldOut;
     return AppLocalizations.of(context)!.eventsUpcoming;
   }

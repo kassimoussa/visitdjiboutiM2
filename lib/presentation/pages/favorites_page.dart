@@ -152,7 +152,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   hintText: MaterialLocalizations.of(context).searchFieldLabel,
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -662,7 +662,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -737,7 +737,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Container(
       padding: Responsive.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(
@@ -755,7 +755,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Container(
       padding: Responsive.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.amber.withOpacity(0.1),
+        color: Colors.amber.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(

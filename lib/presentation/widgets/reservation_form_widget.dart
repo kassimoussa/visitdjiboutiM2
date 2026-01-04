@@ -205,7 +205,7 @@ class _ReservationFormWidgetState extends State<ReservationFormWidget> {
       width: 60.w,
       height: 60.h,
       decoration: BoxDecoration(
-        color: const Color(0xFF3860F8).withOpacity(0.1),
+        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Icon(

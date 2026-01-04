@@ -112,7 +112,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
         color: Colors.orange.shade600,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -143,7 +143,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
               child: Container(
                 padding: Responsive.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(

@@ -109,8 +109,8 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
               padding: Responsive.all(12),
               decoration: BoxDecoration(
                 color: isOnline 
-                  ? Colors.green.withOpacity(0.1)
-                  : Colors.orange.withOpacity(0.1),
+                  ? Colors.green.withValues(alpha: 0.1)
+                  : Colors.orange.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(
                   color: isOnline ? Colors.green : Colors.orange,
@@ -245,8 +245,8 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
               padding: Responsive.all(8),
               decoration: BoxDecoration(
                 color: enabled
-                  ? (isDestructive ? Colors.red.withOpacity(0.1) : const Color(0xFF3860F8).withOpacity(0.1))
-                  : Colors.grey.withOpacity(0.1),
+                  ? (isDestructive ? Colors.red.withValues(alpha: 0.1) : const Color(0xFF3860F8).withValues(alpha: 0.1))
+                  : Colors.grey.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(
@@ -320,7 +320,7 @@ class _OfflineSettingsPageState extends State<OfflineSettingsPage> {
               runSpacing: 8,
               children: regions.map((region) => Chip(
                 label: Text(region),
-                backgroundColor: const Color(0xFF3860F8).withOpacity(0.1),
+                backgroundColor: const Color(0xFF3860F8).withValues(alpha: 0.1),
                 labelStyle: const TextStyle(
                   color: Color(0xFF3860F8),
                   fontWeight: FontWeight.w500,

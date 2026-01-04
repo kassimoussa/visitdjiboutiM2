@@ -317,7 +317,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
         borderRadius: BorderRadius.circular(25.r),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF3860F8).withOpacity(0.3),
+            color: Color(0xFF3860F8).withValues(alpha: 0.3),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
@@ -435,7 +435,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
         Container(
           padding: Responsive.all(6),
           decoration: BoxDecoration(
-            color: Color(0xFF3860F8).withOpacity(0.1),
+            color: Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Icon(

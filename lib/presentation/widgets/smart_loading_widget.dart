@@ -186,7 +186,7 @@ class _AnimatedDotsState extends State<AnimatedDots>
               width: 8.w,
               height: 8.h,
               decoration: BoxDecoration(
-                color: Color(0xFF3860F8).withOpacity(_animations[index].value),
+                color: Color(0xFF3860F8).withValues(alpha: _animations[index].value),
                 shape: BoxShape.circle,
               ),
             );
@@ -253,7 +253,7 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                         height: 150.h,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300]!.withOpacity(_animation.value),
+                          color: Colors.grey[300]!.withValues(alpha: _animation.value),
                           borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
                         ),
                       ),
@@ -263,7 +263,7 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                         height: 20.h,
                         width: double.infinity * 0.7,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300]!.withOpacity(_animation.value),
+                          color: Colors.grey[300]!.withValues(alpha: _animation.value),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                       ),
@@ -273,7 +273,7 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                         height: 16.h,
                         width: double.infinity * 0.9,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300]!.withOpacity(_animation.value),
+                          color: Colors.grey[300]!.withValues(alpha: _animation.value),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                       ),
@@ -285,7 +285,7 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                             height: 24.h,
                             width: 80.w,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300]!.withOpacity(_animation.value),
+                              color: Colors.grey[300]!.withValues(alpha: _animation.value),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),
@@ -294,7 +294,7 @@ class _CardSkeletonLoaderState extends State<CardSkeletonLoader>
                             height: 24.h,
                             width: 60.w,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300]!.withOpacity(_animation.value),
+                              color: Colors.grey[300]!.withValues(alpha: _animation.value),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),

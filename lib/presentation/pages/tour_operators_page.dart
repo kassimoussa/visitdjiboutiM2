@@ -114,7 +114,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           Container(
                             padding: Responsive.all(20),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF3860F8).withOpacity(0.1),
+                              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -145,7 +145,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                               Container(
                                 padding: Responsive.all(8),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: const Icon(
@@ -200,7 +200,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -240,7 +240,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha: 0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -261,7 +261,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           ),
                         ),
                         errorWidget: (context, url, error) => Container(
-                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                           child: const Icon(
                             Icons.business,
                             color: Color(0xFF3860F8),
@@ -328,7 +328,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                 Container(
                   padding: Responsive.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3860F8).withOpacity(0.1),
+                    color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -349,7 +349,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
     return Container(
       padding: Responsive.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF3860F8).withOpacity(0.1),
+        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(

@@ -39,7 +39,7 @@ class _SimpleTourCardState extends State<SimpleTourCard> {
       width: 32.w,
       height: 32.h,
       decoration: BoxDecoration(
-        color: _isFavorite ? Colors.red.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+        color: _isFavorite ? Colors.red.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
       ),
       child: IconButton(
@@ -95,7 +95,7 @@ class _SimpleTourCardState extends State<SimpleTourCard> {
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 8.w,
             offset: Offset(0, 2.h),
           ),
@@ -168,7 +168,7 @@ class _SimpleTourCardState extends State<SimpleTourCard> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
+                colors: [Colors.transparent, Colors.black.withValues(alpha: 0.3)],
               ),
             ),
           ),
@@ -255,7 +255,7 @@ class _SimpleTourCardState extends State<SimpleTourCard> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
-            color: const Color(0xFF009639).withOpacity(0.1),
+            color: const Color(0xFF009639).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Row(
@@ -277,7 +277,7 @@ class _SimpleTourCardState extends State<SimpleTourCard> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
-            color: const Color(0xFF3860F8).withOpacity(0.1),
+            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(

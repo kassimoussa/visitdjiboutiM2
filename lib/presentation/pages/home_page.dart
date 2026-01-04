@@ -785,13 +785,13 @@ class _HomePageState extends State<HomePage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                color.withOpacity(0.9),
-                color.withOpacity(0.7),
+                color.withValues(alpha: 0.9),
+                color.withValues(alpha: 0.7),
               ],
             ),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.3),
+                color: color.withValues(alpha: 0.3),
                 blurRadius: 8.w,
                 offset: Offset(0, 2.h),
               ),
@@ -806,7 +806,7 @@ class _HomePageState extends State<HomePage> {
                   width: 20.w,
                   height: 20.h,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -840,7 +840,7 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       AppLocalizations.of(context)!.homeDiscover,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.w500,
                       ),

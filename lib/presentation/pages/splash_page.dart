@@ -198,7 +198,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                                     BoxShadow(
                                       color: const Color(
                                         0xFF3860F8,
-                                      ).withOpacity(0.15),
+                                      ).withValues(alpha: 0.15),
                                       blurRadius: 30,
                                       offset: const Offset(0, 10),
                                       spreadRadius: 0,
@@ -299,7 +299,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             width: 48.w,
                             height: 48.h,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF009639).withOpacity(0.1),
+                              color: const Color(0xFF009639).withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(

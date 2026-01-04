@@ -89,7 +89,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         children: [
           CircleAvatar(
             radius: ResponsiveConstants.extraLargeIcon + 16.w,
-            backgroundColor: const Color(0xFF3860F8).withOpacity(0.1),
+            backgroundColor: const Color(0xFF3860F8).withValues(alpha: 0.1),
             child: Text(
               _user?.name.isNotEmpty == true ? _user!.name[0].toUpperCase() : '👤',
               style: TextStyle(
@@ -127,7 +127,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               vertical: ResponsiveConstants.tinySpace,
             ),
             decoration: BoxDecoration(
-              color: const Color(0xFF009639).withOpacity(0.1),
+              color: const Color(0xFF009639).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Text(

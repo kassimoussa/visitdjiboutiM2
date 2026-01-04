@@ -99,7 +99,7 @@ class _HelpPageState extends State<HelpPage> {
           Container(
             padding: Responsive.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.05),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.05),
             ),
             child: Column(
               children: [
@@ -273,7 +273,7 @@ class _HelpPageState extends State<HelpPage> {
               width: 48.w,
               height: 48.h,
               decoration: BoxDecoration(
-                color: const Color(0xFF3860F8).withOpacity(0.1),
+                color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Icon(
@@ -316,7 +316,7 @@ class _HelpPageState extends State<HelpPage> {
           child: Container(
             padding: Responsive.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Text(
@@ -332,7 +332,7 @@ class _HelpPageState extends State<HelpPage> {
         leading: Container(
           padding: Responsive.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF3860F8).withOpacity(0.1),
+            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: const Icon(

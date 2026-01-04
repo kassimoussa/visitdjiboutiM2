@@ -182,7 +182,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             _selectedRegion = selected ? region : null;
                           });
                         },
-                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        selectedColor: const Color(0xFF3860F8).withValues(alpha: 0.2),
                         checkmarkColor: const Color(0xFF3860F8),
                       );
                     }).toList(),
@@ -214,7 +214,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             _selectedDifficulty = selected ? difficulty : null;
                           });
                         },
-                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        selectedColor: const Color(0xFF3860F8).withValues(alpha: 0.2),
                         checkmarkColor: const Color(0xFF3860F8),
                       );
                     }).toList(),
@@ -286,7 +286,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 onChanged: _onSearchChanged,
                 decoration: InputDecoration(
                   hintText: 'Rechercher une activité...',
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,

@@ -198,7 +198,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                       Container(
                                         padding: Responsive.all(8),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                                          color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(8.r),
                                         ),
                                         child: const Icon(
@@ -241,7 +241,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                               borderRadius: BorderRadius.circular(16.r),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 10,
                                   offset: const Offset(0, 2),
                                 ),
@@ -255,7 +255,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                     Container(
                                       padding: Responsive.all(8),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFF3860F8).withOpacity(0.1),
+                                        color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(8.r),
                                       ),
                                       child: const Icon(
@@ -338,7 +338,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -351,7 +351,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
@@ -380,7 +380,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
@@ -409,7 +409,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       SizedBox(width: 8.w),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: ContactOperatorButton(
@@ -440,7 +440,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             left: 16,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withValues(alpha: 0.4),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
@@ -460,7 +460,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             right: 16,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withValues(alpha: 0.4),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
@@ -596,7 +596,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         margin: Responsive.symmetric(horizontal: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                          color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.6),
                           border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
                         ),
                       ),
@@ -1105,7 +1105,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           Container(
             padding: Responsive.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: const Icon(
@@ -1155,7 +1155,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           Container(
             padding: Responsive.all(8),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(
@@ -1204,7 +1204,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -1295,7 +1295,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF009639).withOpacity(0.1),
+                        color: const Color(0xFF009639).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Text(
@@ -1429,9 +1429,9 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         Container(
           padding: Responsive.all(16),
           decoration: BoxDecoration(
-            color: Colors.orange.withOpacity(0.1),
+            color: Colors.orange.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: Colors.orange.withOpacity(0.3)),
+            border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
           ),
           child: Text(
             _activity!.cancellationPolicy!,
@@ -1480,7 +1480,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),

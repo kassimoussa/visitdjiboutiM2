@@ -110,14 +110,14 @@ class EventService {
       final rawData = response.data as Map<String, dynamic>;
       final success = rawData['success'] as bool;
       final message = rawData['message'] as String?;
-      
+
       if (success && rawData.containsKey('data')) {
         final dataSection = rawData['data'] as Map<String, dynamic>;
-        
+
         if (dataSection.containsKey('events')) {
           try {
             final eventListData = EventListData.fromJson(dataSection);
-            
+
             // Mettre en cache les événements si la requête est simple (pas de filtres complexes)
             if (useCache && search == null && categoryId == null && page == 1) {
               final currentLang = _localizationService.currentLanguageCode;
@@ -126,7 +126,7 @@ class EventService {
                 languageCode: currentLang,
               );
             }
-            
+
             return ApiResponse<EventListData>(
               success: success,
               message: message,

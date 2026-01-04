@@ -15,11 +15,12 @@ class AuthDecisionPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: Responsive.all(24),
-          child: Column(
-            children: [
-              const Spacer(flex: 2),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: Responsive.all(24),
+            child: Column(
+              children: [
+                SizedBox(height: 40.h),
 
               // Logo
               Container(
@@ -30,7 +31,7 @@ class AuthDecisionPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24.r),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF3860F8).withOpacity(0.15),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.15),
                       blurRadius: 30,
                       offset: const Offset(0, 10),
                     ),
@@ -75,7 +76,7 @@ class AuthDecisionPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
 
-              const Spacer(flex: 3),
+              SizedBox(height: 60.h),
 
               // Sign Up Button
               SizedBox(
@@ -162,7 +163,8 @@ class AuthDecisionPage extends StatelessWidget {
               ),
 
               SizedBox(height: 24.h),
-            ],
+              ],
+            ),
           ),
         ),
       ),

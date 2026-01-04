@@ -110,7 +110,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
             padding: Responsive.all(8),
             decoration: BoxDecoration(
               color: isActive
-                  ? const Color(0xFF3860F8).withOpacity(0.1)
+                  ? const Color(0xFF3860F8).withValues(alpha: 0.1)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(12.r),
             ),

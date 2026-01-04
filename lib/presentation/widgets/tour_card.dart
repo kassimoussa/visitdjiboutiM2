@@ -31,7 +31,7 @@ class _TourCardState extends State<TourCard> {
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 8.w,
             offset: Offset(0, 2.h),
           ),
@@ -125,7 +125,7 @@ class _TourCardState extends State<TourCard> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
+                colors: [Colors.transparent, Colors.black.withValues(alpha: 0.3)],
               ),
             ),
           ),
@@ -268,7 +268,7 @@ class _TourCardState extends State<TourCard> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
-            color: const Color(0xFF009639).withOpacity(0.1),
+            color: const Color(0xFF009639).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
@@ -283,7 +283,7 @@ class _TourCardState extends State<TourCard> {
         /* Container(
           padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
-            color: const Color(0xFF3860F8).withOpacity(0.1),
+            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
@@ -299,7 +299,7 @@ class _TourCardState extends State<TourCard> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Row(
@@ -327,7 +327,7 @@ class _TourCardState extends State<TourCard> {
           width: 32.w,
           height: 32.h,
           decoration: BoxDecoration(
-            color: isFavorite ? Colors.red.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+            color: isFavorite ? Colors.red.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: IconButton(

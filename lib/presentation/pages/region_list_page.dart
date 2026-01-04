@@ -141,7 +141,7 @@ class _RegionListPageState extends State<RegionListPage> {
                   Container(
                     padding: Responsive.all(12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: const Icon(
@@ -224,7 +224,7 @@ class _RegionListPageState extends State<RegionListPage> {
         Container(
           padding: Responsive.all(8),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: Icon(icon, color: color, size: 24),

@@ -351,7 +351,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 },
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.discoverSearchHint,
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -530,7 +530,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                             _selectedRegion = selected ? region : null;
                           });
                         },
-                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        selectedColor: const Color(0xFF3860F8).withValues(alpha: 0.2),
                         checkmarkColor: const Color(0xFF3860F8),
                       );
                     }).toList(),
@@ -565,7 +565,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           },
                           selectedColor: const Color(
                             0xFF3860F8,
-                          ).withOpacity(0.2),
+                          ).withValues(alpha: 0.2),
                           checkmarkColor: const Color(0xFF3860F8),
                         );
                       }).toList(),

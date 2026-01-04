@@ -525,7 +525,7 @@ class _MapPageState extends State<MapPage> {
                               Container(
                                 width: 60.w,
                                 height: 60.h,
-                                color: const Color(0xFF3860F8).withOpacity(0.1),
+                                color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                                 child: const Icon(
                                   Icons.place,
                                   color: Color(0xFF3860F8),
@@ -535,7 +535,7 @@ class _MapPageState extends State<MapPage> {
                       : Container(
                           width: 60.w,
                           height: 60.h,
-                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                           child: const Icon(
                             Icons.place,
                             color: Color(0xFF3860F8),
@@ -637,7 +637,7 @@ class _MapPageState extends State<MapPage> {
                                 height: 60.h,
                                 color: _getContentTypeColor(
                                   content.type,
-                                ).withOpacity(0.1),
+                                ).withValues(alpha: 0.1),
                                 child: Icon(
                                   _getContentTypeIcon(content.type),
                                   color: _getContentTypeColor(content.type),
@@ -649,7 +649,7 @@ class _MapPageState extends State<MapPage> {
                           height: 60.h,
                           color: _getContentTypeColor(
                             content.type,
-                          ).withOpacity(0.1),
+                          ).withValues(alpha: 0.1),
                           child: Icon(
                             _getContentTypeIcon(content.type),
                             color: _getContentTypeColor(content.type),
@@ -670,7 +670,7 @@ class _MapPageState extends State<MapPage> {
                         decoration: BoxDecoration(
                           color: _getContentTypeColor(
                             content.type,
-                          ).withOpacity(0.1),
+                          ).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                         child: Text(
@@ -1144,7 +1144,7 @@ class _MapPageState extends State<MapPage> {
                 onChanged: _showAllContent ? _filterContent : _filterPois,
                 decoration: InputDecoration(
                   hintText: MaterialLocalizations.of(context).searchFieldLabel,
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -1210,8 +1210,8 @@ class _MapPageState extends State<MapPage> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        const Color(0xFF006B96).withOpacity(0.3),
-                        const Color(0xFFE8D5A3).withOpacity(0.3),
+                        const Color(0xFF006B96).withValues(alpha: 0.3),
+                        const Color(0xFFE8D5A3).withValues(alpha: 0.3),
                       ],
                     ),
                   ),
@@ -1319,7 +1319,7 @@ class _MapPageState extends State<MapPage> {
                             leading: CircleAvatar(
                               backgroundColor: const Color(
                                 0xFF3860F8,
-                              ).withOpacity(0.1),
+                              ).withValues(alpha: 0.1),
                               backgroundImage: poi.imageUrl.isNotEmpty
                                   ? NetworkImage(poi.imageUrl)
                                   : null,
@@ -1444,8 +1444,8 @@ class _MapPageState extends State<MapPage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color(0xFF3860F8).withOpacity(0.2),
-                const Color(0xFFE8D5A3).withOpacity(0.2),
+                const Color(0xFF3860F8).withValues(alpha: 0.2),
+                const Color(0xFFE8D5A3).withValues(alpha: 0.2),
               ],
             ),
           ),
@@ -1522,7 +1522,7 @@ class _MapPageState extends State<MapPage> {
                         leading: CircleAvatar(
                           backgroundColor: const Color(
                             0xFF3860F8,
-                          ).withOpacity(0.1),
+                          ).withValues(alpha: 0.1),
                           backgroundImage: poi.imageUrl.isNotEmpty
                               ? NetworkImage(poi.imageUrl)
                               : null,
@@ -1558,7 +1558,7 @@ class _MapPageState extends State<MapPage> {
         Container(
           width: double.infinity,
           padding: Responsive.all(16),
-          color: Colors.orange.withOpacity(0.1),
+          color: Colors.orange.withValues(alpha: 0.1),
           child: Row(
             children: [
               Icon(Icons.wifi_off, color: Colors.orange),

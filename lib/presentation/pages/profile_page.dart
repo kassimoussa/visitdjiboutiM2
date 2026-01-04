@@ -104,13 +104,16 @@ class _ProfilePageState extends State<ProfilePage> {
       slivers: [
         _buildProfileHeader(),
         SliverToBoxAdapter(
-          child: Column(
-            children: [
-              SizedBox(height: ResponsiveConstants.largeSpace),
-              _buildStatsCards(),
-              SizedBox(height: ResponsiveConstants.extraLargeSpace),
-              _buildProfileSections(),
-            ],
+          child: Padding(
+            padding: EdgeInsets.only(bottom: ResponsiveConstants.extraLargeSpace),
+            child: Column(
+              children: [
+                SizedBox(height: ResponsiveConstants.largeSpace),
+                // _buildStatsCards(), // TODO: Temporairement masqué
+                // SizedBox(height: ResponsiveConstants.extraLargeSpace),
+                _buildProfileSections(),
+              ],
+            ),
           ),
         ),
       ],
@@ -140,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildProfileHeader() {
     return SliverAppBar(
-      expandedHeight: 200,
+      expandedHeight: 220,
       pinned: true,
       backgroundColor: const Color(0xFF3860F8),
       foregroundColor: Colors.white,
@@ -159,34 +162,58 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 40.h),
-                CircleAvatar(
-                  radius: 40.r,
-                  backgroundColor: Colors.white.withOpacity(0.2),
-                  child: Text(
-                    _user?.name.isNotEmpty == true ? _user!.name[0].toUpperCase() : '👤',
-                    style:  TextStyle(
-                      fontSize: 32.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                SizedBox(height: 30.h),
+                Container(
+                  width: 90.w,
+                  height: 90.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: Responsive.all(10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.asset(
+                      'assets/images/logo_visitdjibouti.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.travel_explore,
+                        color: Color(0xFF3860F8),
+                        size: 45,
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Text(
                   _user?.name ?? AppLocalizations.of(context)!.profileUser,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.headline6,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                Text(
-                  _user?.email ?? '',
-                  style: TextStyle(
-                    fontSize: ResponsiveConstants.body1,
-                    color: Colors.white.withOpacity(0.9),
+                SizedBox(height: 2.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
+                  child: Text(
+                    _user?.email ?? '',
+                    style: TextStyle(
+                      fontSize: ResponsiveConstants.body2,
+                      color: Colors.white70,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -218,11 +245,12 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 40.h),
+                SizedBox(height: 30.h),
                 Container(
-                  width: 100.w,
-                  height: 100.h,
+                  width: 90.w,
+                  height: 90.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20.r),
@@ -234,7 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  padding: Responsive.all(12),
+                  padding: Responsive.all(10),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
                     child: Image.asset(
@@ -243,26 +271,32 @@ class _ProfilePageState extends State<ProfilePage> {
                       errorBuilder: (context, error, stackTrace) => const Icon(
                         Icons.travel_explore,
                         color: Color(0xFF3860F8),
-                        size: 50,
+                        size: 45,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: ResponsiveConstants.mediumSpace),
+                SizedBox(height: ResponsiveConstants.smallSpace),
                 Text(
                   AppLocalizations.of(context)!.authWelcomeToApp,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: ResponsiveConstants.headline6,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 4.h),
-                Text(
-                  AppLocalizations.of(context)!.profileDiscoverDjibouti,
-                  style:  TextStyle(
-                    fontSize: ResponsiveConstants.body1,
-                    color: Colors.white70,
+                SizedBox(height: 2.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.mediumSpace),
+                  child: Text(
+                    AppLocalizations.of(context)!.profileDiscoverDjibouti,
+                    style: TextStyle(
+                      fontSize: ResponsiveConstants.body2,
+                      color: Colors.white70,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -276,31 +310,70 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildStatsCards() {
     final favoritesCount = _favoritesStats?['total_favorites']?.toString() ?? '0';
     final registrationsCount = _registrationsStats?['total_registrations']?.toString() ?? '0';
-    
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.largeSpace),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildStatCard(
-              title: AppLocalizations.of(context)!.profileFavorites,
-              value: favoritesCount,
-              icon: Icons.favorite,
-              color: Colors.red,
-              onTap: () => _navigateToFavorites(),
+
+    // Liste des cartes statistiques
+    final List<Map<String, dynamic>> statsData = [
+      {
+        'title': AppLocalizations.of(context)!.profileFavorites,
+        'value': favoritesCount,
+        'icon': Icons.favorite,
+        'color': const Color(0xFFE91E63), // Pink
+        'onTap': () => _navigateToFavorites(),
+      },
+      {
+        'title': AppLocalizations.of(context)!.profileEvents,
+        'value': registrationsCount,
+        'icon': Icons.event,
+        'color': const Color(0xFFFF9800), // Orange
+        'onTap': () => _navigateToRegistrations(),
+      },
+      /* // TODO: Décommenter quand les données du backend seront disponibles
+      {
+        'title': 'Réservations',
+        'value': '0', // TODO: Récupérer du backend
+        'icon': Icons.book_online,
+        'color': const Color(0xFF3860F8), // Blue
+        'onTap': () => _navigateToReservations(),
+      },
+      {
+        'title': 'Avis',
+        'value': '0', // TODO: Récupérer du backend
+        'icon': Icons.rate_review,
+        'color': const Color(0xFF9C27B0), // Purple
+        'onTap': null,
+      },
+      {
+        'title': 'Points visités',
+        'value': '0', // TODO: Récupérer du backend
+        'icon': Icons.location_on,
+        'color': const Color(0xFF009639), // Green
+        'onTap': null,
+      },
+      */
+    ];
+
+    return SizedBox(
+      height: 110.h,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.largeSpace),
+        itemCount: statsData.length,
+        itemBuilder: (context, index) {
+          final stat = statsData[index];
+          return Container(
+            width: 100.w,
+            margin: EdgeInsets.only(
+              right: index < statsData.length - 1 ? ResponsiveConstants.smallSpace : 0,
             ),
-          ),
-          SizedBox(width: ResponsiveConstants.mediumSpace),
-          Expanded(
             child: _buildStatCard(
-              title: AppLocalizations.of(context)!.profileEvents,
-              value: registrationsCount,
-              icon: Icons.event,
-              color: Colors.orange,
-              onTap: () => _navigateToRegistrations(),
+              title: stat['title'],
+              value: stat['value'],
+              icon: stat['icon'],
+              color: stat['color'],
+              onTap: stat['onTap'],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -312,43 +385,78 @@ class _ProfilePageState extends State<ProfilePage> {
     required Color color,
     VoidCallback? onTap,
   }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
-      child: Container(
-        padding: EdgeInsets.all(ResponsiveConstants.mediumSpace + 4.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 10.w,
-              offset: Offset(0, 2.h),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: ResponsiveConstants.extraLargeIcon - 16.w, color: color),
-            SizedBox(height: ResponsiveConstants.smallSpace),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: ResponsiveConstants.headline6,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1D2233),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
+        splashColor: color.withValues(alpha: 0.1),
+        highlightColor: color.withValues(alpha: 0.05),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveConstants.smallSpace,
+            vertical: ResponsiveConstants.smallSpace,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.15),
+                spreadRadius: 0,
+                blurRadius: 12.w,
+                offset: Offset(0, 4.h),
               ),
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: ResponsiveConstants.body2,
-                color: Colors.grey[600],
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                spreadRadius: 0,
+                blurRadius: 6.w,
+                offset: Offset(0, 1.h),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.all(ResponsiveConstants.tinySpace + 1.w),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  size: ResponsiveConstants.mediumIcon,
+                  color: color,
+                ),
+              ),
+              SizedBox(height: ResponsiveConstants.tinySpace + 1.h),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: ResponsiveConstants.headline6,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              SizedBox(height: ResponsiveConstants.tinySpace * 0.3),
+              Flexible(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: ResponsiveConstants.caption - 0.5.sp,
+                    color: const Color(0xFF6B7280),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -357,7 +465,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildConversionCard() {
     return Container(
       width: double.infinity,
-      padding: Responsive.all(24),
+      padding: Responsive.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
@@ -371,18 +479,18 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 8.h),
           Text(
             AppLocalizations.of(context)!.profileCreateAccountBenefits,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: ResponsiveConstants.body1,
               color: Colors.grey[700],
-              height: 1.5,
+              height: 1.4,
             ),
           ),
-          SizedBox(height: ResponsiveConstants.largeSpace),
+          SizedBox(height: ResponsiveConstants.mediumSpace),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -397,7 +505,7 @@ class _ProfilePageState extends State<ProfilePage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3860F8),
                 foregroundColor: Colors.white,
-                padding: Responsive.symmetric(vertical: 14),
+                padding: Responsive.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
@@ -412,7 +520,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: ResponsiveConstants.smallSpace),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
@@ -425,7 +533,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: OutlinedButton.styleFrom(
-                padding: Responsive.symmetric(vertical: 14),
+                padding: Responsive.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
@@ -450,6 +558,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.largeSpace),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildSectionItem(
             icon: Icons.person,
@@ -475,7 +584,7 @@ class _ProfilePageState extends State<ProfilePage> {
             subtitle: _localizationService.currentLanguageName,
             onTap: () => _showLanguageDialog(),
           ),
-          SizedBox(height: ResponsiveConstants.largeSpace),
+          SizedBox(height: ResponsiveConstants.extraLargeSpace * 2.5),
           _buildSectionItem(
             icon: Icons.logout,
             title: AppLocalizations.of(context)!.authLogout,
@@ -483,7 +592,6 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: _handleLogout,
             isDestructive: true,
           ),
-          SizedBox(height: ResponsiveConstants.largeSpace),
         ],
       ),
     );
@@ -491,6 +599,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildAnonymousActions() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _buildSectionItem(
           icon: Icons.settings,
@@ -603,6 +712,11 @@ class _ProfilePageState extends State<ProfilePage> {
     Navigator.pushNamed(context, '/main', arguments: 2); // Onglet événements
   }
 
+  void _navigateToReservations() {
+    // Navigation vers la page des réservations
+    Navigator.pushNamed(context, '/reservations');
+  }
+
   void _navigateToPersonalInfo() {
     Navigator.push(
       context,
@@ -643,25 +757,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildLanguageOption(String flag, String name, String code) {
     final isSelected = _localizationService.currentLocale.languageCode == code;
-    
-    return ListTile(
-      leading: Text(flag, style: TextStyle(fontSize: ResponsiveConstants.mediumIcon)),
-      title: Text(
-        name,
-        style: TextStyle(
-          fontSize: ResponsiveConstants.body1,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-        ),
-      ),
-      trailing: isSelected
-          ? const Icon(Icons.check, color: Color(0xFF3860F8))
-          : null,
+
+    return InkWell(
       onTap: () async {
         await _localizationService.setLanguage(code);
         if (mounted) {
           Navigator.pop(context);
           setState(() {}); // Refresh pour mettre à jour l'UI
-          
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(AppLocalizations.of(context)!.profileLanguageChanged(name)),
@@ -674,6 +777,29 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
       },
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: ResponsiveConstants.smallSpace,
+          horizontal: ResponsiveConstants.mediumSpace,
+        ),
+        child: Row(
+          children: [
+            Text(flag, style: TextStyle(fontSize: ResponsiveConstants.mediumIcon)),
+            SizedBox(width: ResponsiveConstants.mediumSpace),
+            Expanded(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: ResponsiveConstants.body1,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check, color: Color(0xFF3860F8)),
+          ],
+        ),
+      ),
     );
   }
 

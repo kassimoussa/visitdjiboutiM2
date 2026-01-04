@@ -222,7 +222,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -284,7 +284,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -370,10 +370,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               duration: const Duration(milliseconds: 200),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -386,7 +386,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -415,7 +415,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: ContactOperatorButton(
@@ -436,7 +436,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         SizedBox(width: ResponsiveConstants.smallSpace),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
@@ -475,7 +475,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -493,7 +493,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               right: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -621,7 +621,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                       margin: Responsive.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
+                        color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.6),
                         border: isActive ? Border.all(color: const Color(0xFF3860F8), width: 2.w) : null,
                       ),
                     ),
@@ -714,7 +714,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               Container(
                 padding: Responsive.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
@@ -766,7 +766,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
               Container(
                 padding: Responsive.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3860F8).withOpacity(0.1),
+                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: const Icon(
@@ -815,7 +815,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           Container(
             padding: Responsive.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: const Icon(
@@ -854,7 +854,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             height: 250.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.r),
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             ),
             child: _buildGoogleMapView(poi),
           ),
@@ -888,8 +888,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  const Color(0xFF3860F8).withOpacity(0.2),
-                  const Color(0xFFE8D5A3).withOpacity(0.2),
+                  const Color(0xFF3860F8).withValues(alpha: 0.2),
+                  const Color(0xFFE8D5A3).withValues(alpha: 0.2),
                 ],
               ),
             ),
@@ -900,7 +900,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   Container(
                     padding: Responsive.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Column(
@@ -1007,8 +1007,8 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  const Color(0xFF3860F8).withOpacity(0.2),
-                  const Color(0xFFE8D5A3).withOpacity(0.2),
+                  const Color(0xFF3860F8).withValues(alpha: 0.2),
+                  const Color(0xFFE8D5A3).withValues(alpha: 0.2),
                 ],
               ),
             ),
@@ -1019,7 +1019,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                   Container(
                     padding: Responsive.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Column(
@@ -1115,7 +1115,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
             Container(
               padding: Responsive.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xFF009639).withOpacity(0.1),
+                color: const Color(0xFF009639).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(
@@ -1157,10 +1157,10 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
           return Container(
             padding: Responsive.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF3860F8).withOpacity(0.1),
+              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20.r),
               border: Border.all(
-                color: const Color(0xFF3860F8).withOpacity(0.3),
+                color: const Color(0xFF3860F8).withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -1247,7 +1247,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                         width: 60.w,
                         height: 60.h,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF3860F8).withOpacity(0.1),
+                          color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: const Icon(
@@ -1263,7 +1263,7 @@ class _PoiDetailPageState extends State<PoiDetailPage> {
                     width: 60.w,
                     height: 60.h,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3860F8).withOpacity(0.1),
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: const Icon(
@@ -1572,7 +1572,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -1586,7 +1586,7 @@ ${poi.shortDescription?.isNotEmpty == true ? poi.shortDescription! : '${AppLocal
               Container(
                 padding: Responsive.all(8),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? const Color(0xFF3860F8)).withOpacity(0.1),
+                  color: (iconColor ?? const Color(0xFF3860F8)).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Icon(

@@ -50,7 +50,13 @@
       "Bash(git push:*)",
       "Bash(xargs:*)",
       "Bash(cat:*)",
-      "Bash(pgrep:*)"
+      "Bash(pgrep:*)",
+      "Bash(while read file)",
+      "Bash(do sed -i 's/\\\\.withOpacity\\(\\\\\\([0-9.]*\\\\\\)\\)/.withValues\\(alpha: \\\\1\\)/g' \"$file\")",
+      "Bash(done)",
+      "Bash(powershell -Command \"Get-ChildItem -Path lib/presentation -Filter *.dart -Recurse | ForEach-Object { \\(Get-Content $_FullName\\) -replace ''\\\\.withOpacity\\\\\\(\\([0-9.]+\\)\\\\\\)'', ''.withValues\\(alpha: $1\\)'' | Set-Content $_FullName }\")",
+      "Bash(do sed -i 's/\\\\.withOpacity\\(\\\\\\([^\\)]*\\\\\\)\\)/.withValues\\(alpha: \\\\1\\)/g' \"$file\")",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

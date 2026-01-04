@@ -30,7 +30,7 @@ class _EventCardState extends State<EventCard> {
         borderRadius: BorderRadius.circular(ResponsiveConstants.mediumRadius),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 8.w,
             offset: Offset(0, 2.h),
           ),
@@ -121,7 +121,7 @@ class _EventCardState extends State<EventCard> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black.withOpacity(0.3)],
+                colors: [Colors.transparent, Colors.black.withValues(alpha: 0.3)],
               ),
             ),
           ),
@@ -178,7 +178,7 @@ class _EventCardState extends State<EventCard> {
             Icon(Icons.calendar_today_outlined, size: ResponsiveConstants.smallIcon, color: Colors.grey[600]),
             SizedBox(width: ResponsiveConstants.tinySpace * 1.5),
             Text(
-              event.formattedDateRange ?? event.startDate,
+              event.calculatedFormattedDateRange,
               style: TextStyle(fontSize: ResponsiveConstants.caption + 1.sp, color: Colors.grey[600], fontWeight: FontWeight.w500),
             ),
           ],
@@ -211,7 +211,7 @@ class _EventCardState extends State<EventCard> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
           decoration: BoxDecoration(
-            color: (event.isFree ? const Color(0xFF009639) : const Color(0xFF3860F8)).withOpacity(0.1),
+            color: (event.isActuallyFree ? const Color(0xFF009639) : const Color(0xFF3860F8)).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: Text(
@@ -219,7 +219,7 @@ class _EventCardState extends State<EventCard> {
             style: TextStyle(
               fontSize: ResponsiveConstants.caption,
               fontWeight: FontWeight.w600,
-              color: event.isFree ? const Color(0xFF009639) : const Color(0xFF3860F8),
+              color: event.isActuallyFree ? const Color(0xFF009639) : const Color(0xFF3860F8),
             ),
           ),
         ),
@@ -227,7 +227,7 @@ class _EventCardState extends State<EventCard> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
-              color: const Color(0xFF0072CE).withOpacity(0.1),
+              color: const Color(0xFF0072CE).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Text(
@@ -243,7 +243,7 @@ class _EventCardState extends State<EventCard> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: ResponsiveConstants.smallSpace, vertical: ResponsiveConstants.tinySpace),
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
+              color: Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
             ),
             child: Row(
@@ -271,7 +271,7 @@ class _EventCardState extends State<EventCard> {
           width: 32.w,
           height: 32.h,
           decoration: BoxDecoration(
-            color: isFavorite ? Colors.red.withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+            color: isFavorite ? Colors.red.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(ResponsiveConstants.smallRadius),
           ),
           child: IconButton(

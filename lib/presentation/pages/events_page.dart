@@ -30,7 +30,7 @@ class _EventsPageState extends State<EventsPage> {
   bool _isLoading = true;
   String? _errorMessage;
   String _selectedCategory = 'Tous';
-  String _selectedStatus = 'upcoming';
+  String _selectedStatus = 'all'; // Afficher tous les événements par défaut
   int _currentPage = 1;
   bool _hasMorePages = false;
   bool _isLoadingMore = false;
@@ -71,9 +71,7 @@ class _EventsPageState extends State<EventsPage> {
     try {
       final ApiResponse<EventListData> response = await RetryHelper.apiCall(
         apiRequest: () => _eventService.getEvents(
-          search: _searchController.text.isEmpty
-              ? null
-              : _searchController.text,
+          search: _searchController.text.isEmpty ? null : _searchController.text,
           categoryId: _selectedCategory == 'Tous'
               ? null
               : _categories
@@ -108,15 +106,6 @@ class _EventsPageState extends State<EventsPage> {
               const Category(id: -1, name: 'Tous', slug: 'tous'),
               ...parentCategories,
             ];
-            print(
-              '[EVENTS PAGE] Catégories reçues: ${eventsData.filters.categories.length}',
-            );
-            print(
-              '[EVENTS PAGE] Catégories parentes: ${parentCategories.length}',
-            );
-            print(
-              '[EVENTS PAGE] Total catégories avec "Tous": ${_categories.length}',
-            );
             _currentPage = eventsData.pagination.currentPage;
           }
           _hasMorePages = eventsData.pagination.hasNextPage;
@@ -197,7 +186,7 @@ class _EventsPageState extends State<EventsPage> {
                 onChanged: _onSearchChanged,
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context)!.eventsSearchHint,
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                  hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -263,7 +252,7 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   bool _hasActiveFilters() {
-    return _selectedCategory != 'Tous' || _selectedStatus != 'upcoming';
+    return _selectedCategory != 'Tous' || _selectedStatus != 'all';
   }
 
   Widget _buildActiveFiltersChips() {
@@ -273,13 +262,13 @@ class _EventsPageState extends State<EventsPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          if (_selectedStatus != 'upcoming')
+          if (_selectedStatus != 'all')
             Chip(
               label: Text(_getStatusLabel(_selectedStatus)),
               deleteIcon: const Icon(Icons.close, size: 18),
               onDeleted: () {
                 setState(() {
-                  _selectedStatus = 'upcoming';
+                  _selectedStatus = 'all';
                 });
                 _loadEvents();
               },
@@ -353,11 +342,11 @@ class _EventsPageState extends State<EventsPage> {
                         onPressed: () {
                           setModalState(() {
                             _selectedCategory = 'Tous';
-                            _selectedStatus = 'upcoming';
+                            _selectedStatus = 'all';
                           });
                           setState(() {
                             _selectedCategory = 'Tous';
-                            _selectedStatus = 'upcoming';
+                            _selectedStatus = 'all';
                           });
                         },
                         child: Text(AppLocalizations.of(context)!.commonReset),
@@ -390,7 +379,7 @@ class _EventsPageState extends State<EventsPage> {
                             _selectedStatus = 'all';
                           });
                         },
-                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        selectedColor: const Color(0xFF3860F8).withValues(alpha: 0.2),
                         checkmarkColor: const Color(0xFF3860F8),
                       ),
                       FilterChip(
@@ -406,7 +395,7 @@ class _EventsPageState extends State<EventsPage> {
                             _selectedStatus = 'upcoming';
                           });
                         },
-                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        selectedColor: const Color(0xFF3860F8).withValues(alpha: 0.2),
                         checkmarkColor: const Color(0xFF3860F8),
                       ),
                       FilterChip(
@@ -422,7 +411,7 @@ class _EventsPageState extends State<EventsPage> {
                             _selectedStatus = 'ongoing';
                           });
                         },
-                        selectedColor: const Color(0xFF3860F8).withOpacity(0.2),
+                        selectedColor: const Color(0xFF3860F8).withValues(alpha: 0.2),
                         checkmarkColor: const Color(0xFF3860F8),
                       ),
                     ],
@@ -461,7 +450,7 @@ class _EventsPageState extends State<EventsPage> {
                           },
                           selectedColor: const Color(
                             0xFF3860F8,
-                          ).withOpacity(0.2),
+                          ).withValues(alpha: 0.2),
                           checkmarkColor: const Color(0xFF3860F8),
                         );
                       }).toList(),
@@ -542,12 +531,12 @@ class _EventsPageState extends State<EventsPage> {
             ),
             if (_searchController.text.isNotEmpty ||
                 _selectedCategory != 'Tous' ||
-                _selectedStatus != 'upcoming')
+                _selectedStatus != 'all')
               TextButton(
                 onPressed: () {
                   _searchController.clear();
                   _selectedCategory = 'Tous';
-                  _selectedStatus = 'upcoming';
+                  _selectedStatus = 'all';
                   _loadEvents();
                 },
                 child: Text(AppLocalizations.of(context)!.eventsClearFilters),

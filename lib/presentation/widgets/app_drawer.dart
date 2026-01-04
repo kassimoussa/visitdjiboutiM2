@@ -228,15 +228,15 @@ class _AppDrawerState extends State<AppDrawer> {
     return Container(
       padding: Responsive.all(12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 16.r,
-            backgroundColor: Colors.white.withOpacity(0.2),
+            backgroundColor: Colors.white.withValues(alpha: 0.2),
             child: Text(
               user?.name.isNotEmpty == true
                   ? user!.name[0].toUpperCase()
@@ -264,7 +264,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 Text(
                   AppLocalizations.of(context)!.drawerConnected,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
+                    color: Colors.white.withValues(alpha: 0.7),
                     fontSize: ResponsiveConstants.caption,
                   ),
                 ),
@@ -295,7 +295,7 @@ class _AppDrawerState extends State<AppDrawer> {
           width: 40.w,
           height: 40.h,
           decoration: BoxDecoration(
-            color: const Color(0xFF3860F8).withOpacity(0.1),
+            color: const Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: Icon(icon, color: const Color(0xFF3860F8), size: 20),

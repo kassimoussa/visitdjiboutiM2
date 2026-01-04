@@ -74,10 +74,10 @@ class _RatingsSummaryWidgetState extends State<RatingsSummaryWidget> {
       child: Container(
         padding: Responsive.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFB800).withOpacity(0.1),
+          color: const Color(0xFFFFB800).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
-            color: const Color(0xFFFFB800).withOpacity(0.3),
+            color: const Color(0xFFFFB800).withValues(alpha: 0.3),
           ),
         ),
         child: hasReviews ? _buildRatingsSummary(context) : _buildBeFirstInvitation(context),
