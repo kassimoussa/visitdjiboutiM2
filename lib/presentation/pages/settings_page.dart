@@ -437,7 +437,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(height: 16.h),
             _buildLanguageOption('🇫🇷', 'Français', 'Français'),
             _buildLanguageOption('🇬🇧', 'English', 'English'),
-            _buildLanguageOption('🇸🇦', 'العربية', 'العربية'),
+            // _buildLanguageOption('🇸🇦', 'العربية', 'العربية'), // Hidden as per request
           ],
         ),
       ),

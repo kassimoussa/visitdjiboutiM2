@@ -748,7 +748,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             _buildLanguageOption('🇫🇷', 'Français', 'fr'),
             _buildLanguageOption('🇺🇸', 'English', 'en'),
-            _buildLanguageOption('🇸🇦', 'العربية', 'ar'),
+            // _buildLanguageOption('🇸🇦', 'العربية', 'ar'), // Hidden as per request
           ],
         ),
       ),

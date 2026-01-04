@@ -946,7 +946,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String reservationsCancelled(int count) {
-    return 'Réservation annulée';
+    return 'Annulées ($count)';
   }
 
   @override

@@ -1873,7 +1873,7 @@ abstract class AppLocalizations {
   /// Cancelled reservations tab
   ///
   /// In fr, this message translates to:
-  /// **'Réservation annulée'**
+  /// **'Annulées ({count})'**
   String reservationsCancelled(int count);
 
   /// No description provided for @reservationsCancelTitle.

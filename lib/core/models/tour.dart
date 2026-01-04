@@ -15,7 +15,15 @@ String? _extractTitleFromTranslations(Map<String, dynamic> json, String? current
     return json['title'] as String;
   }
 
-  // Sinon, chercher dans les traductions
+  // Chercher d'abord dans 'translation' (objet unique, nouveau format API)
+  if (json['translation'] != null && json['translation'] is Map<String, dynamic>) {
+    final translation = json['translation'] as Map<String, dynamic>;
+    if (translation['title'] != null && (translation['title'] as String).isNotEmpty) {
+      return translation['title'] as String;
+    }
+  }
+
+  // Sinon, chercher dans 'translations' (tableau, ancien format)
   final translations = json['translations'];
   if (translations == null || translations is! List || translations.isEmpty) {
     return null;
@@ -39,6 +47,15 @@ String? _extractDescriptionFromTranslations(Map<String, dynamic> json, String? c
     return json['description'] as String;
   }
 
+  // Chercher d'abord dans 'translation' (objet unique, nouveau format API)
+  if (json['translation'] != null && json['translation'] is Map<String, dynamic>) {
+    final translation = json['translation'] as Map<String, dynamic>;
+    if (translation['description'] != null && (translation['description'] as String).isNotEmpty) {
+      return translation['description'] as String;
+    }
+  }
+
+  // Sinon, chercher dans 'translations' (tableau, ancien format)
   final translations = json['translations'];
   if (translations == null || translations is! List || translations.isEmpty) {
     return null;
@@ -133,6 +150,18 @@ TourOperator? _tourOperatorFromJson(dynamic operator) {
   } else if (operator is Map<String, dynamic>) {
     // Patch pour gérer les champs null du tour operator
     final operatorData = Map<String, dynamic>.from(operator);
+
+    // Extraire name et description depuis translation si disponible
+    if (operatorData['translation'] != null && operatorData['translation'] is Map<String, dynamic>) {
+      final translation = operatorData['translation'] as Map<String, dynamic>;
+      if (translation['name'] != null) {
+        operatorData['name'] = translation['name'];
+      }
+      if (translation['description'] != null) {
+        operatorData['description'] = translation['description'];
+      }
+    }
+
     if (operatorData['name'] == null) {
       operatorData['name'] = 'Tour Operator';
     }

@@ -403,7 +403,7 @@
       }
     }
   },
-  "reservationsCancelled": "Réservation annulée",
+  "reservationsCancelled": "Annulées ({count})",
   "@reservationsCancelled": {
     "description": "Cancelled reservations tab",
     "placeholders": {
@@ -794,6 +794,7 @@
   "reservationsStatusConfirmed": "Confirmée",
   "reservationsStatusCancelled": "Annulée",
   "reservationsStatusUnknown": "Inconnue",
+  "reservationsStatusPast": "Passée",
   "reservationsTypePoi": "Lieu",
   "reservationsTypeEvent": "Événement",
   "settingsLanguageFrench": "Français",

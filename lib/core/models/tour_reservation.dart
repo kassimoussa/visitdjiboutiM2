@@ -8,7 +8,7 @@ part 'tour_reservation.g.dart';
 class TourReservation {
   final int id;
   @JsonKey(name: 'tour_id')
-  final int tourId;
+  final int? tourId;
 
   // Utilisateur authentifié (nullable si invité)
   @JsonKey(name: 'app_user_id')
@@ -41,7 +41,7 @@ class TourReservation {
 
   TourReservation({
     required this.id,
-    required this.tourId,
+    this.tourId,
     this.appUserId,
     this.guestName,
     this.guestEmail,
@@ -70,6 +70,9 @@ class TourReservation {
   String get displayStatus => status.label;
   String get displayName => guestName ?? 'Utilisateur authentifié';
   String get displayEmail => guestEmail ?? '';
+
+  // Getter pour obtenir l'ID du tour depuis l'objet tour si tourId est null
+  int? get effectiveTourId => tourId ?? tour?.id;
 }
 
 /// Statuts de réservation

@@ -9,7 +9,7 @@ part of 'tour_reservation.dart';
 TourReservation _$TourReservationFromJson(Map<String, dynamic> json) =>
     TourReservation(
       id: (json['id'] as num).toInt(),
-      tourId: (json['tour_id'] as num).toInt(),
+      tourId: (json['tour_id'] as num?)?.toInt(),
       appUserId: (json['app_user_id'] as num?)?.toInt(),
       guestName: json['guest_name'] as String?,
       guestEmail: json['guest_email'] as String?,

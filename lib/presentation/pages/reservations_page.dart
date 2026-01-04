@@ -18,12 +18,10 @@ class ReservationsPage extends StatefulWidget {
   State<ReservationsPage> createState() => _ReservationsPageState();
 }
 
-class _ReservationsPageState extends State<ReservationsPage>
-    with SingleTickerProviderStateMixin {
+class _ReservationsPageState extends State<ReservationsPage> {
   final ReservationService _reservationService = ReservationService();
   final TourService _tourService = TourService();
   final ActivityService _activityService = ActivityService();
-  late TabController _tabController;
 
   // Réservations POI/Event
   List<Reservation> _allReservations = [];
@@ -43,20 +41,18 @@ class _ReservationsPageState extends State<ReservationsPage>
   List<ActivityRegistration> _pendingActivityRegistrations = [];
   List<ActivityRegistration> _cancelledActivityRegistrations = [];
 
+  // Historique (Passé)
+  List<Reservation> _pastReservations = [];
+  List<TourReservation> _pastTourReservations = [];
+  List<ActivityRegistration> _pastActivityRegistrations = [];
+
   bool _isLoading = true;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
     _loadReservations();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadReservations() async {
@@ -88,7 +84,10 @@ class _ReservationsPageState extends State<ReservationsPage>
           if (poiEventResponse.isSuccess && poiEventResponse.data != null) {
             _allReservations = poiEventResponse.data!.reservations;
             _confirmedReservations = _allReservations
-                .where((r) => r.isConfirmed)
+                .where((r) => r.isConfirmed && !_isPast(r.reservationDate))
+                .toList();
+            _pastReservations = _allReservations
+                .where((r) => r.isConfirmed && _isPast(r.reservationDate))
                 .toList();
             _pendingReservations = _allReservations
                 .where((r) => r.isPending)
@@ -102,7 +101,18 @@ class _ReservationsPageState extends State<ReservationsPage>
           if (tourResponse.success && tourResponse.data.data.isNotEmpty) {
             _allTourReservations = tourResponse.data.data;
             _confirmedTourReservations = _allTourReservations
-                .where((r) => r.status == ReservationStatus.confirmed)
+                .where(
+                  (r) =>
+                      r.status == ReservationStatus.confirmed &&
+                      !_isPast(r.tour?.endDate ?? r.tour?.startDate),
+                )
+                .toList();
+            _pastTourReservations = _allTourReservations
+                .where(
+                  (r) =>
+                      r.status == ReservationStatus.confirmed &&
+                      _isPast(r.tour?.endDate ?? r.tour?.startDate),
+                )
                 .toList();
             _pendingTourReservations = _allTourReservations
                 .where((r) => r.status == ReservationStatus.pending)
@@ -116,7 +126,18 @@ class _ReservationsPageState extends State<ReservationsPage>
           if (activityResponse.success && activityResponse.data.isNotEmpty) {
             _allActivityRegistrations = activityResponse.data;
             _confirmedActivityRegistrations = _allActivityRegistrations
-                .where((r) => r.status == RegistrationStatus.confirmed)
+                .where(
+                  (r) =>
+                      r.status == RegistrationStatus.confirmed &&
+                      !_isPast(r.preferredDate),
+                )
+                .toList();
+            _pastActivityRegistrations = _allActivityRegistrations
+                .where(
+                  (r) =>
+                      r.status == RegistrationStatus.confirmed &&
+                      _isPast(r.preferredDate),
+                )
                 .toList();
             _pendingActivityRegistrations = _allActivityRegistrations
                 .where((r) => r.status == RegistrationStatus.pending)
@@ -164,76 +185,102 @@ class _ReservationsPageState extends State<ReservationsPage>
         title: Text(AppLocalizations.of(context)!.drawerReservations),
         backgroundColor: const Color(0xFF3860F8),
         foregroundColor: Colors.white,
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
-          tabs: [
-            Tab(
-              icon: const Icon(Icons.list),
-              text: AppLocalizations.of(context)!.reservationsAll(
-                _allReservations.length +
-                    _allTourReservations.length +
-                    _allActivityRegistrations.length,
-              ),
-            ),
-            Tab(
-              icon: const Icon(Icons.check_circle),
-              text: AppLocalizations.of(context)!.reservationsConfirmed(
-                _confirmedReservations.length +
-                    _confirmedTourReservations.length +
-                    _confirmedActivityRegistrations.length,
-              ),
-            ),
-            Tab(
-              icon: const Icon(Icons.pending),
-              text: AppLocalizations.of(context)!.reservationsPending(
-                _pendingReservations.length +
-                    _pendingTourReservations.length +
-                    _pendingActivityRegistrations.length,
-              ),
-            ),
-            Tab(
-              icon: const Icon(Icons.cancel),
-              text: AppLocalizations.of(context)!.reservationsCancelled(
-                _cancelledReservations.length +
-                    _cancelledTourReservations.length +
-                    _cancelledActivityRegistrations.length,
-              ),
-            ),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildCombinedReservationsList(
-            _allReservations,
-            _allTourReservations,
-            _allActivityRegistrations,
-            AppLocalizations.of(context)!.reservationsNoneAll,
-          ),
-          _buildCombinedReservationsList(
-            _confirmedReservations,
-            _confirmedTourReservations,
-            _confirmedActivityRegistrations,
-            AppLocalizations.of(context)!.reservationsNoneConfirmed,
-          ),
-          _buildCombinedReservationsList(
-            _pendingReservations,
-            _pendingTourReservations,
-            _pendingActivityRegistrations,
-            AppLocalizations.of(context)!.reservationsNonePending,
-          ),
-          _buildCombinedReservationsList(
-            _cancelledReservations,
-            _cancelledTourReservations,
-            _cancelledActivityRegistrations,
-            AppLocalizations.of(context)!.reservationsNoneCancelled,
-          ),
-        ],
-      ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF3860F8)),
+            )
+          : _errorMessage != null
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
+                  SizedBox(height: ResponsiveConstants.mediumSpace),
+                  Text(
+                    _errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: ResponsiveConstants.body1,
+                    ),
+                  ),
+                  SizedBox(height: ResponsiveConstants.largeSpace),
+                  ElevatedButton(
+                    onPressed: _loadReservations,
+                    child: Text(AppLocalizations.of(context)!.commonRetry),
+                  ),
+                ],
+              ),
+            )
+          : ListView(
+              padding: EdgeInsets.all(ResponsiveConstants.mediumSpace),
+              children: [
+                _buildExpansionTile(
+                  title: AppLocalizations.of(context)!.reservationsTabConfirmed,
+                  icon: Icons.check_circle,
+                  iconColor: Colors.green,
+                  count:
+                      _confirmedReservations.length +
+                      _confirmedTourReservations.length +
+                      _confirmedActivityRegistrations.length,
+                  reservations: _confirmedReservations,
+                  tourReservations: _confirmedTourReservations,
+                  activityRegistrations: _confirmedActivityRegistrations,
+                  emptyMessage: AppLocalizations.of(
+                    context,
+                  )!.reservationsNoneConfirmed,
+                ),
+                SizedBox(height: ResponsiveConstants.smallSpace),
+                _buildExpansionTile(
+                  title: AppLocalizations.of(context)!.reservationsTabPending,
+                  icon: Icons.pending,
+                  iconColor: Colors.orange,
+                  count:
+                      _pendingReservations.length +
+                      _pendingTourReservations.length +
+                      _pendingActivityRegistrations.length,
+                  reservations: _pendingReservations,
+                  tourReservations: _pendingTourReservations,
+                  activityRegistrations: _pendingActivityRegistrations,
+                  emptyMessage: AppLocalizations.of(
+                    context,
+                  )!.reservationsNonePending,
+                ),
+                SizedBox(height: ResponsiveConstants.smallSpace),
+                _buildExpansionTile(
+                  title: AppLocalizations.of(context)!.reservationsTabCancelled,
+                  icon: Icons.cancel,
+                  iconColor: Colors.red,
+                  count:
+                      _cancelledReservations.length +
+                      _cancelledTourReservations.length +
+                      _cancelledActivityRegistrations.length,
+                  reservations: _cancelledReservations,
+                  tourReservations: _cancelledTourReservations,
+                  activityRegistrations: _cancelledActivityRegistrations,
+                  emptyMessage: AppLocalizations.of(
+                    context,
+                  )!.reservationsNoneCancelled,
+                ),
+                SizedBox(height: ResponsiveConstants.smallSpace),
+                _buildExpansionTile(
+                  title: AppLocalizations.of(context)!.eventsPast,
+                  icon: Icons.history,
+                  iconColor: Colors.grey,
+                  count:
+                      _pastReservations.length +
+                      _pastTourReservations.length +
+                      _pastActivityRegistrations.length,
+                  reservations: _pastReservations,
+                  tourReservations: _pastTourReservations,
+                  activityRegistrations: _pastActivityRegistrations,
+                  emptyMessage: AppLocalizations.of(
+                    context,
+                  )!.reservationsEmptyMessage,
+                ),
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: _loadReservations,
         backgroundColor: const Color(0xFF3860F8),
@@ -243,91 +290,164 @@ class _ReservationsPageState extends State<ReservationsPage>
     );
   }
 
-  Widget _buildCombinedReservationsList(
-    List<Reservation> poiEventReservations,
-    List<TourReservation> tourReservations,
-    List<ActivityRegistration> activityRegistrations,
-    String emptyMessage,
-  ) {
-    if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: Color(0xFF3860F8)),
-      );
-    }
-
-    if (_errorMessage != null) {
-      return _buildErrorState();
-    }
-
+  Widget _buildExpansionTile({
+    required String title,
+    required IconData icon,
+    required Color iconColor,
+    required int count,
+    required List<Reservation> reservations,
+    required List<TourReservation> tourReservations,
+    required List<ActivityRegistration> activityRegistrations,
+    required String emptyMessage,
+  }) {
     final totalCount =
-        poiEventReservations.length +
+        reservations.length +
         tourReservations.length +
         activityRegistrations.length;
 
-    if (totalCount == 0) {
-      return _buildEmptyState(emptyMessage);
-    }
-
-    return RefreshIndicator(
-      onRefresh: _loadReservations,
-      color: const Color(0xFF3860F8),
-      child: ListView.builder(
-        padding: Responsive.all(16),
-        itemCount: totalCount,
-        itemBuilder: (context, index) {
-          // D'abord afficher les réservations POI/Event, puis les tours, puis les activités
-          if (index < poiEventReservations.length) {
-            final reservation = poiEventReservations[index];
-            return _buildReservationCard(reservation);
-          } else if (index <
-              poiEventReservations.length + tourReservations.length) {
-            final tourIndex = index - poiEventReservations.length;
-            final tourReservation = tourReservations[tourIndex];
-            return _buildTourReservationCard(tourReservation);
-          } else {
-            final activityIndex =
-                index - poiEventReservations.length - tourReservations.length;
-            final activityRegistration = activityRegistrations[activityIndex];
-            return _buildActivityRegistrationCard(activityRegistration);
-          }
-        },
+    return Container(
+      margin: EdgeInsets.only(bottom: ResponsiveConstants.mediumSpace),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildReservationsList(
-    List<Reservation> reservations,
-    String emptyMessage,
-  ) {
-    if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: Color(0xFF3860F8)),
-      );
-    }
-
-    if (_errorMessage != null) {
-      return _buildErrorState();
-    }
-
-    if (reservations.isEmpty) {
-      return _buildEmptyState(emptyMessage);
-    }
-
-    return RefreshIndicator(
-      onRefresh: _loadReservations,
-      color: const Color(0xFF3860F8),
-      child: ListView.builder(
-        padding: Responsive.all(16),
-        itemCount: reservations.length,
-        itemBuilder: (context, index) {
-          final reservation = reservations[index];
-          return _buildReservationCard(reservation);
-        },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: ExpansionTile(
+          initiallyExpanded: totalCount > 0,
+          backgroundColor: Colors.white,
+          collapsedBackgroundColor: Colors.white,
+          tilePadding: EdgeInsets.symmetric(
+            horizontal: ResponsiveConstants.mediumSpace,
+            vertical: ResponsiveConstants.tinySpace,
+          ),
+          childrenPadding: EdgeInsets.symmetric(
+            horizontal: ResponsiveConstants.mediumSpace,
+            vertical: ResponsiveConstants.smallSpace,
+          ),
+          leading: Container(
+            padding: EdgeInsets.all(10.sp),
+            decoration: BoxDecoration(
+              color: iconColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Icon(icon, color: iconColor, size: 24.sp),
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: ResponsiveConstants.subtitle2,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF1D2233),
+            ),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      iconColor.withValues(alpha: 0.15),
+                      iconColor.withValues(alpha: 0.25),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
+                    color: iconColor.withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
+                ),
+                child: Text(
+                  '$count',
+                  style: TextStyle(
+                    fontSize: ResponsiveConstants.body1,
+                    fontWeight: FontWeight.bold,
+                    color: iconColor,
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
+            ],
+          ),
+          children: [
+            if (totalCount == 0)
+              Container(
+                padding: EdgeInsets.all(ResponsiveConstants.extraLargeSpace),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(20.sp),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(icon, size: 40.sp, color: Colors.grey[400]),
+                    ),
+                    SizedBox(height: ResponsiveConstants.mediumSpace),
+                    Text(
+                      emptyMessage,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: ResponsiveConstants.body2,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else ...[
+              SizedBox(height: ResponsiveConstants.tinySpace),
+              ...reservations.map(
+                (reservation) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveConstants.smallSpace,
+                  ),
+                  child: _buildReservationCard(reservation),
+                ),
+              ),
+              ...tourReservations.map(
+                (tourReservation) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveConstants.smallSpace,
+                  ),
+                  child: _buildTourReservationCard(tourReservation),
+                ),
+              ),
+              ...activityRegistrations.map(
+                (activityRegistration) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveConstants.smallSpace,
+                  ),
+                  child: _buildActivityRegistrationCard(activityRegistration),
+                ),
+              ),
+              SizedBox(height: ResponsiveConstants.tinySpace),
+            ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildReservationCard(Reservation reservation) {
+    final isPast = _isPast(reservation.reservationDate);
+    final statusText = (isPast && reservation.isConfirmed)
+        ? AppLocalizations.of(context)!.reservationsStatusPast
+        : reservation.statusText;
+    final statusColor = (isPast && reservation.isConfirmed)
+        ? Colors.grey
+        : _getStatusColor(reservation.status);
+
     return Card(
       margin: Responsive.only(bottom: 16),
       elevation: 4,
@@ -347,18 +467,14 @@ class _ReservationsPageState extends State<ReservationsPage>
                   Container(
                     padding: Responsive.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: _getStatusColor(
-                        reservation.status,
-                      ).withValues(alpha: 0.1),
+                      color: statusColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.r),
-                      border: Border.all(
-                        color: _getStatusColor(reservation.status),
-                      ),
+                      border: Border.all(color: statusColor),
                     ),
                     child: Text(
-                      reservation.statusText,
+                      statusText,
                       style: TextStyle(
-                        color: _getStatusColor(reservation.status),
+                        color: statusColor,
                         fontSize: ResponsiveConstants.caption,
                         fontWeight: FontWeight.bold,
                       ),
@@ -487,7 +603,7 @@ class _ReservationsPageState extends State<ReservationsPage>
               ],
 
               // Actions
-              if (reservation.isPending) ...[
+              if (reservation.isPending && !isPast) ...[
                 SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -524,12 +640,24 @@ class _ReservationsPageState extends State<ReservationsPage>
   }
 
   Widget _buildTourReservationCard(TourReservation reservation) {
-    final tour = reservation.tour;
-    final statusColor = reservation.status == ReservationStatus.confirmed
-        ? Colors.green
-        : reservation.status == ReservationStatus.pending
-        ? Colors.orange
-        : Colors.red;
+    final isPast = _isPast(
+      reservation.tour?.endDate ?? reservation.tour?.startDate,
+    );
+
+    Color statusColor;
+    String statusText;
+
+    if (isPast && reservation.status == ReservationStatus.confirmed) {
+      statusColor = Colors.grey;
+      statusText = AppLocalizations.of(context)!.reservationsStatusPast;
+    } else {
+      statusColor = reservation.status == ReservationStatus.confirmed
+          ? Colors.green
+          : reservation.status == ReservationStatus.pending
+          ? Colors.orange
+          : Colors.red;
+      statusText = reservation.displayStatus;
+    }
 
     return Card(
       margin: Responsive.only(bottom: 16),
@@ -555,7 +683,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                       border: Border.all(color: statusColor),
                     ),
                     child: Text(
-                      reservation.displayStatus,
+                      statusText,
                       style: TextStyle(
                         color: statusColor,
                         fontSize: ResponsiveConstants.caption,
@@ -597,7 +725,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          tour?.displayTitle ??
+                          reservation.tour?.displayTitle ??
                               AppLocalizations.of(
                                 context,
                               )!.reservationsTourUnavailable,
@@ -619,11 +747,11 @@ class _ReservationsPageState extends State<ReservationsPage>
                       ],
                     ),
                   ),
-                  if (tour?.featuredImage?.url != null)
+                  if (reservation.tour?.featuredImage?.url != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.r),
                       child: CachedImageWidget(
-                        imageUrl: tour!.featuredImage!.url,
+                        imageUrl: reservation.tour!.featuredImage!.url,
                         width: 60.w,
                         height: 60.h,
                         fit: BoxFit.cover,
@@ -635,11 +763,15 @@ class _ReservationsPageState extends State<ReservationsPage>
               SizedBox(height: ResponsiveConstants.smallSpace),
 
               // Informations de réservation
-              if (tour?.startDate != null && tour?.endDate != null)
+              if (reservation.tour?.startDate != null &&
+                  reservation.tour?.endDate != null)
                 _buildInfoRow(
                   Icons.calendar_today,
                   AppLocalizations.of(context)!.reservationsDates,
-                  _formatDateRange(tour!.startDate, tour.endDate),
+                  _formatDateRange(
+                    reservation.tour!.startDate,
+                    reservation.tour!.endDate,
+                  ),
                 ),
               _buildInfoRow(
                 Icons.people,
@@ -653,8 +785,8 @@ class _ReservationsPageState extends State<ReservationsPage>
                   reservation.notes!,
                 ),
 
-              // Actions (similaire aux réservations POI/Event)
-              if (reservation.canCancel) ...[
+              // Actions
+              if (reservation.canCancel && !isPast) ...[
                 SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -693,11 +825,22 @@ class _ReservationsPageState extends State<ReservationsPage>
   }
 
   Widget _buildActivityRegistrationCard(ActivityRegistration registration) {
-    final statusColor = registration.status == RegistrationStatus.confirmed
-        ? Colors.green
-        : registration.status == RegistrationStatus.pending
-        ? Colors.orange
-        : Colors.red;
+    final isPast = _isPast(registration.preferredDate);
+
+    Color statusColor;
+    String statusText;
+
+    if (isPast && registration.status == RegistrationStatus.confirmed) {
+      statusColor = Colors.grey;
+      statusText = AppLocalizations.of(context)!.reservationsStatusPast;
+    } else {
+      statusColor = registration.status == RegistrationStatus.confirmed
+          ? Colors.green
+          : registration.status == RegistrationStatus.pending
+          ? Colors.orange
+          : Colors.red;
+      statusText = registration.displayStatus;
+    }
 
     return Card(
       margin: Responsive.only(bottom: 16),
@@ -723,7 +866,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                       border: Border.all(color: statusColor),
                     ),
                     child: Text(
-                      registration.displayStatus,
+                      statusText,
                       style: TextStyle(
                         color: statusColor,
                         fontSize: ResponsiveConstants.caption,
@@ -845,7 +988,7 @@ class _ReservationsPageState extends State<ReservationsPage>
               ],
 
               // Actions
-              if (registration.canCancel) ...[
+              if (registration.canCancel && !isPast) ...[
                 SizedBox(height: ResponsiveConstants.smallSpace),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -918,70 +1061,6 @@ class _ReservationsPageState extends State<ReservationsPage>
     );
   }
 
-  Widget _buildErrorState() {
-    return Center(
-      child: Padding(
-        padding: Responsive.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
-            SizedBox(height: ResponsiveConstants.mediumSpace),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: ResponsiveConstants.body1,
-              ),
-            ),
-            SizedBox(height: 24.h),
-            ElevatedButton(
-              onPressed: _loadReservations,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF3860F8),
-                foregroundColor: Colors.white,
-              ),
-              child: Text(AppLocalizations.of(context)!.reservationsRetry),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState(String message) {
-    return Center(
-      child: Padding(
-        padding: Responsive.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.event_note, size: 64, color: Colors.grey[400]),
-            SizedBox(height: ResponsiveConstants.mediumSpace),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: ResponsiveConstants.subtitle2,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: ResponsiveConstants.smallSpace),
-            Text(
-              AppLocalizations.of(context)!.reservationsEmptyMessage,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: ResponsiveConstants.body2,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Color _getStatusColor(String status) {
     switch (status) {
       case 'confirmed':
@@ -1005,6 +1084,11 @@ class _ReservationsPageState extends State<ReservationsPage>
   }
 
   Widget _buildReservationDetailsModal(Reservation reservation) {
+    final isPast = _isPast(reservation.reservationDate);
+    final statusText = (isPast && reservation.isConfirmed)
+        ? AppLocalizations.of(context)!.reservationsStatusPast
+        : reservation.statusText;
+
     return Container(
       margin: Responsive.all(16),
       decoration: BoxDecoration(
@@ -1065,7 +1149,7 @@ class _ReservationsPageState extends State<ReservationsPage>
             ),
             _buildDetailRow(
               AppLocalizations.of(context)!.reservationsDetailStatus,
-              reservation.statusText,
+              statusText,
             ),
             if (reservation.notes?.isNotEmpty == true)
               _buildDetailRow(
@@ -1091,7 +1175,7 @@ class _ReservationsPageState extends State<ReservationsPage>
             SizedBox(height: ResponsiveConstants.mediumSpace),
 
             // Actions
-            if (reservation.isPending)
+            if (reservation.isPending && !isPast)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -1171,7 +1255,9 @@ class _ReservationsPageState extends State<ReservationsPage>
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
-          AppLocalizations.of(context)!.reservationsCancelConfirm(reservation.confirmationNumber),
+          AppLocalizations.of(
+            context,
+          )!.reservationsCancelConfirm(reservation.confirmationNumber),
         ),
         actions: [
           TextButton(
@@ -1199,7 +1285,9 @@ class _ReservationsPageState extends State<ReservationsPage>
         if (response.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${response.message ?? AppLocalizations.of(context)!.reservationsCancelled}'),
+              content: Text(
+                '${response.message ?? AppLocalizations.of(context)!.reservationsCancelled}',
+              ),
               backgroundColor: Colors.green,
             ),
           );
@@ -1207,7 +1295,10 @@ class _ReservationsPageState extends State<ReservationsPage>
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsCancelError),
+              content: Text(
+                response.message ??
+                    AppLocalizations.of(context)!.reservationsCancelError,
+              ),
               backgroundColor: Colors.red,
             ),
           );
@@ -1254,7 +1345,10 @@ class _ReservationsPageState extends State<ReservationsPage>
         if (response.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.message ?? AppLocalizations.of(context)!.reservationsDeleted),
+              content: Text(
+                response.message ??
+                    AppLocalizations.of(context)!.reservationsDeleted,
+              ),
               backgroundColor: Colors.green,
             ),
           );
@@ -1263,7 +1357,8 @@ class _ReservationsPageState extends State<ReservationsPage>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                response.message ?? AppLocalizations.of(context)!.reservationsDeleteError,
+                response.message ??
+                    AppLocalizations.of(context)!.reservationsDeleteError,
               ),
               backgroundColor: Colors.red,
             ),
@@ -1275,6 +1370,17 @@ class _ReservationsPageState extends State<ReservationsPage>
 
   // Méthodes pour les réservations de tours
   void _showTourReservationDetails(TourReservation reservation) {
+    final isPast = _isPast(
+      reservation.tour?.endDate ?? reservation.tour?.startDate,
+    );
+
+    String statusText;
+    if (isPast && reservation.status == ReservationStatus.confirmed) {
+      statusText = AppLocalizations.of(context)!.reservationsStatusPast;
+    } else {
+      statusText = reservation.displayStatus;
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1315,7 +1421,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                 // Statut
                 _buildDetailRow(
                   AppLocalizations.of(context)!.reservationsDetailStatus,
-                  reservation.displayStatus,
+                  statusText,
                 ),
                 const Divider(),
 
@@ -1329,7 +1435,10 @@ class _ReservationsPageState extends State<ReservationsPage>
                       reservation.tour!.endDate != null)
                     _buildDetailRow(
                       AppLocalizations.of(context)!.reservationsDates,
-                      _formatDateRange(reservation.tour!.startDate, reservation.tour!.endDate),
+                      _formatDateRange(
+                        reservation.tour!.startDate,
+                        reservation.tour!.endDate,
+                      ),
                     ),
                   const Divider(),
                 ],
@@ -1350,13 +1459,8 @@ class _ReservationsPageState extends State<ReservationsPage>
                   ),
                 const Divider(),
 
-                // Informations utilisateur
+                // Information utilisateur
                 if (reservation.isGuest) ...[
-                  _buildDetailRow(
-                    AppLocalizations.of(context)!.reservationsDetailName,
-                    reservation.guestName ??
-                        AppLocalizations.of(context)!.reservationsNA,
-                  ),
                   if (reservation.guestEmail != null)
                     _buildDetailRow(
                       AppLocalizations.of(context)!.reservationsDetailEmail,
@@ -1372,12 +1476,13 @@ class _ReservationsPageState extends State<ReservationsPage>
 
                 // Dates système
                 if (reservation.createdAt != null)
-                  _buildDetailRow(AppLocalizations.of(context)!.reservationsCreatedAt, reservation.createdAt!),
-                if (reservation.updatedAt != null)
-                  _buildDetailRow(AppLocalizations.of(context)!.reservationsUpdatedAt, reservation.updatedAt!),
+                  _buildDetailRow(
+                    AppLocalizations.of(context)!.reservationsCreatedAt,
+                    _formatDate(reservation.createdAt),
+                  ),
 
                 // Actions
-                if (reservation.canCancel) ...[
+                if (reservation.canCancel && !isPast) ...[
                   SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
@@ -1431,7 +1536,9 @@ class _ReservationsPageState extends State<ReservationsPage>
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsCancelTitle),
         content: Text(
-          AppLocalizations.of(context)!.reservationsTourCancelConfirm(reservation.id.toString()),
+          AppLocalizations.of(
+            context,
+          )!.reservationsTourCancelConfirm(reservation.id.toString()),
         ),
         actions: [
           TextButton(
@@ -1458,19 +1565,13 @@ class _ReservationsPageState extends State<ReservationsPage>
           if (response.success) {
             final message = response.message;
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: Colors.green,
-              ),
+              SnackBar(content: Text(message), backgroundColor: Colors.green),
             );
             _loadReservations(); // Recharger la liste
           } else {
             final message = response.message;
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: Colors.red,
-              ),
+              SnackBar(content: Text(message), backgroundColor: Colors.red),
             );
           }
         }
@@ -1497,7 +1598,9 @@ class _ReservationsPageState extends State<ReservationsPage>
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.reservationsDeleteTitle),
         content: Text(
-          AppLocalizations.of(context)!.reservationsTourDeleteConfirm(reservation.id.toString()),
+          AppLocalizations.of(
+            context,
+          )!.reservationsTourDeleteConfirm(reservation.id.toString()),
         ),
         actions: [
           TextButton(
@@ -1561,6 +1664,15 @@ class _ReservationsPageState extends State<ReservationsPage>
 
   // Méthodes pour les inscriptions aux activités
   void _showActivityRegistrationDetails(ActivityRegistration registration) {
+    final isPast = _isPast(registration.preferredDate);
+
+    String statusText;
+    if (isPast && registration.status == RegistrationStatus.confirmed) {
+      statusText = AppLocalizations.of(context)!.reservationsStatusPast;
+    } else {
+      statusText = registration.displayStatus;
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1584,7 +1696,9 @@ class _ReservationsPageState extends State<ReservationsPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Détails de l\'inscription',
+                      AppLocalizations.of(
+                        context,
+                      )!.reservationsRegistrationDetailsTitle,
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
@@ -1601,7 +1715,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                 // Statut
                 _buildDetailRow(
                   AppLocalizations.of(context)!.reservationsDetailStatus,
-                  registration.displayStatus,
+                  statusText,
                 ),
                 const Divider(),
 
@@ -1648,9 +1762,15 @@ class _ReservationsPageState extends State<ReservationsPage>
                 // Informations utilisateur (si invité)
                 if (registration.isGuest) ...[
                   if (registration.guestEmail != null)
-                    _buildDetailRow(AppLocalizations.of(context)!.reservationsEmail, registration.guestEmail!),
+                    _buildDetailRow(
+                      AppLocalizations.of(context)!.reservationsEmail,
+                      registration.guestEmail!,
+                    ),
                   if (registration.guestPhone != null)
-                    _buildDetailRow(AppLocalizations.of(context)!.reservationsPhone, registration.guestPhone!),
+                    _buildDetailRow(
+                      AppLocalizations.of(context)!.reservationsPhone,
+                      registration.guestPhone!,
+                    ),
                   const Divider(),
                 ],
 
@@ -1677,7 +1797,7 @@ class _ReservationsPageState extends State<ReservationsPage>
                   ),
 
                 // Actions
-                if (registration.canCancel) ...[
+                if (registration.canCancel && !isPast) ...[
                   SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
@@ -1743,7 +1863,9 @@ class _ReservationsPageState extends State<ReservationsPage>
         : AppLocalizations.of(context)!.reservationsRegistrationDeleteTitle;
     final content = isCancel
         ? AppLocalizations.of(context)!.reservationsRegistrationCancelConfirm
-        : AppLocalizations.of(context)!.reservationsRegistrationDeleteConfirm(registration.id.toString());
+        : AppLocalizations.of(
+            context,
+          )!.reservationsRegistrationDeleteConfirm(registration.id.toString());
     final confirmText = isCancel
         ? AppLocalizations.of(context)!.reservationsYesCancel
         : AppLocalizations.of(context)!.reservationsYesDelete;
@@ -1788,7 +1910,13 @@ class _ReservationsPageState extends State<ReservationsPage>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  isCancel ? AppLocalizations.of(context)!.reservationsRegistrationCancelled : AppLocalizations.of(context)!.reservationsRegistrationDeleted,
+                  isCancel
+                      ? AppLocalizations.of(
+                          context,
+                        )!.reservationsRegistrationCancelled
+                      : AppLocalizations.of(
+                          context,
+                        )!.reservationsRegistrationDeleted,
                 ),
                 backgroundColor: Colors.green,
               ),
@@ -1799,8 +1927,12 @@ class _ReservationsPageState extends State<ReservationsPage>
               SnackBar(
                 content: Text(
                   isCancel
-                      ? AppLocalizations.of(context)!.reservationsRegistrationCancelError
-                      : AppLocalizations.of(context)!.reservationsRegistrationDeleteError,
+                      ? AppLocalizations.of(
+                          context,
+                        )!.reservationsRegistrationCancelError
+                      : AppLocalizations.of(
+                          context,
+                        )!.reservationsRegistrationDeleteError,
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -1845,7 +1977,8 @@ class _ReservationsPageState extends State<ReservationsPage>
       final formatter = DateFormat('dd/MM/yyyy');
       return formatter.format(date);
     } catch (e) {
-      return dateInput.toString(); // Retourner la représentation string en cas d'erreur
+      return dateInput
+          .toString(); // Retourner la représentation string en cas d'erreur
     }
   }
 
@@ -1859,7 +1992,9 @@ class _ReservationsPageState extends State<ReservationsPage>
       final end = DateTime.parse(endDate);
 
       // Si même date, afficher une seule fois
-      if (start.year == end.year && start.month == end.month && start.day == end.day) {
+      if (start.year == end.year &&
+          start.month == end.month &&
+          start.day == end.day) {
         final formatter = DateFormat('dd/MM/yyyy');
         return formatter.format(start);
       }
@@ -1869,6 +2004,29 @@ class _ReservationsPageState extends State<ReservationsPage>
       return '${formatter.format(start)} - ${formatter.format(end)}';
     } catch (e) {
       return '$startDate - $endDate';
+    }
+  }
+
+  /// Vérifier si une date est passée
+  bool _isPast(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) return false;
+    try {
+      final date = DateTime.parse(dateStr);
+      // On considère "passé" si la date est strictement avant aujourd'hui (début de journée)
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+
+      // Si c'est une date complète (avec heure), on compare direct
+      // Sinon on compare avec la fin de la journée de la date
+      if (dateStr.contains('T') || dateStr.length > 10) {
+        return date.isBefore(now);
+      } else {
+        // Date "simple" YYYY-MM-DD : on considère passé si c'est hier ou avant
+        final dateSimple = DateTime(date.year, date.month, date.day);
+        return dateSimple.isBefore(today);
+      }
+    } catch (e) {
+      return false;
     }
   }
 }

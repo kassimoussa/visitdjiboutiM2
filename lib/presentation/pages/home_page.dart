@@ -569,9 +569,23 @@ class _HomePageState extends State<HomePage> {
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _featuredPois.isEmpty
               ? Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.homeNoFeaturedPois,
-                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.location_off,
+                        size: 64.sp,
+                        color: Colors.grey[400],
+                      ),
+                      SizedBox(height: ResponsiveConstants.mediumSpace),
+                      Text(
+                        AppLocalizations.of(context)!.homeNoFeaturedPois,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: ResponsiveConstants.body1,
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : NotificationListener<ScrollNotification>(
@@ -619,9 +633,23 @@ class _HomePageState extends State<HomePage> {
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _upcomingEvents.isEmpty
               ? Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.homeNoUpcomingEvents,
-                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.event_busy,
+                        size: 64.sp,
+                        color: Colors.grey[400],
+                      ),
+                      SizedBox(height: ResponsiveConstants.mediumSpace),
+                      Text(
+                        AppLocalizations.of(context)!.homeNoUpcomingEvents,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: ResponsiveConstants.body1,
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : PageView.builder(
@@ -662,9 +690,23 @@ class _HomePageState extends State<HomePage> {
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _featuredTours.isEmpty
               ? Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.homeNoFeaturedTours,
-                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.tour_outlined,
+                        size: 64.sp,
+                        color: Colors.grey[400],
+                      ),
+                      SizedBox(height: ResponsiveConstants.mediumSpace),
+                      Text(
+                        AppLocalizations.of(context)!.homeNoFeaturedTours,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: ResponsiveConstants.body1,
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : PageView.builder(
@@ -705,9 +747,23 @@ class _HomePageState extends State<HomePage> {
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF3860F8)))
           : _featuredActivities.isEmpty
               ? Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.homeNoActivities,
-                    style: TextStyle(color: Colors.grey[600], fontSize: ResponsiveConstants.body2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.directions_run_outlined,
+                        size: 64.sp,
+                        color: Colors.grey[400],
+                      ),
+                      SizedBox(height: ResponsiveConstants.mediumSpace),
+                      Text(
+                        AppLocalizations.of(context)!.homeNoActivities,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: ResponsiveConstants.body1,
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : PageView.builder(
