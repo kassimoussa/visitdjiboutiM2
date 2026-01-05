@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/essentials_service.dart';
 import '../../core/models/embassy.dart';
 import '../../core/models/api_response.dart';
+import 'package:country_flags/country_flags.dart';
 import '../../generated/l10n/app_localizations.dart';
 
 class EmbassiesPage extends StatefulWidget {
@@ -13,13 +14,14 @@ class EmbassiesPage extends StatefulWidget {
   State<EmbassiesPage> createState() => _EmbassiesPageState();
 }
 
-class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProviderStateMixin {
+class _EmbassiesPageState extends State<EmbassiesPage>
+    with SingleTickerProviderStateMixin {
   final EssentialsService _essentialsService = EssentialsService();
   late TabController _tabController;
-  
+
   List<Embassy> _foreignEmbassies = [];
   List<Embassy> _djiboutianEmbassies = [];
-  
+
   bool _isLoadingForeign = true;
   bool _isLoadingDjibouti = true;
   String? _errorMessage;
@@ -38,10 +40,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
   }
 
   Future<void> _loadEmbassies() async {
-    await Future.wait([
-      _loadForeignEmbassies(),
-      _loadDjiboutianEmbassies(),
-    ]);
+    await Future.wait([_loadForeignEmbassies(), _loadDjiboutianEmbassies()]);
   }
 
   Future<void> _loadForeignEmbassies() async {
@@ -51,9 +50,9 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     });
 
     try {
-      final ApiResponse<List<Embassy>> response = 
-          await _essentialsService.getEmbassies(type: 'foreign_in_djibouti');
-      
+      final ApiResponse<List<Embassy>> response = await _essentialsService
+          .getEmbassies(type: 'foreign_in_djibouti');
+
       if (mounted) {
         if (response.isSuccess && response.data != null) {
           setState(() {
@@ -63,7 +62,8 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
         } else {
           setState(() {
             _isLoadingForeign = false;
-            _errorMessage = response.message ?? 'Erreur lors du chargement des ambassades';
+            _errorMessage =
+                response.message ?? 'Erreur lors du chargement des ambassades';
           });
         }
       }
@@ -83,9 +83,9 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     });
 
     try {
-      final ApiResponse<List<Embassy>> response = 
-          await _essentialsService.getEmbassies(type: 'djiboutian_abroad');
-      
+      final ApiResponse<List<Embassy>> response = await _essentialsService
+          .getEmbassies(type: 'djiboutian_abroad');
+
       if (mounted) {
         setState(() {
           if (response.isSuccess && response.data != null) {
@@ -134,13 +134,19 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
             embassies: _foreignEmbassies,
             isLoading: _isLoadingForeign,
             emptyMessage: AppLocalizations.of(context)!.embassiesNoForeignFound,
-            emptySubtitle: AppLocalizations.of(context)!.embassiesNoForeignSubtitle,
+            emptySubtitle: AppLocalizations.of(
+              context,
+            )!.embassiesNoForeignSubtitle,
           ),
           _buildEmbassyList(
             embassies: _djiboutianEmbassies,
             isLoading: _isLoadingDjibouti,
-            emptyMessage: AppLocalizations.of(context)!.embassiesNoDjiboutianFound,
-            emptySubtitle: AppLocalizations.of(context)!.embassiesNoDjiboutianSubtitle,
+            emptyMessage: AppLocalizations.of(
+              context,
+            )!.embassiesNoDjiboutianFound,
+            emptySubtitle: AppLocalizations.of(
+              context,
+            )!.embassiesNoDjiboutianSubtitle,
           ),
         ],
       ),
@@ -172,19 +178,12 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.error_outline,
-                size: 64,
-                color: Colors.grey[400],
-              ),
+              Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
               SizedBox(height: 16.h),
               Text(
                 _errorMessage!,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 16.sp,
-                ),
+                style: TextStyle(color: Colors.grey[600], fontSize: 16.sp),
               ),
               SizedBox(height: 24.h),
               ElevatedButton(
@@ -208,28 +207,18 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.account_balance,
-                size: 64,
-                color: Colors.grey[400],
-              ),
+              Icon(Icons.account_balance, size: 64, color: Colors.grey[400]),
               SizedBox(height: 16.h),
               Text(
                 emptyMessage,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.h),
               Text(
                 emptySubtitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 14.sp,
-                ),
+                style: TextStyle(color: Colors.grey[600], fontSize: 14.sp),
               ),
             ],
           ),
@@ -258,10 +247,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
         leading: _buildCountryFlag(embassy.countryCode),
         title: Text(
           embassy.name,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,14 +287,73 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               ),
           ],
         ),
-        children: [
-          _buildEmbassyDetails(embassy),
-        ],
+        children: [_buildEmbassyDetails(embassy)],
       ),
     );
   }
 
   Widget _buildCountryFlag(String countryCode) {
+    // Map of Alpha-3 to Alpha-2 country codes
+    final Map<String, String> countryCodeMap = {
+      'DJI': 'DJ', // Djibouti
+      'SAU': 'SA', // Saudi Arabia
+      'MAR': 'MA', // Morocco
+      'RUS': 'RU', // Russia
+      'YEM': 'YE', // Yemen
+      'FRA': 'FR', // France
+      'USA': 'US', // United States
+      'CHN': 'CN', // China
+      'ETH': 'ET', // Ethiopia
+      'SOM': 'SO', // Somalia
+      'DEU': 'DE', // Germany
+      'GBR': 'GB', // United Kingdom
+      'JPN': 'JP', // Japan
+      'QAT': 'QA', // Qatar
+      'KWT': 'KW', // Kuwait
+      'EGY': 'EG', // Egypt
+      'KEN': 'KE', // Kenya
+      'ESP': 'ES', // Spain
+      'ITA': 'IT', // Italy
+      'TUR': 'TR', // Turkey
+      'ARE': 'AE', // UAE
+      'IND': 'IN', // India
+      'BEL': 'BE', // Belgium
+      'CAN': 'CA', // Canada
+      'CHE': 'CH', // Switzerland
+      'NLD': 'NL', // Netherlands
+      'SWE': 'SE', // Sweden
+      'PAK': 'PK', // Pakistan
+      'SDN': 'SD', // Sudan
+      'SSD': 'SS', // South Sudan
+      'ERI': 'ER', // Eritrea
+      'CUB': 'CU', // Cuba
+      'CIV': 'CI', // Ivory Coast (Côte d'Ivoire)
+      'PSE': 'PS', // Palestine
+    };
+
+    final alpha2Code = countryCodeMap[countryCode.toUpperCase()];
+
+    if (alpha2Code != null) {
+      return Container(
+        width: 50.w,
+        height: 50.h,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: Colors.white, // White background for flags
+          borderRadius: BorderRadius.circular(25.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: CountryFlag.fromCountryCode(alpha2Code),
+      );
+    }
+
+    // Fallback if no flag found
     return Container(
       width: 50.w,
       height: 50.h,
@@ -341,40 +386,60 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (embassy.address != null) ...[
-          _buildDetailRow(Icons.location_on, 'Adresse complète', embassy.address!),
+          _buildDetailRow(
+            Icons.location_on,
+            'Adresse complète',
+            embassy.address!,
+          ),
           SizedBox(height: 12.h),
         ],
-        
+
         if (embassy.postalBox != null) ...[
-          _buildDetailRow(Icons.markunread_mailbox, 'Boîte Postale', embassy.postalBox!),
+          _buildDetailRow(
+            Icons.markunread_mailbox,
+            'Boîte Postale',
+            embassy.postalBox!,
+          ),
           SizedBox(height: 12.h),
         ],
-        
+
         if (embassy.primaryPhone.isNotEmpty) ...[
           _buildDetailRow(Icons.phone, 'Téléphone', embassy.primaryPhone),
           SizedBox(height: 12.h),
         ],
-        
+
         if (embassy.phones.length > 1) ...[
-          _buildDetailRow(Icons.phone_in_talk, 'Autres téléphones', embassy.phones.skip(1).join(', ')),
+          _buildDetailRow(
+            Icons.phone_in_talk,
+            'Autres téléphones',
+            embassy.phones.skip(1).join(', '),
+          ),
           SizedBox(height: 12.h),
         ],
-        
+
         if (embassy.fax != null) ...[
           _buildDetailRow(Icons.fax, 'Fax', embassy.fax!),
           SizedBox(height: 12.h),
         ],
-        
+
         if (embassy.primaryEmail.isNotEmpty) ...[
-          _buildDetailRow(Icons.email, AppLocalizations.of(context)!.embassiesEmail, embassy.primaryEmail),
+          _buildDetailRow(
+            Icons.email,
+            AppLocalizations.of(context)!.embassiesEmail,
+            embassy.primaryEmail,
+          ),
           SizedBox(height: 12.h),
         ],
-        
+
         if (embassy.website != null) ...[
-          _buildDetailRow(Icons.language, AppLocalizations.of(context)!.embassiesWebsite, embassy.website!),
+          _buildDetailRow(
+            Icons.language,
+            AppLocalizations.of(context)!.embassiesWebsite,
+            embassy.website!,
+          ),
           SizedBox(height: 16.h),
         ],
-        
+
         // Boutons d'action
         Row(
           children: [
@@ -390,11 +455,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
                   ),
                 ),
               ),
-            
-            if (embassy.primaryPhone.isNotEmpty && 
+
+            if (embassy.primaryPhone.isNotEmpty &&
                 (embassy.primaryEmail.isNotEmpty || embassy.website != null))
               SizedBox(width: 8.w),
-            
+
             if (embassy.primaryEmail.isNotEmpty)
               Expanded(
                 child: ElevatedButton.icon(
@@ -407,10 +472,10 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
                   ),
                 ),
               ),
-            
+
             if (embassy.primaryEmail.isNotEmpty && embassy.website != null)
               SizedBox(width: 8.w),
-            
+
             if (embassy.website != null)
               Expanded(
                 child: OutlinedButton.icon(
@@ -438,11 +503,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
             color: Color(0xFF3860F8).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6.r),
           ),
-          child: Icon(
-            icon,
-            size: 18,
-            color: Color(0xFF3860F8),
-          ),
+          child: Icon(icon, size: 18, color: Color(0xFF3860F8)),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -460,10 +521,7 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
               SizedBox(height: 2.h),
               Text(
                 value,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -481,7 +539,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.embassiesCannotOpenPhone)),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.embassiesCannotOpenPhone,
+            ),
+          ),
         );
       }
     }
@@ -496,7 +558,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.embassiesCannotOpenEmail)),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.embassiesCannotOpenEmail,
+            ),
+          ),
         );
       }
     }
@@ -511,7 +577,11 @@ class _EmbassiesPageState extends State<EmbassiesPage> with SingleTickerProvider
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.embassiesCannotOpenWebsite)),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.embassiesCannotOpenWebsite,
+            ),
+          ),
         );
       }
     }
