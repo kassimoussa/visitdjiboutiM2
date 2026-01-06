@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../../generated/l10n/app_localizations.dart';
 import '../../core/utils/responsive.dart';
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
+
+  @override
+  State<AboutPage> createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+  String _version = '1.0.0';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() {
+        _version = packageInfo.version;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +91,7 @@ class AboutPage extends StatelessWidget {
 
               // Version
               Text(
-                AppLocalizations.of(context)!.aboutVersion('1.0.0'),
+                AppLocalizations.of(context)!.aboutVersion(_version),
                 style: TextStyle(
                   fontSize: ResponsiveConstants.body1,
                   color: Colors.grey[600],

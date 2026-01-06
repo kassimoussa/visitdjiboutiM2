@@ -34,7 +34,8 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
 
     try {
       // Ne pas filtrer par featured car l'API retourne un tableau vide avec ce filtre
-      final ApiResponse<List<TourOperator>> response = await _operatorService.getTourOperators();
+      final ApiResponse<List<TourOperator>> response = await _operatorService
+          .getTourOperators();
 
       if (response.isSuccess && response.data != null) {
         if (mounted) {
@@ -47,7 +48,9 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
         if (mounted) {
           setState(() {
             _isLoading = false;
-            _errorMessage = response.message ?? AppLocalizations.of(context)!.tourOperatorsErrorLoading;
+            _errorMessage =
+                response.message ??
+                AppLocalizations.of(context)!.tourOperatorsErrorLoading;
           });
         }
       }
@@ -55,7 +58,9 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _errorMessage = AppLocalizations.of(context)!.tourOperatorsErrorUnexpected('$e');
+          _errorMessage = AppLocalizations.of(
+            context,
+          )!.tourOperatorsErrorUnexpected('$e');
         });
       }
     }
@@ -71,118 +76,114 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
       ),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF3860F8),
-              ),
+              child: CircularProgressIndicator(color: Color(0xFF3860F8)),
             )
           : _errorMessage != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
+                  SizedBox(height: 16.h),
+                  Text(
+                    _errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey[600], fontSize: 16.sp),
+                  ),
+                  SizedBox(height: 16.h),
+                  ElevatedButton(
+                    onPressed: _loadTourOperators,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3860F8),
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.tourOperatorsRetry,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : _operators.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: Responsive.all(20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.business_center,
+                      size: 48,
+                      color: Color(0xFF3860F8),
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    AppLocalizations.of(context)!.tourOperatorsEmptyMessage,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1D2233),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              padding: Responsive.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Colors.grey[400],
+                      Container(
+                        padding: Responsive.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3860F8).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: const Icon(
+                          Icons.groups,
+                          color: Color(0xFF3860F8),
+                          size: 20,
+                        ),
                       ),
-                      SizedBox(height: 16.h),
+                      SizedBox(width: 12.w),
                       Text(
-                        _errorMessage!,
-                        textAlign: TextAlign.center,
+                        AppLocalizations.of(
+                          context,
+                        )!.tourOperatorsPartnersCount('${_operators.length}'),
                         style: TextStyle(
-                          color: Colors.grey[600],
                           fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1D2233),
                         ),
-                      ),
-                      SizedBox(height: 16.h),
-                      ElevatedButton(
-                        onPressed: _loadTourOperators,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3860F8),
-                          foregroundColor: Colors.white,
-                        ),
-                        child: Text(AppLocalizations.of(context)!.tourOperatorsRetry),
                       ),
                     ],
                   ),
-                )
-              : _operators.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: Responsive.all(20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF3860F8).withValues(alpha: 0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.business_center,
-                              size: 48,
-                              color: Color(0xFF3860F8),
-                            ),
-                          ),
-                          SizedBox(height: 20.h),
-                           Text(
-                            AppLocalizations.of(context)!.tourOperatorsEmptyMessage,
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1D2233),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      padding: Responsive.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: Responsive.all(8),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF3860F8).withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: const Icon(
-                                  Icons.groups,
-                                  color: Color(0xFF3860F8),
-                                  size: 20,
-                                ),
-                              ),
-                              SizedBox(width: 12.w),
-                              Text(
-                                AppLocalizations.of(context)!.tourOperatorsPartnersCount('${_operators.length}'),
-                                style:  TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF1D2233),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              childAspectRatio: 2.5,
-                              mainAxisSpacing: 16,
-                            ),
-                            itemCount: _operators.length,
-                            itemBuilder: (context, index) {
-                              final operator = _operators[index];
-                              return _buildModernOperatorCard(operator);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                  SizedBox(height: 20.h),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          childAspectRatio: 2.5,
+                          mainAxisSpacing: 16,
+                        ),
+                    itemCount: _operators.length,
+                    itemBuilder: (context, index) {
+                      final operator = _operators[index];
+                      return _buildModernOperatorCard(operator);
+                    },
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -192,10 +193,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Colors.white,
-            Colors.grey[50]!,
-          ],
+          colors: [Colors.white, Colors.grey[50]!],
         ),
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
@@ -205,10 +203,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
             offset: const Offset(0, 5),
           ),
         ],
-        border: Border.all(
-          color: Colors.grey[200]!,
-          width: 1.w,
-        ),
+        border: Border.all(color: Colors.grey[200]!, width: 1.w),
       ),
       child: Material(
         color: Colors.transparent,
@@ -217,7 +212,8 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TourOperatorDetailPage(operator: operator),
+                builder: (context) =>
+                    TourOperatorDetailPage(operator: operator),
               ),
             );
           },
@@ -234,10 +230,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                     margin: Responsive.only(right: 16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: Colors.grey[200]!,
-                        width: 1.w,
-                      ),
+                      border: Border.all(color: Colors.grey[200]!, width: 1.w),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.05),
@@ -256,7 +249,9 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           child: const Center(
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3860F8)),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Color(0xFF3860F8),
+                              ),
                             ),
                           ),
                         ),
@@ -282,7 +277,7 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           Expanded(
                             child: Text(
                               operator.name,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF1D2233),
@@ -293,13 +288,18 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                           ),
                           if (operator.featured == true)
                             Container(
-                              padding: Responsive.symmetric(horizontal: 8, vertical: 4),
+                              padding: Responsive.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: const Color(0xFF009639),
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
-                              child:  Text(
-                                AppLocalizations.of(context)!.tourOperatorsFeatured,
+                              child: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.tourOperatorsFeatured,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 10.sp,
@@ -314,11 +314,17 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (operator.hasPhone)
-                            _buildContactChip(Icons.phone, operator.displayPhone),
+                            _buildContactChip(
+                              Icons.phone,
+                              operator.displayPhone,
+                            ),
                           if (operator.hasPhone && operator.hasEmail)
                             SizedBox(height: 6.h),
                           if (operator.hasEmail)
-                            _buildContactChip(Icons.email, operator.displayEmail),
+                            _buildContactChip(
+                              Icons.email,
+                              operator.displayEmail,
+                            ),
                         ],
                       ),
                     ],
@@ -355,18 +361,17 @@ class _TourOperatorsPageState extends State<TourOperatorsPage> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 12,
-            color: const Color(0xFF3860F8),
-          ),
+          Icon(icon, size: 12, color: const Color(0xFF3860F8)),
           SizedBox(width: 4.w),
-          Text(
-            label,
-            style:  TextStyle(
-              fontSize: 11.sp,
-              color: Color(0xFF3860F8),
-              fontWeight: FontWeight.w500,
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 11.sp,
+                color: Color(0xFF3860F8),
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

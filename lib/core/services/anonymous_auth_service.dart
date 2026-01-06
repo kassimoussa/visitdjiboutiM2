@@ -9,7 +9,8 @@ import '../models/anonymous_user.dart';
 import 'device_info_service.dart';
 
 class AnonymousAuthService {
-  static final AnonymousAuthService _instance = AnonymousAuthService._internal();
+  static final AnonymousAuthService _instance =
+      AnonymousAuthService._internal();
   factory AnonymousAuthService() => _instance;
   AnonymousAuthService._internal();
 
@@ -25,6 +26,7 @@ class AnonymousAuthService {
   static const String _isAnonymousKey = 'is_anonymous_user';
   static const String _firstLaunchKey = 'first_launch_date';
   static const String _favoritesCountKey = 'favorites_count';
+  static const String _guestModeConfirmedKey = 'guest_mode_confirmed';
 
   AnonymousUser? _currentAnonymousUser;
   UserPreferences? _currentPreferences;
@@ -36,7 +38,8 @@ class AnonymousAuthService {
   bool get isLoggedIn => _currentUser != null;
   AnonymousUser? get currentAnonymousUser => _currentAnonymousUser;
   User? get currentUser => _currentUser;
-  UserPreferences get preferences => _currentPreferences ?? UserPreferences.defaultPreferences();
+  UserPreferences get preferences =>
+      _currentPreferences ?? UserPreferences.defaultPreferences();
   String? get currentAuthToken => _authToken ?? _currentAnonymousUser?.token;
 
   /// Initialise l'utilisateur anonyme au lancement de l'app
@@ -59,7 +62,7 @@ class AnonymousAuthService {
       // Créer un nouvel utilisateur anonyme
       final deviceId = await _getOrCreateDeviceId();
       final deviceInfo = await _deviceInfoService.getDeviceInfo();
-      
+
       final request = AnonymousUserRequest(
         deviceId: deviceId,
         deviceInfo: deviceInfo,
@@ -70,14 +73,14 @@ class AnonymousAuthService {
       if (response.isSuccess && response.hasData) {
         _currentAnonymousUser = response.data!.user;
         _currentPreferences = UserPreferences.defaultPreferences();
-        
+
         await _storeAnonymousUser(response.data!.user!);
         await _storePreferences(_currentPreferences!);
         await _setFirstLaunchDate();
-        
+
         return true;
       }
-      
+
       return false;
     } catch (e) {
       print('Erreur lors de l\'initialisation utilisateur anonyme: $e');
@@ -86,7 +89,9 @@ class AnonymousAuthService {
   }
 
   /// Crée un utilisateur anonyme via l'API
-  Future<ApiResponse<AnonymousUserResponse>> _createAnonymousUser(AnonymousUserRequest request) async {
+  Future<ApiResponse<AnonymousUserResponse>> _createAnonymousUser(
+    AnonymousUserRequest request,
+  ) async {
     try {
       final response = await _apiClient.dio.post(
         '/auth/anonymous',
@@ -96,7 +101,7 @@ class AnonymousAuthService {
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['status'] == 'success';
       final message = rawData['message'] as String?;
-      
+
       if (success && rawData.containsKey('data')) {
         final data = rawData['data'] as Map<String, dynamic>;
         final userMap = data['user'] as Map<String, dynamic>?;
@@ -119,10 +124,11 @@ class AnonymousAuthService {
           );
         }
       }
-      
+
       return ApiResponse<AnonymousUserResponse>(
         success: success,
-        message: message ?? 'Erreur lors de la création de l\'utilisateur anonyme',
+        message:
+            message ?? 'Erreur lors de la création de l\'utilisateur anonyme',
       );
     } on DioException catch (e) {
       return ApiResponse<AnonymousUserResponse>(
@@ -138,7 +144,9 @@ class AnonymousAuthService {
   }
 
   /// Récupère un utilisateur anonyme existant via l'API
-  Future<ApiResponse<AnonymousUserResponse>> retrieveAnonymousUser(String anonymousId) async {
+  Future<ApiResponse<AnonymousUserResponse>> retrieveAnonymousUser(
+    String anonymousId,
+  ) async {
     try {
       final response = await _apiClient.dio.post(
         '/auth/anonymous/retrieve',
@@ -148,7 +156,7 @@ class AnonymousAuthService {
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['status'] == 'success';
       final message = rawData['message'] as String?;
-      
+
       if (success && rawData.containsKey('data')) {
         final data = rawData['data'] as Map<String, dynamic>;
         final userMap = data['user'] as Map<String, dynamic>?;
@@ -171,7 +179,7 @@ class AnonymousAuthService {
           );
         }
       }
-      
+
       return ApiResponse<AnonymousUserResponse>(
         success: success,
         message: message ?? 'Utilisateur anonyme introuvable',
@@ -210,7 +218,7 @@ class AnonymousAuthService {
         await _storePreferences(newPreferences);
         return true;
       }
-      
+
       return false;
     } catch (e) {
       print('Erreur lors de la mise à jour des préférences: $e');
@@ -239,14 +247,14 @@ class AnonymousAuthService {
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['success'] == true;
       final message = rawData['message'] as String?;
-      
+
       if (success) {
         // Extraire et stocker les données utilisateur depuis la réponse
         final data = rawData['data'] as Map<String, dynamic>?;
         if (data != null) {
           final userMap = data['user'] as Map<String, dynamic>?;
           final token = data['token'] as String?;
-          
+
           if (userMap != null && token != null) {
             final user = User.fromJson(userMap);
             _currentUser = user;
@@ -254,19 +262,19 @@ class AnonymousAuthService {
             await _storeUserData(user, token);
           }
         }
-        
+
         // Supprimer les données anonymes si elles existent
         if (_currentAnonymousUser != null) {
           await _clearAnonymousData();
         }
-        
+
         return ApiResponse<Map<String, dynamic>>(
           success: success,
           message: message,
           data: data,
         );
       }
-      
+
       return ApiResponse<Map<String, dynamic>>(
         success: success,
         message: message ?? 'Erreur lors de l\'inscription',
@@ -285,7 +293,9 @@ class AnonymousAuthService {
   }
 
   /// Convertit l'utilisateur anonyme en utilisateur complet
-  Future<ApiResponse<Map<String, dynamic>>> convertToFullUser(ConvertAnonymousRequest request) async {
+  Future<ApiResponse<Map<String, dynamic>>> convertToFullUser(
+    ConvertAnonymousRequest request,
+  ) async {
     try {
       if (_currentAnonymousUser == null) {
         return const ApiResponse<Map<String, dynamic>>(
@@ -295,14 +305,16 @@ class AnonymousAuthService {
       }
 
       print('[DEBUG] Tentative de conversion avec les données:');
-      print('[DEBUG] Utilisateur anonyme ID: ${_currentAnonymousUser!.anonymousId}');
+      print(
+        '[DEBUG] Utilisateur anonyme ID: ${_currentAnonymousUser!.anonymousId}',
+      );
       print('[DEBUG] Token: ${_currentAnonymousUser!.token}');
       print('[DEBUG] Données de conversion: ${request.toJson()}');
-      
+
       // Ajouter le pays Djibouti (requis par l'API)
       final requestData = request.toJson();
       requestData['country'] = 'DJ';
-      
+
       final response = await _apiClient.dio.post(
         '/auth/convert-anonymous',
         data: requestData,
@@ -324,7 +336,9 @@ class AnonymousAuthService {
           final userMap = data['user'] as Map<String, dynamic>?;
           final token = data['token'] as String?;
 
-          print('[DEBUG] UserMap trouvé: ${userMap != null}, Token trouvé: ${token != null}');
+          print(
+            '[DEBUG] UserMap trouvé: ${userMap != null}, Token trouvé: ${token != null}',
+          );
 
           if (userMap != null && token != null) {
             final user = User.fromJson(userMap);
@@ -332,7 +346,9 @@ class AnonymousAuthService {
             _authToken = token;
             await _storeUserData(user, token);
 
-            print('[DEBUG] Utilisateur converti et stocké: ${user.name}, Token: ${token.substring(0, 10)}...');
+            print(
+              '[DEBUG] Utilisateur converti et stocké: ${user.name}, Token: ${token.substring(0, 10)}...',
+            );
           }
         }
 
@@ -382,7 +398,7 @@ class AnonymousAuthService {
         await _clearAnonymousData();
         return true;
       }
-      
+
       return false;
     } catch (e) {
       print('Erreur lors de la suppression de l\'utilisateur anonyme: $e');
@@ -396,7 +412,7 @@ class AnonymousAuthService {
       if (!isAnonymousUser) return null;
 
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Vérifier le nombre de favoris
       final favoritesCount = prefs.getInt(_favoritesCountKey) ?? 0;
       if (favoritesCount >= 3 && favoritesCount <= 5) {
@@ -407,7 +423,9 @@ class AnonymousAuthService {
       final firstLaunch = prefs.getString(_firstLaunchKey);
       if (firstLaunch != null) {
         final firstLaunchDate = DateTime.parse(firstLaunch);
-        final daysSinceFirst = DateTime.now().difference(firstLaunchDate).inDays;
+        final daysSinceFirst = DateTime.now()
+            .difference(firstLaunchDate)
+            .inDays;
         if (daysSinceFirst >= 7) {
           return ConversionTrigger.afterWeekUsage;
         }
@@ -444,6 +462,27 @@ class AnonymousAuthService {
     }
   }
 
+  /// Marque que l'utilisateur a confirmé le mode invité
+  Future<void> setGuestModeConfirmed() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_guestModeConfirmedKey, true);
+    } catch (e) {
+      print('Erreur lors de la sauvegarde du mode invité: $e');
+    }
+  }
+
+  /// Vérifie si l'utilisateur a déjà confirmé le mode invité
+  Future<bool> isGuestModeConfirmed() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getBool(_guestModeConfirmedKey) ?? false;
+    } catch (e) {
+      print('Erreur lors de la vérification du mode invité: $e');
+      return false;
+    }
+  }
+
   /// Obtient le token d'authentification actuel
   String? get authToken => currentAuthToken;
 
@@ -453,10 +492,7 @@ class AnonymousAuthService {
     required String password,
   }) async {
     try {
-      final request = LoginRequest(
-        email: email,
-        password: password,
-      );
+      final request = LoginRequest(email: email, password: password);
 
       final response = await _apiClient.dio.post(
         ApiConstants.authLogin,
@@ -466,7 +502,7 @@ class AnonymousAuthService {
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['success'] == true;
       final message = rawData['message'] as String?;
-      
+
       if (success && rawData.containsKey('data')) {
         final data = rawData['data'] as Map<String, dynamic>;
         final userMap = data['user'] as Map<String, dynamic>?;
@@ -487,7 +523,7 @@ class AnonymousAuthService {
           _currentUser = user;
           _authToken = token;
           await _storeUserData(user, token);
-          
+
           // Supprimer les données anonymes si elles existent
           if (_currentAnonymousUser != null) {
             await _clearAnonymousData();
@@ -500,7 +536,7 @@ class AnonymousAuthService {
           );
         }
       }
-      
+
       return ApiResponse<AuthResponse>(
         success: success,
         message: message ?? 'Erreur lors de la connexion',
@@ -532,13 +568,13 @@ class AnonymousAuthService {
           ),
         );
       }
-      
+
       // Nettoyer les données locales
       await _clearUserData();
-      
+
       // Recréer un utilisateur anonyme
       await initializeAnonymousUser();
-      
+
       return true;
     } catch (e) {
       print('Erreur lors de la déconnexion: $e');
@@ -560,7 +596,9 @@ class AnonymousAuthService {
       }
 
       // Si nous avons déjà des données utilisateur en cache et qu'elles semblent valides, les retourner
-      if (_currentUser != null && _currentUser!.name.isNotEmpty && _currentUser!.email.isNotEmpty) {
+      if (_currentUser != null &&
+          _currentUser!.name.isNotEmpty &&
+          _currentUser!.email.isNotEmpty) {
         return ApiResponse<User>(
           success: true,
           message: 'Profil chargé depuis le cache',
@@ -581,11 +619,11 @@ class AnonymousAuthService {
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['success'] == true;
       final message = rawData['message'] as String?;
-      
+
       if (success && rawData.containsKey('data')) {
         try {
           final data = rawData['data'] as Map<String, dynamic>;
-          
+
           // L'API peut retourner soit data.user soit data directement
           Map<String, dynamic> userData;
           if (data.containsKey('user')) {
@@ -593,11 +631,12 @@ class AnonymousAuthService {
           } else {
             userData = data;
           }
-          
+
           final user = _parseUserSafely(userData);
-          
+
           // Si les données parsées sont vides mais que nous avons des données en cache, utiliser le cache
-          if ((user.name.isEmpty || user.email.isEmpty) && _currentUser != null) {
+          if ((user.name.isEmpty || user.email.isEmpty) &&
+              _currentUser != null) {
             print('Données API incomplètes, utilisation du cache');
             return ApiResponse<User>(
               success: true,
@@ -605,10 +644,10 @@ class AnonymousAuthService {
               data: _currentUser,
             );
           }
-          
+
           // Mettre à jour les données locales
           _currentUser = user;
-          
+
           return ApiResponse<User>(
             success: success,
             message: message,
@@ -616,7 +655,7 @@ class AnonymousAuthService {
           );
         } catch (e) {
           print('Erreur lors du parsing de l\'utilisateur: $e');
-          
+
           // Si le parsing échoue mais que nous avons des données en cache, les utiliser
           if (_currentUser != null) {
             return ApiResponse<User>(
@@ -625,7 +664,7 @@ class AnonymousAuthService {
               data: _currentUser,
             );
           }
-          
+
           return ApiResponse<User>(
             success: false,
             message: 'Erreur lors du traitement des données utilisateur: $e',
@@ -633,7 +672,7 @@ class AnonymousAuthService {
           );
         }
       }
-      
+
       return ApiResponse<User>(
         success: success,
         message: message ?? 'Erreur lors de la récupération du profil',
@@ -647,11 +686,8 @@ class AnonymousAuthService {
           data: _currentUser,
         );
       }
-      
-      return ApiResponse<User>(
-        success: false,
-        message: _handleDioError(e),
-      );
+
+      return ApiResponse<User>(success: false, message: _handleDioError(e));
     } catch (e) {
       return ApiResponse<User>(
         success: false,
@@ -666,7 +702,7 @@ class AnonymousAuthService {
       final prefs = await SharedPreferences.getInstance();
       final userJson = prefs.getString('user_data');
       final token = await _secureStorage.read(key: 'auth_token');
-      
+
       if (userJson != null && token != null) {
         final userMap = Map<String, dynamic>.from(jsonDecode(userJson));
         _currentUser = User.fromJson(userMap);
@@ -693,7 +729,7 @@ class AnonymousAuthService {
       final anonymousId = await _secureStorage.read(key: _anonymousIdKey);
       final token = await _secureStorage.read(key: _anonymousTokenKey);
       final deviceId = await _secureStorage.read(key: _deviceIdKey);
-      
+
       if (anonymousId != null && token != null && deviceId != null) {
         return AnonymousUser(
           anonymousId: anonymousId,
@@ -703,7 +739,7 @@ class AnonymousAuthService {
           updatedAt: '',
         );
       }
-      
+
       return null;
     } catch (e) {
       print('Erreur lors du chargement de l\'utilisateur anonyme: $e');
@@ -716,7 +752,7 @@ class AnonymousAuthService {
       await _secureStorage.write(key: _anonymousIdKey, value: user.anonymousId);
       await _secureStorage.write(key: _anonymousTokenKey, value: user.token);
       await _secureStorage.write(key: _deviceIdKey, value: user.deviceId);
-      
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_isAnonymousKey, true);
     } catch (e) {
@@ -728,11 +764,11 @@ class AnonymousAuthService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final preferencesJson = prefs.getString(_preferencesKey);
-      
+
       if (preferencesJson != null) {
         final preferencesMap = Map<String, dynamic>.from(
           // Parsing simple du JSON stocké
-          {}
+          {},
         );
         _currentPreferences = UserPreferences.fromJson(preferencesMap);
       } else {
@@ -758,7 +794,10 @@ class AnonymousAuthService {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (!prefs.containsKey(_firstLaunchKey)) {
-        await prefs.setString(_firstLaunchKey, DateTime.now().toIso8601String());
+        await prefs.setString(
+          _firstLaunchKey,
+          DateTime.now().toIso8601String(),
+        );
       }
     } catch (e) {
       print('Erreur lors de la définition de la date de premier lancement: $e');
@@ -769,13 +808,13 @@ class AnonymousAuthService {
     try {
       await _secureStorage.delete(key: _anonymousIdKey);
       await _secureStorage.delete(key: _anonymousTokenKey);
-      
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_isAnonymousKey);
       await prefs.remove(_preferencesKey);
       await prefs.remove(_favoritesCountKey);
       await prefs.remove(_firstLaunchKey);
-      
+
       _currentAnonymousUser = null;
       _currentPreferences = null;
     } catch (e) {
@@ -786,7 +825,7 @@ class AnonymousAuthService {
   Future<void> _storeUserData(User user, String token) async {
     try {
       await _secureStorage.write(key: 'auth_token', value: token);
-      
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_data', jsonEncode(user.toJson()));
       await prefs.setBool('is_logged_in', true);
@@ -798,11 +837,11 @@ class AnonymousAuthService {
   Future<void> _clearUserData() async {
     try {
       await _secureStorage.delete(key: 'auth_token');
-      
+
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('user_data');
       await prefs.remove('is_logged_in');
-      
+
       _currentUser = null;
       _authToken = null;
     } catch (e) {
@@ -834,19 +873,21 @@ class AnonymousAuthService {
 
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['success'] == true;
-      
+
       if (success && rawData.containsKey('data')) {
         final data = rawData['data'] as Map<String, dynamic>;
         final userMap = data['user'] as Map<String, dynamic>?;
-        
+
         if (userMap != null) {
           final user = _parseUserSafely(userMap);
           _currentUser = user;
           await _storeUserData(user, _authToken!);
-          
+
           return ApiResponse<User>(
             success: true,
-            message: rawData['message'] as String? ?? 'Profil mis à jour avec succès',
+            message:
+                rawData['message'] as String? ??
+                'Profil mis à jour avec succès',
             data: user,
           );
         }
@@ -854,10 +895,11 @@ class AnonymousAuthService {
 
       return ApiResponse<User>(
         success: false,
-        message: rawData['message'] as String? ?? 'Erreur lors de la mise à jour du profil',
+        message:
+            rawData['message'] as String? ??
+            'Erreur lors de la mise à jour du profil',
         data: null,
       );
-
     } catch (e) {
       print('Erreur lors de la mise à jour du profil: $e');
       if (e is DioException) {
@@ -867,7 +909,7 @@ class AnonymousAuthService {
           data: null,
         );
       }
-      
+
       return ApiResponse<User>(
         success: false,
         message: 'Erreur lors de la mise à jour du profil',
@@ -907,13 +949,16 @@ class AnonymousAuthService {
 
       final rawData = response.data as Map<String, dynamic>;
       final bool success = rawData['success'] == true;
-      
+
       return ApiResponse<bool>(
         success: success,
-        message: rawData['message'] as String? ?? (success ? 'Mot de passe modifié avec succès' : 'Erreur lors du changement de mot de passe'),
+        message:
+            rawData['message'] as String? ??
+            (success
+                ? 'Mot de passe modifié avec succès'
+                : 'Erreur lors du changement de mot de passe'),
         data: success,
       );
-
     } catch (e) {
       print('Erreur lors du changement de mot de passe: $e');
       if (e is DioException) {
@@ -923,7 +968,7 @@ class AnonymousAuthService {
           data: false,
         );
       }
-      
+
       return ApiResponse<bool>(
         success: false,
         message: 'Erreur lors du changement de mot de passe',
@@ -937,17 +982,19 @@ class AnonymousAuthService {
     try {
       return User.fromJson(userData);
     } catch (e) {
-      print('Erreur lors du parsing standard, utilisation du parsing manuel: $e');
+      print(
+        'Erreur lors du parsing standard, utilisation du parsing manuel: $e',
+      );
       print('Données utilisateur reçues: ${userData.keys.toList()}');
-      
+
       // Parsing manuel sécurisé adapté à la vraie structure de l'API
       // L'API retourne un utilisateur anonyme converti, pas un utilisateur standard
-      
+
       // Essayons d'extraire les données utilisateur réelles
       String name = '';
       String email = '';
       String? phone;
-      
+
       // Si c'est un utilisateur anonyme converti, les vraies données pourraient être ailleurs
       if (userData.containsKey('user_data')) {
         final realUserData = userData['user_data'] as Map<String, dynamic>?;
@@ -957,21 +1004,22 @@ class AnonymousAuthService {
           phone = realUserData['phone']?.toString();
         }
       }
-      
+
       // Ou alors les données sont dans les champs directs
       if (name.isEmpty) {
-        name = userData['name']?.toString() ?? 
-               userData['display_name']?.toString() ??
-               userData['full_name']?.toString() ??
-               'Utilisateur';
+        name =
+            userData['name']?.toString() ??
+            userData['display_name']?.toString() ??
+            userData['full_name']?.toString() ??
+            'Utilisateur';
       }
-      
+
       if (email.isEmpty) {
         email = userData['email']?.toString() ?? '';
       }
-      
+
       phone ??= userData['phone']?.toString();
-      
+
       return User(
         id: _parseIntSafely(userData['id']) ?? 0,
         name: name,
@@ -982,15 +1030,21 @@ class AnonymousAuthService {
         gender: userData['gender']?.toString(),
         provider: userData['provider']?.toString() ?? 'local',
         isActive: _parseBoolSafely(userData['is_active']) ?? true,
-        createdAt: userData['created_at']?.toString() ?? DateTime.now().toIso8601String(),
-        updatedAt: userData['updated_at']?.toString() ?? DateTime.now().toIso8601String(),
+        createdAt:
+            userData['created_at']?.toString() ??
+            DateTime.now().toIso8601String(),
+        updatedAt:
+            userData['updated_at']?.toString() ??
+            DateTime.now().toIso8601String(),
         lastLoginAt: userData['last_login_at']?.toString(),
         lastLoginIp: userData['last_login_ip']?.toString(),
         avatarUrl: userData['avatar_url']?.toString(),
         age: _parseIntSafely(userData['age']),
         isSocialUser: _parseBoolSafely(userData['is_social_user']) ?? false,
         displayName: userData['display_name']?.toString() ?? name,
-        uniqueIdentifier: userData['unique_identifier']?.toString() ?? userData['anonymous_id']?.toString(),
+        uniqueIdentifier:
+            userData['unique_identifier']?.toString() ??
+            userData['anonymous_id']?.toString(),
       );
     }
   }
@@ -1025,25 +1079,27 @@ class AnonymousAuthService {
         final statusCode = error.response?.statusCode;
         if (error.response?.data is Map<String, dynamic>) {
           final data = error.response!.data as Map<String, dynamic>;
-          
+
           // Gérer les erreurs spécifiques
           if (statusCode == 422 && data.containsKey('errors')) {
             final errors = data['errors'] as Map<String, dynamic>;
             final firstError = errors.values.first as List<dynamic>;
-            return firstError.isNotEmpty ? firstError.first.toString() : 'Erreur de validation';
+            return firstError.isNotEmpty
+                ? firstError.first.toString()
+                : 'Erreur de validation';
           }
-          
+
           if (statusCode == 500) {
             return 'Erreur serveur temporaire. L\'API n\'est peut-être pas disponible pour cette fonctionnalité.';
           }
-          
+
           return data['message'] ?? 'Erreur serveur $statusCode';
         }
-        
+
         if (statusCode == 500) {
           return 'Erreur serveur interne (500). Veuillez réessayer plus tard ou utiliser l\'inscription normale.';
         }
-        
+
         return 'Erreur serveur $statusCode';
       case DioExceptionType.cancel:
         return 'Requête annulée';

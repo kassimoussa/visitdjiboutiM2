@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/utils/responsive.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import '../../core/services/essentials_service.dart';
 import '../../core/models/embassy.dart';
 import '../../core/models/api_response.dart';
@@ -439,56 +439,6 @@ class _EmbassiesPageState extends State<EmbassiesPage>
           ),
           SizedBox(height: 16.h),
         ],
-
-        // Boutons d'action
-        Row(
-          children: [
-            if (embassy.primaryPhone.isNotEmpty)
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () => _launchPhone(embassy.primaryPhone),
-                  icon: Icon(Icons.phone, size: 18),
-                  label: Text(AppLocalizations.of(context)!.embassiesCall),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ),
-
-            if (embassy.primaryPhone.isNotEmpty &&
-                (embassy.primaryEmail.isNotEmpty || embassy.website != null))
-              SizedBox(width: 8.w),
-
-            if (embassy.primaryEmail.isNotEmpty)
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () => _launchEmail(embassy.primaryEmail),
-                  icon: Icon(Icons.email, size: 18),
-                  label: Text(AppLocalizations.of(context)!.embassiesEmail),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF3860F8),
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ),
-
-            if (embassy.primaryEmail.isNotEmpty && embassy.website != null)
-              SizedBox(width: 8.w),
-
-            if (embassy.website != null)
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _launchWebsite(embassy.website!),
-                  icon: Icon(Icons.language, size: 18),
-                  label: Text(AppLocalizations.of(context)!.embassiesWebsite),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Color(0xFF3860F8),
-                  ),
-                ),
-              ),
-          ],
-        ),
       ],
     );
   }
@@ -528,62 +478,5 @@ class _EmbassiesPageState extends State<EmbassiesPage>
         ),
       ],
     );
-  }
-
-  void _launchPhone(String phone) async {
-    final uri = Uri.parse('tel:$phone');
-    try {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.embassiesCannotOpenPhone,
-            ),
-          ),
-        );
-      }
-    }
-  }
-
-  void _launchEmail(String email) async {
-    final uri = Uri.parse('mailto:$email');
-    try {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.embassiesCannotOpenEmail,
-            ),
-          ),
-        );
-      }
-    }
-  }
-
-  void _launchWebsite(String website) async {
-    final uri = Uri.parse(website);
-    try {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.embassiesCannotOpenWebsite,
-            ),
-          ),
-        );
-      }
-    }
   }
 }

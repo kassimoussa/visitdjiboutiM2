@@ -9,6 +9,7 @@ import '../../generated/l10n/app_localizations.dart';
 import '../../core/services/localization_service.dart';
 import '../../core/services/anonymous_auth_service.dart';
 import '../../core/utils/responsive.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -19,13 +20,26 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   final AnonymousAuthService _authService = AnonymousAuthService();
+  String _version = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() {
+        _version = '${packageInfo.version} (${packageInfo.buildNumber})';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Responsive.init(context);
-    // Debug pour voir l'état d'authentification
-    print('[DEBUG DRAWER] isLoggedIn: ${_authService.isLoggedIn}');
-    print('[DEBUG DRAWER] currentUser: ${_authService.currentUser?.name}');
 
     return Drawer(
       backgroundColor: Colors.white,
@@ -336,7 +350,7 @@ class _AppDrawerState extends State<AppDrawer> {
           Icon(Icons.info_outline, size: 16, color: Colors.grey[600]),
           SizedBox(width: 8.w),
           Text(
-            AppLocalizations.of(context)!.drawerVersion,
+            '${AppLocalizations.of(context)!.drawerVersion} $_version',
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: ResponsiveConstants.caption,
@@ -388,7 +402,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 await LocalizationService().setLanguage('en');
               },
             ),
-           /*  ListTile(
+            /*  ListTile(
               leading: const Text('🇸🇦'),
               title: Text(AppLocalizations.of(context)!.languageArabic),
               trailing: LocalizationService().currentLocale.languageCode == 'ar'

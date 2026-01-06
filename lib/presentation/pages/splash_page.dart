@@ -108,11 +108,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
       if (mounted) {
         final isLoggedIn = _authService.isLoggedIn;
+        final isGuestDeclared = await _authService.isGuestModeConfirmed();
 
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) {
-              return isLoggedIn
+              return (isLoggedIn || isGuestDeclared)
                   ? const MainNavigationPage()
                   : const AuthDecisionPage();
             },
@@ -299,7 +300,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                             width: 48.w,
                             height: 48.h,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF009639).withValues(alpha: 0.1),
+                              color: const Color(
+                                0xFF009639,
+                              ).withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
