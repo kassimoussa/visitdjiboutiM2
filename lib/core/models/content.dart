@@ -31,7 +31,7 @@ class Content {
   final String? latitude;
   final String? longitude;
 
-  final String region;
+  final String? region;
   @JsonKey(name: 'is_featured')
   final bool isFeatured;
 
@@ -80,7 +80,7 @@ class Content {
     this.shortDescription,
     this.latitude,
     this.longitude,
-    required this.region,
+    this.region,
     required this.isFeatured,
     this.featuredImage,
     required this.categories,

@@ -184,7 +184,7 @@ class ContentService {
 
     if (response.success && response.data != null) {
       final filteredContent = response.data!.content.where((content) {
-        return content.region.toLowerCase() == region.toLowerCase();
+        return content.region?.toLowerCase() == region.toLowerCase();
       }).toList();
 
       print('[CONTENT SERVICE] Contenus pour la région $region: ${filteredContent.length}');

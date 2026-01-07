@@ -15,7 +15,7 @@ Content _$ContentFromJson(Map<String, dynamic> json) => Content(
   shortDescription: json['short_description'] as String?,
   latitude: json['latitude'] as String?,
   longitude: json['longitude'] as String?,
-  region: json['region'] as String,
+  region: json['region'] as String?,
   isFeatured: json['is_featured'] as bool,
   featuredImage: json['featured_image'] == null
       ? null
